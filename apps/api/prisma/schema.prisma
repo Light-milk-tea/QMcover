@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GenerationJobStatus {
+  queued
+  planning
+  generating
+  succeeded
+  failed
+}
+
+enum AssetKind {
+  upload
+  generated
+  export
+  thumbnail
+}
+
+model User {
+  id           String          @id @default(cuid())
+  email        String          @unique
+  name         String?
+  passwordHash String?
+  projects     Project[]
+  assets       Asset[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Template {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  platform    String
+  scene       String
+  width       Int
+  height      Int
+  thumbnailUrl String?
+  document    Json
+  projects    Project[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Project {
+  id           String           @id @default(cuid())
+  userId       String?
+  templateId   String?
+  name         String
+  document     Json
+  thumbnailUrl String?
+  status       String           @default("active")
+  user         User?            @relation(fields: [userId], references: [id])
+  template     Template?        @relation(fields: [templateId], references: [id])
+  versions     ProjectVersion[]
+  jobs         GenerationJob[]
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+}
+
+model ProjectVersion {
+  id        String   @id @default(cuid())
+  projectId String
+  version   Int
+  document  Json
+  note      String?
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, version])
+}
+
+model GenerationJob {
+  id         String              @id @default(cuid())
+  projectId  String?
+  input      Json
+  status     GenerationJobStatus @default(queued)
+  error      String?
+  candidates Json?
+  project    Project?            @relation(fields: [projectId], references: [id])
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+}
+
+model Asset {
+  id        String    @id @default(cuid())
+  userId    String?
+  kind      AssetKind
+  url       String
+  mimeType  String
+  width     Int?
+  height    Int?
+  metadata  Json?
+  user      User?     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+}

@@ -1,0 +1,22 @@
+{
+  "name": "qmcover",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace @qmcover/web",
+    "dev:web": "npm run dev --workspace @qmcover/web",
+    "dev:api": "npm run start:dev --workspace @qmcover/api",
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces",
+    "typecheck": "npm run typecheck --workspaces",
+    "prisma:generate": "npm run prisma:generate --workspace @qmcover/api",
+    "prisma:migrate": "npm run prisma:migrate --workspace @qmcover/api"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
