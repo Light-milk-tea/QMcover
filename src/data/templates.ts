@@ -1,0 +1,87 @@
+import type { TemplateMeta } from "../types";
+
+export const TEMPLATES: TemplateMeta[] = [
+  {
+    id: "firstkill",
+    name: "危机合约模板",
+    blurb: "左上地图名，等级和首杀排一行。",
+    defaultSubtitle: "全网首杀",
+    showEpisode: true,
+    sampleTitle: "无序矿区",
+    titleKind: "stage",
+    episodeLabel: "危机等级",
+    signatureLabel: "行动名",
+    defaultEpisode: 32,
+    sampleEpisode: 32,
+    sampleSignature: "铅封行动",
+    defaultImageScale: 145,
+    showBackground: true,
+    defaultBgPreset: "battlefield",
+    defaultOperatorId: "char_4064_mlynar",
+  },
+  {
+    id: "lowspec",
+    name: "低配攻略",
+    blurb: "左立绘，中间白条，平民合集常用。",
+    defaultSubtitle: "平民攻略",
+    showEpisode: false,
+    sampleTitle: "净罪",
+    titleKind: "operation",
+    signatureLabel: "署名",
+    sampleSignature: "QM",
+    defaultImageScale: 158,
+    showBackground: true,
+    defaultBgPreset: "ruins",
+    defaultOperatorId: "char_103_angel",
+  },
+  {
+    id: "rogue",
+    name: "肉鸽模板",
+    blurb: "左立绘，右大字主题，红标加条件。",
+    defaultSubtitle: "四人无藏",
+    showEpisode: true,
+    sampleTitle: "命运共享",
+    titleKind: "theme",
+    titleLabel: "主题",
+    titlePlaceholder: "命运共享",
+    subtitleLabel: "条件",
+    episodeLabel: "节点",
+    signatureLabel: "红标",
+    defaultEpisode: 15,
+    sampleEpisode: 15,
+    sampleSignature: "紧急",
+    defaultImageScale: 160,
+    showBackground: true,
+    defaultBgPreset: "wreck",
+    defaultOperatorId: "char_1035_wisdel",
+  },
+  {
+    id: "madness",
+    name: "决战五星之癫",
+    blurb: "左文右拍立得，干员测评常用。",
+    defaultSubtitle: "限制与毒点",
+    showEpisode: true,
+    sampleTitle: "阿罗玛",
+    titleKind: "operator",
+    titleLabel: "干员",
+    titlePlaceholder: "阿罗玛",
+    subtitleLabel: "副标题",
+    episodeLabel: "期数",
+    signatureLabel: "英文标",
+    defaultEpisode: 1,
+    sampleEpisode: 1,
+    sampleSignature: "FIVE STAR MADNESS",
+    defaultImageScale: 132,
+    showBackground: true,
+    defaultBgPreset: "wild",
+    defaultOperatorId: "char_446_aroma",
+  },
+];
+
+export function getTemplate(id: string): TemplateMeta | undefined {
+  return TEMPLATES.find((t) => t.id === id);
+}
+
+export function isTemplateId(id: string): id is TemplateMeta["id"] {
+  return TEMPLATES.some((t) => t.id === id);
+}

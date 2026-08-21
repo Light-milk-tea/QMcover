@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+.playwright-mcp
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Bilibili cover references (other UP artwork, do not commit)
+references/crisis-contract/**/*.jpg
+references/crisis-contract/**/*.jpeg
+references/crisis-contract/**/*.png
+references/crisis-contract/**/*.webp
+references/rogue/**/*.jpg
+references/rogue/**/*.jpeg
+references/rogue/**/*.png
+references/rogue/**/*.webp
+
+# capture leftovers
+public/thumbs/*.dataurl
+public/thumbs/*.jpg
+

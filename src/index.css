@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "@fontsource-variable/outfit";
+@import "@fontsource/oswald/500.css";
+@import "@fontsource/oswald/600.css";
+@import "@fontsource/oswald/700.css";
+@import "@fontsource/noto-sans-sc/400.css";
+@import "@fontsource/noto-sans-sc/700.css";
+@import "@fontsource/noto-sans-sc/900.css";
+
+@theme {
+  --font-sans: "PingFang SC", "HarmonyOS Sans", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-display: "Oswald", "Noto Sans SC", sans-serif;
+  --font-cn: "Noto Sans SC", "PingFang SC", sans-serif;
+  --color-ink: #f1f2f3;
+  --color-panel: #ffffff;
+  --color-raised: #f6f7f8;
+  --color-line: #e3e5e7;
+  --color-mute: #9499a0;
+  --color-sub: #61666d;
+  --color-text: #18191c;
+  --color-accent: #fb7299;
+  --color-accent-hover: #fc8bab;
+  --color-accent-dim: #e85a8a;
+}
+
+html,
+body,
+#root {
+  min-height: 100dvh;
+  background: var(--color-ink);
+  color: var(--color-text);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  accent-color: var(--color-accent);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 28%, transparent);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+input[type="range"] {
+  height: 4px;
+  background: transparent;
+}
+
+input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
