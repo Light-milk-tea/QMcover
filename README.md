@@ -6,15 +6,17 @@
 
 技术栈：React 19 + Vite + TypeScript + Tailwind CSS 4。
 
-| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 |
-| --- | --- | --- | --- |
-| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) |
+| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 |
+| --- | --- | --- | --- | --- |
+| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) |
 
 相关文档：
 
 - [如何加模板](TEMPLATES.md)
+- [按参考图做新模板](doc/模仿参考图生成模板.md)
 - [危机合约构图参考](references/crisis-contract/INDEX.md)
 - [肉鸽构图参考](references/rogue/INDEX.md)
+- [无核论文构图参考](references/kirby/INDEX.md)
 
 ## 本地运行
 
@@ -39,7 +41,7 @@ npm run dev
 2. 右侧改地图 / 标题、副标题、危机等级或期数、行动名或署名。
 3. 左侧点图层，或直接点画布上的字，可改位置、字体、字号、颜色。选中后也可拖动。
 4. 立绘库按职业筛选，点干员再点立绘。库里没有的皮肤可上传。
-5. 危机合约、低配攻略模板可换 AVG 场景底。
+5. 危机合约、低配攻略、无核论文模板可换 AVG 场景底。
 6. 拖动立绘调位置，滑条调缩放。安全区勾选后显示 B 站裁切提示框，不进导出。
 7. **新建**会清空当前模板草稿（先确认）。**导出封面**下载 PNG。
 
@@ -47,18 +49,19 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前四套：
+首页列出 `src/data/templates.ts`。当前五套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
 | `firstkill` | 危机合约模板 | 参考铅封行动类封面：左上地图名，副标题 + 危机等级 + 数字一行，三角标 + `CONTINGENCY CONTRACT`，下面行动名 +「危机合约」。右侧干员。 |
-| `lowspec` | 低配攻略 | 参考平民合集封面：左立绘 + 红晶切面，上「行动 + 危机合约」，中白底条「署名 + 攻略类型」，下「操作轻松 语音详解」。 |
-| `rogue` | 肉鸽模板 | 参考集成战略打关封面：左立绘，右大字描边主题，红标 + 条件，节点显示为 N15。 |
+| `lowspec` | 低配攻略 | 参考 ZC 活动关封面：左立绘斜切，右三横条。上「活动 + 行动名」，中纸色条「署名 + 攻略类型」，下「阵容平民 语音详解」。 |
+| `rogue` | 肉鸽模板 | 参考 Mujica 命运共享封面：左立绘，右宋体主题加红划痕，上下空心 ISW-NO，红字紧急 + 白条件。 |
 | `madness` | 决战五星之癫 | 参考五星测评类封面：左暗底栏目名 + 期数 + 干员篇，右拍立得立绘。栏目名固定为「决战五星之癫」。 |
+| `nocore` | 无核论文 | 参考小鬼卡比 SN-EX-8：暗底，左两行金白大字，一条紫线，右立绘。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -66,27 +69,27 @@ npm run dev
 - 副标题（默认「全网首杀」）
 - 危机等级（默认 32）
 - 行动名（如铅封行动）
-- 背景预设（默认战场）
-- 默认立绘：玛恩纳精二
+- 背景预设（默认矿坑）
+- 默认立绘：雷蛇超载
 
 ### 低配攻略
 
-- 行动（如净罪、起源）
+- 活动名（如沃伦姆德的薄暮；含「的」时前半金字、后半白字）
 - 副标题（默认「平民攻略」，也可改成全能攻略）
 - 署名（短字母会按蓝黄交错上色）
-- 背景预设（默认废城）
-- 默认立绘：能天使精二
+- 背景预设铺进右栏上下条（默认雷云），中栏仍是纸色
+- 默认立绘：铃兰精二
 
-底部「操作轻松 语音详解」是这套构图的固定卖点句，不进编辑栏。
+底部「阵容平民 语音详解」是这套构图的固定卖点句，不进编辑栏。
 
 ### 肉鸽
 
-- 主题（如命运共享）
+- 主题（如命运共享，思源宋体，带红划痕）
 - 条件（默认「四人无藏」）
-- 节点（默认 15，画面显示 N15）
+- 节点（默认 15，画面显示小字 N15）
 - 红标（默认「紧急」，留空则不显示）
-- 背景预设（默认废墟）
-- 默认立绘：维什戴尔精二
+- 画布背景（默认 23 G07，可蒙黑）和字背景（默认 fall back）分开选
+- 默认立绘：贝洛内精二
 
 ### 决战五星之癫
 
@@ -98,6 +101,14 @@ npm run dev
 - 默认立绘：阿罗玛精二
 
 栏目名「决战五星之癫」和拍立得英文名（从干员表取）是构图固定件，英文名随干员变。
+
+### 无核论文
+
+- 关卡（如 SN-EX-8 突袭；关卡号金色，后面的字白色）
+- 限制（默认「三星队 首杀」：空格前白色，后面金色）
+- 署名（默认 QM，淡紫，左右三点）
+- 背景默认伊比利亚夜海岸，压一层暗纱
+- 默认立绘：缄默德克萨斯精二
 
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
@@ -120,6 +131,7 @@ src/
     LowSpec.tsx           低配攻略
     Rogue.tsx             肉鸽
     Madness.tsx           决战五星之癫
+    Nocore.tsx            无核论文
     OperatorLayer.tsx     可拖动立绘
   components/             首页、顶栏、画布、图层面板、编辑栏、立绘库
   store/CoverContext.tsx  当前草稿
@@ -133,6 +145,7 @@ scripts/
   collect-cc-covers.py    重新收集构图参考图（不进 git）
 references/crisis-contract/   构图参考，jpg 不提交
 references/rogue/             肉鸽构图参考，jpg 不提交
+references/kirby/             无核论文构图参考，jpg 不提交
 ```
 
 路由是 hash：`#/` 首页，`#/t/firstkill` 打开对应模板。
@@ -183,7 +196,7 @@ references/rogue/             肉鸽构图参考，jpg 不提交
 | --- | --- | --- |
 | 危机合约 | `src/templates/FirstKill.tsx` | 字号会按地图名、行动名长度缩小，避免溢出。 |
 | 低配攻略 | `src/templates/LowSpec.tsx` | 复刻左立绘 + 白底条，不要整图搬参考封面。 |
-| 肉鸽 | `src/templates/Rogue.tsx` | 复刻左立绘 + 右大字描边，不要整图搬参考封面。 |
+| 肉鸽 | `src/templates/Rogue.tsx` | 复刻左立绘 + 右宋体主题 + 空心 ISW-NO，不要整图搬参考封面。 |
 | 决战五星之癫 | `src/templates/Madness.tsx` | 复刻左文右拍立得，不要整图搬参考封面。 |
 
 ## 约定
@@ -192,4 +205,4 @@ references/rogue/             肉鸽构图参考，jpg 不提交
 - 不把 `references/` 下的参考 jpg 提交进 git。
 - 不要用渐变色块冒充合约氛围图；场景底用游戏 AVG。
 - 立绘显示不要等预加载完成再挂 `<img>`，否则会卡在「立绘载入中」。
-- `firstkill` / `lowspec` / `rogue` / `madness` 这些模板 id 保持稳定，改名只改 `name` 字段。
+- `firstkill` / `lowspec` / `rogue` / `madness` / `nocore` 这些模板 id 保持稳定，改名只改 `name` 字段。
