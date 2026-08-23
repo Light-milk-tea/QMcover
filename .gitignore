@@ -33,8 +33,22 @@ references/rogue/**/*.jpg
 references/rogue/**/*.jpeg
 references/rogue/**/*.png
 references/rogue/**/*.webp
+references/zc-event/**/*.jpg
+references/zc-event/**/*.jpeg
+references/zc-event/**/*.png
+references/zc-event/**/*.webp
+references/kirby/**/*.jpg
+references/kirby/**/*.jpeg
+references/kirby/**/*.png
+references/kirby/**/*.webp
 
 # capture leftovers
 public/thumbs/*.dataurl
 public/thumbs/*.jpg
+tmp-compare/
+tmp-backgrounds/
+
+# local cache and one-off exports
+npm_cache/
+/*_模板_*.png
 

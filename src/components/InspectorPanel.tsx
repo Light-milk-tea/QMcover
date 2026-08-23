@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ArrowCounterClockwise } from "@phosphor-icons/react";
-import { COVER_FONTS, TEMPLATE_ELEMENTS, TEXT_COLORS, normalizeHex } from "../data/elements";
+import { COVER_FONTS, TEMPLATE_ELEMENTS } from "../data/elements";
 import { useCover } from "../store/CoverContext";
 import type { CoverFontId } from "../types";
+import { ColorField } from "./ColorField";
 import { Field, fieldClass } from "./Field";
 
 export function InspectorPanel() {
-  const { templateId, draft, selectedId, selectElement, patchElement, resetElement, patchDraft, defaultImageScale } =
+  const { templateId, draft, selectedId, selectElement, patchElement, resetElement, patchDraft, defaultImageScale, resolvedElements } =
     useCover();
   const items = TEMPLATE_ELEMENTS[templateId];
   const meta = items.find((el) => el.id === selectedId);
   const style = selectedId ? (draft.elementStyles[selectedId] ?? {}) : {};
+  const resolved = selectedId ? (resolvedElements[selectedId] ?? {}) : {};
+  const currentFontSize = style.fontSize ?? resolved.fontSize;
+  const currentFont = style.font ?? resolved.font ?? meta?.defaultFont ?? "cn";
+  const currentColor = style.color ?? resolved.color;
+  const currentX = style.x ?? resolved.x ?? 0;
+  const currentY = style.y ?? resolved.y ?? 0;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -104,23 +111,23 @@ export function InspectorPanel() {
               </>
             ) : (
               <>
-                <Field label={`水平 ${Math.round(style.x ?? 0)}`}>
+                <Field label={`水平 ${Math.round(currentX)}`}>
                   <input
                     type="range"
                     min={meta.hasOpacity ? -900 : -480}
                     max={meta.hasOpacity ? 900 : 480}
-                    value={style.x ?? 0}
+                    value={currentX}
                     onChange={(e) => patchElement(meta.id, { x: Number(e.target.value) })}
                     className="w-full"
                   />
                 </Field>
                 <div className="mt-3">
-                  <Field label={`垂直 ${Math.round(style.y ?? 0)}`}>
+                  <Field label={`垂直 ${Math.round(currentY)}`}>
                     <input
                       type="range"
                       min={meta.hasOpacity ? -900 : -480}
                       max={meta.hasOpacity ? 900 : 480}
-                      value={style.y ?? 0}
+                      value={currentY}
                       onChange={(e) => patchElement(meta.id, { y: Number(e.target.value) })}
                       className="w-full"
                     />
@@ -148,15 +155,10 @@ export function InspectorPanel() {
                           className={fieldClass}
                           type="number"
                           min={16}
-                          max={240}
-                          placeholder="默认"
-                          value={style.fontSize ?? ""}
+                          max={280}
+                          value={currentFontSize ?? ""}
                           onChange={(e) => {
-                            if (!e.target.value) {
-                              patchElement(meta.id, { fontSize: undefined });
-                              return;
-                            }
-                            patchElement(meta.id, { fontSize: Number(e.target.value) || 16 });
+                            patchElement(meta.id, { fontSize: Number(e.target.value) || currentFontSize || 16 });
                           }}
                         />
                       </Field>
@@ -165,13 +167,11 @@ export function InspectorPanel() {
                       <Field label="字体">
                         <select
                           className={fieldClass}
-                          value={style.font ?? ""}
+                          value={currentFont}
                           onChange={(e) => {
-                            const v = e.target.value as CoverFontId | "";
-                            patchElement(meta.id, { font: v ? v : undefined });
+                            patchElement(meta.id, { font: e.target.value as CoverFontId });
                           }}
                         >
-                          <option value="">默认</option>
                           {COVER_FONTS.map((f) => (
                             <option key={f.id} value={f.id}>
                               {f.label}
@@ -183,6 +183,7 @@ export function InspectorPanel() {
                     <ColorField
                       elementId={meta.id}
                       color={style.color}
+                      displayColor={currentColor}
                       onChange={(color) => patchElement(meta.id, { color })}
                     />
                   </>
@@ -197,80 +198,5 @@ export function InspectorPanel() {
         )}
       </div>
     </aside>
-  );
-}
-
-function ColorField({
-  elementId,
-  color,
-  onChange,
-}: {
-  elementId: string;
-  color?: string;
-  onChange: (color: string | undefined) => void;
-}) {
-  const [hex, setHex] = useState(color ?? "");
-
-  useEffect(() => {
-    setHex(color ?? "");
-  }, [elementId, color]);
-
-  const picker = normalizeHex(hex) ?? "#ffffff";
-  const active = normalizeHex(color ?? "");
-
-  return (
-    <div className="mt-3">
-      <span className="mb-1.5 block text-[13px] text-sub">颜色</span>
-      <div className="flex items-center gap-2">
-        <input
-          type="color"
-          value={picker}
-          aria-label="取色"
-          className="size-8 shrink-0 cursor-pointer rounded-[6px] border border-line bg-panel p-0.5"
-          onChange={(e) => onChange(e.target.value)}
-        />
-        <input
-          className={fieldClass}
-          value={hex}
-          placeholder="默认"
-          spellCheck={false}
-          onChange={(e) => {
-            const next = e.target.value;
-            setHex(next);
-            if (!next.trim()) {
-              onChange(undefined);
-              return;
-            }
-            const parsed = normalizeHex(next);
-            if (parsed) onChange(parsed);
-          }}
-        />
-      </div>
-      <div className="mt-2 flex flex-wrap items-center gap-1.5">
-        {TEXT_COLORS.map((swatch) => {
-          const selected = active === swatch.value;
-          return (
-            <button
-              key={swatch.id}
-              type="button"
-              title={swatch.label}
-              aria-label={swatch.label}
-              onClick={() => onChange(swatch.value)}
-              className={`size-6 rounded-full border ${
-                selected ? "border-accent ring-1 ring-accent" : "border-line"
-              }`}
-              style={{ background: swatch.value }}
-            />
-          );
-        })}
-        <button
-          type="button"
-          className="h-6 rounded-[6px] px-2 text-[12px] text-sub hover:bg-raised hover:text-accent"
-          onClick={() => onChange(undefined)}
-        >
-          默认
-        </button>
-      </div>
-    </div>
   );
 }

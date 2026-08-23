@@ -1,17 +1,32 @@
 import { UploadSimple } from "@phosphor-icons/react";
 import { artUrl } from "../data/arts";
-import { BG_PRESETS } from "../data/backgrounds";
+import { ORNAMENTS } from "../data/ornaments";
 import { useCover } from "../store/CoverContext";
+import { BackgroundPicker } from "./BackgroundPicker";
 import { Field, fieldClass } from "./Field";
 import { IllustLibrary } from "./IllustLibrary";
 
 export function EditorPanel() {
-  const { draft, patchDraft, showEpisode, titleKind, titleLabel, titlePlaceholder, subtitleLabel, episodeLabel, signatureLabel, defaultImageScale, showBackground } =
-    useCover();
+  const {
+    draft,
+    patchDraft,
+    showEpisode,
+    titleKind,
+    titleLabel,
+    titlePlaceholder,
+    subtitleLabel,
+    episodeLabel,
+    signatureLabel,
+    defaultImageScale,
+    showBackground,
+    showTextBackground,
+    showBgDim,
+    showOrnament,
+  } = useCover();
 
   const resolvedPlaceholder =
     titlePlaceholder ||
-    (titleKind === "stage" ? "无序矿区" : titleKind === "operation" ? "净罪" : titleKind === "theme" ? "命运共享" : draft.operatorName || "点选干员后自动填入");
+    (titleKind === "stage" ? "无序矿区" : titleKind === "operation" ? "沃伦姆德的薄暮" : titleKind === "theme" ? "命运共享" : draft.operatorName || "点选干员后自动填入");
   const keepTitleOnPick = titleKind === "stage" || titleKind === "operation" || titleKind === "theme";
 
   return (
@@ -67,36 +82,29 @@ export function EditorPanel() {
         </div>
       </div>
 
-      {showBackground ? (
+      {showOrnament ? (
         <div className="border-b border-line px-4 py-3">
-          <p className="mb-1.5 text-[13px] text-sub">背景</p>
-          <div className="grid max-h-[280px] grid-cols-3 gap-2 overflow-y-auto pr-0.5">
-            {BG_PRESETS.map((bg) => {
-              const selected = (draft.bgPreset || "ink") === bg.id;
+          <p className="mb-1.5 text-[13px] text-sub">中栏花边（现成古典花饰）</p>
+          <div className="grid grid-cols-3 gap-2">
+            {ORNAMENTS.map((item) => {
+              const selected = (draft.ornamentId || "none") === item.id;
               return (
                 <button
-                  key={bg.id}
+                  key={item.id}
                   type="button"
-                  onClick={() => patchDraft({ bgPreset: bg.id })}
+                  onClick={() => patchDraft({ ornamentId: item.id })}
                   className={`overflow-hidden rounded-[6px] border text-left transition-colors ${
-                    selected
-                      ? "border-accent ring-1 ring-accent"
-                      : "border-line hover:border-[#c9ccd0]"
+                    selected ? "border-accent ring-1 ring-accent" : "border-line hover:border-[#c9ccd0]"
                   }`}
                 >
-                  <span className="relative block aspect-video bg-[#141618]">
-                    {bg.url ? (
-                      <img
-                        src={bg.url}
-                        alt=""
-                        referrerPolicy="no-referrer"
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                    ) : null}
+                  <span className="relative block aspect-[4/3] bg-[#efe8de]">
+                    {item.src ? (
+                      <img src={item.src} alt="" className="absolute inset-1 h-[calc(100%-8px)] w-[calc(100%-8px)] object-contain" />
+                    ) : (
+                      <span className="absolute inset-0 grid place-items-center text-[12px] text-mute">无</span>
+                    )}
                   </span>
-                  <span className={`block px-1.5 py-1 text-[12px] ${selected ? "text-accent" : "text-sub"}`}>
-                    {bg.name}
-                  </span>
+                  <span className={`block px-1.5 py-1 text-[12px] ${selected ? "text-accent" : "text-sub"}`}>{item.name}</span>
                 </button>
               );
             })}
@@ -104,9 +112,30 @@ export function EditorPanel() {
         </div>
       ) : null}
 
+      {showBackground ? (
+        <BackgroundPicker
+          label={showTextBackground ? "画布背景" : "背景"}
+          value={draft.bgPreset}
+          onChange={(bgPreset) => patchDraft({ bgPreset })}
+          dim={draft.bgDim}
+          dimAmount={draft.bgDimAmount}
+          onDimChange={showBgDim ? (bgDim) => patchDraft({ bgDim }) : undefined}
+          onDimAmountChange={showBgDim ? (bgDimAmount) => patchDraft({ bgDimAmount }) : undefined}
+        />
+      ) : null}
+
+      {showTextBackground ? (
+        <BackgroundPicker
+          label="字背景"
+          value={draft.textBgPreset || draft.bgPreset}
+          onChange={(textBgPreset) => patchDraft({ textBgPreset })}
+        />
+      ) : null}
+
       <IllustLibrary
         operatorId={draft.operatorId}
         artId={draft.artId}
+        uploaded={Boolean(draft.imageDataUrl)}
         onPick={(op, art) => {
           const keepTitle = draft.title.trim() && draft.title.trim() !== draft.operatorName;
           patchDraft({

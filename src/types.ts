@@ -1,6 +1,6 @@
 export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
-export type CoverFontId = "cn" | "display" | "sans";
+export type CoverFontId = "cn" | "display" | "sans" | "serif";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -13,7 +13,15 @@ export type ElementOverride = {
   opacity?: number;
 };
 
-export type TemplateId = "firstkill" | "lowspec" | "rogue" | "madness";
+export type ResolvedElement = {
+  fontSize?: number;
+  font?: CoverFontId;
+  color?: string;
+  x?: number;
+  y?: number;
+};
+
+export type TemplateId = "firstkill" | "lowspec" | "rogue" | "madness" | "nocore";
 
 export type TemplateMeta = {
   id: TemplateId;
@@ -32,9 +40,19 @@ export type TemplateMeta = {
   sampleEpisode?: number;
   sampleSignature?: string;
   defaultImageScale?: number;
+  defaultImageX?: number;
+  defaultImageY?: number;
   showBackground?: boolean;
   defaultBgPreset?: string;
+  showTextBackground?: boolean;
+  defaultTextBgPreset?: string;
+  showBgDim?: boolean;
+  defaultBgDim?: boolean;
+  defaultBgDimAmount?: number;
   defaultOperatorId?: string;
+  defaultArtId?: string;
+  showOrnament?: boolean;
+  defaultOrnamentId?: string;
 };
 
 export type Draft = {
@@ -53,6 +71,10 @@ export type Draft = {
   imageY: number;
   showSafeArea: boolean;
   bgPreset: string;
+  textBgPreset: string;
+  bgDim: boolean;
+  bgDimAmount: number;
+  ornamentId: string;
   elementStyles: Record<string, ElementOverride>;
 };
 
@@ -71,5 +93,9 @@ export type CoverRenderProps = {
   onImageDrag: (dx: number, dy: number) => void;
   showPlaceholder?: boolean;
   bgPreset?: string;
+  textBgPreset?: string;
+  bgDim?: boolean;
+  bgDimAmount?: number;
+  ornamentId?: string;
   elementStyles?: Record<string, ElementOverride>;
 };

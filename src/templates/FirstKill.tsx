@@ -1,28 +1,50 @@
+import type { ReactNode } from "react";
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
 import type { CoverRenderProps } from "../types";
+import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
 
-const TYPE_SHADOW = "0 2px 0 #07080a, 0 8px 20px rgba(0,0,0,0.5)";
-
 function stageSize(len: number) {
-  if (len <= 4) return 164;
-  if (len <= 6) return 118;
-  if (len <= 8) return 92;
-  return 72;
+  if (len <= 4) return 220;
+  if (len <= 6) return 168;
+  if (len <= 8) return 128;
+  return 96;
 }
 
 function operationSize(len: number) {
-  if (len <= 4) return 80;
-  if (len <= 6) return 64;
-  return 52;
+  if (len <= 4) return 118;
+  if (len <= 6) return 92;
+  return 72;
+}
+
+function SlantText({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <span className={`cover-type-slant cover-type-shadow inline-block max-w-full ${className}`}>
+      {children}
+    </span>
+  );
+}
+
+function OffsetTitle({ text }: { text: string }) {
+  return (
+    <span className="cover-type-slant relative inline-block whitespace-nowrap">
+      <span
+        aria-hidden
+        className="cover-type-stroke pointer-events-none absolute top-[0.08em] left-[0.06em] whitespace-nowrap text-transparent"
+      >
+        {text}
+      </span>
+      <span className="cover-type-shadow relative whitespace-nowrap">{text}</span>
+    </span>
+  );
 }
 
 export function FirstKill(props: CoverRenderProps) {
   const stage = props.title.trim() || "地图名";
   const operation = props.signature.trim();
   const level = String(props.episode || 1);
-  const levelPx = level.length >= 3 ? 72 : 100;
+  const levelPx = level.length >= 3 ? 84 : 104;
 
   const bg = getBgPreset(props.bgPreset);
 
@@ -39,7 +61,9 @@ export function FirstKill(props: CoverRenderProps) {
         />
       ) : null}
 
-      <div className="absolute inset-y-0 right-[-6%] w-[76%]">
+      <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 42} at="22% 42%" />
+
+      <div className="absolute inset-y-0 right-[-6%] z-[1] w-[76%]">
         <OperatorLayer
           {...props}
           objectFit="contain"
@@ -49,59 +73,55 @@ export function FirstKill(props: CoverRenderProps) {
 
       <div className="absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-[#141618]/78 via-[#141618]/32 to-transparent" />
 
-      <div
-        className="absolute left-[80px] top-[64px] z-10 w-[1080px]"
-        style={{ textShadow: TYPE_SHADOW }}
-      >
+      <div className="absolute top-[96px] left-[80px] z-10 w-[1080px]">
         <CoverElement
           id="stage"
           defaultFontSize={stageSize(stage.length)}
-          className="font-black tracking-[-0.04em] break-words text-white"
+          className="font-black tracking-[-0.06em] break-words text-white"
           style={{ lineHeight: 1.02, maxWidth: 1020 }}
         >
-          {stage}
+          <SlantText>{stage}</SlantText>
         </CoverElement>
 
-        <div className="mt-3 flex items-baseline gap-4">
+        <div className="mt-2 flex items-baseline gap-5">
           {props.subtitle ? (
             <CoverElement
               id="subtitle"
-              defaultFontSize={50}
+              defaultFontSize={88}
               className="font-black tracking-wide text-white"
               style={{ lineHeight: 1 }}
             >
-              {props.subtitle}
+              <span className="cover-type-shadow">{props.subtitle}</span>
             </CoverElement>
           ) : null}
           <CoverElement
             id="level-label"
-            defaultFontSize={50}
+            defaultFontSize={88}
             className="font-black tracking-wide text-white"
             style={{ lineHeight: 1 }}
           >
-            危机等级
+            <span className="cover-type-shadow">危机等级</span>
           </CoverElement>
           <CoverElement
             id="level"
-            defaultFont="display"
             defaultFontSize={levelPx}
-            className="font-bold text-white"
-            style={{ lineHeight: 0.85, letterSpacing: "-0.04em" }}
+            className="font-black text-white"
+            style={{ lineHeight: 0.92, letterSpacing: "-0.04em" }}
           >
-            {level}
+            <span className="cover-type-shadow">{level}</span>
           </CoverElement>
         </div>
 
-        <div className="mt-8 flex items-center gap-4">
-          <svg width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden>
+        <div className="mt-6 flex items-center gap-4">
+          <svg width="68" height="68" viewBox="0 0 58 58" fill="none" aria-hidden>
             <polygon points="29,3 55,53 3,53" stroke="#f2f2f2" strokeWidth="2.4" fill="none" />
             <polygon points="29,16 44,48 14,48" fill="#f2f2f2" />
           </svg>
           <CoverElement
             id="cc-en"
             defaultFont="display"
-            defaultFontSize={22}
-            className="leading-[1.2] tracking-[0.22em] text-[#d0d0d0]"
+            defaultFontSize={26}
+            className="leading-[1.2] font-semibold tracking-[0.16em] text-[#d0d0d0]"
           >
             CONTINGENCY
             <br />
@@ -110,21 +130,21 @@ export function FirstKill(props: CoverRenderProps) {
         </div>
 
         {operation ? (
-          <div className="mt-5 flex items-end gap-4">
+          <div className="mt-4 flex items-end gap-4">
             <CoverElement
               id="operation"
               defaultFontSize={operationSize(operation.length)}
-              className="font-black tracking-tight text-white"
+              className="shrink-0 font-black tracking-tight text-white"
               style={{ lineHeight: 1 }}
             >
-              {operation}
+              <OffsetTitle text={operation} />
             </CoverElement>
             <CoverElement
               id="cc-cn"
-              defaultFontSize={28}
-              className="mb-2 font-bold tracking-wider text-[#c8c8c8]"
+              defaultFontSize={24}
+              className="mb-1.5 font-bold tracking-wide text-[#c8c8c8]"
             >
-              危机合约
+              <span className="cover-type-shadow">危机合约</span>
             </CoverElement>
           </div>
         ) : null}

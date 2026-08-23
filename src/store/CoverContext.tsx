@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { loadDraft, saveDraft, emptyDraft } from "../lib/storage";
-import type { Draft, ElementOverride, TemplateId, TitleKind } from "../types";
+import type { Draft, ElementOverride, ResolvedElement, TemplateId, TitleKind } from "../types";
 import { getTemplate } from "../data/templates";
 
 const HISTORY_LIMIT = 40;
@@ -27,6 +27,9 @@ type CoverContextValue = {
   signatureLabel: string;
   defaultImageScale: number;
   showBackground: boolean;
+  showTextBackground: boolean;
+  showBgDim: boolean;
+  showOrnament: boolean;
   draft: Draft;
   selectedId: string | null;
   canUndo: boolean;
@@ -37,6 +40,8 @@ type CoverContextValue = {
   patchElement: (id: string, patch: Partial<ElementOverride>) => void;
   nudgeElement: (id: string, dx: number, dy: number) => void;
   resetElement: (id: string) => void;
+  resolvedElements: Record<string, ResolvedElement>;
+  reportElementResolved: (id: string, resolved: ResolvedElement) => void;
 };
 
 const CoverContext = createContext<CoverContextValue | null>(null);
@@ -50,12 +55,17 @@ export function CoverProvider({
 }) {
   const [draft, setDraft] = useState(() => loadDraft(templateId));
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [resolvedElements, setResolvedElements] = useState<Record<string, ResolvedElement>>({});
   const [canUndo, setCanUndo] = useState(false);
   const pastRef = useRef<Draft[]>([]);
   const coalesceRef = useRef<{ key: string; at: number } | null>(null);
   const draftRef = useRef(draft);
   draftRef.current = draft;
   const meta = getTemplate(templateId);
+
+  useEffect(() => {
+    setResolvedElements({});
+  }, [templateId]);
 
   const remember = useCallback((prev: Draft, coalesceKey?: string) => {
     const now = Date.now();
@@ -112,7 +122,13 @@ export function CoverProvider({
   const resetDraft = useCallback(() => {
     apply(() => emptyDraft(templateId));
     setSelectedId(null);
+    setResolvedElements({});
   }, [apply, templateId]);
+
+  useEffect(() => {
+    setResolvedElements({});
+    setSelectedId(null);
+  }, [templateId]);
 
   const patchElement = useCallback(
     (id: string, patch: Partial<ElementOverride>) => {
@@ -148,6 +164,22 @@ export function CoverProvider({
     [apply],
   );
 
+  const reportElementResolved = useCallback((id: string, resolved: ResolvedElement) => {
+    setResolvedElements((prev) => {
+      const cur = prev[id];
+      if (
+        cur?.fontSize === resolved.fontSize &&
+        cur?.font === resolved.font &&
+        cur?.color === resolved.color &&
+        cur?.x === resolved.x &&
+        cur?.y === resolved.y
+      ) {
+        return prev;
+      }
+      return { ...prev, [id]: resolved };
+    });
+  }, []);
+
   const resetElement = useCallback(
     (id: string) => {
       apply((prev) => {
@@ -173,6 +205,9 @@ export function CoverProvider({
       signatureLabel: meta?.signatureLabel ?? "署名",
       defaultImageScale: meta?.defaultImageScale ?? 100,
       showBackground: meta?.showBackground ?? false,
+      showTextBackground: meta?.showTextBackground ?? false,
+      showBgDim: meta?.showBackground ?? meta?.showBgDim ?? true,
+      showOrnament: meta?.showOrnament ?? false,
       draft,
       selectedId,
       canUndo,
@@ -183,6 +218,8 @@ export function CoverProvider({
       patchElement,
       nudgeElement,
       resetElement,
+      resolvedElements,
+      reportElementResolved,
     }),
     [
       canUndo,
@@ -197,11 +234,16 @@ export function CoverProvider({
       meta?.subtitleLabel,
       meta?.defaultImageScale,
       meta?.showBackground,
+      meta?.showTextBackground,
+      meta?.showBgDim,
+      meta?.showOrnament,
       nudgeElement,
       patchDraft,
       patchElement,
       resetDraft,
+      reportElementResolved,
       resetElement,
+      resolvedElements,
       selectedId,
       templateId,
       undo,

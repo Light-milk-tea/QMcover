@@ -31,6 +31,7 @@ export function HomePage({ onOpen }: Props) {
                 className="group w-full overflow-hidden rounded-[8px] bg-panel text-left"
               >
                 <img
+                  key={templateThumbSrc(item.id)}
                   src={templateThumbSrc(item.id)}
                   alt=""
                   width={960}

@@ -1,4 +1,4 @@
-import { CoverElement, useElementEdit } from "../components/CoverElement";
+import { CoverElement } from "../components/CoverElement";
 import { findOperatorByName } from "../data/arts";
 import { getBgPreset } from "../data/backgrounds";
 import type { CoverRenderProps } from "../types";
@@ -32,14 +32,12 @@ function enNameSize(len: number) {
   return 18;
 }
 
-function VignetteBlob() {
-  const edit = useElementEdit();
-  const pct = edit?.styles.vignette?.opacity ?? 70;
+function VignetteBlob({ amount }: { amount: number }) {
   return (
     <div
       className="pointer-events-none absolute inset-0"
       style={{
-        opacity: pct / 100,
+        opacity: amount / 100,
         background:
           "radial-gradient(ellipse at 40% 46%, rgba(12,16,22,0.92) 0%, rgba(12,16,22,0.58) 34%, rgba(12,16,22,0.2) 58%, transparent 74%)",
       }}
@@ -87,13 +85,15 @@ export function Madness(props: CoverRenderProps) {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_72%_40%,#3a424c_0%,#14181e_46%,#0c1016_100%)]" />
       )}
 
-      <CoverElement
-        id="vignette"
-        kind="box"
-        className="absolute top-[-80px] left-[-140px] z-[5] h-[1240px] w-[1120px]"
-      >
-        <VignetteBlob />
-      </CoverElement>
+      {props.bgDim !== false ? (
+        <CoverElement
+          id="vignette"
+          kind="box"
+          className="absolute top-[-80px] left-[-140px] z-[5] h-[1240px] w-[1120px]"
+        >
+          <VignetteBlob amount={props.bgDimAmount ?? 70} />
+        </CoverElement>
+      ) : null}
 
       <div className="absolute top-[72px] left-[100px] z-10 w-[920px]">
         <FiveStarMark />
@@ -171,7 +171,7 @@ export function Madness(props: CoverRenderProps) {
       </div>
 
       <div
-        className="pointer-events-none absolute top-[18px] right-[148px] z-[9] h-[860px] w-[700px] p-[18px] pb-[60px]"
+        className="pointer-events-none absolute top-[18px] right-[148px] z-[2] h-[860px] w-[700px] p-[18px] pb-[60px]"
         style={{
           transform: "rotate(-8.8deg)",
           background: PAPER_BACK,
@@ -207,7 +207,7 @@ export function Madness(props: CoverRenderProps) {
       <CoverElement
         id="polaroid"
         kind="box"
-        className="absolute top-[52px] right-[68px] z-10 h-[920px] w-[740px] p-[22px] pb-[76px]"
+        className="absolute top-[52px] right-[68px] z-[3] h-[920px] w-[740px] p-[22px] pb-[76px]"
         style={{
           transform: "rotate(3.4deg)",
           background: PAPER,

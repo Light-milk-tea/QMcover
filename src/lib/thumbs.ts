@@ -1,5 +1,19 @@
+import firstkillThumb from "../assets/thumbs/firstkill-shot.webp";
+import rogueThumb from "../assets/thumbs/rogue-shot.webp";
 import type { TemplateId } from "../types";
 
+const THUMB_REV: Partial<Record<TemplateId, number>> = {
+  nocore: 13,
+};
+
+const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
+  firstkill: firstkillThumb,
+  rogue: rogueThumb,
+};
+
 export function templateThumbSrc(id: TemplateId): string {
-  return `/thumbs/${id}.webp`;
+  const asset = THUMB_ASSET[id];
+  if (asset) return asset;
+  const rev = THUMB_REV[id];
+  return rev ? `/thumbs/${id}.webp?v=${rev}` : `/thumbs/${id}.webp`;
 }

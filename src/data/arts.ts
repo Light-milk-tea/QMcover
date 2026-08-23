@@ -1,3 +1,4 @@
+import { artBase } from "../lib/cdn";
 import catalog from "./operators.json";
 
 export type ArtKind = "elite2" | "elite0" | "skin" | "other";
@@ -18,8 +19,6 @@ export type Operator = {
   arts: OperatorArt[];
 };
 
-const ART_BASE = "https://cdn.jsdelivr.net/gh/yuanyan3060/ArknightsGameResource@main";
-
 export const OPERATORS = catalog.operators as Operator[];
 
 export const PROFESSIONS = [
@@ -34,11 +33,11 @@ export const PROFESSIONS = [
 ] as const;
 
 export function avatarUrl(charId: string): string {
-  return `${ART_BASE}/avatar/${charId}.png`;
+  return `${artBase()}/avatar/${charId}.png`;
 }
 
 export function artUrl(portraitId: string): string {
-  return `${ART_BASE}/skin/${encodeURIComponent(`${portraitId}b`)}.png`;
+  return `${artBase()}/skin/${encodeURIComponent(`${portraitId}b`)}.png`;
 }
 
 export function preferredArt(op: Operator): OperatorArt {
@@ -55,13 +54,15 @@ export function findOperatorByName(name: string): Operator | undefined {
   return OPERATORS.find((op) => op.name === t);
 }
 
-export function coverImage(cover: { imageDataUrl: string; imageUrl?: string }): string {
-  return cover.imageDataUrl || cover.imageUrl || "";
+export function coverImage(cover: { imageDataUrl: string; imageUrl?: string; artId?: string }): string {
+  if (cover.imageDataUrl) return cover.imageDataUrl;
+  if (cover.artId) return artUrl(cover.artId);
+  return cover.imageUrl || "";
 }
 
-export function defaultArtFields(operatorId?: string) {
+export function defaultArtFields(operatorId?: string, artId?: string) {
   const op = operatorId ? findOperator(operatorId) : undefined;
-  const art = op ? preferredArt(op) : undefined;
+  const art = op ? (artId ? op.arts.find((a) => a.id === artId) : undefined) ?? preferredArt(op) : undefined;
   return {
     operatorName: op?.name ?? "",
     operatorId: op?.id ?? "",

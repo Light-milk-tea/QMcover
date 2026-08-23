@@ -1,0 +1,3110 @@
+[
+  {
+    "id": "lungmen-street",
+    "file": "bg_lmstreet_1.png",
+    "name": "龙门街",
+    "category": "lungmen"
+  },
+  {
+    "id": "lungmen-night",
+    "file": "bg_lungmen_n.png",
+    "name": "龙门夜",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmen_station",
+    "file": "bg_lungmen_station.png",
+    "name": "龙门 车站",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmen_d",
+    "file": "bg_lungmen_d.png",
+    "name": "龙门 昼",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmen_b",
+    "file": "bg_lungmen_b.png",
+    "name": "龙门 b",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmen_m",
+    "file": "bg_lungmen_m.png",
+    "name": "龙门 m",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmen_o",
+    "file": "bg_lungmen_o.png",
+    "name": "龙门 o",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmen_r",
+    "file": "bg_lungmen_r.png",
+    "name": "龙门 r",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lmstreet_2",
+    "file": "bg_lmstreet_2.png",
+    "name": "lmstreet 2",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmenbridge",
+    "file": "bg_lungmenbridge.png",
+    "name": "lungmenbridge",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_lungmencommand",
+    "file": "bg_lungmencommand.png",
+    "name": "lungmencommand",
+    "category": "lungmen"
+  },
+  {
+    "id": "bg_pgbase_1",
+    "file": "bg_pgbase_1.png",
+    "name": "pgbase 1",
+    "category": "lungmen"
+  },
+  {
+    "id": "26_g12_laterano_office",
+    "file": "26_g12_laterano_office.png",
+    "name": "拉特兰 办公室",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g9_laterano_street",
+    "file": "26_g9_laterano_street.png",
+    "name": "拉特兰 街",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g11_laterano_alley",
+    "file": "26_g11_laterano_alley.png",
+    "name": "拉特兰 巷",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g3_laterano_cathedralballroom",
+    "file": "26_g3_laterano_cathedralballroom.png",
+    "name": "拉特兰 cathedralballroom",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g1_laterano_cathedralfront",
+    "file": "26_g1_laterano_cathedralfront.png",
+    "name": "拉特兰 cathedralfront",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g2_laterano_cathedralhall",
+    "file": "26_g2_laterano_cathedralhall.png",
+    "name": "拉特兰 cathedralhall",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g4_laterano_cathedralliving",
+    "file": "26_g4_laterano_cathedralliving.png",
+    "name": "拉特兰 cathedralliving",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g6_laterano_chapelin",
+    "file": "26_g6_laterano_chapelin.png",
+    "name": "拉特兰 chapelin",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g5_laterano_chapelout",
+    "file": "26_g5_laterano_chapelout.png",
+    "name": "拉特兰 chapelout",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g8_laterano_dwelling",
+    "file": "26_g8_laterano_dwelling.png",
+    "name": "拉特兰 dwelling",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g10_laterano_roof",
+    "file": "26_g10_laterano_roof.png",
+    "name": "拉特兰 roof",
+    "category": "laterano"
+  },
+  {
+    "id": "26_g7_laterano_ward",
+    "file": "26_g7_laterano_ward.png",
+    "name": "拉特兰 ward",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g7_chapel",
+    "file": "39_g7_chapel.png",
+    "name": "礼拜堂",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g2_abandonsancturay",
+    "file": "39_g2_abandonsancturay.png",
+    "name": "abandonsancturay",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g3_abandonsancturay_ex",
+    "file": "39_g3_abandonsancturay_ex.png",
+    "name": "abandonsancturay ex",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g12_anbandonspace",
+    "file": "39_g12_anbandonspace.png",
+    "name": "anbandonspace",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g5_gatheringplace_n",
+    "file": "39_g5_gatheringplace_n.png",
+    "name": "gatheringplace 夜",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g4_gatheringplace_d",
+    "file": "39_g4_gatheringplace_d.png",
+    "name": "gatheringplace 昼",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g11_monasterycorridor_n",
+    "file": "39_g11_monasterycorridor_n.png",
+    "name": "monasterycorridor 夜",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g10_monasterycorridor_d",
+    "file": "39_g10_monasterycorridor_d.png",
+    "name": "monasterycorridor 昼",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g1_monasteryentrance",
+    "file": "39_g1_monasteryentrance.png",
+    "name": "monasteryentrance",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g9_monasteryroom",
+    "file": "39_g9_monasteryroom.png",
+    "name": "monasteryroom",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g8_outsidepath",
+    "file": "39_g8_outsidepath.png",
+    "name": "outsidepath",
+    "category": "laterano"
+  },
+  {
+    "id": "39_g6_villagestreet",
+    "file": "39_g6_villagestreet.png",
+    "name": "villagestreet",
+    "category": "laterano"
+  },
+  {
+    "id": "bg_victoria",
+    "file": "bg_victoria.png",
+    "name": "维多利亚",
+    "category": "victoria"
+  },
+  {
+    "id": "25_mini02_victoria_street_n",
+    "file": "25_mini02_victoria_street_n.png",
+    "name": "维多利亚 街 夜",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G5_victoria_street_n_ruins",
+    "file": "21_G5_victoria_street_n_ruins.png",
+    "name": "维多利亚 街 夜 废墟",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G3_victoria_street_d",
+    "file": "21_G3_victoria_street_d.png",
+    "name": "维多利亚 街 昼",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G4_victoria_street_d_ruins",
+    "file": "21_G4_victoria_street_d_ruins.png",
+    "name": "维多利亚 街 昼 废墟",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g3_school_indoor",
+    "file": "32_g3_school_indoor.png",
+    "name": "学校 室内",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g9_tent",
+    "file": "34_g9_tent.png",
+    "name": "帐篷",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g10_tent_inside",
+    "file": "34_g10_tent_inside.png",
+    "name": "帐篷 内",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g4_swamp_n",
+    "file": "34_g4_swamp_n.png",
+    "name": "沼泽 夜",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g3_swamp_d",
+    "file": "34_g3_swamp_d.png",
+    "name": "沼泽 昼",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G8_cammunibase",
+    "file": "21_G8_cammunibase.png",
+    "name": "cammunibase",
+    "category": "victoria"
+  },
+  {
+    "id": "32_RL2_cliffday",
+    "file": "32_RL2_cliffday.png",
+    "name": "cliffday",
+    "category": "victoria"
+  },
+  {
+    "id": "32_RL2_cliffnight",
+    "file": "32_RL2_cliffnight.png",
+    "name": "cliffnight",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g7_controltower",
+    "file": "32_g7_controltower.png",
+    "name": "controltower",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g6_controltower_street",
+    "file": "32_g6_controltower_street.png",
+    "name": "controltower 街",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G6_decisivebattlealley_n",
+    "file": "21_G6_decisivebattlealley_n.png",
+    "name": "decisivebattlealley 夜",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G7_decisivebattlealley_d",
+    "file": "21_G7_decisivebattlealley_d.png",
+    "name": "decisivebattlealley 昼",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g2_dukegarden",
+    "file": "32_g2_dukegarden.png",
+    "name": "dukegarden",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g7_galekingruins",
+    "file": "34_g7_galekingruins.png",
+    "name": "galekingruins",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g8_galekingruins_inside",
+    "file": "34_g8_galekingruins_inside.png",
+    "name": "galekingruins 内",
+    "category": "victoria"
+  },
+  {
+    "id": "37_g1_glasgowboxinggym",
+    "file": "37_g1_glasgowboxinggym.png",
+    "name": "glasgowboxinggym",
+    "category": "victoria"
+  },
+  {
+    "id": "37_g2_glasgowoldroom",
+    "file": "37_g2_glasgowoldroom.png",
+    "name": "glasgowoldroom",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g11_hispdwarshipdeck",
+    "file": "34_g11_hispdwarshipdeck.png",
+    "name": "hispdwarshipdeck",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G1_interrogat_room",
+    "file": "21_G1_interrogat_room.png",
+    "name": "interrogat 房间",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g9_kingrest",
+    "file": "32_g9_kingrest.png",
+    "name": "kingrest",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g10_kingrestcore",
+    "file": "32_g10_kingrestcore.png",
+    "name": "kingrestcore",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g8_kingrestpath",
+    "file": "32_g8_kingrestpath.png",
+    "name": "kingrestpath",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g1_lentiavenue",
+    "file": "32_g1_lentiavenue.png",
+    "name": "lentiavenue",
+    "category": "victoria"
+  },
+  {
+    "id": "27_g11_lentinobleroom_indoor",
+    "file": "27_g11_lentinobleroom_indoor.png",
+    "name": "lentinobleroom 室内",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g5_noblehall",
+    "file": "34_g5_noblehall.png",
+    "name": "noblehall",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g6_noblelivingroom",
+    "file": "34_g6_noblelivingroom.png",
+    "name": "noblelivingroom",
+    "category": "victoria"
+  },
+  {
+    "id": "21_G2_opera_room",
+    "file": "21_G2_opera_room.png",
+    "name": "opera 房间",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g4_ordnancefactory",
+    "file": "32_g4_ordnancefactory.png",
+    "name": "ordnancefactory",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g5_ordnancefactory_ex",
+    "file": "32_g5_ordnancefactory_ex.png",
+    "name": "ordnancefactory ex",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g2_reedmarshes",
+    "file": "34_g2_reedmarshes.png",
+    "name": "reedmarshes",
+    "category": "victoria"
+  },
+  {
+    "id": "32_g11_victoriaroom_n",
+    "file": "32_g11_victoriaroom_n.png",
+    "name": "victoriaroom 夜",
+    "category": "victoria"
+  },
+  {
+    "id": "34_g1_victoriavillage",
+    "file": "34_g1_victoriavillage.png",
+    "name": "victoriavillage",
+    "category": "victoria"
+  },
+  {
+    "id": "25_g07_fairyland_1",
+    "file": "25_g07_fairyland_1.png",
+    "name": "fairyland 1",
+    "category": "yan"
+  },
+  {
+    "id": "25_g07_fairyland_2",
+    "file": "25_g07_fairyland_2.png",
+    "name": "fairyland 2",
+    "category": "yan"
+  },
+  {
+    "id": "25_g10_lianghouse",
+    "file": "25_g10_lianghouse.png",
+    "name": "lianghouse",
+    "category": "yan"
+  },
+  {
+    "id": "31_g1_luo_park",
+    "file": "31_g1_luo_park.png",
+    "name": "luo 公园",
+    "category": "yan"
+  },
+  {
+    "id": "31_g2_luo_reception",
+    "file": "31_g2_luo_reception.png",
+    "name": "luo 接待",
+    "category": "yan"
+  },
+  {
+    "id": "31_g4_mini12_village",
+    "file": "31_g4_mini12_village.png",
+    "name": "mini12 村",
+    "category": "yan"
+  },
+  {
+    "id": "31_g5_mini12_village_n",
+    "file": "31_g5_mini12_village_n.png",
+    "name": "mini12 村 夜",
+    "category": "yan"
+  },
+  {
+    "id": "31_g3_mini12_farmland",
+    "file": "31_g3_mini12_farmland.png",
+    "name": "mini12 农田",
+    "category": "yan"
+  },
+  {
+    "id": "25_g05_mountaincity_d",
+    "file": "25_g05_mountaincity_d.png",
+    "name": "mountaincity 昼",
+    "category": "yan"
+  },
+  {
+    "id": "25_g06_mountainroad_d",
+    "file": "25_g06_mountainroad_d.png",
+    "name": "mountainroad 昼",
+    "category": "yan"
+  },
+  {
+    "id": "25_mini01_naturalspark",
+    "file": "25_mini01_naturalspark.png",
+    "name": "naturalspark",
+    "category": "yan"
+  },
+  {
+    "id": "25_g08_pavilion",
+    "file": "25_g08_pavilion.png",
+    "name": "pavilion",
+    "category": "yan"
+  },
+  {
+    "id": "25_g09_teahouse",
+    "file": "25_g09_teahouse.png",
+    "name": "teahouse",
+    "category": "yan"
+  },
+  {
+    "id": "25_g02_yanalley_n",
+    "file": "25_g02_yanalley_n.png",
+    "name": "yanalley 夜",
+    "category": "yan"
+  },
+  {
+    "id": "25_g03_yandowntown_n",
+    "file": "25_g03_yandowntown_n.png",
+    "name": "yandowntown 夜",
+    "category": "yan"
+  },
+  {
+    "id": "25_g04_yaninn",
+    "file": "25_g04_yaninn.png",
+    "name": "yaninn",
+    "category": "yan"
+  },
+  {
+    "id": "35_g13_yanlivingroom",
+    "file": "35_g13_yanlivingroom.png",
+    "name": "yanlivingroom",
+    "category": "yan"
+  },
+  {
+    "id": "25_g11_yanroom",
+    "file": "25_g11_yanroom.png",
+    "name": "yanroom",
+    "category": "yan"
+  },
+  {
+    "id": "25_g01_yanstreet_d",
+    "file": "25_g01_yanstreet_d.png",
+    "name": "yanstreet 昼",
+    "category": "yan"
+  },
+  {
+    "id": "yumen-desert",
+    "file": "35_g11_yumendesert.png",
+    "name": "玉门漠",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g15_supermarket",
+    "file": "35_g15_supermarket.png",
+    "name": "超市",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g14_arena",
+    "file": "35_g14_arena.png",
+    "name": "竞技场",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g16_desertoasis",
+    "file": "35_g16_desertoasis.png",
+    "name": "desertoasis",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g12_huanjing",
+    "file": "35_g12_huanjing.png",
+    "name": "huanjing",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g5_swordcastingworkshop",
+    "file": "35_g5_swordcastingworkshop.png",
+    "name": "swordcastingworkshop",
+    "category": "yumen"
+  },
+  {
+    "id": "35_mini01_villagevacancy",
+    "file": "35_mini01_villagevacancy.png",
+    "name": "villagevacancy",
+    "category": "yumen"
+  },
+  {
+    "id": "35_mini02_wanedtemple",
+    "file": "35_mini02_wanedtemple.png",
+    "name": "wanedtemple",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g8_yumenarena",
+    "file": "35_g8_yumenarena.png",
+    "name": "yumenarena",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g10_yumenfair",
+    "file": "35_g10_yumenfair.png",
+    "name": "yumenfair",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g6_yumengate",
+    "file": "35_g6_yumengate.png",
+    "name": "yumengate",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g3_yumenobservationtower_n",
+    "file": "35_g3_yumenobservationtower_n.png",
+    "name": "yumenobservationtower 夜",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g3_yumenobservationtower_d",
+    "file": "35_g3_yumenobservationtower_d.png",
+    "name": "yumenobservationtower 昼",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g2_yumenstreet_n",
+    "file": "35_g2_yumenstreet_n.png",
+    "name": "yumenstreet 夜",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g1_yumenstreet_d",
+    "file": "35_g1_yumenstreet_d.png",
+    "name": "yumenstreet 昼",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g9_yumensuburb",
+    "file": "35_g9_yumensuburb.png",
+    "name": "yumensuburb",
+    "category": "yumen"
+  },
+  {
+    "id": "35_g7_zuosroom",
+    "file": "35_g7_zuosroom.png",
+    "name": "zuosroom",
+    "category": "yumen"
+  },
+  {
+    "id": "iberia-coast",
+    "file": "bg_ibcoastd.png",
+    "name": "海蚀",
+    "category": "iberia"
+  },
+  {
+    "id": "giantwall",
+    "file": "27_g4_giantwall.png",
+    "name": "巨墙",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G01",
+    "file": "bg_23_G01.png",
+    "name": "23 G01",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G02",
+    "file": "bg_23_G02.png",
+    "name": "23 G02",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G03",
+    "file": "bg_23_G03.png",
+    "name": "23 G03",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G04",
+    "file": "bg_23_G04.png",
+    "name": "23 G04",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G05",
+    "file": "bg_23_G05.png",
+    "name": "23 G05",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G06",
+    "file": "bg_23_G06.png",
+    "name": "23 G06",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G07",
+    "file": "bg_23_G07.png",
+    "name": "23 G07",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G08",
+    "file": "bg_23_G08.png",
+    "name": "23 G08",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G09",
+    "file": "bg_23_G09.png",
+    "name": "23 G09",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_23_G10",
+    "file": "bg_23_G10.png",
+    "name": "23 G10",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g7_subway",
+    "file": "27_g7_subway.png",
+    "name": "地铁",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g18_lighthouse_square",
+    "file": "27_g18_lighthouse_square.png",
+    "name": "灯塔 广场",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g20_lighthouse_core",
+    "file": "27_g20_lighthouse_core.png",
+    "name": "灯塔 核心",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g16_lighthouse_street",
+    "file": "27_g16_lighthouse_street.png",
+    "name": "灯塔 街",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g19_lighthouse_front",
+    "file": "27_g19_lighthouse_front.png",
+    "name": "灯塔 前方",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g17_lighthouse_alley",
+    "file": "27_g17_lighthouse_alley.png",
+    "name": "灯塔 巷",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g26_dusk_wild",
+    "file": "27_g26_dusk_wild.png",
+    "name": "黄昏 荒野",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g22_goldenboat_hall",
+    "file": "27_g22_goldenboat_hall.png",
+    "name": "黄金船 大厅",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g25_goldenboat_core",
+    "file": "27_g25_goldenboat_core.png",
+    "name": "黄金船 核心",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g21_goldenboat_deck",
+    "file": "27_g21_goldenboat_deck.png",
+    "name": "黄金船 甲板",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g23_goldenboat_pass",
+    "file": "27_g23_goldenboat_pass.png",
+    "name": "黄金船 pass",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g8_jail",
+    "file": "27_g8_jail.png",
+    "name": "牢房",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g24_cloudy_sea",
+    "file": "27_g24_cloudy_sea.png",
+    "name": "云 海",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g15_customs",
+    "file": "27_g15_customs.png",
+    "name": "customs",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g5_giantwall_indoor",
+    "file": "27_g5_giantwall_indoor.png",
+    "name": "giantwall 室内",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g6_hideout",
+    "file": "27_g6_hideout.png",
+    "name": "hideout",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibbar",
+    "file": "bg_ibbar.png",
+    "name": "ibbar",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibcave",
+    "file": "bg_ibcave.png",
+    "name": "ibcave",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibchurch",
+    "file": "bg_ibchurch.png",
+    "name": "ibchurch",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibcoastn",
+    "file": "bg_ibcoastn.png",
+    "name": "夜海岸",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibindoor",
+    "file": "bg_ibindoor.png",
+    "name": "ibindoor",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibtownd",
+    "file": "bg_ibtownd.png",
+    "name": "ibtownd",
+    "category": "iberia"
+  },
+  {
+    "id": "bg_ibtownn",
+    "file": "bg_ibtownn.png",
+    "name": "ibtownn",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g2_inexport",
+    "file": "27_g2_inexport.png",
+    "name": "inexport",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g10_lightinduarea_street_n",
+    "file": "27_g10_lightinduarea_street_n.png",
+    "name": "lightinduarea 街 夜",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g9_lightinduarea_street_d",
+    "file": "27_g9_lightinduarea_street_d.png",
+    "name": "lightinduarea 街 昼",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g13_lightinduarea_indoor",
+    "file": "27_g13_lightinduarea_indoor.png",
+    "name": "lightinduarea 室内",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g14_lightinduarea_railway",
+    "file": "27_g14_lightinduarea_railway.png",
+    "name": "lightinduarea 铁路",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g3_minearea_abandoned",
+    "file": "27_g3_minearea_abandoned.png",
+    "name": "minearea 废弃",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g12_satellite",
+    "file": "27_g12_satellite.png",
+    "name": "satellite",
+    "category": "iberia"
+  },
+  {
+    "id": "27_g1_shard_indoor",
+    "file": "27_g1_shard_indoor.png",
+    "name": "shard 室内",
+    "category": "iberia"
+  },
+  {
+    "id": "23_ex_telephonebooth",
+    "file": "23_ex_telephonebooth.png",
+    "name": "telephonebooth",
+    "category": "iberia"
+  },
+  {
+    "id": "44_g14_1",
+    "file": "44_g14_1.png",
+    "name": "1",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g14_2",
+    "file": "44_g14_2.png",
+    "name": "2",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g14_3",
+    "file": "44_g14_3.png",
+    "name": "3",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g14_4",
+    "file": "44_g14_4.png",
+    "name": "4",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g4_embassy",
+    "file": "28_g4_embassy.png",
+    "name": "使馆",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g10_stage",
+    "file": "28_g10_stage.png",
+    "name": "舞台",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g12_sewer",
+    "file": "28_g12_sewer.png",
+    "name": "下水道",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g11_lounge",
+    "file": "28_g11_lounge.png",
+    "name": "休息室",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g13_afterglow_L1",
+    "file": "44_g13_afterglow_L1.png",
+    "name": "afterglow L1",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g13_afterglow_L2",
+    "file": "44_g13_afterglow_L2.png",
+    "name": "afterglow L2",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g13_afterglow_R1",
+    "file": "44_g13_afterglow_R1.png",
+    "name": "afterglow R1",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g13_afterglow_R2",
+    "file": "44_g13_afterglow_R2.png",
+    "name": "afterglow R2",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g9_auditorium",
+    "file": "28_g9_auditorium.png",
+    "name": "auditorium",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g7_concerthall_outside",
+    "file": "28_g7_concerthall_outside.png",
+    "name": "concerthall 外",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g8_concerthall_outside_n",
+    "file": "28_g8_concerthall_outside_n.png",
+    "name": "concerthall 外 夜",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g5_czernyhome",
+    "file": "28_g5_czernyhome.png",
+    "name": "czernyhome",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g10_endlessspiral",
+    "file": "44_g10_endlessspiral.png",
+    "name": "endlessspiral",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g1_gorgeousstreets",
+    "file": "28_g1_gorgeousstreets.png",
+    "name": "gorgeousstreets",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g15_kingsthrone",
+    "file": "44_g15_kingsthrone.png",
+    "name": "kingsthrone",
+    "category": "leithanien"
+  },
+  {
+    "id": "bg_ltalley",
+    "file": "bg_ltalley.png",
+    "name": "ltalley",
+    "category": "leithanien"
+  },
+  {
+    "id": "bg_ltroom",
+    "file": "bg_ltroom.png",
+    "name": "ltroom",
+    "category": "leithanien"
+  },
+  {
+    "id": "bg_ltruins",
+    "file": "bg_ltruins.png",
+    "name": "ltruins",
+    "category": "leithanien"
+  },
+  {
+    "id": "bg_ltstreet1",
+    "file": "bg_ltstreet1.png",
+    "name": "ltstreet1",
+    "category": "leithanien"
+  },
+  {
+    "id": "bg_ltstreet2",
+    "file": "bg_ltstreet2.png",
+    "name": "ltstreet2",
+    "category": "leithanien"
+  },
+  {
+    "id": "bg_ltstrongpoint",
+    "file": "bg_ltstrongpoint.png",
+    "name": "ltstrongpoint",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g7_ludwigsuniv_inside",
+    "file": "44_g7_ludwigsuniv_inside.png",
+    "name": "ludwigsuniv 内",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g3_ludwigsuniv_outside",
+    "file": "44_g3_ludwigsuniv_outside.png",
+    "name": "ludwigsuniv 外",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g1_marigold",
+    "file": "44_g1_marigold.png",
+    "name": "marigold",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g2_marigold_n",
+    "file": "44_g2_marigold_n.png",
+    "name": "marigold 夜",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g12_multispace",
+    "file": "44_g12_multispace.png",
+    "name": "multispace",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g2_slumstreets",
+    "file": "28_g2_slumstreets.png",
+    "name": "slumstreets",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g3_slumstreets_night",
+    "file": "28_g3_slumstreets_night.png",
+    "name": "slumstreets 夜",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g5_spiralstairs",
+    "file": "44_g5_spiralstairs.png",
+    "name": "spiralstairs",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g11_thronesworld",
+    "file": "44_g11_thronesworld.png",
+    "name": "thronesworld",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g4_towerroom",
+    "file": "44_g4_towerroom.png",
+    "name": "towerroom",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g8_towersquare",
+    "file": "44_g8_towersquare.png",
+    "name": "towersquare",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g9_towersquare_arrived",
+    "file": "44_g9_towersquare_arrived.png",
+    "name": "towersquare arrived",
+    "category": "leithanien"
+  },
+  {
+    "id": "44_g6_towerterrace",
+    "file": "44_g6_towerterrace.png",
+    "name": "towerterrace",
+    "category": "leithanien"
+  },
+  {
+    "id": "28_g6_whitehome",
+    "file": "28_g6_whitehome.png",
+    "name": "whitehome",
+    "category": "leithanien"
+  },
+  {
+    "id": "24_g6_square",
+    "file": "24_g6_square.png",
+    "name": "广场",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g2_temple_indoor",
+    "file": "24_g2_temple_indoor.png",
+    "name": "寺庙 室内",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g4_boudoir",
+    "file": "24_g4_boudoir.png",
+    "name": "boudoir",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_RL_castlehall",
+    "file": "24_RL_castlehall.png",
+    "name": "castlehall",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g5_guestroom",
+    "file": "24_g5_guestroom.png",
+    "name": "guestroom",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g3_mainhall",
+    "file": "24_g3_mainhall.png",
+    "name": "mainhall",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g9_manoravenue",
+    "file": "24_g9_manoravenue.png",
+    "name": "manoravenue",
+    "category": "kazimierz"
+  },
+  {
+    "id": "bg_manorgarden",
+    "file": "bg_manorgarden.png",
+    "name": "manorgarden",
+    "category": "kazimierz"
+  },
+  {
+    "id": "bg_manorgate",
+    "file": "bg_manorgate.png",
+    "name": "manorgate",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g10_manorhouse",
+    "file": "24_g10_manorhouse.png",
+    "name": "manorhouse",
+    "category": "kazimierz"
+  },
+  {
+    "id": "bg_manorindoor",
+    "file": "bg_manorindoor.png",
+    "name": "manorindoor",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g12_mountpath",
+    "file": "24_g12_mountpath.png",
+    "name": "mountpath",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g13_mountpath_s",
+    "file": "24_g13_mountpath_s.png",
+    "name": "mountpath s",
+    "category": "kazimierz"
+  },
+  {
+    "id": "bg_nearllivingroom",
+    "file": "bg_nearllivingroom.png",
+    "name": "nearllivingroom",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g8_nobleroom",
+    "file": "24_g8_nobleroom.png",
+    "name": "nobleroom",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g1_snowyforest",
+    "file": "24_g1_snowyforest.png",
+    "name": "snowyforest",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g11_snowylane",
+    "file": "24_g11_snowylane.png",
+    "name": "snowylane",
+    "category": "kazimierz"
+  },
+  {
+    "id": "24_g7_thoroughfare",
+    "file": "24_g7_thoroughfare.png",
+    "name": "thoroughfare",
+    "category": "kazimierz"
+  },
+  {
+    "id": "wild-war",
+    "file": "37_g10_wildbattlefield.png",
+    "name": "荒战",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g17_1",
+    "file": "38_g17_1.png",
+    "name": "1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g18_1",
+    "file": "38_g18_1.png",
+    "name": "1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g19_1",
+    "file": "38_g19_1.png",
+    "name": "1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g17_2",
+    "file": "38_g17_2.png",
+    "name": "2",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g18_2",
+    "file": "38_g18_2.png",
+    "name": "2",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g19_2",
+    "file": "38_g19_2.png",
+    "name": "2",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G01",
+    "file": "bg_20_G01.png",
+    "name": "20 G01",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G02",
+    "file": "bg_20_G02.png",
+    "name": "20 G02",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G03",
+    "file": "bg_20_G03.png",
+    "name": "20 G03",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G04_1",
+    "file": "bg_20_G04_1.png",
+    "name": "20 G04 1",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G04_2",
+    "file": "bg_20_G04_2.png",
+    "name": "20 G04 2",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G05_1",
+    "file": "bg_20_G05_1.png",
+    "name": "20 G05 1",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G06",
+    "file": "bg_20_G06.png",
+    "name": "20 G06",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G07",
+    "file": "bg_20_G07.png",
+    "name": "20 G07",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G08",
+    "file": "bg_20_G08.png",
+    "name": "20 G08",
+    "category": "columbia"
+  },
+  {
+    "id": "bg_20_G09",
+    "file": "bg_20_G09.png",
+    "name": "20 G09",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g3_diner",
+    "file": "42_g3_diner.png",
+    "name": "快餐店",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g1_mine",
+    "file": "42_g1_mine.png",
+    "name": "矿",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g2_mine_ruined",
+    "file": "42_g2_mine_ruined.png",
+    "name": "矿 损毁",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g5_laboratory",
+    "file": "29_g5_laboratory.png",
+    "name": "实验室",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g8_alley_n",
+    "file": "29_g8_alley_n.png",
+    "name": "巷 夜",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g3_cottage",
+    "file": "29_g3_cottage.png",
+    "name": "小屋",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g4_bank",
+    "file": "42_g4_bank.png",
+    "name": "银行",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g4_corridor",
+    "file": "29_g4_corridor.png",
+    "name": "走廊",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g17_corridor_symmetry",
+    "file": "38_g17_corridor_symmetry.png",
+    "name": "走廊 symmetry",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g8_abandonedblock",
+    "file": "42_g8_abandonedblock.png",
+    "name": "abandonedblock",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g7_airshipdock",
+    "file": "37_g7_airshipdock.png",
+    "name": "airshipdock",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g8_airshipdock_ex",
+    "file": "37_g8_airshipdock_ex.png",
+    "name": "airshipdock ex",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g9_airshipdockcorridor",
+    "file": "37_g9_airshipdockcorridor.png",
+    "name": "airshipdockcorridor",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g6_arc",
+    "file": "38_g6_arc.png",
+    "name": "arc",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g7_arc_on",
+    "file": "38_g7_arc_on.png",
+    "name": "arc on",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g5_banktreasury",
+    "file": "42_g5_banktreasury.png",
+    "name": "banktreasury",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g10_blacksteelarmory",
+    "file": "42_g10_blacksteelarmory.png",
+    "name": "blacksteelarmory",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g11_blacksteelplatform",
+    "file": "42_g11_blacksteelplatform.png",
+    "name": "blacksteelplatform",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g5_blockadewall",
+    "file": "37_g5_blockadewall.png",
+    "name": "blockadewall",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g2_colombiaoffice",
+    "file": "38_g2_colombiaoffice.png",
+    "name": "colombiaoffice",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g10_ecolab",
+    "file": "38_g10_ecolab.png",
+    "name": "ecolab",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g11_ecolab_waterlogging",
+    "file": "38_g11_ecolab_waterlogging.png",
+    "name": "ecolab waterlogging",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g2_edgeofbase",
+    "file": "29_g2_edgeofbase.png",
+    "name": "edgeofbase",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g14_energywell",
+    "file": "38_g14_energywell.png",
+    "name": "energywell",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g15_energywell_glowed",
+    "file": "38_g15_energywell_glowed.png",
+    "name": "energywell glowed",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g4_fogblockadestreet_n",
+    "file": "37_g4_fogblockadestreet_n.png",
+    "name": "fogblockadestreet 夜",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g3_fogblockadestreet_d",
+    "file": "37_g3_fogblockadestreet_d.png",
+    "name": "fogblockadestreet 昼",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g9_headquarter",
+    "file": "29_g9_headquarter.png",
+    "name": "headquarter",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g6_hotellobby",
+    "file": "37_g6_hotellobby.png",
+    "name": "hotellobby",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g16_hugebone",
+    "file": "38_g16_hugebone.png",
+    "name": "hugebone",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g6_mainstreet",
+    "file": "29_g6_mainstreet.png",
+    "name": "mainstreet",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g7_mainstreet_n",
+    "file": "29_g7_mainstreet_n.png",
+    "name": "mainstreet 夜",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g9_modernoffice",
+    "file": "42_g9_modernoffice.png",
+    "name": "modernoffice",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g11_monitoringroom",
+    "file": "29_g11_monitoringroom.png",
+    "name": "monitoringroom",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g1_outdoorbase",
+    "file": "29_g1_outdoorbase.png",
+    "name": "outdoorbase",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g5_rhinelab_indoor",
+    "file": "38_g5_rhinelab_indoor.png",
+    "name": "rhinelab 室内",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g3_rhinelab_corridor",
+    "file": "38_g3_rhinelab_corridor.png",
+    "name": "rhinelab 走廊",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g4_rhinelab_corridor_rised",
+    "file": "38_g4_rhinelab_corridor_rised.png",
+    "name": "rhinelab 走廊 rised",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g1_rhinemeetingroom",
+    "file": "38_g1_rhinemeetingroom.png",
+    "name": "rhinemeetingroom",
+    "category": "columbia"
+  },
+  {
+    "id": "29_g10_senioroffice",
+    "file": "29_g10_senioroffice.png",
+    "name": "senioroffice",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g20_skyblue_L1",
+    "file": "38_g20_skyblue_L1.png",
+    "name": "skyblue L1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g20_skyblue_L2",
+    "file": "38_g20_skyblue_L2.png",
+    "name": "skyblue L2",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g20_skyblue_R1",
+    "file": "38_g20_skyblue_R1.png",
+    "name": "skyblue R1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g20_skyblue_R2",
+    "file": "38_g20_skyblue_R2.png",
+    "name": "skyblue R2",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g21_skystarry_L1",
+    "file": "38_g21_skystarry_L1.png",
+    "name": "skystarry L1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g21_skystarry_L2",
+    "file": "38_g21_skystarry_L2.png",
+    "name": "skystarry L2",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g21_skystarry_R1",
+    "file": "38_g21_skystarry_R1.png",
+    "name": "skystarry R1",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g21_skystarry_R2",
+    "file": "38_g21_skystarry_R2.png",
+    "name": "skystarry R2",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g12_snowfield",
+    "file": "42_g12_snowfield.png",
+    "name": "snowfield",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g7_sonwydowntown_n",
+    "file": "42_g7_sonwydowntown_n.png",
+    "name": "sonwydowntown 夜",
+    "category": "columbia"
+  },
+  {
+    "id": "42_g6_sonwydowntown_d",
+    "file": "42_g6_sonwydowntown_d.png",
+    "name": "sonwydowntown 昼",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g8_storage",
+    "file": "38_g8_storage.png",
+    "name": "storage",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g9_storage_activated",
+    "file": "38_g9_storage_activated.png",
+    "name": "storage activated",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g13_trimountlivingroom",
+    "file": "38_g13_trimountlivingroom.png",
+    "name": "trimountlivingroom",
+    "category": "columbia"
+  },
+  {
+    "id": "38_g12_trimountrestarea",
+    "file": "38_g12_trimountrestarea.png",
+    "name": "trimountrestarea",
+    "category": "columbia"
+  },
+  {
+    "id": "37_g11_wsafehouse",
+    "file": "37_g11_wsafehouse.png",
+    "name": "wsafehouse",
+    "category": "columbia"
+  },
+  {
+    "id": "33_g7_reception",
+    "file": "33_g7_reception.png",
+    "name": "接待",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g9_conferencehall",
+    "file": "33_g9_conferencehall.png",
+    "name": "conferencehall",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g11_mansionhall",
+    "file": "33_g11_mansionhall.png",
+    "name": "mansionhall",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g6_newtown_street",
+    "file": "33_g6_newtown_street.png",
+    "name": "newtown 街",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g10_smallrestaurant",
+    "file": "33_g10_smallrestaurant.png",
+    "name": "smallrestaurant",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g2_srcalley",
+    "file": "33_g2_srcalley.png",
+    "name": "srcalley",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g3_srccourt",
+    "file": "33_g3_srccourt.png",
+    "name": "srccourt",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g5_srcpark",
+    "file": "33_g5_srcpark.png",
+    "name": "srcpark",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g8_srcroom",
+    "file": "33_g8_srcroom.png",
+    "name": "srcroom",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g1_srcstreet",
+    "file": "33_g1_srcstreet.png",
+    "name": "srcstreet",
+    "category": "siracusa"
+  },
+  {
+    "id": "33_g4_srctheater",
+    "file": "33_g4_srctheater.png",
+    "name": "srctheater",
+    "category": "siracusa"
+  },
+  {
+    "id": "beach",
+    "file": "bg_beach_1.png",
+    "name": "海滩",
+    "category": "siesta"
+  },
+  {
+    "id": "bg_beach_2",
+    "file": "bg_beach_2.png",
+    "name": "海滩 2",
+    "category": "siesta"
+  },
+  {
+    "id": "bg_Festival_1",
+    "file": "bg_Festival_1.png",
+    "name": "Festival 1",
+    "category": "siesta"
+  },
+  {
+    "id": "bg_Festival_2",
+    "file": "bg_Festival_2.png",
+    "name": "Festival 2",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g12_obsidianhotspringshotel",
+    "file": "41_g12_obsidianhotspringshotel.png",
+    "name": "obsidianhotspringshotel",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g9_purewhitevolcano_inside",
+    "file": "41_g9_purewhitevolcano_inside.png",
+    "name": "purewhitevolcano 内",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g2_siestacommercialstreet_n",
+    "file": "41_g2_siestacommercialstreet_n.png",
+    "name": "siestacommercialstreet 夜",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g1_siestacommercialstreet_d",
+    "file": "41_g1_siestacommercialstreet_d.png",
+    "name": "siestacommercialstreet 昼",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g13_siestafirstimpression",
+    "file": "41_g13_siestafirstimpression.png",
+    "name": "siestafirstimpression",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g7_siestahightechtouristzone",
+    "file": "41_g7_siestahightechtouristzone.png",
+    "name": "siestahightechtouristzone",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g4_siestanewstreet_n",
+    "file": "41_g4_siestanewstreet_n.png",
+    "name": "siestanewstreet 夜",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g3_siestanewstreet_d",
+    "file": "41_g3_siestanewstreet_d.png",
+    "name": "siestanewstreet 昼",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g10_siestapremiumhotel",
+    "file": "41_g10_siestapremiumhotel.png",
+    "name": "siestapremiumhotel",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g6_siestaunbuiltland_n",
+    "file": "41_g6_siestaunbuiltland_n.png",
+    "name": "siestaunbuiltland 夜",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g5_siestaunbuiltland_d",
+    "file": "41_g5_siestaunbuiltland_d.png",
+    "name": "siestaunbuiltland 昼",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g8_siestavolcanomuseum_inside",
+    "file": "41_g8_siestavolcanomuseum_inside.png",
+    "name": "siestavolcanomuseum 内",
+    "category": "siesta"
+  },
+  {
+    "id": "41_g11_volcanomountainside",
+    "file": "41_g11_volcanomountainside.png",
+    "name": "volcanomountainside",
+    "category": "siesta"
+  },
+  {
+    "id": "blackforest",
+    "file": "40_g1_blackforest.png",
+    "name": "黑林",
+    "category": "sami"
+  },
+  {
+    "id": "40_g2_glacier",
+    "file": "40_g2_glacier.png",
+    "name": "冰川",
+    "category": "sami"
+  },
+  {
+    "id": "40_g5_samitribe",
+    "file": "40_g5_samitribe.png",
+    "name": "萨米部落",
+    "category": "sami"
+  },
+  {
+    "id": "40_g7_samiresort",
+    "file": "40_g7_samiresort.png",
+    "name": "萨米度假",
+    "category": "sami"
+  },
+  {
+    "id": "40_g6_mountaincave",
+    "file": "40_g6_mountaincave.png",
+    "name": "mountaincave",
+    "category": "sami"
+  },
+  {
+    "id": "40_g3_stargate",
+    "file": "40_g3_stargate.png",
+    "name": "stargate",
+    "category": "sami"
+  },
+  {
+    "id": "40_g4_stargate_on",
+    "file": "40_g4_stargate_on.png",
+    "name": "stargate on",
+    "category": "sami"
+  },
+  {
+    "id": "snowmount",
+    "file": "30_ex1_snowmount.png",
+    "name": "雪山",
+    "category": "durin"
+  },
+  {
+    "id": "30_g6_reception",
+    "file": "30_g6_reception.png",
+    "name": "接待",
+    "category": "durin"
+  },
+  {
+    "id": "30_g5_library_indoor",
+    "file": "30_g5_library_indoor.png",
+    "name": "图书馆 室内",
+    "category": "durin"
+  },
+  {
+    "id": "30_g9_collapsedtunnel",
+    "file": "30_g9_collapsedtunnel.png",
+    "name": "collapsedtunnel",
+    "category": "durin"
+  },
+  {
+    "id": "30_g7_durinhall",
+    "file": "30_g7_durinhall.png",
+    "name": "durinhall",
+    "category": "durin"
+  },
+  {
+    "id": "30_g4_durinsquare",
+    "file": "30_g4_durinsquare.png",
+    "name": "durinsquare",
+    "category": "durin"
+  },
+  {
+    "id": "30_g1_durinstreet",
+    "file": "30_g1_durinstreet.png",
+    "name": "durinstreet",
+    "category": "durin"
+  },
+  {
+    "id": "30_g2_fountainlake",
+    "file": "30_g2_fountainlake.png",
+    "name": "fountainlake",
+    "category": "durin"
+  },
+  {
+    "id": "30_g3_fountainlake_ruins",
+    "file": "30_g3_fountainlake_ruins.png",
+    "name": "fountainlake 废墟",
+    "category": "durin"
+  },
+  {
+    "id": "30_g10_lakegarden",
+    "file": "30_g10_lakegarden.png",
+    "name": "lakegarden",
+    "category": "durin"
+  },
+  {
+    "id": "30_g11_malistgarden",
+    "file": "30_g11_malistgarden.png",
+    "name": "malistgarden",
+    "category": "durin"
+  },
+  {
+    "id": "30_g8_malistroom",
+    "file": "30_g8_malistroom.png",
+    "name": "malistroom",
+    "category": "durin"
+  },
+  {
+    "id": "30_ex1_snowmount_s",
+    "file": "30_ex1_snowmount_s.png",
+    "name": "snowmount s",
+    "category": "durin"
+  },
+  {
+    "id": "snow",
+    "file": "bg_snowconutry_1.png",
+    "name": "雪乡",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_iceforest_1",
+    "file": "bg_iceforest_1.png",
+    "name": "iceforest 1",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_iceforest_2",
+    "file": "bg_iceforest_2.png",
+    "name": "iceforest 2",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_kxstreet",
+    "file": "bg_kxstreet.png",
+    "name": "kxstreet",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_snowconutry_2",
+    "file": "bg_snowconutry_2.png",
+    "name": "snowconutry 2",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_snowconutry_3",
+    "file": "bg_snowconutry_3.png",
+    "name": "snowconutry 3",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_snowconutry_4",
+    "file": "bg_snowconutry_4.png",
+    "name": "snowconutry 4",
+    "category": "kjerag"
+  },
+  {
+    "id": "bg_snowconutryinside",
+    "file": "bg_snowconutryinside.png",
+    "name": "snowconutryinside",
+    "category": "kjerag"
+  },
+  {
+    "id": "ruins",
+    "file": "bg_cher_3.png",
+    "name": "废城",
+    "category": "ursus"
+  },
+  {
+    "id": "ac5_2_on",
+    "file": "ac5_2_on.png",
+    "name": "ac5 2 on",
+    "category": "ursus"
+  },
+  {
+    "id": "ac5_4_back",
+    "file": "ac5_4_back.png",
+    "name": "ac5 4 back",
+    "category": "ursus"
+  },
+  {
+    "id": "ac5_5_back",
+    "file": "ac5_5_back.png",
+    "name": "ac5 5 back",
+    "category": "ursus"
+  },
+  {
+    "id": "ac5_7_back",
+    "file": "ac5_7_back.png",
+    "name": "ac5 7 back",
+    "category": "ursus"
+  },
+  {
+    "id": "avg_5_5_fall_back",
+    "file": "avg_5_5_fall_back.png",
+    "name": "avg 5 5 fall back",
+    "category": "ursus"
+  },
+  {
+    "id": "avg_6D5_1",
+    "file": "avg_6D5_1.png",
+    "name": "avg 6D5 1",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_0",
+    "file": "bg_cher_0.png",
+    "name": "cher 0",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_1",
+    "file": "bg_cher_1.png",
+    "name": "cher 1",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_10",
+    "file": "bg_cher_10.png",
+    "name": "cher 10",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_11",
+    "file": "bg_cher_11.png",
+    "name": "cher 11",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_2",
+    "file": "bg_cher_2.png",
+    "name": "cher 2",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_4",
+    "file": "bg_cher_4.png",
+    "name": "cher 4",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_5",
+    "file": "bg_cher_5.png",
+    "name": "cher 5",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_6",
+    "file": "bg_cher_6.png",
+    "name": "cher 6",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_7",
+    "file": "bg_cher_7.png",
+    "name": "cher 7",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_8",
+    "file": "bg_cher_8.png",
+    "name": "cher 8",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cher_9",
+    "file": "bg_cher_9.png",
+    "name": "cher 9",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cherbefore_1",
+    "file": "bg_cherbefore_1.png",
+    "name": "cherbefore 1",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_chercen_1",
+    "file": "bg_chercen_1.png",
+    "name": "chercen 1",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_chercen_2",
+    "file": "bg_chercen_2.png",
+    "name": "chercen 2",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cherunder",
+    "file": "bg_cherunder.png",
+    "name": "cherunder",
+    "category": "ursus"
+  },
+  {
+    "id": "bg_cherunder_2",
+    "file": "bg_cherunder_2.png",
+    "name": "cherunder 2",
+    "category": "ursus"
+  },
+  {
+    "id": "36_g10_easternhouse",
+    "file": "36_g10_easternhouse.png",
+    "name": "easternhouse",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g2_easternvillageB",
+    "file": "36_g2_easternvillageB.png",
+    "name": "easternvillageB",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g1_easternvillageD",
+    "file": "36_g1_easternvillageD.png",
+    "name": "easternvillageD",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g9_huntercabin",
+    "file": "36_g9_huntercabin.png",
+    "name": "huntercabin",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g7_lakecamp",
+    "file": "36_g7_lakecamp.png",
+    "name": "lakecamp",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g8_minecavity",
+    "file": "36_g8_minecavity.png",
+    "name": "minecavity",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g4_redleafcliff",
+    "file": "36_g4_redleafcliff.png",
+    "name": "redleafcliff",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g3_redleafforest",
+    "file": "36_g3_redleafforest.png",
+    "name": "redleafforest",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g6_redleafforestB",
+    "file": "36_g6_redleafforestB.png",
+    "name": "redleafforestB",
+    "category": "higashi"
+  },
+  {
+    "id": "36_g5_redleaflake",
+    "file": "36_g5_redleaflake.png",
+    "name": "redleaflake",
+    "category": "higashi"
+  },
+  {
+    "id": "36_ulkroom",
+    "file": "36_ulkroom.png",
+    "name": "ulkroom",
+    "category": "higashi"
+  },
+  {
+    "id": "35_g19_deserttown_ruins",
+    "file": "35_g19_deserttown_ruins.png",
+    "name": "deserttown 废墟",
+    "category": "sargon"
+  },
+  {
+    "id": "35_g18_deserttown_n",
+    "file": "35_g18_deserttown_n.png",
+    "name": "deserttown 夜",
+    "category": "sargon"
+  },
+  {
+    "id": "35_g17_deserttown_d",
+    "file": "35_g17_deserttown_d.png",
+    "name": "deserttown 昼",
+    "category": "sargon"
+  },
+  {
+    "id": "bg_deserttownD",
+    "file": "bg_deserttownD.png",
+    "name": "deserttownD",
+    "category": "sargon"
+  },
+  {
+    "id": "bg_deserttownN",
+    "file": "bg_deserttownN.png",
+    "name": "deserttownN",
+    "category": "sargon"
+  },
+  {
+    "id": "bg_srgmarket",
+    "file": "bg_srgmarket.png",
+    "name": "srgmarket",
+    "category": "sargon"
+  },
+  {
+    "id": "43_g10_breweryinforest",
+    "file": "43_g10_breweryinforest.png",
+    "name": "breweryinforest",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g12_breweryinforest_inside",
+    "file": "43_g12_breweryinforest_inside.png",
+    "name": "breweryinforest 内",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g11_breweryinforest_b",
+    "file": "43_g11_breweryinforest_b.png",
+    "name": "breweryinforest b",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g9_campedchariot",
+    "file": "43_g9_campedchariot.png",
+    "name": "campedchariot",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g1_giantmonstercockpit",
+    "file": "43_g1_giantmonstercockpit.png",
+    "name": "giantmonstercockpit",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g2_giantmonsterspine",
+    "file": "43_g2_giantmonsterspine.png",
+    "name": "giantmonsterspine",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g3_giantmonsterspinetop",
+    "file": "43_g3_giantmonsterspinetop.png",
+    "name": "giantmonsterspinetop",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g13_hispdwarshipdeck_ex",
+    "file": "43_g13_hispdwarshipdeck_ex.png",
+    "name": "hispdwarshipdeck ex",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g5_spinestops",
+    "file": "43_g5_spinestops.png",
+    "name": "spinestops",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g4_spinestops_ex",
+    "file": "43_g4_spinestops_ex.png",
+    "name": "spinestops ex",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g6_townbuildingsite",
+    "file": "43_g6_townbuildingsite.png",
+    "name": "townbuildingsite",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g7_towngreenhouse",
+    "file": "43_g7_towngreenhouse.png",
+    "name": "towngreenhouse",
+    "category": "aegir"
+  },
+  {
+    "id": "43_g8_wildernesswarcircle",
+    "file": "43_g8_wildernesswarcircle.png",
+    "name": "wildernesswarcircle",
+    "category": "aegir"
+  },
+  {
+    "id": "bg_0_rhodes3",
+    "file": "bg_0_rhodes3.png",
+    "name": "0 rhodes3",
+    "category": "rhodes"
+  },
+  {
+    "id": "21_G9_rhodes_xqoffice",
+    "file": "21_G9_rhodes_xqoffice.png",
+    "name": "罗德岛 xqoffice",
+    "category": "rhodes"
+  },
+  {
+    "id": "bg_rhodescom",
+    "file": "bg_rhodescom.png",
+    "name": "rhodescom",
+    "category": "rhodes"
+  },
+  {
+    "id": "bg_rhodesroom",
+    "file": "bg_rhodesroom.png",
+    "name": "rhodesroom",
+    "category": "rhodes"
+  },
+  {
+    "id": "bg_ri_1",
+    "file": "bg_ri_1.png",
+    "name": "ri 1",
+    "category": "rhodes"
+  },
+  {
+    "id": "outcity",
+    "file": "bg_outcity_1.png",
+    "name": "城外",
+    "category": "unknown"
+  },
+  {
+    "id": "village",
+    "file": "bg_village.png",
+    "name": "村落",
+    "category": "unknown"
+  },
+  {
+    "id": "cave-mouth",
+    "file": "bg_caveentrance.png",
+    "name": "洞口",
+    "category": "unknown"
+  },
+  {
+    "id": "wreck",
+    "file": "bg_ruins_1.png",
+    "name": "废墟",
+    "category": "unknown"
+  },
+  {
+    "id": "motorway",
+    "file": "bg_motorway.png",
+    "name": "公路",
+    "category": "unknown"
+  },
+  {
+    "id": "coldforest",
+    "file": "bg_coldforest.png",
+    "name": "寒林",
+    "category": "unknown"
+  },
+  {
+    "id": "wild",
+    "file": "bg_wild_a.png",
+    "name": "荒野",
+    "category": "unknown"
+  },
+  {
+    "id": "arena",
+    "file": "bg_arena_1.png",
+    "name": "竞技场",
+    "category": "unknown"
+  },
+  {
+    "id": "mine",
+    "file": "bg_cave_2.png",
+    "name": "矿坑",
+    "category": "unknown"
+  },
+  {
+    "id": "thunder",
+    "file": "bg_thundercloud.png",
+    "name": "雷云",
+    "category": "unknown"
+  },
+  {
+    "id": "forest",
+    "file": "bg_forest.png",
+    "name": "密林",
+    "category": "unknown"
+  },
+  {
+    "id": "desert",
+    "file": "bg_desert_1.png",
+    "name": "沙原",
+    "category": "unknown"
+  },
+  {
+    "id": "county",
+    "file": "bg_county_1.png",
+    "name": "乡野",
+    "category": "unknown"
+  },
+  {
+    "id": "battlefield",
+    "file": "bg_battlefield.png",
+    "name": "战场",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_white",
+    "file": "bg_white.png",
+    "name": "白",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_warehouse",
+    "file": "bg_warehouse.png",
+    "name": "仓库",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_jungle_1",
+    "file": "bg_jungle_1.png",
+    "name": "丛林 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_village_2",
+    "file": "bg_village_2.png",
+    "name": "村 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_hall_1",
+    "file": "bg_hall_1.png",
+    "name": "大厅 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_hall_2",
+    "file": "bg_hall_2.png",
+    "name": "大厅 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cave_3",
+    "file": "bg_cave_3.png",
+    "name": "洞穴 3",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cave_4",
+    "file": "bg_cave_4.png",
+    "name": "洞穴 4",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_room_2",
+    "file": "bg_room_2.png",
+    "name": "房间 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_ruins_2",
+    "file": "bg_ruins_2.png",
+    "name": "废墟 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_park",
+    "file": "bg_park.png",
+    "name": "公园",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_black",
+    "file": "bg_black.png",
+    "name": "黑",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_wild_m",
+    "file": "bg_wild_m.png",
+    "name": "荒野 m",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_prison_corridor",
+    "file": "bg_prison_corridor.png",
+    "name": "监狱 走廊",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_prison_commandroom",
+    "file": "bg_prison_commandroom.png",
+    "name": "监狱 commandroom",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_arena_2",
+    "file": "bg_arena_2.png",
+    "name": "竞技场 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_bar_1",
+    "file": "bg_bar_1.png",
+    "name": "酒吧 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_hotel",
+    "file": "bg_hotel.png",
+    "name": "旅馆",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_bridge",
+    "file": "bg_bridge.png",
+    "name": "桥",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_desert_2",
+    "file": "bg_desert_2.png",
+    "name": "沙漠 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_desert_3",
+    "file": "bg_desert_3.png",
+    "name": "沙漠 3",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_lab",
+    "file": "bg_lab.png",
+    "name": "实验室",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_canteen",
+    "file": "bg_canteen.png",
+    "name": "食堂",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor",
+    "file": "bg_indoor.png",
+    "name": "室内",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor_1",
+    "file": "bg_indoor_1.png",
+    "name": "室内 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor_2",
+    "file": "bg_indoor_2.png",
+    "name": "室内 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor_3",
+    "file": "bg_indoor_3.png",
+    "name": "室内 3",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor_n",
+    "file": "bg_indoor_n.png",
+    "name": "室内 夜",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor_f",
+    "file": "bg_indoor_f.png",
+    "name": "室内 f",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor_u",
+    "file": "bg_indoor_u.png",
+    "name": "室内 u",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_temple_1",
+    "file": "bg_temple_1.png",
+    "name": "寺庙 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_temple_2",
+    "file": "bg_temple_2.png",
+    "name": "寺庙 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_rooftop",
+    "file": "bg_rooftop.png",
+    "name": "屋顶",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_rooftop_2",
+    "file": "bg_rooftop_2.png",
+    "name": "屋顶 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_stage",
+    "file": "bg_stage.png",
+    "name": "舞台",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cottage",
+    "file": "bg_cottage.png",
+    "name": "小屋",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cottage_2",
+    "file": "bg_cottage_2.png",
+    "name": "小屋 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_school",
+    "file": "bg_school.png",
+    "name": "学校",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_snow_2",
+    "file": "bg_snow_2.png",
+    "name": "雪 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_infirmary",
+    "file": "bg_infirmary.png",
+    "name": "医务室",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_barracks",
+    "file": "bg_barracks.png",
+    "name": "营房",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_town",
+    "file": "bg_town.png",
+    "name": "镇",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_corridor",
+    "file": "bg_corridor.png",
+    "name": "走廊",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_corridor_2",
+    "file": "bg_corridor_2.png",
+    "name": "走廊 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_abyss_1",
+    "file": "bg_abyss_1.png",
+    "name": "abyss 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_aerialview",
+    "file": "bg_aerialview.png",
+    "name": "aerialview",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_aircraft",
+    "file": "bg_aircraft.png",
+    "name": "aircraft",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_aircraft_2",
+    "file": "bg_aircraft_2.png",
+    "name": "aircraft 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_building_1",
+    "file": "bg_building_1.png",
+    "name": "building 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_building_2",
+    "file": "bg_building_2.png",
+    "name": "building 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_building_3",
+    "file": "bg_building_3.png",
+    "name": "building 3",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cellroomA",
+    "file": "bg_cellroomA.png",
+    "name": "cellroomA",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cellroomB",
+    "file": "bg_cellroomB.png",
+    "name": "cellroomB",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cellroomC",
+    "file": "bg_cellroomC.png",
+    "name": "cellroomC",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cenbri",
+    "file": "bg_cenbri.png",
+    "name": "cenbri",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_cenmetery",
+    "file": "bg_cenmetery.png",
+    "name": "cenmetery",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_courtyard",
+    "file": "bg_courtyard.png",
+    "name": "courtyard",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_emporium",
+    "file": "bg_emporium.png",
+    "name": "emporium",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_falls_1",
+    "file": "bg_falls_1.png",
+    "name": "falls 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_falls_2",
+    "file": "bg_falls_2.png",
+    "name": "falls 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_graduate",
+    "file": "bg_graduate.png",
+    "name": "graduate",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_graduatecore",
+    "file": "bg_graduatecore.png",
+    "name": "graduatecore",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_home",
+    "file": "bg_home.png",
+    "name": "home",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_indoor4",
+    "file": "bg_indoor4.png",
+    "name": "indoor4",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_jungleentrance",
+    "file": "bg_jungleentrance.png",
+    "name": "jungleentrance",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_labcorridor",
+    "file": "bg_labcorridor.png",
+    "name": "labcorridor",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_labentrance",
+    "file": "bg_labentrance.png",
+    "name": "labentrance",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_laccolith",
+    "file": "bg_laccolith.png",
+    "name": "laccolith",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_landscape",
+    "file": "bg_landscape.png",
+    "name": "landscape",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_light",
+    "file": "bg_light.png",
+    "name": "light",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_lock_1",
+    "file": "bg_lock_1.png",
+    "name": "lock 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_med",
+    "file": "bg_med.png",
+    "name": "med",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_Morgue",
+    "file": "bg_Morgue.png",
+    "name": "Morgue",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_motorroom",
+    "file": "bg_motorroom.png",
+    "name": "motorroom",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_nobleD",
+    "file": "bg_nobleD.png",
+    "name": "nobleD",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_nobleN",
+    "file": "bg_nobleN.png",
+    "name": "nobleN",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_offce",
+    "file": "bg_offce.png",
+    "name": "offce",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_outcounty",
+    "file": "bg_outcounty.png",
+    "name": "outcounty",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_pawnshop",
+    "file": "bg_pawnshop.png",
+    "name": "pawnshop",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_perimeter",
+    "file": "bg_perimeter.png",
+    "name": "perimeter",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_plankroad",
+    "file": "bg_plankroad.png",
+    "name": "plankroad",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_safehouseindoor",
+    "file": "bg_safehouseindoor.png",
+    "name": "safehouseindoor",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_safehouseoutdoorD",
+    "file": "bg_safehouseoutdoorD.png",
+    "name": "safehouseoutdoorD",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_safehouseoutdoorN",
+    "file": "bg_safehouseoutdoorN.png",
+    "name": "safehouseoutdoorN",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_sanatorium_corridor",
+    "file": "bg_sanatorium_corridor.png",
+    "name": "sanatorium 走廊",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_sanatorium_balcony",
+    "file": "bg_sanatorium_balcony.png",
+    "name": "sanatorium balcony",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_sanatorium_dining",
+    "file": "bg_sanatorium_dining.png",
+    "name": "sanatorium dining",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_schoolyard",
+    "file": "bg_schoolyard.png",
+    "name": "schoolyard",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_sportsbar",
+    "file": "bg_sportsbar.png",
+    "name": "sportsbar",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_storehouse",
+    "file": "bg_storehouse.png",
+    "name": "storehouse",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_sunnytown_1",
+    "file": "bg_sunnytown_1.png",
+    "name": "sunnytown 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_sunnytown_2",
+    "file": "bg_sunnytown_2.png",
+    "name": "sunnytown 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_top",
+    "file": "bg_top.png",
+    "name": "top",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_topburning",
+    "file": "bg_topburning.png",
+    "name": "topburning",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_topout",
+    "file": "bg_topout.png",
+    "name": "topout",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_topruins",
+    "file": "bg_topruins.png",
+    "name": "topruins",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_towerinside",
+    "file": "bg_towerinside.png",
+    "name": "towerinside",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_trainingcom",
+    "file": "bg_trainingcom.png",
+    "name": "trainingcom",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_turf",
+    "file": "bg_turf.png",
+    "name": "turf",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_undergroud_n",
+    "file": "bg_undergroud_n.png",
+    "name": "undergroud 夜",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_undergroud_f",
+    "file": "bg_undergroud_f.png",
+    "name": "undergroud f",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_undergroud_u_2",
+    "file": "bg_undergroud_u_2.png",
+    "name": "undergroud u 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_undergroundF",
+    "file": "bg_undergroundF.png",
+    "name": "undergroundF",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_uptown_1",
+    "file": "bg_uptown_1.png",
+    "name": "uptown 1",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_uptown_2",
+    "file": "bg_uptown_2.png",
+    "name": "uptown 2",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_uptown_3",
+    "file": "bg_uptown_3.png",
+    "name": "uptown 3",
+    "category": "unknown"
+  },
+  {
+    "id": "bg_windows",
+    "file": "bg_windows.png",
+    "name": "windows",
+    "category": "unknown"
+  }
+]

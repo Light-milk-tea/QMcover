@@ -1,13 +1,14 @@
-import { ArrowUUpLeft, CaretLeft, DownloadSimple, Plus } from "@phosphor-icons/react";
+import { ArrowUUpLeft, BracketsCurly, CaretLeft, DownloadSimple, Plus } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useCover } from "../store/CoverContext";
 
 type Props = {
   onExport: () => Promise<void>;
+  onExportConfig: () => void;
   onBack: () => void;
 };
 
-export function TopBar({ onExport, onBack }: Props) {
+export function TopBar({ onExport, onExportConfig, onBack }: Props) {
   const { templateName, resetDraft, canUndo, undo } = useCover();
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
@@ -64,9 +65,21 @@ export function TopBar({ onExport, onBack }: Props) {
         </button>
         <button
           type="button"
+          className="inline-flex h-[34px] items-center gap-1.5 rounded-[8px] px-3 text-[14px] text-sub hover:bg-raised hover:text-accent"
+          onClick={() => {
+            onExportConfig();
+            setMsg("已导出配置");
+          }}
+        >
+          <BracketsCurly size={16} weight="bold" />
+          导出配置
+        </button>
+        <button
+          type="button"
           disabled={busy}
           className="inline-flex h-[34px] items-center gap-1.5 rounded-[8px] bg-accent px-4 text-[14px] font-medium text-white hover:bg-accent-hover disabled:opacity-60"
           onClick={async () => {
+            if (!window.confirm("确定下载这张封面？")) return;
             setBusy(true);
             setMsg("");
             try {

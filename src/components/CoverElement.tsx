@@ -1,7 +1,17 @@
-import { createContext, useContext, type CSSProperties, type PointerEvent, type ReactNode, useRef } from "react";
+import { createContext, useContext, useEffect, type CSSProperties, type PointerEvent, type ReactNode, useRef } from "react";
 import { fontClass } from "../data/elements";
 import { useCoverOptional } from "../store/CoverContext";
 import type { CoverFontId, ElementKind, ElementOverride } from "../types";
+
+function impliedColor(className: string, style?: CSSProperties, override?: string): string | undefined {
+  if (override) return override;
+  if (typeof style?.color === "string" && style.color) return style.color;
+  const hex = className.match(/text-\[(#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}))\]/);
+  if (hex) return hex[1];
+  if (/\btext-white(?:\/\d+)?\b/.test(className)) return "#ffffff";
+  if (/\btext-black\b/.test(className)) return "#141618";
+  return undefined;
+}
 
 type EditValue = {
   styles: Record<string, ElementOverride>;
@@ -48,6 +58,8 @@ type Props = {
   kind?: ElementKind;
   defaultFontSize?: number;
   defaultFont?: CoverFontId;
+  defaultX?: number;
+  defaultY?: number;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
@@ -57,6 +69,8 @@ export function CoverElement({
   id,
   defaultFontSize,
   defaultFont = "cn",
+  defaultX = 0,
+  defaultY = 0,
   className = "",
   style,
   children,
@@ -67,8 +81,15 @@ export function CoverElement({
   const override = edit?.styles[id] ?? {};
   const font = override.font ?? defaultFont;
   const fontSize = override.fontSize ?? defaultFontSize;
-  const x = override.x ?? 0;
-  const y = override.y ?? 0;
+  const color = impliedColor(className, style, override.color);
+  const x = override.x ?? defaultX;
+  const y = override.y ?? defaultY;
+  const pos = useRef({ x, y });
+  pos.current = { x, y };
+  const cover = useCoverOptional();
+  useEffect(() => {
+    cover?.reportElementResolved(id, { fontSize, font, color, x, y });
+  }, [cover, id, fontSize, font, color, x, y]);
   const selected = edit?.selectedId === id;
   const interactive = edit?.interactive ?? false;
 
@@ -78,14 +99,20 @@ export function CoverElement({
     edit.select(id);
     dragging.current = true;
     last.current = { x: e.clientX, y: e.clientY };
+    pos.current = { x, y };
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
     if (!dragging.current || !edit) return;
     const scale = edit.previewScale || 1;
-    edit.nudgeElement(id, (e.clientX - last.current.x) / scale, (e.clientY - last.current.y) / scale);
+    const next = {
+      x: pos.current.x + (e.clientX - last.current.x) / scale,
+      y: pos.current.y + (e.clientY - last.current.y) / scale,
+    };
+    pos.current = next;
     last.current = { x: e.clientX, y: e.clientY };
+    edit.patchElement(id, next);
   };
 
   const positioned = /\b(absolute|fixed|sticky)\b/.test(className);

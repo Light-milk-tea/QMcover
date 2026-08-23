@@ -5,6 +5,7 @@ import type { CoverRenderProps, TemplateId } from "../types";
 import { FirstKill } from "./FirstKill";
 import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
+import { Nocore } from "./Nocore";
 import { Rogue } from "./Rogue";
 
 export const TEMPLATE_VIEWS: Record<TemplateId, ComponentType<CoverRenderProps>> = {
@@ -12,6 +13,7 @@ export const TEMPLATE_VIEWS: Record<TemplateId, ComponentType<CoverRenderProps>>
   lowspec: LowSpec,
   rogue: Rogue,
   madness: Madness,
+  nocore: Nocore,
 };
 
 export function CoverView(props: CoverRenderProps & { templateId: TemplateId }) {

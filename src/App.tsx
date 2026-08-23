@@ -6,6 +6,7 @@ import { InspectorPanel } from "./components/InspectorPanel";
 import { ThumbCapture } from "./components/ThumbCapture";
 import { TopBar } from "./components/TopBar";
 import { isTemplateId } from "./data/templates";
+import { buildCoverConfig, downloadCoverConfig } from "./lib/exportConfig";
 import { coverFilename, exportCoverPng } from "./lib/exportCover";
 import { displaySubtitle, displayTitle } from "./lib/interpolate";
 import { CoverProvider, useCover } from "./store/CoverContext";
@@ -47,7 +48,7 @@ function useTemplateRoute() {
 
 function Workbench({ onBack }: { onBack: () => void }) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const { templateName, draft, titleKind } = useCover();
+  const { templateId, templateName, draft, titleKind, resolvedElements } = useCover();
   const title = displayTitle(draft, titleKind);
   const subtitle = displaySubtitle(draft);
 
@@ -55,6 +56,9 @@ function Workbench({ onBack }: { onBack: () => void }) {
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-ink">
       <TopBar
         onBack={onBack}
+        onExportConfig={() => {
+          downloadCoverConfig(buildCoverConfig(templateId, draft, resolvedElements, stageRef.current));
+        }}
         onExport={async () => {
           if (!stageRef.current) throw new Error("no stage");
           await exportCoverPng(

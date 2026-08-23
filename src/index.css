@@ -6,11 +6,14 @@
 @import "@fontsource/noto-sans-sc/400.css";
 @import "@fontsource/noto-sans-sc/700.css";
 @import "@fontsource/noto-sans-sc/900.css";
+@import "@fontsource/noto-serif-sc/chinese-simplified-700.css";
+@import "@fontsource/noto-serif-sc/chinese-simplified-900.css";
 
 @theme {
   --font-sans: "PingFang SC", "HarmonyOS Sans", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-display: "Oswald", "Noto Sans SC", sans-serif;
   --font-cn: "Noto Sans SC", "PingFang SC", sans-serif;
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
   --color-ink: #f1f2f3;
   --color-panel: #ffffff;
   --color-raised: #f6f7f8;
@@ -70,6 +73,150 @@ input[type="checkbox"] {
   width: 14px;
   height: 14px;
   accent-color: var(--color-accent);
+}
+
+.cover-type-slant {
+  transform: skewX(-6deg);
+  transform-origin: left bottom;
+}
+
+.cover-type-shadow {
+  text-shadow:
+    0 1px 0 #07080a,
+    0 2px 0 #07080a,
+    2px 3px 0 #07080a,
+    0 6px 14px rgba(0, 0, 0, 0.55),
+    0 14px 28px rgba(0, 0, 0, 0.4);
+}
+
+.cover-type-stroke {
+  -webkit-text-stroke: 0.045em #ffffff;
+  paint-order: stroke fill;
+  text-shadow:
+    -0.03em -0.03em 0 #fff,
+    0.03em -0.03em 0 #fff,
+    -0.03em 0.03em 0 #fff,
+    0.03em 0.03em 0 #fff,
+    -0.045em 0 0 #fff,
+    0.045em 0 0 #fff,
+    0 -0.045em 0 #fff,
+    0 0.045em 0 #fff;
+}
+
+.ls-title {
+  font-family: var(--font-serif);
+}
+
+.ls-gold {
+  background:
+    radial-gradient(1.1px 1.1px at 18% 30%, rgba(255, 248, 220, 0.7) 0 1px, transparent 1.6px),
+    radial-gradient(1.2px 1.2px at 62% 22%, rgba(90, 42, 8, 0.38) 0 1px, transparent 1.8px),
+    radial-gradient(1px 1px at 44% 78%, rgba(255, 220, 140, 0.45) 0 1px, transparent 1.5px),
+    linear-gradient(185deg, #fff3c4 0%, #f0b43a 36%, #c47810 70%, #8a4a08 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.04em #1a0c06;
+  paint-order: stroke fill;
+  filter: drop-shadow(5px 7px 0 #140804) drop-shadow(0 12px 18px rgba(0, 0, 0, 0.45));
+}
+
+.ls-guide {
+  background: linear-gradient(180deg, #141414 0%, #1a1212 58%, #6a1418 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  overflow: visible;
+  padding-bottom: 0.12em;
+}
+
+.ls-halftone {
+  background-image: radial-gradient(circle, #111 1.15px, transparent 1.3px);
+  background-size: 9px 9px;
+  mask-image: linear-gradient(90deg, #000 0%, #000 28%, transparent 78%);
+}
+
+.ls-paper {
+  background:
+    repeating-linear-gradient(135deg, rgba(70, 50, 30, 0.045) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, #f3efe6 0%, #e4ddd0 100%);
+}
+
+.ls-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 0.6px, transparent 0.8px);
+  background-size: 3px 3px;
+}
+
+.nc-night {
+  background:
+    radial-gradient(1.2px 1.2px at 18% 28%, rgba(244, 208, 111, 0.22) 0 1px, transparent 1.4px),
+    radial-gradient(1.2px 1.2px at 72% 62%, rgba(184, 166, 255, 0.16) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 78% 46%, transparent 27%, rgba(244, 208, 111, 0.05) 27.4%, transparent 28.2%),
+    radial-gradient(circle at 78% 46%, transparent 41%, rgba(184, 166, 255, 0.045) 41.4%, transparent 42.2%),
+    repeating-linear-gradient(90deg, transparent 0 46px, rgba(244, 208, 111, 0.04) 46px 47px, transparent 47px 92px);
+}
+
+.nc-ivory {
+  -webkit-text-stroke: 0.05em #0e1218;
+  paint-order: stroke fill;
+}
+
+.nc-sign-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nc-sign-mark i {
+  display: block;
+  width: 11px;
+  height: 7px;
+  border-radius: 999px;
+  background: #4076ea;
+}
+
+.rg-theme {
+  font-family: var(--font-serif);
+  letter-spacing: -0.06em;
+}
+
+.rg-glass {
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.rg-hollow {
+  font-family: var(--font-serif);
+}
+
+.rg-dots {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.62) 1.2px, transparent 1.5px);
+  background-size: 17px 16px;
+}
+
+.rg-grain {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 0.6px, transparent 0.8px);
+  background-size: 3px 3px;
+}
+
+.qm-hex-picker.react-colorful {
+  width: 100%;
+  height: 148px;
+}
+
+.qm-hex-picker .react-colorful__saturation {
+  border-radius: 6px 6px 0 0;
+}
+
+.qm-hex-picker .react-colorful__hue {
+  height: 12px;
+  border-radius: 0 0 6px 6px;
+}
+
+.qm-hex-picker .react-colorful__pointer {
+  width: 16px;
+  height: 16px;
 }
 
 @media (prefers-reduced-motion: reduce) {

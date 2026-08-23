@@ -9,7 +9,7 @@ import {
   type Operator,
   type OperatorArt,
 } from "../data/arts";
-import { warmupArt } from "../lib/preloadImage";
+import { warmupArt, warmupArtNow } from "../lib/preloadImage";
 import { fieldClass } from "./Field";
 
 const RECENT_KEY = "qmcover-recent-ops";
@@ -32,10 +32,11 @@ function pushRecent(id: string): void {
 type Props = {
   operatorId: string;
   artId: string;
+  uploaded?: boolean;
   onPick: (operator: Operator, art: OperatorArt) => void;
 };
 
-export function IllustLibrary({ operatorId, artId, onPick }: Props) {
+export function IllustLibrary({ operatorId, artId, uploaded, onPick }: Props) {
   const [query, setQuery] = useState("");
   const [rarity, setRarity] = useState(0);
   const [profession, setProfession] = useState("");
@@ -43,6 +44,12 @@ export function IllustLibrary({ operatorId, artId, onPick }: Props) {
   const [recent, setRecent] = useState(readRecent);
 
   const selected = OPERATORS.find((op) => op.id === operatorId);
+  const selectedArt = selected?.arts.find((art) => art.id === artId);
+  const currentLabel = uploaded
+    ? "上传立绘"
+    : selected
+      ? `${selected.name}${selectedArt ? ` · ${selectedArt.label}` : ""}`
+      : "未选";
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -70,24 +77,11 @@ export function IllustLibrary({ operatorId, artId, onPick }: Props) {
 
   const pick = (op: Operator, art = preferredArt(op)) => {
     if (!art) return;
-    warmupArt(artUrl(art.id));
+    warmupArtNow(artUrl(art.id));
     pushRecent(op.id);
     setRecent(readRecent());
     onPick(op, art);
   };
-
-  useEffect(() => {
-    if (!selected) return;
-    for (const art of selected.arts) warmupArt(artUrl(art.id));
-  }, [selected]);
-
-  useEffect(() => {
-    for (const id of recent) {
-      const op = OPERATORS.find((item) => item.id === id);
-      const art = op ? preferredArt(op) : undefined;
-      if (art) warmupArt(artUrl(art.id));
-    }
-  }, [recent]);
 
   const recentOps = recent
     .map((id) => OPERATORS.find((op) => op.id === id))
@@ -98,7 +92,9 @@ export function IllustLibrary({ operatorId, artId, onPick }: Props) {
       <div className="px-4 pt-3 pb-2">
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="text-[15px] font-medium text-text">立绘库</h2>
-          <p className="text-[12px] text-mute">{list.length} 人</p>
+          <p className="min-w-0 truncate text-[12px] text-accent" title={currentLabel}>
+            {currentLabel}
+          </p>
         </div>
         <input
           className={`${fieldClass} mt-3`}
