@@ -1,6 +1,7 @@
 import { ArrowUUpLeft, BracketsCurly, CaretLeft, DownloadSimple, Plus } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useCover } from "../store/CoverContext";
+import { BrandMark } from "./BrandMark";
 
 type Props = {
   onExport: () => Promise<void>;
@@ -20,9 +21,7 @@ export function TopBar({ onExport, onExportConfig, onBack }: Props) {
         onClick={onBack}
         className="flex shrink-0 items-center gap-2 text-text"
       >
-        <span className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-[8px] bg-accent text-[11px] font-bold text-white">
-          QM
-        </span>
+        <BrandMark />
         <span className="text-[16px] font-medium">封面工坊</span>
       </button>
 

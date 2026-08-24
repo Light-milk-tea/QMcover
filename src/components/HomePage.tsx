@@ -1,5 +1,6 @@
 import { TEMPLATES } from "../data/templates";
 import { templateThumbSrc } from "../lib/thumbs";
+import { BrandMark } from "./BrandMark";
 
 type Props = {
   onOpen: (id: string) => void;
@@ -10,9 +11,7 @@ export function HomePage({ onOpen }: Props) {
     <div className="min-h-[100dvh] bg-ink">
       <header className="flex h-16 items-center justify-between border-b border-line bg-panel px-6">
         <div className="flex items-center gap-2">
-          <span className="grid size-8 place-items-center rounded-[8px] bg-accent text-[11px] font-bold text-white">
-            QM
-          </span>
+          <BrandMark />
           <span className="text-[16px] font-medium text-text">封面工坊</span>
         </div>
         <p className="text-[13px] text-mute">B 站 1920 × 1080</p>
