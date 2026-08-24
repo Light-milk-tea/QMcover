@@ -10,6 +10,7 @@ import {
   type OperatorArt,
 } from "../data/arts";
 import { warmupArt, warmupArtNow } from "../lib/preloadImage";
+import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN } from "../constants";
 import { fieldClass } from "./Field";
 
 const RECENT_KEY = "qmcover-recent-ops";
@@ -33,10 +34,23 @@ type Props = {
   operatorId: string;
   artId: string;
   uploaded?: boolean;
+  edgeFade?: boolean;
+  edgeFadeAmount?: number;
+  onEdgeFadeChange?: (on: boolean) => void;
+  onEdgeFadeAmountChange?: (amount: number) => void;
   onPick: (operator: Operator, art: OperatorArt) => void;
 };
 
-export function IllustLibrary({ operatorId, artId, uploaded, onPick }: Props) {
+export function IllustLibrary({
+  operatorId,
+  artId,
+  uploaded,
+  edgeFade = false,
+  edgeFadeAmount = IMAGE_EDGE_FADE_DEFAULT,
+  onEdgeFadeChange,
+  onEdgeFadeAmountChange,
+  onPick,
+}: Props) {
   const [query, setQuery] = useState("");
   const [rarity, setRarity] = useState(0);
   const [profession, setProfession] = useState("");
@@ -90,12 +104,37 @@ export function IllustLibrary({ operatorId, artId, uploaded, onPick }: Props) {
   return (
     <div className="shrink-0 border-b border-line">
       <div className="px-4 pt-3 pb-2">
-        <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-[15px] font-medium text-text">立绘库</h2>
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <h2 className="text-[15px] font-medium text-text">立绘库</h2>
+            {onEdgeFadeChange ? (
+              <label className="flex cursor-pointer items-center gap-1.5 text-[12px] text-sub">
+                <input
+                  type="checkbox"
+                  checked={edgeFade}
+                  onChange={(e) => onEdgeFadeChange(e.target.checked)}
+                />
+                边缘虚化
+              </label>
+            ) : null}
+          </div>
           <p className="min-w-0 truncate text-[12px] text-accent" title={currentLabel}>
             {currentLabel}
           </p>
         </div>
+        {onEdgeFadeChange && edgeFade ? (
+          <label className="mt-2 block">
+            <span className="mb-1 block text-[12px] text-sub">虚化宽度 {edgeFadeAmount}%</span>
+            <input
+              type="range"
+              min={IMAGE_EDGE_FADE_MIN}
+              max={IMAGE_EDGE_FADE_MAX}
+              value={edgeFadeAmount}
+              onChange={(e) => onEdgeFadeAmountChange?.(Number(e.target.value))}
+              className="w-full"
+            />
+          </label>
+        ) : null}
         <input
           className={`${fieldClass} mt-3`}
           value={query}

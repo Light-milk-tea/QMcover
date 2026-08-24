@@ -21,7 +21,7 @@ export type ResolvedElement = {
   y?: number;
 };
 
-export type TemplateId = "firstkill" | "lowspec" | "rogue" | "madness" | "nocore";
+export type TemplateId = "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield";
 
 export type TemplateMeta = {
   id: TemplateId;
@@ -36,6 +36,9 @@ export type TemplateMeta = {
   subtitleLabel?: string;
   episodeLabel?: string;
   signatureLabel?: string;
+  showMark?: boolean;
+  markLabel?: string;
+  sampleMark?: string;
   defaultEpisode?: number;
   sampleEpisode?: number;
   sampleSignature?: string;
@@ -59,6 +62,7 @@ export type Draft = {
   title: string;
   subtitle: string;
   signature: string;
+  mark: string;
   date: string;
   episode: number;
   operatorName: string;
@@ -69,6 +73,8 @@ export type Draft = {
   imageScale: number;
   imageX: number;
   imageY: number;
+  imageEdgeFade: boolean;
+  imageEdgeFadeAmount: number;
   showSafeArea: boolean;
   bgPreset: string;
   textBgPreset: string;
@@ -82,6 +88,7 @@ export type CoverRenderProps = {
   title: string;
   subtitle: string;
   signature: string;
+  mark: string;
   episode: number;
   date: string;
   operatorName: string;
@@ -89,6 +96,8 @@ export type CoverRenderProps = {
   imageScale: number;
   imageX: number;
   imageY: number;
+  imageEdgeFade?: boolean;
+  imageEdgeFadeAmount?: number;
   previewScale: number;
   onImageDrag: (dx: number, dy: number) => void;
   showPlaceholder?: boolean;

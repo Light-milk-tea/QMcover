@@ -9,21 +9,21 @@ const PAPER = "#f3eee4";
 const PAPER_BACK = "#e6dfd2";
 
 function seriesSize(len: number) {
-  if (len <= 6) return 92;
-  if (len <= 8) return 76;
-  return 62;
+  if (len <= 6) return 148;
+  if (len <= 8) return 122;
+  return 100;
 }
 
 function chapterSize(len: number) {
-  if (len <= 4) return 44;
-  if (len <= 6) return 36;
-  return 30;
+  if (len <= 4) return 58;
+  if (len <= 6) return 50;
+  return 42;
 }
 
 function subSize(len: number) {
-  if (len <= 6) return 44;
-  if (len <= 10) return 36;
-  return 28;
+  if (len <= 6) return 58;
+  if (len <= 10) return 50;
+  return 40;
 }
 
 function enNameSize(len: number) {
@@ -42,6 +42,25 @@ function VignetteBlob({ amount }: { amount: number }) {
           "radial-gradient(ellipse at 40% 46%, rgba(12,16,22,0.92) 0%, rgba(12,16,22,0.58) 34%, rgba(12,16,22,0.2) 58%, transparent 74%)",
       }}
     />
+  );
+}
+
+function FaceWord({ text }: { text: string }) {
+  return (
+    <span className="relative inline-block whitespace-nowrap leading-none">
+      <span aria-hidden className="pointer-events-none absolute top-[0.055em] left-[0.04em] text-black">
+        {text}
+      </span>
+      <span
+        className="relative"
+        style={{
+          WebkitTextStroke: "0.042em #0a1218",
+          paintOrder: "stroke fill",
+        }}
+      >
+        {text}
+      </span>
+    </span>
   );
 }
 
@@ -89,55 +108,66 @@ export function Madness(props: CoverRenderProps) {
         <CoverElement
           id="vignette"
           kind="box"
+          defaultX={-123}
+          defaultY={-460}
           className="absolute top-[-80px] left-[-140px] z-[5] h-[1240px] w-[1120px]"
         >
           <VignetteBlob amount={props.bgDimAmount ?? 70} />
         </CoverElement>
       ) : null}
 
-      <div className="absolute top-[72px] left-[100px] z-10 w-[920px]">
+      <div className="absolute top-[80px] left-[176px] z-10 w-[980px]">
         <FiveStarMark />
-        <div className="h-[168px]" />
+        <div className="h-[200px]" />
 
         <CoverElement
           id="episode"
-          defaultFontSize={28}
+          defaultFontSize={36}
           className="flex items-center gap-3 font-bold tracking-[0.12em] text-[#f4f0e8]"
           style={{ textShadow: "0 2px 10px rgba(0,0,0,0.7), 0 0 18px rgba(0,0,0,0.35)" }}
         >
-          <span className="inline-block h-[26px] w-[6px] shrink-0" style={{ background: ACCENT }} />
+          <CoverElement
+            id="episode-bar"
+            kind="box"
+            className="h-[32px] w-[7px] shrink-0"
+            style={{ color: "#007af5", background: "currentColor" }}
+          />
           {episode}
         </CoverElement>
 
-        <div className="mt-5 flex items-baseline">
+        <div className="mt-6 flex items-baseline gap-1">
           <CoverElement
             id="series"
+            defaultFont="serif"
             defaultFontSize={seriesSize(series.length)}
-            className="font-black tracking-[-0.05em] text-white"
+            defaultX={-17}
+            defaultY={-13}
+            className="font-black tracking-[-0.03em]"
             style={{
-              lineHeight: 1.02,
-              transform: "skewX(-6deg)",
-              textShadow: "0 6px 18px rgba(0,0,0,0.55), 0 0 24px rgba(0,0,0,0.35)",
+              lineHeight: 1,
+              color: "#32b4f5",
+              textShadow: "0 10px 22px rgba(0,0,0,0.45)",
             }}
           >
-            决战五星
+            <FaceWord text="决战五星" />
           </CoverElement>
           <CoverElement
             id="series-accent"
+            defaultFont="cn"
             defaultFontSize={seriesSize(series.length)}
-            className="font-black tracking-[-0.05em]"
+            className="pb-1 font-black tracking-[-0.06em]"
             style={{
-              lineHeight: 1.02,
-              color: ACCENT,
-              transform: "skewX(-6deg)",
-              textShadow: "0 6px 18px rgba(0,0,0,0.55), 0 0 24px rgba(0,0,0,0.35)",
+              lineHeight: 1,
+              color: "#00bcf5",
+              transform: "skewX(-8deg)",
+              textShadow: "0 8px 20px rgba(0,0,0,0.4)",
             }}
           >
             之癫
           </CoverElement>
         </div>
 
-        <div className="mt-5 flex flex-wrap items-baseline gap-x-5 gap-y-2">
+        <div className="mt-7 flex flex-wrap items-baseline gap-x-6 gap-y-2">
           <CoverElement
             id="chapter"
             defaultFontSize={chapterSize(name.length + 1)}
@@ -150,8 +180,8 @@ export function Madness(props: CoverRenderProps) {
             <CoverElement
               id="subtitle"
               defaultFontSize={subSize(subtitle.length)}
-              className="font-bold tracking-tight text-[#f4f0e8]/80"
-              style={{ lineHeight: 1.05, textShadow: "0 3px 12px rgba(0,0,0,0.55)" }}
+              className="font-bold tracking-tight"
+              style={{ lineHeight: 1.05, color: "#b080e0", textShadow: "0 3px 12px rgba(0,0,0,0.55)" }}
             >
               {subtitle}
             </CoverElement>
@@ -161,7 +191,7 @@ export function Madness(props: CoverRenderProps) {
         <CoverElement
           id="en-tag"
           defaultFont="display"
-          defaultFontSize={22}
+          defaultFontSize={26}
           className="mt-8 flex items-center gap-4 font-semibold text-[#f4f0e8]/80"
           style={{ letterSpacing: "0.28em", textShadow: "0 2px 10px rgba(0,0,0,0.55)" }}
         >

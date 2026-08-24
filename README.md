@@ -6,9 +6,9 @@
 
 技术栈：React 19 + Vite + TypeScript + Tailwind CSS 4。
 
-| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 |
-| --- | --- | --- | --- | --- |
-| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) |
+| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 |
+| --- | --- | --- | --- | --- | --- |
+| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) |
 
 相关文档：
 
@@ -17,6 +17,7 @@
 - [危机合约构图参考](references/crisis-contract/INDEX.md)
 - [肉鸽构图参考](references/rogue/INDEX.md)
 - [无核论文构图参考](references/kirby/INDEX.md)
+- [终末地测评构图参考](references/endfield-review/INDEX.md)
 
 ## 本地运行
 
@@ -49,7 +50,7 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前五套：
+首页列出 `src/data/templates.ts`。当前六套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
@@ -58,10 +59,11 @@ npm run dev
 | `rogue` | 肉鸽模板 | 参考 Mujica 命运共享封面：左立绘，右宋体主题加红划痕，上下空心 ISW-NO，红字紧急 + 白条件。 |
 | `madness` | 决战五星之癫 | 参考五星测评类封面：左暗底栏目名 + 期数 + 干员篇，右拍立得立绘。栏目名固定为「决战五星之癫」。 |
 | `nocore` | 无核论文 | 参考小鬼卡比 SN-EX-8：暗底，左两行金白大字，一条紫线，右立绘。 |
+| `endfield` | 终末地角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness`、`nocore` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -110,6 +112,17 @@ npm run dev
 - 背景默认伊比利亚夜海岸，压一层暗纱
 - 默认立绘：缄默德克萨斯精二
 
+### 终末地角色测评
+
+- 角色名（默认肥鸭梅塔；点立绘不覆盖，方便写终末地干员名）
+- 栏目名（默认「数据与实战测评」）
+- 角标（默认「明日方舟测评」）
+- 游戏标（默认 ARKNIGHTS: ENDFIELD，右下小字）
+- 默认浅纸底 + 黄三角；可选 AVG 只铺在立绘左侧
+- 默认立绘：菲亚梅塔「至圣誓言」（浅底上要能看清；终末地立绘请本地上传）
+
+栏目名和柠黄括号是这套构图的固定件。不搬终末地官方标和参考 UP logo。
+
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
 ## 目录
@@ -132,6 +145,7 @@ src/
     Rogue.tsx             肉鸽
     Madness.tsx           决战五星之癫
     Nocore.tsx            无核论文
+    Endfield.tsx          终末地角色测评
     OperatorLayer.tsx     可拖动立绘
   components/             首页、顶栏、画布、图层面板、编辑栏、立绘库
   store/CoverContext.tsx  当前草稿
@@ -143,9 +157,11 @@ src/
 scripts/
   build-operators.mjs     拉 character / skin 表，写 operators.json
   collect-cc-covers.py    重新收集构图参考图（不进 git）
+  collect-endfield-review-covers.py  终末地测评封面
 references/crisis-contract/   构图参考，jpg 不提交
 references/rogue/             肉鸽构图参考，jpg 不提交
 references/kirby/             无核论文构图参考，jpg 不提交
+references/endfield-review/   终末地测评构图参考，jpg 不提交
 ```
 
 路由是 hash：`#/` 首页，`#/t/firstkill` 打开对应模板。
@@ -198,6 +214,7 @@ references/kirby/             无核论文构图参考，jpg 不提交
 | 低配攻略 | `src/templates/LowSpec.tsx` | 复刻左立绘 + 白底条，不要整图搬参考封面。 |
 | 肉鸽 | `src/templates/Rogue.tsx` | 复刻左立绘 + 右宋体主题 + 空心 ISW-NO，不要整图搬参考封面。 |
 | 决战五星之癫 | `src/templates/Madness.tsx` | 复刻左文右拍立得，不要整图搬参考封面。 |
+| 终末地角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
 
 ## 约定
 

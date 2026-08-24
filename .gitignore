@@ -41,6 +41,10 @@ references/kirby/**/*.jpg
 references/kirby/**/*.jpeg
 references/kirby/**/*.png
 references/kirby/**/*.webp
+references/endfield-review/**/*.jpg
+references/endfield-review/**/*.jpeg
+references/endfield-review/**/*.png
+references/endfield-review/**/*.webp
 
 # capture leftovers
 public/thumbs/*.dataurl

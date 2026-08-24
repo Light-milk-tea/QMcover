@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import type { PointerEvent } from "react";
 import { useElementEdit } from "../components/CoverElement";
+import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN } from "../constants";
 import { useCdnSrc } from "../lib/cdn";
 
 type Props = {
@@ -14,6 +15,13 @@ type Props = {
   objectFit?: "contain" | "cover";
   showPlaceholder?: boolean;
   fadeRight?: boolean;
+  fadeBottom?: boolean;
+  fadeRightSolid?: number;
+  fadeBottomSolid?: number;
+  transformOrigin?: string;
+  objectPosition?: string;
+  imageEdgeFade?: boolean;
+  imageEdgeFadeAmount?: number;
 };
 
 export function OperatorLayer({
@@ -27,6 +35,13 @@ export function OperatorLayer({
   objectFit = "contain",
   showPlaceholder = true,
   fadeRight = false,
+  fadeBottom = false,
+  fadeRightSolid = 66,
+  fadeBottomSolid = 86,
+  transformOrigin = "center center",
+  objectPosition,
+  imageEdgeFade = false,
+  imageEdgeFadeAmount = IMAGE_EDGE_FADE_DEFAULT,
 }: Props) {
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
@@ -34,6 +49,7 @@ export function OperatorLayer({
   const selected = edit?.selectedId === "operator";
   const interactive = edit?.interactive ?? false;
   const remote = useCdnSrc(imageUrl);
+  const tallRightFade = fadeRight && !fadeBottom;
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -68,15 +84,36 @@ export function OperatorLayer({
       }}
     >
       <div
-        className="h-full w-full"
-        style={
-          fadeRight
-            ? {
-                WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 66%, transparent 100%)",
-                maskImage: "linear-gradient(90deg, #000 0%, #000 66%, transparent 100%)",
-              }
-            : undefined
+        className={
+          tallRightFade
+            ? "absolute left-0 top-[-200%] h-[500%] w-full overflow-visible"
+            : "h-full w-full overflow-visible"
         }
+        style={(() => {
+          const masks: string[] = [];
+          if (fadeRight) {
+            const solid = Math.min(90, Math.max(20, fadeRightSolid));
+            const gone = Math.min(100, solid + 28);
+            masks.push(`linear-gradient(90deg, #000 0%, #000 ${solid}%, transparent ${gone}%)`);
+          }
+          if (fadeBottom) {
+            const solid = Math.min(90, Math.max(30, fadeBottomSolid));
+            masks.push(`linear-gradient(180deg, #000 0%, #000 ${solid}%, transparent 100%)`);
+          }
+          if (masks.length === 0) return undefined;
+          const image = masks.join(", ");
+          return {
+            WebkitMaskImage: image,
+            maskImage: image,
+            WebkitMaskRepeat: "no-repeat",
+            maskRepeat: "no-repeat",
+            WebkitMaskPosition: "center",
+            maskPosition: "center",
+            ...(masks.length > 1
+              ? { WebkitMaskComposite: "source-in" as const, maskComposite: "intersect" as const }
+              : {}),
+          };
+        })()}
       >
         <img
           src={remote.src}
@@ -88,11 +125,35 @@ export function OperatorLayer({
           draggable={false}
           onLoad={remote.onLoad}
           onError={remote.onError}
-          className="h-full w-full select-none"
+          className={
+            tallRightFade
+              ? "absolute left-0 top-[40%] h-[20%] w-full select-none"
+              : "h-full w-full select-none"
+          }
           style={{
             objectFit,
+            objectPosition,
+            transformOrigin,
             transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale / 100})`,
             cursor: dragging.current ? "grabbing" : "grab",
+            ...(imageEdgeFade
+              ? (() => {
+                  const edge = Math.min(IMAGE_EDGE_FADE_MAX, Math.max(IMAGE_EDGE_FADE_MIN, imageEdgeFadeAmount));
+                  const inner = 100 - edge;
+                  const masks = [
+                    `linear-gradient(to right, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
+                    `linear-gradient(to bottom, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
+                  ].join(", ");
+                  return {
+                    WebkitMaskImage: masks,
+                    maskImage: masks,
+                    WebkitMaskRepeat: "no-repeat",
+                    maskRepeat: "no-repeat",
+                    WebkitMaskComposite: "source-in" as const,
+                    maskComposite: "intersect" as const,
+                  };
+                })()
+              : {}),
           }}
         />
       </div>

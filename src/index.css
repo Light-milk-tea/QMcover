@@ -186,6 +186,13 @@ input[type="checkbox"] {
   background-clip: text;
 }
 
+.ef-halftone {
+  background-image: radial-gradient(#c4c4c2 1.05px, transparent 1.2px);
+  background-size: 7px 7px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 88%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 88%);
+}
+
 .rg-hollow {
   font-family: var(--font-serif);
 }

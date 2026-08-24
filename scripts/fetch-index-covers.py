@@ -22,6 +22,8 @@ INDEXES = [
     ROOT / "references" / "crisis-contract" / "INDEX.md",
     ROOT / "references" / "rogue" / "INDEX.md",
     ROOT / "references" / "zc-event" / "INDEX.md",
+    ROOT / "references" / "kirby" / "INDEX.md",
+    ROOT / "references" / "endfield-review" / "INDEX.md",
 ]
 
 

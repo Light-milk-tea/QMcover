@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import { ElementEditProvider } from "../components/CoverElement";
 import { useCoverOptional } from "../store/CoverContext";
 import type { CoverRenderProps, TemplateId } from "../types";
+import { Endfield } from "./Endfield";
 import { FirstKill } from "./FirstKill";
 import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
@@ -14,6 +15,7 @@ export const TEMPLATE_VIEWS: Record<TemplateId, ComponentType<CoverRenderProps>>
   rogue: Rogue,
   madness: Madness,
   nocore: Nocore,
+  endfield: Endfield,
 };
 
 export function CoverView(props: CoverRenderProps & { templateId: TemplateId }) {

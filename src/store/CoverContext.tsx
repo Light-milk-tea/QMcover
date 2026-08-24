@@ -25,6 +25,8 @@ type CoverContextValue = {
   subtitleLabel: string;
   episodeLabel: string;
   signatureLabel: string;
+  showMark: boolean;
+  markLabel: string;
   defaultImageScale: number;
   showBackground: boolean;
   showTextBackground: boolean;
@@ -203,6 +205,8 @@ export function CoverProvider({
       subtitleLabel: meta?.subtitleLabel ?? "副标题",
       episodeLabel: meta?.episodeLabel ?? "期数",
       signatureLabel: meta?.signatureLabel ?? "署名",
+      showMark: meta?.showMark ?? false,
+      markLabel: meta?.markLabel ?? "角标",
       defaultImageScale: meta?.defaultImageScale ?? 100,
       showBackground: meta?.showBackground ?? false,
       showTextBackground: meta?.showTextBackground ?? false,
@@ -228,6 +232,8 @@ export function CoverProvider({
       meta?.name,
       meta?.showEpisode,
       meta?.signatureLabel,
+      meta?.showMark,
+      meta?.markLabel,
       meta?.titleKind,
       meta?.titleLabel,
       meta?.titlePlaceholder,

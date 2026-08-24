@@ -1,4 +1,4 @@
-import { STORAGE_KEY } from "../constants";
+import { IMAGE_EDGE_FADE_DEFAULT, STORAGE_KEY } from "../constants";
 import { defaultArtFields } from "../data/arts";
 import { DEFAULT_BG_PRESET } from "../data/backgrounds";
 import { DEFAULT_ORNAMENT, ORNAMENTS } from "../data/ornaments";
@@ -11,6 +11,9 @@ const LOWSPEC_NIGHT_KEY = "qmcover-lowspec-bg-v1";
 const SAMPLE_TEXT_MIGRATED_KEY = "qmcover-sample-text-v1";
 const NOCORE_LAYOUT_KEY = "qmcover-nocore-layout-v12";
 const ROGUE_LAYOUT_KEY = "qmcover-rogue-layout-v3";
+const MADNESS_BG_KEY = "qmcover-madness-bg-v1";
+const MADNESS_LAYOUT_KEY = "qmcover-madness-layout-v2";
+const ENDFIELD_LAYOUT_KEY = "qmcover-endfield-layout-v11";
 
 export type PersistedState = {
   drafts: Partial<Record<TemplateId, Draft>>;
@@ -36,6 +39,7 @@ export function emptyDraft(templateId: TemplateId): Draft {
     title: meta?.sampleTitle ?? "",
     subtitle: meta?.defaultSubtitle ?? "",
     signature: meta?.sampleSignature ?? "",
+    mark: meta?.sampleMark ?? "",
     date: todayISO(),
     episode: meta?.defaultEpisode ?? 1,
     operatorName: art.operatorName,
@@ -46,6 +50,8 @@ export function emptyDraft(templateId: TemplateId): Draft {
     imageScale: meta?.defaultImageScale ?? 100,
     imageX: meta?.defaultImageX ?? 0,
     imageY: meta?.defaultImageY ?? 0,
+    imageEdgeFade: false,
+    imageEdgeFadeAmount: IMAGE_EDGE_FADE_DEFAULT,
     showSafeArea: true,
     bgPreset: meta?.defaultBgPreset ?? DEFAULT_BG_PRESET,
     textBgPreset: meta?.defaultTextBgPreset ?? meta?.defaultBgPreset ?? DEFAULT_BG_PRESET,
@@ -84,6 +90,10 @@ export function loadDraft(templateId: TemplateId): Draft {
     templateId === "lowspec" &&
     !readFlagMap(LOWSPEC_NIGHT_KEY)[templateId] &&
     (saved.bgPreset === "thunder" || !saved.bgPreset);
+  const usedMadnessWildDefault =
+    templateId === "madness" &&
+    !readFlagMap(MADNESS_BG_KEY)[templateId] &&
+    (saved.bgPreset === "wild" || !saved.bgPreset);
   const missingArt = !saved.imageUrl && !saved.imageDataUrl && !saved.operatorId;
   const fillSampleText =
     !readFlagMap(SAMPLE_TEXT_MIGRATED_KEY)[templateId] &&
@@ -104,17 +114,57 @@ export function loadDraft(templateId: TemplateId): Draft {
     markFlag(ROGUE_LAYOUT_KEY, templateId);
     return fresh;
   }
+  const resetEndfieldLayout =
+    templateId === "endfield" && !readFlagMap(ENDFIELD_LAYOUT_KEY)[templateId];
+  if (resetEndfieldLayout) {
+    const fresh = {
+      ...empty,
+      ...saved,
+      elementStyles: {},
+      title: empty.title,
+      mark: empty.mark,
+      imageScale: empty.imageScale,
+      imageX: empty.imageX,
+      imageY: empty.imageY,
+      operatorName: empty.operatorName,
+      operatorId: empty.operatorId,
+      artId: empty.artId,
+      imageUrl: empty.imageUrl,
+    };
+    saveDraft(templateId, fresh);
+    markFlag(ENDFIELD_LAYOUT_KEY, templateId);
+    return fresh;
+  }
+  const resetMadnessLayout =
+    templateId === "madness" && !readFlagMap(MADNESS_LAYOUT_KEY)[templateId];
+  if (resetMadnessLayout) {
+    const fresh = {
+      ...empty,
+      ...saved,
+      elementStyles: {},
+      bgPreset: empty.bgPreset,
+      bgDim: empty.bgDim,
+      bgDimAmount: empty.bgDimAmount,
+    };
+    saveDraft(templateId, fresh);
+    markFlag(MADNESS_LAYOUT_KEY, templateId);
+    markFlag(MADNESS_BG_KEY, templateId);
+    return fresh;
+  }
   const next = {
     ...empty,
     ...saved,
     elementStyles: saved.elementStyles ?? {},
-    bgPreset: usedInkByDefault || usedThunderDefault ? empty.bgPreset : (saved.bgPreset ?? empty.bgPreset),
+    bgPreset: usedInkByDefault || usedThunderDefault || usedMadnessWildDefault ? empty.bgPreset : (saved.bgPreset ?? empty.bgPreset),
     textBgPreset: saved.textBgPreset ?? empty.textBgPreset,
     bgDim: saved.bgDim ?? empty.bgDim,
     bgDimAmount: saved.bgDimAmount ?? empty.bgDimAmount,
     ornamentId: ORNAMENTS.some((item) => item.id === saved.ornamentId) ? saved.ornamentId : empty.ornamentId,
     title: fillSampleText && !(saved.title ?? "").trim() ? empty.title : (saved.title ?? empty.title),
     signature: fillSampleText && !(saved.signature ?? "").trim() ? empty.signature : (saved.signature ?? empty.signature),
+    mark: saved.mark ?? empty.mark,
+    imageEdgeFade: saved.imageEdgeFade ?? false,
+    imageEdgeFadeAmount: saved.imageEdgeFadeAmount ?? empty.imageEdgeFadeAmount,
     ...(missingArt
       ? {
           operatorName: empty.operatorName,
@@ -124,10 +174,11 @@ export function loadDraft(templateId: TemplateId): Draft {
         }
       : {}),
   };
-  if (usedInkByDefault || usedThunderDefault || missingArt || fillSampleText) {
+  if (usedInkByDefault || usedThunderDefault || usedMadnessWildDefault || missingArt || fillSampleText) {
     saveDraft(templateId, next);
     if (usedInkByDefault) markFlag(BG_THEME_MIGRATED_KEY, templateId);
     if (usedThunderDefault) markFlag(LOWSPEC_NIGHT_KEY, templateId);
+    if (usedMadnessWildDefault) markFlag(MADNESS_BG_KEY, templateId);
     if (fillSampleText) markFlag(SAMPLE_TEXT_MIGRATED_KEY, templateId);
   }
   return next;

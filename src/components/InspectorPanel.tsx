@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ArrowCounterClockwise } from "@phosphor-icons/react";
+import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN, IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
 import { COVER_FONTS, TEMPLATE_ELEMENTS } from "../data/elements";
 import { useCover } from "../store/CoverContext";
 import type { CoverFontId } from "../types";
@@ -100,14 +101,36 @@ export function InspectorPanel() {
                   <Field label={`缩放 ${draft.imageScale}%`}>
                     <input
                       type="range"
-                      min={40}
-                      max={220}
+                      min={IMAGE_SCALE_MIN}
+                      max={IMAGE_SCALE_MAX}
                       value={draft.imageScale}
                       onChange={(e) => patchDraft({ imageScale: Number(e.target.value) })}
                       className="w-full"
                     />
                   </Field>
                 </div>
+                <label className="mt-3 flex cursor-pointer items-center gap-1.5 text-[13px] text-sub">
+                  <input
+                    type="checkbox"
+                    checked={draft.imageEdgeFade ?? false}
+                    onChange={(e) => patchDraft({ imageEdgeFade: e.target.checked })}
+                  />
+                  边缘虚化
+                </label>
+                {draft.imageEdgeFade ? (
+                  <div className="mt-2">
+                    <Field label={`虚化宽度 ${draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}%`}>
+                      <input
+                        type="range"
+                        min={IMAGE_EDGE_FADE_MIN}
+                        max={IMAGE_EDGE_FADE_MAX}
+                        value={draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
+                        onChange={(e) => patchDraft({ imageEdgeFadeAmount: Number(e.target.value) })}
+                        className="w-full"
+                      />
+                    </Field>
+                  </div>
+                ) : null}
               </>
             ) : (
               <>
@@ -180,13 +203,15 @@ export function InspectorPanel() {
                         </select>
                       </Field>
                     </div>
-                    <ColorField
-                      elementId={meta.id}
-                      color={style.color}
-                      displayColor={currentColor}
-                      onChange={(color) => patchElement(meta.id, { color })}
-                    />
                   </>
+                ) : null}
+                {meta.kind === "text" || meta.hasColor ? (
+                  <ColorField
+                    elementId={meta.id}
+                    color={style.color}
+                    displayColor={currentColor}
+                    onChange={(color) => patchElement(meta.id, { color })}
+                  />
                 ) : null}
               </>
             )}

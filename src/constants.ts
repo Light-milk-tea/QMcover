@@ -16,3 +16,12 @@ export const BILI_SAFE = {
 } as const;
 
 export const STORAGE_KEY = "qmcover-v3";
+
+/** 立绘缩放滑条范围。上限要能罩住全身立绘（如丰川祥子精英 0）。 */
+export const IMAGE_SCALE_MIN = 40;
+export const IMAGE_SCALE_MAX = 350;
+
+/** 立绘四边虚化宽度，单位是立绘盒子的百分比。 */
+export const IMAGE_EDGE_FADE_MIN = 6;
+export const IMAGE_EDGE_FADE_MAX = 36;
+export const IMAGE_EDGE_FADE_DEFAULT = 16;

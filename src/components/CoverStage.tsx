@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import { BILI_COVER } from "../constants";
+import { BILI_COVER, IMAGE_EDGE_FADE_DEFAULT } from "../constants";
 import { coverImage } from "../data/arts";
 import { displaySubtitle, displayTitle } from "../lib/interpolate";
 import { useCover } from "../store/CoverContext";
@@ -23,6 +23,7 @@ export function draftToRenderProps(
     title: displayTitle(draft, getTemplate(templateId)?.titleKind ?? "operator"),
     subtitle: displaySubtitle(draft),
     signature: draft.signature,
+    mark: draft.mark ?? "",
     episode: draft.episode,
     date: draft.date,
     operatorName: draft.operatorName,
@@ -30,6 +31,8 @@ export function draftToRenderProps(
     imageScale: draft.imageScale,
     imageX: draft.imageX,
     imageY: draft.imageY,
+    imageEdgeFade: draft.imageEdgeFade ?? false,
+    imageEdgeFadeAmount: draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
     bgPreset: draft.bgPreset,
     textBgPreset: draft.textBgPreset,
     bgDim: draft.bgDim,

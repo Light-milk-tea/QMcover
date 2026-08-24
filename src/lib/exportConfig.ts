@@ -1,4 +1,4 @@
-import { BILI_COVER } from "../constants";
+import { BILI_COVER, IMAGE_EDGE_FADE_DEFAULT } from "../constants";
 import { findOperator } from "../data/arts";
 import { getBgPreset } from "../data/backgrounds";
 import { TEMPLATE_ELEMENTS } from "../data/elements";
@@ -16,6 +16,7 @@ export type CoverConfigFile = {
     title: string;
     subtitle: string;
     signature: string;
+    mark?: string;
     episode: number;
     date: string;
   };
@@ -27,6 +28,8 @@ export type CoverConfigFile = {
     imageScale: number;
     imageX: number;
     imageY: number;
+    imageEdgeFade: boolean;
+    imageEdgeFadeAmount: number;
     uploaded: boolean;
     imageUrl: string;
   };
@@ -102,6 +105,7 @@ export function buildCoverConfig(
       title: draft.title,
       subtitle: draft.subtitle,
       signature: draft.signature,
+      mark: draft.mark,
       episode: draft.episode,
       date: draft.date,
     },
@@ -113,6 +117,8 @@ export function buildCoverConfig(
       imageScale: draft.imageScale,
       imageX: draft.imageX,
       imageY: draft.imageY,
+      imageEdgeFade: draft.imageEdgeFade ?? false,
+      imageEdgeFadeAmount: draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
       uploaded: Boolean(draft.imageDataUrl),
       imageUrl: draft.imageDataUrl ? "" : draft.imageUrl,
     },

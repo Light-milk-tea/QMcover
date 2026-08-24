@@ -7,6 +7,7 @@ export type CoverElMeta = {
   defaultFont?: CoverFontId;
   hasOpacity?: boolean;
   defaultOpacity?: number;
+  hasColor?: boolean;
 };
 
 export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[] = [
@@ -26,10 +27,13 @@ export const TEXT_COLORS: { id: string; label: string; value: string }[] = [
   { id: "paper", label: "纸色", value: "#f3eee4" },
   { id: "gold", label: "金", value: "#f4d06f" },
   { id: "yellow", label: "黄", value: "#e8b400" },
+  { id: "lemon", label: "柠黄", value: "#fdfe3e" },
   { id: "orange", label: "橙", value: "#e3943a" },
   { id: "lavender", label: "紫", value: "#b8a6ff" },
+  { id: "violet", label: "堇", value: "#b080e0" },
   { id: "red", label: "红", value: "#c41c1c" },
   { id: "blue", label: "蓝", value: "#1d4ed8" },
+  { id: "cyan", label: "青", value: "#00bcf5" },
   { id: "gray", label: "灰", value: "#c8c8c8" },
   { id: "black", label: "黑", value: "#141618" },
 ];
@@ -81,7 +85,8 @@ export const TEMPLATE_ELEMENTS: Record<TemplateId, CoverElMeta[]> = {
     { id: "operator", label: "立绘", kind: "image" },
     { id: "polaroid", label: "拍立得", kind: "box" },
     { id: "episode", label: "期数", kind: "text", defaultFont: "cn" },
-    { id: "series", label: "栏目名", kind: "text", defaultFont: "cn" },
+    { id: "episode-bar", label: "期数竖线", kind: "box", hasColor: true },
+    { id: "series", label: "栏目名", kind: "text", defaultFont: "serif" },
     { id: "series-accent", label: "之癫", kind: "text", defaultFont: "cn" },
     { id: "chapter", label: "干员篇", kind: "text", defaultFont: "cn" },
     { id: "subtitle", label: "副标题", kind: "text", defaultFont: "cn" },
@@ -94,5 +99,17 @@ export const TEMPLATE_ELEMENTS: Record<TemplateId, CoverElMeta[]> = {
     { id: "line", label: "分隔线", kind: "box" },
     { id: "limit", label: "限制", kind: "text", defaultFont: "cn" },
     { id: "sign", label: "署名", kind: "text", defaultFont: "cn" },
+  ],
+  endfield: [
+    { id: "triangle", label: "黄三角", kind: "box", hasColor: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "mark", label: "角标", kind: "text", defaultFont: "cn" },
+    { id: "bracket-l", label: "左括号", kind: "text", defaultFont: "cn", hasColor: true },
+    { id: "name", label: "角色名", kind: "text", defaultFont: "cn" },
+    { id: "bracket-r", label: "右括号", kind: "text", defaultFont: "cn", hasColor: true },
+    { id: "bar", label: "栏目条", kind: "box", hasColor: true },
+    { id: "bar-accent", label: "色码条", kind: "box" },
+    { id: "series", label: "栏目名", kind: "text", defaultFont: "cn" },
+    { id: "tag", label: "英文标", kind: "text", defaultFont: "display" },
   ],
 };

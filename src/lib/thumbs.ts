@@ -1,4 +1,6 @@
+import endfieldThumb from "../assets/thumbs/endfield-shot.webp";
 import firstkillThumb from "../assets/thumbs/firstkill-shot.webp";
+import madnessThumb from "../assets/thumbs/madness-shot.webp";
 import rogueThumb from "../assets/thumbs/rogue-shot.webp";
 import type { TemplateId } from "../types";
 
@@ -8,7 +10,9 @@ const THUMB_REV: Partial<Record<TemplateId, number>> = {
 
 const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   firstkill: firstkillThumb,
+  madness: madnessThumb,
   rogue: rogueThumb,
+  endfield: endfieldThumb,
 };
 
 export function templateThumbSrc(id: TemplateId): string {

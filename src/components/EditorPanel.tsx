@@ -1,4 +1,5 @@
 import { UploadSimple } from "@phosphor-icons/react";
+import { IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
 import { artUrl } from "../data/arts";
 import { ORNAMENTS } from "../data/ornaments";
 import { useCover } from "../store/CoverContext";
@@ -17,6 +18,8 @@ export function EditorPanel() {
     subtitleLabel,
     episodeLabel,
     signatureLabel,
+    showMark,
+    markLabel,
     defaultImageScale,
     showBackground,
     showTextBackground,
@@ -75,11 +78,25 @@ export function EditorPanel() {
                     ? "紧急"
                     : signatureLabel === "英文标"
                       ? "FIVE STAR MADNESS"
-                      : "QM"
+                      : signatureLabel === "游戏标"
+                        ? "ARKNIGHTS: ENDFIELD"
+                        : "QM"
               }
             />
           </Field>
         </div>
+        {showMark ? (
+          <div className="mt-3">
+            <Field label={markLabel}>
+              <input
+                className={fieldClass}
+                value={draft.mark ?? ""}
+                onChange={(e) => patchDraft({ mark: e.target.value })}
+                placeholder="明日方舟测评"
+              />
+            </Field>
+          </div>
+        ) : null}
       </div>
 
       {showOrnament ? (
@@ -136,6 +153,10 @@ export function EditorPanel() {
         operatorId={draft.operatorId}
         artId={draft.artId}
         uploaded={Boolean(draft.imageDataUrl)}
+        edgeFade={draft.imageEdgeFade ?? false}
+        edgeFadeAmount={draft.imageEdgeFadeAmount}
+        onEdgeFadeChange={(imageEdgeFade) => patchDraft({ imageEdgeFade })}
+        onEdgeFadeAmountChange={(imageEdgeFadeAmount) => patchDraft({ imageEdgeFadeAmount })}
         onPick={(op, art) => {
           const keepTitle = draft.title.trim() && draft.title.trim() !== draft.operatorName;
           patchDraft({
@@ -156,8 +177,8 @@ export function EditorPanel() {
         <Field label={`立绘缩放 ${draft.imageScale}%`}>
           <input
             type="range"
-            min={40}
-            max={220}
+            min={IMAGE_SCALE_MIN}
+            max={IMAGE_SCALE_MAX}
             value={draft.imageScale}
             onChange={(e) => patchDraft({ imageScale: Number(e.target.value) })}
             className="w-full"
