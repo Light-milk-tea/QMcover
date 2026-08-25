@@ -1,6 +1,7 @@
 import { CoverElement, useElementEdit } from "../components/CoverElement";
 import { BILI_COVER } from "../constants";
 import { getBgPreset } from "../data/backgrounds";
+import { elementText } from "../data/elements";
 import { useCdnSrc } from "../lib/cdn";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
@@ -97,10 +98,13 @@ function SideEmblem() {
 }
 
 export function Rogue(props: CoverRenderProps) {
-  const theme = props.title.trim() || "主题";
-  const cond = props.subtitle.trim();
-  const redTag = props.signature.trim();
-  const node = `N${props.episode || 15}`;
+  const styles = props.elementStyles;
+  const theme = elementText(styles, "theme", props.title.trim() || "主题");
+  const cond = elementText(styles, "cond", props.subtitle.trim());
+  const redTag = elementText(styles, "red-tag", props.signature.trim());
+  const node = elementText(styles, "node", `N${props.episode || 15}`);
+  const watermark = elementText(styles, "watermark", "ISW-NO");
+  const watermarkFlip = elementText(styles, "watermark-flip", "ISW-NO");
   const canvasBg = getBgPreset(props.bgPreset);
   const fillBg = getBgPreset(props.textBgPreset || props.bgPreset);
   const canvasRemote = useCdnSrc(canvasBg.url ?? "");
@@ -154,7 +158,7 @@ export function Rogue(props: CoverRenderProps) {
         defaultFontSize={140}
         className="absolute top-[185px] left-[902px] z-[2] leading-none"
       >
-        <HollowMark text="ISW-NO" />
+        <HollowMark text={watermark} />
       </CoverElement>
       <CoverElement
         id="watermark-flip"
@@ -163,10 +167,10 @@ export function Rogue(props: CoverRenderProps) {
         className="absolute top-[809px] left-[899px] z-[2] leading-none"
         style={{ transform: "scaleY(-1)", transformOrigin: "center" }}
       >
-        <HollowMark text="ISW-NO" />
+        <HollowMark text={watermarkFlip} />
       </CoverElement>
 
-      <div className="absolute inset-y-0 left-[-6%] z-[1] w-[52%]">
+      <div className="absolute inset-y-0 left-[-6%] w-[52%]">
         <OperatorLayer
           {...props}
           fadeRight

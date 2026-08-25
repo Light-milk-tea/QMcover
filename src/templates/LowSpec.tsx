@@ -1,5 +1,6 @@
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
+import { elementText } from "../data/elements";
 import { getOrnament } from "../data/ornaments";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
@@ -127,16 +128,23 @@ function BannerOrnament({ id }: { id?: string }) {
 }
 
 export function LowSpec(props: CoverRenderProps) {
-  const { gold: goldText, white: whiteText } = splitEventTitle(props.title);
-  const guide = props.subtitle.trim() || "平民攻略";
-  const sign = props.signature.trim();
+  const styles = props.elementStyles;
+  const { gold: goldSplit, white: whiteSplit } = splitEventTitle(props.title);
+  const goldText = elementText(styles, "operation", goldSplit);
+  const whiteText = elementText(styles, "operation-sub", whiteSplit);
+  const goldLabel = elementText(styles, "cc-gold", "活动");
+  const operationEn = elementText(styles, "operation-en", "OPERATION");
+  const guide = elementText(styles, "guide", props.subtitle.trim() || "平民攻略");
+  const sign = elementText(styles, "sign", props.signature.trim());
+  const slogan = elementText(styles, "slogan", "阵容平民 语音详解");
+  const sloganParts = slogan.split(/\s+/).filter(Boolean);
   const bg = getBgPreset(props.bgPreset);
   const scene = bg.url;
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-[#080a0e]">
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 38} at="28% 48%" className="z-[1]" />
-      <div className="absolute inset-y-0 left-[-10%] z-[1] w-[58%]">
+      <div className="absolute inset-y-0 left-[-10%] w-[58%]">
         <OperatorLayer
           {...props}
           fadeRight
@@ -161,7 +169,7 @@ export function LowSpec(props: CoverRenderProps) {
               defaultFontSize={28}
               className="pointer-events-none absolute opacity-0"
             >
-              活动
+              {goldLabel}
             </CoverElement>
             <div className="flex shrink-0 items-end">
               <div className="shrink-0">
@@ -183,7 +191,7 @@ export function LowSpec(props: CoverRenderProps) {
                     className="mt-1 font-semibold tracking-[0.32em] text-[#e8c86a]"
                     style={{ textShadow: "0 2px 0 #0a2030" }}
                   >
-                    OPERATION
+                    {operationEn}
                   </CoverElement>
                 )}
               </div>
@@ -210,7 +218,7 @@ export function LowSpec(props: CoverRenderProps) {
                     className="font-semibold tracking-[0.36em] text-[#e8c86a]"
                     style={{ textShadow: "0 2px 0 #0a2030" }}
                   >
-                    OPERATION
+                    {operationEn}
                   </CoverElement>
                 </div>
               ) : null}
@@ -261,8 +269,9 @@ export function LowSpec(props: CoverRenderProps) {
               className="flex gap-16 font-black tracking-[0.08em] text-white"
               style={{ lineHeight: 1, textShadow: "0 3px 0 #04080c, 0 10px 18px rgba(0,0,0,0.5)" }}
             >
-              <span>阵容平民</span>
-              <span>语音详解</span>
+              {sloganParts.map((part) => (
+                <span key={part}>{part}</span>
+              ))}
             </CoverElement>
           </div>
         </div>

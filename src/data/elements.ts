@@ -1,4 +1,5 @@
-import type { CoverFontId, ElementKind, TemplateId } from "../types";
+import { findOperatorByName } from "./arts";
+import type { BuiltinTemplateId, CoverFontId, Draft, ElementKind, ElementOverride, TextBind } from "../types";
 
 export type CoverElMeta = {
   id: string;
@@ -8,7 +9,52 @@ export type CoverElMeta = {
   hasOpacity?: boolean;
   defaultOpacity?: number;
   hasColor?: boolean;
+  textBind?: Exclude<TextBind, "custom">;
+  textDefault?: string;
 };
+
+export function elementText(
+  styles: Record<string, ElementOverride> | undefined,
+  id: string,
+  fallback: string,
+): string {
+  const override = styles?.[id]?.text;
+  return override !== undefined ? override : fallback;
+}
+
+export function nativeTextValue(
+  templateId: string,
+  meta: CoverElMeta,
+  draft: Draft,
+  style: ElementOverride,
+): string {
+  if (meta.textBind === "title") return draft.title;
+  if (meta.textBind === "subtitle") return draft.subtitle;
+  if (meta.textBind === "signature") return draft.signature;
+  if (meta.textBind === "mark") return draft.mark ?? "";
+  if (meta.textBind === "operatorName") return draft.operatorName;
+  if (meta.textBind === "episode") return String(draft.episode);
+  if (style.text !== undefined) return style.text;
+  if (templateId === "madness" && meta.id === "chapter") {
+    return `${draft.title.trim() || draft.operatorName.trim() || "干员"}篇`;
+  }
+  if (templateId === "madness" && meta.id === "en-name") {
+    const name = draft.title.trim() || draft.operatorName.trim();
+    return findOperatorByName(name)?.nameEn || findOperatorByName(draft.operatorName)?.nameEn || "";
+  }
+  if (templateId === "madness" && meta.id === "episode") {
+    return `第${draft.episode || 1}期`;
+  }
+  if (templateId === "rogue" && meta.id === "node") {
+    return `N${draft.episode || 15}`;
+  }
+  if (templateId === "lowspec" && meta.id === "operation-sub") {
+    const title = draft.title.trim() || "行动";
+    const i = title.indexOf("的");
+    return i > 0 && i < title.length - 1 ? title.slice(i) : "";
+  }
+  return meta.textDefault ?? "";
+}
 
 export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[] = [
   { id: "cn", label: "思源黑体", className: "font-cn" },
@@ -48,68 +94,76 @@ export function normalizeHex(raw: string): string | undefined {
   return `#${hex.toLowerCase()}`;
 }
 
-export const TEMPLATE_ELEMENTS: Record<TemplateId, CoverElMeta[]> = {
+export function isNativeElement(templateId: string, id: string): boolean {
+  if (!(templateId in TEMPLATE_ELEMENTS)) return false;
+  return TEMPLATE_ELEMENTS[templateId as BuiltinTemplateId].some((el) => el.id === id);
+}
+
+export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
   firstkill: [
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "stage", label: "地图名", kind: "text", defaultFont: "cn" },
-    { id: "subtitle", label: "副标题", kind: "text", defaultFont: "cn" },
-    { id: "level-label", label: "危机等级", kind: "text", defaultFont: "cn" },
-    { id: "level", label: "等级数字", kind: "text", defaultFont: "display" },
-    { id: "cc-en", label: "CONTINGENCY", kind: "text", defaultFont: "display" },
-    { id: "operation", label: "行动名", kind: "text", defaultFont: "cn" },
-    { id: "cc-cn", label: "危机合约", kind: "text", defaultFont: "cn" },
+    { id: "stage", label: "地图名", kind: "text", defaultFont: "cn", textBind: "title" },
+    { id: "subtitle", label: "副标题", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "level-label", label: "危机等级", kind: "text", defaultFont: "cn", textDefault: "危机等级" },
+    { id: "level", label: "等级数字", kind: "text", defaultFont: "display", textBind: "episode" },
+    { id: "cc-mark", label: "三角标", kind: "box" },
+    { id: "cc-en", label: "CONTINGENCY", kind: "text", defaultFont: "display", textDefault: "CONTINGENCY\nCONTRACT" },
+    { id: "operation", label: "行动名", kind: "text", defaultFont: "cn", textBind: "signature" },
+    { id: "cc-cn", label: "危机合约", kind: "text", defaultFont: "cn", textDefault: "危机合约" },
   ],
   lowspec: [
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "operation", label: "行动", kind: "text", defaultFont: "serif" },
+    { id: "operation", label: "行动", kind: "text", defaultFont: "serif", textBind: "title" },
     { id: "operation-sub", label: "活动后缀", kind: "text", defaultFont: "serif" },
-    { id: "cc-gold", label: "活动标", kind: "text", defaultFont: "cn" },
-    { id: "operation-en", label: "OPERATION", kind: "text", defaultFont: "display" },
+    { id: "cc-gold", label: "活动标", kind: "text", defaultFont: "cn", textDefault: "活动" },
+    { id: "operation-en", label: "OPERATION", kind: "text", defaultFont: "display", textDefault: "OPERATION" },
     { id: "banner", label: "白底条", kind: "box" },
-    { id: "sign", label: "署名", kind: "text", defaultFont: "display" },
-    { id: "guide", label: "攻略类型", kind: "text", defaultFont: "serif" },
-    { id: "slogan", label: "卖点句", kind: "text", defaultFont: "serif" },
+    { id: "sign", label: "署名", kind: "text", defaultFont: "display", textBind: "signature" },
+    { id: "guide", label: "攻略类型", kind: "text", defaultFont: "serif", textBind: "subtitle" },
+    { id: "slogan", label: "卖点句", kind: "text", defaultFont: "serif", textDefault: "阵容平民 语音详解" },
   ],
   rogue: [
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "watermark", label: "ISW-NO 上", kind: "text", defaultFont: "serif" },
-    { id: "watermark-flip", label: "ISW-NO 下", kind: "text", defaultFont: "serif" },
-    { id: "theme", label: "主题", kind: "text", defaultFont: "serif" },
-    { id: "red-tag", label: "红标", kind: "text", defaultFont: "cn" },
-    { id: "cond", label: "条件", kind: "text", defaultFont: "serif" },
+    { id: "watermark", label: "ISW-NO 上", kind: "text", defaultFont: "serif", textDefault: "ISW-NO" },
+    { id: "watermark-flip", label: "ISW-NO 下", kind: "text", defaultFont: "serif", textDefault: "ISW-NO" },
+    { id: "theme", label: "主题", kind: "text", defaultFont: "serif", textBind: "title" },
+    { id: "red-tag", label: "红标", kind: "text", defaultFont: "cn", textBind: "signature" },
+    { id: "cond", label: "条件", kind: "text", defaultFont: "serif", textBind: "subtitle" },
     { id: "node", label: "节点", kind: "text", defaultFont: "display" },
     { id: "emblem", label: "侧标", kind: "box" },
   ],
   madness: [
     { id: "vignette", label: "暗角", kind: "box", hasOpacity: true, defaultOpacity: 70 },
     { id: "operator", label: "立绘", kind: "image" },
+    { id: "polaroid-back", label: "底层拍立得", kind: "box", hasColor: true },
     { id: "polaroid", label: "拍立得", kind: "box" },
+    { id: "five-star", label: "五星", kind: "box" },
     { id: "episode", label: "期数", kind: "text", defaultFont: "cn" },
     { id: "episode-bar", label: "期数竖线", kind: "box", hasColor: true },
-    { id: "series", label: "栏目名", kind: "text", defaultFont: "serif" },
-    { id: "series-accent", label: "之癫", kind: "text", defaultFont: "cn" },
+    { id: "series", label: "栏目名", kind: "text", defaultFont: "serif", textDefault: "决战五星" },
+    { id: "series-accent", label: "之癫", kind: "text", defaultFont: "cn", textDefault: "之癫" },
     { id: "chapter", label: "干员篇", kind: "text", defaultFont: "cn" },
-    { id: "subtitle", label: "副标题", kind: "text", defaultFont: "cn" },
-    { id: "en-tag", label: "英文标", kind: "text", defaultFont: "display" },
+    { id: "subtitle", label: "副标题", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "en-tag", label: "英文标", kind: "text", defaultFont: "display", textBind: "signature" },
     { id: "en-name", label: "英文名", kind: "text", defaultFont: "display" },
   ],
   nocore: [
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "stage", label: "关卡", kind: "text", defaultFont: "cn" },
+    { id: "stage", label: "关卡", kind: "text", defaultFont: "cn", textBind: "title" },
     { id: "line", label: "分隔线", kind: "box" },
-    { id: "limit", label: "限制", kind: "text", defaultFont: "cn" },
-    { id: "sign", label: "署名", kind: "text", defaultFont: "cn" },
+    { id: "limit", label: "限制", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "sign", label: "署名", kind: "text", defaultFont: "cn", textBind: "signature" },
   ],
   endfield: [
     { id: "triangle", label: "黄三角", kind: "box", hasColor: true },
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "mark", label: "角标", kind: "text", defaultFont: "cn" },
+    { id: "mark", label: "角标", kind: "text", defaultFont: "cn", textBind: "mark" },
     { id: "bracket-l", label: "左括号", kind: "text", defaultFont: "cn", hasColor: true },
-    { id: "name", label: "角色名", kind: "text", defaultFont: "cn" },
+    { id: "name", label: "角色名", kind: "text", defaultFont: "cn", textBind: "title" },
     { id: "bracket-r", label: "右括号", kind: "text", defaultFont: "cn", hasColor: true },
     { id: "bar", label: "栏目条", kind: "box", hasColor: true },
     { id: "bar-accent", label: "色码条", kind: "box" },
-    { id: "series", label: "栏目名", kind: "text", defaultFont: "cn" },
-    { id: "tag", label: "英文标", kind: "text", defaultFont: "display" },
+    { id: "series", label: "栏目名", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "tag", label: "英文标", kind: "text", defaultFont: "display", textBind: "signature" },
   ],
 };

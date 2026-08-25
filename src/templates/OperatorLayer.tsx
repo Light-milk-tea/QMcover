@@ -1,10 +1,15 @@
 import { useRef } from "react";
 import type { PointerEvent } from "react";
 import { useElementEdit } from "../components/CoverElement";
+import { RotateHandle } from "../components/RotateHandle";
+import { isNativeElement } from "../data/elements";
+import { layerZIndex } from "../lib/document";
+import { useCoverOptional } from "../store/CoverContext";
 import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN } from "../constants";
 import { useCdnSrc } from "../lib/cdn";
 
 type Props = {
+  layerId?: string;
   imageUrl: string;
   imageScale: number;
   imageX: number;
@@ -22,9 +27,12 @@ type Props = {
   objectPosition?: string;
   imageEdgeFade?: boolean;
   imageEdgeFadeAmount?: number;
+  framed?: boolean;
+  emptyHint?: string;
 };
 
 export function OperatorLayer({
+  layerId = "operator",
   imageUrl,
   imageScale,
   imageX,
@@ -42,36 +50,58 @@ export function OperatorLayer({
   objectPosition,
   imageEdgeFade = false,
   imageEdgeFadeAmount = IMAGE_EDGE_FADE_DEFAULT,
+  framed = false,
+  emptyHint = "从立绘库点选",
 }: Props) {
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
   const edit = useElementEdit();
-  const selected = edit?.selectedId === "operator";
+  const cover = useCoverOptional();
+  const selected = edit?.selectedId === layerId;
   const interactive = edit?.interactive ?? false;
   const remote = useCdnSrc(imageUrl);
   const tallRightFade = fadeRight && !fadeBottom;
+  const selfLayer = cover?.draft.layers.find((layer) => layer.id === layerId);
+  const hidden = Boolean(selfLayer?.hidden || selfLayer?.removed);
+  const zIndex = cover ? layerZIndex(cover.draft.layers, layerId) : undefined;
+
+  const rotation = edit?.styles[layerId]?.rotation ?? 0;
+  const ownChrome = isNativeElement(cover?.templateId ?? "", layerId);
+  const insideFrame = framed || !ownChrome;
+  const panX = insideFrame ? 0 : imageX;
+  const panY = insideFrame ? 0 : imageY;
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest("[data-rotate-handle]")) return;
+    if (insideFrame) return;
     e.stopPropagation();
-    if (interactive) edit?.select("operator");
+    if (interactive) edit?.select(layerId);
     dragging.current = true;
     last.current = { x: e.clientX, y: e.clientY };
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
+  if (hidden && !imageUrl) return null;
+
   if (!imageUrl) {
     if (!showPlaceholder) return <div className={className} />;
     return (
       <div className={`grid place-items-center text-[#efe8de]/35 ${className}`}>
-        <p className="font-cn text-[42px] tracking-wide">从立绘库点选</p>
+        <p className="font-cn text-[42px] tracking-wide">{emptyHint}</p>
       </div>
     );
   }
 
   return (
     <div
-      data-cover-el="operator"
-      className={`relative z-[1] ${className}`}
+      data-cover-el={layerId}
+      className={`relative ${className}`}
+      style={{
+        zIndex,
+        visibility: hidden ? "hidden" : undefined,
+        pointerEvents: hidden || insideFrame ? "none" : undefined,
+        ...(rotation ? { transform: `rotate(${rotation}deg)`, transformOrigin: "center center" } : {}),
+      }}
       onPointerDown={onPointerDown}
       onPointerMove={(e) => {
         if (!dragging.current) return;
@@ -134,7 +164,8 @@ export function OperatorLayer({
             objectFit,
             objectPosition,
             transformOrigin,
-            transform: `translate(${imageX}px, ${imageY}px) scale(${imageScale / 100})`,
+            transform: `translate(${panX}px, ${panY}px) scale(${imageScale / 100})`,
+            pointerEvents: "auto",
             cursor: dragging.current ? "grabbing" : "grab",
             ...(imageEdgeFade
               ? (() => {
@@ -182,11 +213,17 @@ export function OperatorLayer({
           </span>
         </span>
       ) : null}
-      {selected && interactive ? (
-        <span
-          data-ignore-export="true"
-          className="pointer-events-none absolute inset-0 border-2 border-accent"
-        />
+      {selected && interactive && ownChrome ? (
+        <>
+          <span
+            data-ignore-export="true"
+            className="pointer-events-none absolute inset-0 border-2 border-accent"
+          />
+          <RotateHandle
+            rotation={rotation}
+            onChange={(deg) => edit?.patchElement(layerId, { rotation: deg })}
+          />
+        </>
       ) : null}
     </div>
   );

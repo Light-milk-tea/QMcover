@@ -1,6 +1,7 @@
 import { CoverElement } from "../components/CoverElement";
 import { findOperatorByName } from "../data/arts";
 import { getBgPreset } from "../data/backgrounds";
+import { elementText } from "../data/elements";
 import type { CoverRenderProps } from "../types";
 import { OperatorLayer } from "./OperatorLayer";
 
@@ -81,13 +82,21 @@ function FiveStarMark() {
 }
 
 export function Madness(props: CoverRenderProps) {
+  const styles = props.elementStyles;
   const name = props.title.trim() || props.operatorName.trim() || "干员";
-  const subtitle = props.subtitle.trim();
-  const episode = `第${props.episode || 1}期`;
-  const enTag = props.signature.trim() || "FIVE STAR MADNESS";
-  const nameEn = findOperatorByName(name)?.nameEn || findOperatorByName(props.operatorName)?.nameEn || "";
+  const seriesMain = elementText(styles, "series", "决战五星");
+  const seriesAccent = elementText(styles, "series-accent", "之癫");
+  const chapter = elementText(styles, "chapter", `${name}篇`);
+  const subtitle = elementText(styles, "subtitle", props.subtitle.trim());
+  const episode = elementText(styles, "episode", `第${props.episode || 1}期`);
+  const enTag = elementText(styles, "en-tag", props.signature.trim() || "FIVE STAR MADNESS");
+  const nameEn = elementText(
+    styles,
+    "en-name",
+    findOperatorByName(name)?.nameEn || findOperatorByName(props.operatorName)?.nameEn || "",
+  );
   const bg = getBgPreset(props.bgPreset);
-  const series = "决战五星之癫";
+  const seriesLen = (seriesMain + seriesAccent).length;
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-[#0c1016]">
@@ -116,8 +125,10 @@ export function Madness(props: CoverRenderProps) {
         </CoverElement>
       ) : null}
 
-      <div className="absolute top-[80px] left-[176px] z-10 w-[980px]">
-        <FiveStarMark />
+      <div className="absolute top-[80px] left-[176px] w-[980px]">
+        <CoverElement id="five-star" kind="box" className="block">
+          <FiveStarMark />
+        </CoverElement>
         <div className="h-[200px]" />
 
         <CoverElement
@@ -139,7 +150,7 @@ export function Madness(props: CoverRenderProps) {
           <CoverElement
             id="series"
             defaultFont="serif"
-            defaultFontSize={seriesSize(series.length)}
+            defaultFontSize={seriesSize(seriesLen)}
             defaultX={-17}
             defaultY={-13}
             className="font-black tracking-[-0.03em]"
@@ -149,12 +160,12 @@ export function Madness(props: CoverRenderProps) {
               textShadow: "0 10px 22px rgba(0,0,0,0.45)",
             }}
           >
-            <FaceWord text="决战五星" />
+            <FaceWord text={seriesMain} />
           </CoverElement>
           <CoverElement
             id="series-accent"
             defaultFont="cn"
-            defaultFontSize={seriesSize(series.length)}
+            defaultFontSize={seriesSize(seriesLen)}
             className="pb-1 font-black tracking-[-0.06em]"
             style={{
               lineHeight: 1,
@@ -163,29 +174,27 @@ export function Madness(props: CoverRenderProps) {
               textShadow: "0 8px 20px rgba(0,0,0,0.4)",
             }}
           >
-            之癫
+            {seriesAccent}
           </CoverElement>
         </div>
 
         <div className="mt-7 flex flex-wrap items-baseline gap-x-6 gap-y-2">
           <CoverElement
             id="chapter"
-            defaultFontSize={chapterSize(name.length + 1)}
+            defaultFontSize={chapterSize(chapter.length)}
             className="font-black tracking-tight text-[#f4f0e8]"
             style={{ lineHeight: 1.05, textShadow: "0 3px 12px rgba(0,0,0,0.55)" }}
           >
-            {name}篇
+            {chapter}
           </CoverElement>
-          {subtitle ? (
-            <CoverElement
-              id="subtitle"
-              defaultFontSize={subSize(subtitle.length)}
-              className="font-bold tracking-tight"
-              style={{ lineHeight: 1.05, color: "#b080e0", textShadow: "0 3px 12px rgba(0,0,0,0.55)" }}
-            >
-              {subtitle}
-            </CoverElement>
-          ) : null}
+          <CoverElement
+            id="subtitle"
+            defaultFontSize={subSize(subtitle.length || 1)}
+            className="font-bold tracking-tight"
+            style={{ lineHeight: 1.05, color: "#b080e0", textShadow: "0 3px 12px rgba(0,0,0,0.55)" }}
+          >
+            {subtitle}
+          </CoverElement>
         </div>
 
         <CoverElement
@@ -200,15 +209,18 @@ export function Madness(props: CoverRenderProps) {
         </CoverElement>
       </div>
 
-      <div
-        className="pointer-events-none absolute top-[18px] right-[148px] z-[2] h-[860px] w-[700px] p-[18px] pb-[60px]"
+      <CoverElement
+        id="polaroid-back"
+        kind="box"
+        className="absolute top-[18px] right-[148px] z-[2] h-[860px] w-[700px] p-[18px] pb-[60px]"
         style={{
           transform: "rotate(-8.8deg)",
-          background: PAPER_BACK,
+          color: PAPER_BACK,
+          background: "currentColor",
           boxShadow: "0 16px 36px rgba(0,0,0,0.3)",
         }}
       >
-        <div className="relative h-full overflow-hidden bg-[#1a1e24]">
+        <div className="pointer-events-none relative h-full overflow-hidden bg-[#1a1e24]">
           {bg.url ? (
             <img
               src={bg.url}
@@ -232,7 +244,7 @@ export function Madness(props: CoverRenderProps) {
             />
           ) : null}
         </div>
-      </div>
+      </CoverElement>
 
       <CoverElement
         id="polaroid"
@@ -264,17 +276,15 @@ export function Madness(props: CoverRenderProps) {
             className="absolute inset-0 h-full w-full"
           />
         </div>
-        {nameEn ? (
-          <CoverElement
-            id="en-name"
-            defaultFont="display"
-            defaultFontSize={enNameSize(nameEn.length)}
-            className="absolute right-[28px] bottom-[22px] font-medium italic tracking-wide text-[#3a342c]"
-            style={{ lineHeight: 1 }}
-          >
-            {nameEn}
-          </CoverElement>
-        ) : null}
+        <CoverElement
+          id="en-name"
+          defaultFont="display"
+          defaultFontSize={enNameSize(nameEn.length || 1)}
+          className="absolute right-[28px] bottom-[22px] font-medium italic tracking-wide text-[#3a342c]"
+          style={{ lineHeight: 1 }}
+        >
+          {nameEn}
+        </CoverElement>
       </CoverElement>
     </div>
   );

@@ -110,18 +110,25 @@ export function useCdnHost(): string {
   return host;
 }
 
+const loadedSrcs = new Set<string>();
+
+function alreadyLoaded(url: string, mirrors: string[]): boolean {
+  if (loadedSrcs.has(url)) return true;
+  return mirrors.some((item) => loadedSrcs.has(item));
+}
+
 export function useCdnSrc(url: string) {
   const mirrors = useMemo(() => ghMirrors(url), [url]);
   const [index, setIndex] = useState(0);
-  const [loading, setLoading] = useState(Boolean(url));
+  const [loading, setLoading] = useState(() => Boolean(url) && !alreadyLoaded(url, ghMirrors(url)));
   const [failed, setFailed] = useState(false);
   const src = mirrors[Math.min(index, Math.max(mirrors.length - 1, 0))] || url;
 
   useEffect(() => {
     setIndex(0);
-    setLoading(Boolean(url));
+    setLoading(Boolean(url) && !alreadyLoaded(url, mirrors));
     setFailed(false);
-  }, [url]);
+  }, [url, mirrors]);
 
   useEffect(() => {
     if (index < mirrors.length) return;
@@ -142,6 +149,8 @@ export function useCdnSrc(url: string) {
     loading,
     failed,
     onLoad: () => {
+      loadedSrcs.add(src);
+      if (url) loadedSrcs.add(url);
       setLoading(false);
       setFailed(false);
       rememberHostFromUrl(src);

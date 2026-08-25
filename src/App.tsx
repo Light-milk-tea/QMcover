@@ -6,7 +6,7 @@ import { InspectorPanel } from "./components/InspectorPanel";
 import { ThumbCapture } from "./components/ThumbCapture";
 import { TopBar } from "./components/TopBar";
 import { isTemplateId } from "./data/templates";
-import { buildCoverConfig, downloadCoverConfig } from "./lib/exportConfig";
+import { isBuiltinId } from "./lib/document";
 import { coverFilename, exportCoverPng } from "./lib/exportCover";
 import { displaySubtitle, displayTitle } from "./lib/interpolate";
 import { CoverProvider, useCover } from "./store/CoverContext";
@@ -20,7 +20,7 @@ type Route =
 function parseHash(): Route {
   const hash = window.location.hash.replace(/^#/, "");
   const thumb = hash.match(/^\/__thumb\/([\w-]+)/)?.[1];
-  if (thumb && isTemplateId(thumb)) return { kind: "thumb", templateId: thumb };
+  if (thumb && isBuiltinId(thumb)) return { kind: "thumb", templateId: thumb };
   const id = hash.match(/^\/t\/([\w-]+)/)?.[1];
   if (id && isTemplateId(id)) return { kind: "edit", templateId: id };
   return { kind: "home" };
@@ -46,9 +46,9 @@ function useTemplateRoute() {
   };
 }
 
-function Workbench({ onBack }: { onBack: () => void }) {
+function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string) => void }) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const { templateId, templateName, draft, titleKind, resolvedElements } = useCover();
+  const { templateName, draft, titleKind } = useCover();
   const title = displayTitle(draft, titleKind);
   const subtitle = displaySubtitle(draft);
 
@@ -56,15 +56,11 @@ function Workbench({ onBack }: { onBack: () => void }) {
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-ink">
       <TopBar
         onBack={onBack}
-        onExportConfig={() => {
-          downloadCoverConfig(buildCoverConfig(templateId, draft, resolvedElements, stageRef.current));
-        }}
+        stageRef={stageRef}
+        onSavedTemplate={onOpen}
         onExport={async () => {
           if (!stageRef.current) throw new Error("no stage");
-          await exportCoverPng(
-            stageRef.current,
-            coverFilename(draft.date, templateName, draft.operatorName),
-          );
+          await exportCoverPng(stageRef.current, coverFilename(draft.date, templateName, draft.operatorName));
         }}
       />
       <div className="flex min-h-0 flex-1 gap-4 overflow-hidden p-4">
@@ -84,7 +80,7 @@ function Workbench({ onBack }: { onBack: () => void }) {
               <p className="shrink-0 text-[12px] text-mute">1920 × 1080</p>
             </div>
           </article>
-          <p className="mt-2 shrink-0 px-1 text-[13px] text-mute">点选文字调整位置和字体，拖动立绘可移位</p>
+          <p className="mt-2 shrink-0 px-1 text-[13px] text-mute">点选图层可拖移、四角缩放；右侧改文案和立绘</p>
         </main>
         <EditorPanel />
       </div>
@@ -105,7 +101,7 @@ export default function App() {
 
   return (
     <CoverProvider key={route.templateId} templateId={route.templateId}>
-      <Workbench onBack={openHome} />
+      <Workbench onBack={openHome} onOpen={openTemplate} />
     </CoverProvider>
   );
 }

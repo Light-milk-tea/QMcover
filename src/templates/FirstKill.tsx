@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
+import { elementText } from "../data/elements";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -41,9 +42,14 @@ function OffsetTitle({ text }: { text: string }) {
 }
 
 export function FirstKill(props: CoverRenderProps) {
-  const stage = props.title.trim() || "地图名";
-  const operation = props.signature.trim();
-  const level = String(props.episode || 1);
+  const styles = props.elementStyles;
+  const stage = elementText(styles, "stage", props.title.trim() || "地图名");
+  const subtitle = elementText(styles, "subtitle", props.subtitle);
+  const levelLabel = elementText(styles, "level-label", "危机等级");
+  const operation = elementText(styles, "operation", props.signature.trim());
+  const level = elementText(styles, "level", String(props.episode || 1));
+  const ccEn = elementText(styles, "cc-en", "CONTINGENCY\nCONTRACT");
+  const ccCn = elementText(styles, "cc-cn", "危机合约");
   const levelPx = level.length >= 3 ? 84 : 104;
 
   const bg = getBgPreset(props.bgPreset);
@@ -63,7 +69,7 @@ export function FirstKill(props: CoverRenderProps) {
 
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 42} at="22% 42%" />
 
-      <div className="absolute inset-y-0 right-[-6%] z-[1] w-[76%]">
+      <div className="absolute inset-y-0 right-[-6%] w-[76%]">
         <OperatorLayer
           {...props}
           objectFit="contain"
@@ -73,7 +79,7 @@ export function FirstKill(props: CoverRenderProps) {
 
       <div className="absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-[#141618]/78 via-[#141618]/32 to-transparent" />
 
-      <div className="absolute top-[96px] left-[80px] z-10 w-[1080px]">
+      <div className="absolute top-[96px] left-[80px] w-[1080px]">
         <CoverElement
           id="stage"
           defaultFontSize={stageSize(stage.length)}
@@ -84,14 +90,14 @@ export function FirstKill(props: CoverRenderProps) {
         </CoverElement>
 
         <div className="mt-2 flex items-baseline gap-5">
-          {props.subtitle ? (
+          {subtitle ? (
             <CoverElement
               id="subtitle"
               defaultFontSize={88}
               className="font-black tracking-wide text-white"
               style={{ lineHeight: 1 }}
             >
-              <span className="cover-type-shadow">{props.subtitle}</span>
+              <span className="cover-type-shadow">{subtitle}</span>
             </CoverElement>
           ) : null}
           <CoverElement
@@ -100,7 +106,7 @@ export function FirstKill(props: CoverRenderProps) {
             className="font-black tracking-wide text-white"
             style={{ lineHeight: 1 }}
           >
-            <span className="cover-type-shadow">危机等级</span>
+            <span className="cover-type-shadow">{levelLabel}</span>
           </CoverElement>
           <CoverElement
             id="level"
@@ -113,19 +119,24 @@ export function FirstKill(props: CoverRenderProps) {
         </div>
 
         <div className="mt-6 flex items-center gap-4">
-          <svg width="68" height="68" viewBox="0 0 58 58" fill="none" aria-hidden>
-            <polygon points="29,3 55,53 3,53" stroke="#f2f2f2" strokeWidth="2.4" fill="none" />
-            <polygon points="29,16 44,48 14,48" fill="#f2f2f2" />
-          </svg>
+          <CoverElement id="cc-mark" kind="box" className="shrink-0">
+            <svg width="68" height="68" viewBox="0 0 58 58" fill="none" aria-hidden>
+              <polygon points="29,3 55,53 3,53" stroke="#f2f2f2" strokeWidth="2.4" fill="none" />
+              <polygon points="29,16 44,48 14,48" fill="#f2f2f2" />
+            </svg>
+          </CoverElement>
           <CoverElement
             id="cc-en"
             defaultFont="display"
             defaultFontSize={26}
             className="leading-[1.2] font-semibold tracking-[0.16em] text-[#d0d0d0]"
           >
-            CONTINGENCY
-            <br />
-            CONTRACT
+            {ccEn.split(/\n/).map((line, i) => (
+              <span key={`${line}-${i}`}>
+                {i > 0 ? <br /> : null}
+                {line}
+              </span>
+            ))}
           </CoverElement>
         </div>
 
@@ -144,7 +155,7 @@ export function FirstKill(props: CoverRenderProps) {
               defaultFontSize={24}
               className="mb-1.5 font-bold tracking-wide text-[#c8c8c8]"
             >
-              <span className="cover-type-shadow">危机合约</span>
+              <span className="cover-type-shadow">{ccCn}</span>
             </CoverElement>
           </div>
         ) : null}

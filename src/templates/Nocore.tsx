@@ -1,5 +1,6 @@
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
+import { elementText } from "../data/elements";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -67,9 +68,12 @@ function SignMark() {
 }
 
 export function Nocore(props: CoverRenderProps) {
-  const { code, mode } = splitStage(props.title);
-  const { lead, tail } = splitLimit(props.subtitle);
-  const sign = props.signature.trim();
+  const styles = props.elementStyles;
+  const stageRaw = elementText(styles, "stage", props.title);
+  const limitRaw = elementText(styles, "limit", props.subtitle);
+  const { code, mode } = splitStage(stageRaw);
+  const { lead, tail } = splitLimit(limitRaw);
+  const sign = elementText(styles, "sign", props.signature.trim());
   const bg = getBgPreset(props.bgPreset);
   const stageLen = (code + mode).length;
   const limitLen = (lead + tail).length;
@@ -132,7 +136,7 @@ export function Nocore(props: CoverRenderProps) {
         </CoverElement>
       ) : null}
 
-      <div className="absolute inset-y-0 right-[-2%] z-[1] w-[40%]">
+      <div className="absolute inset-y-0 right-[-2%] w-[40%]">
         <OperatorLayer
           {...props}
           objectFit="contain"

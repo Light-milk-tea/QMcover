@@ -1,4 +1,33 @@
+import { BLANK_TEMPLATE_ID } from "../constants";
+import { isBuiltinId, isCustomTemplateId, isOpenableId, savedTemplateToMeta } from "../lib/document";
+import { loadSavedTemplates } from "../lib/templateStore";
 import type { TemplateMeta } from "../types";
+
+export const BLANK_TEMPLATE: TemplateMeta = {
+  id: BLANK_TEMPLATE_ID,
+  name: "空白画布",
+  blurb: "从零开始排版",
+  defaultSubtitle: "",
+  showEpisode: true,
+  sampleTitle: "",
+  titleKind: "theme",
+  titleLabel: "标题",
+  titlePlaceholder: "标题",
+  subtitleLabel: "副标题",
+  episodeLabel: "数字",
+  signatureLabel: "署名",
+  showMark: true,
+  markLabel: "角标",
+  defaultEpisode: 1,
+  sampleSignature: "",
+  defaultImageScale: 100,
+  showBackground: true,
+  showBgDim: true,
+  defaultBgDim: false,
+  defaultBgDimAmount: 48,
+  defaultBgPreset: "ink",
+  canvasSkin: "plain",
+};
 
 export const TEMPLATES: TemplateMeta[] = [
   {
@@ -22,6 +51,7 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultBgPreset: "mine",
     defaultOperatorId: "char_107_liskam",
     defaultArtId: "char_107_liskam_striker#1",
+    canvasSkin: "firstkill",
   },
   {
     id: "lowspec",
@@ -44,6 +74,7 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultOperatorId: "char_358_lisa",
     showOrnament: true,
     defaultOrnamentId: "none",
+    canvasSkin: "lowspec",
   },
   {
     id: "rogue",
@@ -73,6 +104,7 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultBgDimAmount: 100,
     defaultOperatorId: "char_4037_demetr",
     defaultArtId: "char_4037_demetr_2",
+    canvasSkin: "rogue",
   },
   {
     id: "madness",
@@ -98,6 +130,7 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultBgPreset: "lungmen-night",
     defaultOperatorId: "char_446_aroma",
     defaultArtId: "char_446_aroma_2",
+    canvasSkin: "madness",
   },
   {
     id: "nocore",
@@ -122,6 +155,7 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultBgDimAmount: 42,
     defaultOperatorId: "char_4051_akkord",
     defaultArtId: "char_4051_akkord_summer#23",
+    canvasSkin: "nocore",
   },
   {
     id: "endfield",
@@ -148,13 +182,21 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultBgDimAmount: 28,
     defaultOperatorId: "char_300_phenxi",
     defaultArtId: "char_300_phenxi_witch#4",
+    canvasSkin: "endfield",
   },
 ];
 
 export function getTemplate(id: string): TemplateMeta | undefined {
-  return TEMPLATES.find((t) => t.id === id);
+  if (id === BLANK_TEMPLATE_ID) return BLANK_TEMPLATE;
+  const builtin = TEMPLATES.find((t) => t.id === id);
+  if (builtin) return builtin;
+  if (isCustomTemplateId(id)) {
+    const saved = loadSavedTemplates().find((item) => item.id === id);
+    if (saved) return savedTemplateToMeta(saved);
+  }
+  return undefined;
 }
 
-export function isTemplateId(id: string): id is TemplateMeta["id"] {
-  return TEMPLATES.some((t) => t.id === id);
+export function isTemplateId(id: string): boolean {
+  return isOpenableId(id) && (isBuiltinId(id) || id === BLANK_TEMPLATE_ID || Boolean(getTemplate(id)));
 }

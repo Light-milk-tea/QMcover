@@ -1,5 +1,6 @@
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
+import { elementText } from "../data/elements";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -142,10 +143,11 @@ function YellowDashes() {
 }
 
 export function Endfield(props: CoverRenderProps) {
-  const name = props.title.trim() || props.operatorName.trim() || "角色";
-  const series = props.subtitle.trim() || "数据与实战测评";
-  const tag = props.signature.trim() || "ARKNIGHTS: ENDFIELD";
-  const mark = props.mark.trim() || "明日方舟测评";
+  const styles = props.elementStyles;
+  const name = elementText(styles, "name", props.title.trim() || props.operatorName.trim() || "角色");
+  const series = elementText(styles, "series", props.subtitle.trim() || "数据与实战测评");
+  const tag = elementText(styles, "tag", props.signature.trim() || "ARKNIGHTS: ENDFIELD");
+  const mark = elementText(styles, "mark", props.mark.trim() || "明日方舟测评");
   const bg = getBgPreset(props.bgPreset);
   const n = name.length;
   const bh = bracketH(n);
@@ -191,7 +193,7 @@ export function Endfield(props: CoverRenderProps) {
 
       {props.bgDim ? <BgDimLayer on amount={props.bgDimAmount ?? 28} at="22% 48%" className="z-[2]" /> : null}
 
-      <div className="absolute inset-y-0 left-[-4%] z-[3] w-[54%] overflow-visible">
+      <div className="absolute inset-y-0 left-[-4%] w-[54%] overflow-visible">
         <OperatorLayer
           {...props}
           fadeRight

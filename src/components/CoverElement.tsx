@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, type CSSProperties, type PointerEvent, type ReactNode, useRef } from "react";
-import { fontClass } from "../data/elements";
+import { fontClass, isNativeElement } from "../data/elements";
+import { layerZIndex } from "../lib/document";
 import { useCoverOptional } from "../store/CoverContext";
 import type { CoverFontId, ElementKind, ElementOverride } from "../types";
+import { RotateHandle } from "./RotateHandle";
 
 function impliedColor(className: string, style?: CSSProperties, override?: string): string | undefined {
   if (override) return override;
@@ -76,6 +78,7 @@ export function CoverElement({
   children,
 }: Props) {
   const edit = useElementEdit();
+  const cover = useCoverOptional();
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
   const override = edit?.styles[id] ?? {};
@@ -84,17 +87,21 @@ export function CoverElement({
   const color = impliedColor(className, style, override.color);
   const x = override.x ?? defaultX;
   const y = override.y ?? defaultY;
+  const rotation = override.rotation ?? 0;
   const pos = useRef({ x, y });
   pos.current = { x, y };
-  const cover = useCoverOptional();
   useEffect(() => {
     cover?.reportElementResolved(id, { fontSize, font, color, x, y });
   }, [cover, id, fontSize, font, color, x, y]);
   const selected = edit?.selectedId === id;
   const interactive = edit?.interactive ?? false;
+  const nativeLayer = cover?.draft.layers.find((layer) => layer.id === id);
+  const hidden =
+    isNativeElement(cover?.templateId ?? "", id) && Boolean(nativeLayer?.hidden || nativeLayer?.removed);
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     if (!interactive || !edit) return;
+    if ((e.target as HTMLElement).closest("[data-rotate-handle]")) return;
     e.stopPropagation();
     edit.select(id);
     dragging.current = true;
@@ -116,6 +123,7 @@ export function CoverElement({
   };
 
   const positioned = /\b(absolute|fixed|sticky)\b/.test(className);
+  if (hidden) return null;
 
   return (
     <div
@@ -125,7 +133,8 @@ export function CoverElement({
         ...style,
         fontSize: fontSize,
         ...(override.color ? { color: override.color } : {}),
-        transform: `translate(${x}px, ${y}px)${style?.transform ? ` ${style.transform}` : ""}`,
+        transform: `translate(${x}px, ${y}px)${rotation ? ` rotate(${rotation}deg)` : ""}${style?.transform ? ` ${style.transform}` : ""}`,
+        zIndex: cover ? layerZIndex(cover.draft.layers, id) : undefined,
         cursor: interactive ? (dragging.current ? "grabbing" : "grab") : undefined,
       }}
       onPointerDown={onPointerDown}
@@ -136,10 +145,13 @@ export function CoverElement({
     >
       {children}
       {selected && interactive ? (
-        <span
-          data-ignore-export="true"
-          className="pointer-events-none absolute inset-[-8px] border-2 border-accent"
-        />
+        <>
+          <span
+            data-ignore-export="true"
+            className="pointer-events-none absolute inset-[-8px] border-2 border-accent"
+          />
+          <RotateHandle rotation={rotation} onChange={(deg) => edit.patchElement(id, { rotation: deg })} />
+        </>
       ) : null}
     </div>
   );

@@ -1,7 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { loadDraft, saveDraft, emptyDraft } from "../lib/storage";
-import type { Draft, ElementOverride, ResolvedElement, TemplateId, TitleKind } from "../types";
+import {
+  createBoxLayer,
+  createImageLayer,
+  createTextLayer,
+  duplicateLayer,
+  patchLayerIn,
+  reorderLayer,
+  replaceSubsetOrder,
+} from "../lib/document";
+import { isNativeElement } from "../data/elements";
 import { getTemplate } from "../data/templates";
+import type { Draft, ElementOverride, ImageLayer, Layer, ResolvedElement, TemplateId, TitleKind } from "../types";
 
 const HISTORY_LIMIT = 40;
 const COALESCE_MS = 520;
@@ -9,8 +19,9 @@ const COALESCE_MS = 520;
 function cloneDraft(draft: Draft): Draft {
   return {
     ...draft,
+    layers: draft.layers.map((layer) => ({ ...layer })),
     elementStyles: Object.fromEntries(
-      Object.entries(draft.elementStyles).map(([id, style]) => [id, { ...style }]),
+      Object.entries(draft.elementStyles ?? {}).map(([id, style]) => [id, { ...style }]),
     ),
   };
 }
@@ -34,12 +45,20 @@ type CoverContextValue = {
   showOrnament: boolean;
   draft: Draft;
   selectedId: string | null;
+  selectedLayer: Layer | undefined;
   canUndo: boolean;
   undo: () => void;
   patchDraft: (patch: Partial<Draft>) => void;
   resetDraft: () => void;
   selectElement: (id: string | null) => void;
   patchElement: (id: string, patch: Partial<ElementOverride>) => void;
+  patchLayer: (id: string, patch: Partial<Layer>) => void;
+  addLayer: (kind: "text" | "box" | "image" | "upload", init?: Partial<ImageLayer>) => void;
+  removeLayer: (id: string) => void;
+  duplicateSelected: () => void;
+  reorderSelected: (dir: 1 | -1) => void;
+  reorderLayerById: (id: string, dir: 1 | -1) => void;
+  setStackOrder: (ordered: Layer[]) => void;
   nudgeElement: (id: string, dx: number, dy: number) => void;
   resetElement: (id: string) => void;
   resolvedElements: Record<string, ResolvedElement>;
@@ -67,6 +86,7 @@ export function CoverProvider({
 
   useEffect(() => {
     setResolvedElements({});
+    setSelectedId(null);
   }, [templateId]);
 
   const remember = useCallback((prev: Draft, coalesceKey?: string) => {
@@ -103,16 +123,6 @@ export function CoverProvider({
     saveDraft(templateId, prev);
   }, [templateId]);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!(e.metaKey || e.ctrlKey) || e.shiftKey || e.key.toLowerCase() !== "z") return;
-      e.preventDefault();
-      undo();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [undo]);
-
   const patchDraft = useCallback(
     (patch: Partial<Draft>) => {
       const key = Object.keys(patch).sort().join(",");
@@ -127,43 +137,152 @@ export function CoverProvider({
     setResolvedElements({});
   }, [apply, templateId]);
 
-  useEffect(() => {
-    setResolvedElements({});
-    setSelectedId(null);
-  }, [templateId]);
+  const patchLayer = useCallback(
+    (id: string, patch: Partial<Layer>) => {
+      const key = `layer:${id}:${Object.keys(patch).sort().join(",")}`;
+      apply((prev) => ({ ...prev, layers: patchLayerIn(prev.layers, id, patch) }), key);
+    },
+    [apply],
+  );
 
   const patchElement = useCallback(
     (id: string, patch: Partial<ElementOverride>) => {
       const key = `el:${id}:${Object.keys(patch).sort().join(",")}`;
       apply((prev) => {
-        const next: Draft = {
-          ...prev,
-          elementStyles: {
-            ...prev.elementStyles,
-            [id]: { ...prev.elementStyles[id], ...patch },
-          },
-        };
-        return next;
+        if (isNativeElement(templateId, id)) {
+          return {
+            ...prev,
+            elementStyles: {
+              ...prev.elementStyles,
+              [id]: { ...prev.elementStyles[id], ...patch },
+            },
+          };
+        }
+        const mapped: Partial<Layer> = {};
+        if (patch.fontSize != null) (mapped as { fontSize?: number }).fontSize = patch.fontSize;
+        if (patch.font) (mapped as { font?: Layer["kind"] }).font = patch.font as never;
+        if (patch.color) mapped.color = patch.color;
+        if (patch.opacity != null) mapped.opacity = patch.opacity;
+        if (patch.x != null) mapped.x = patch.x;
+        if (patch.y != null) mapped.y = patch.y;
+        if (patch.rotation != null) mapped.rotation = patch.rotation;
+        return { ...prev, layers: patchLayerIn(prev.layers, id, mapped) };
       }, key);
     },
-    [apply],
+    [apply, templateId],
   );
 
   const nudgeElement = useCallback(
     (id: string, dx: number, dy: number) => {
       apply((prev) => {
-        const cur = prev.elementStyles[id] ?? {};
-        const next: Draft = {
-          ...prev,
-          elementStyles: {
-            ...prev.elementStyles,
-            [id]: { ...cur, x: (cur.x ?? 0) + dx, y: (cur.y ?? 0) + dy },
-          },
-        };
-        return next;
+        if (isNativeElement(templateId, id)) {
+          const cur = prev.elementStyles[id] ?? {};
+          return {
+            ...prev,
+            elementStyles: {
+              ...prev.elementStyles,
+              [id]: { ...cur, x: (cur.x ?? 0) + dx, y: (cur.y ?? 0) + dy },
+            },
+          };
+        }
+        const cur = prev.layers.find((layer) => layer.id === id);
+        if (!cur) return prev;
+        return { ...prev, layers: patchLayerIn(prev.layers, id, { x: cur.x + dx, y: cur.y + dy }) };
       }, `nudge:${id}`);
     },
+    [apply, templateId],
+  );
+
+  const addLayer = useCallback(
+    (kind: "text" | "box" | "image" | "upload", init?: Partial<ImageLayer>) => {
+      let createdId = "";
+      apply((prev) => {
+        const at = { x: 240, y: 240 };
+        const layer =
+          kind === "box"
+            ? createBoxLayer(at)
+            : kind === "text"
+              ? createTextLayer(at)
+              : createImageLayer(at, kind === "upload" ? "upload" : "operator", init);
+        createdId = layer.id;
+        return { ...prev, layers: [...prev.layers, layer] };
+      });
+      if (createdId) setSelectedId(createdId);
+    },
     [apply],
+  );
+
+  const removeLayer = useCallback(
+    (id: string) => {
+      apply((prev) => {
+        if (isNativeElement(templateId, id)) {
+          return { ...prev, layers: patchLayerIn(prev.layers, id, { hidden: true, removed: true }) };
+        }
+        return { ...prev, layers: prev.layers.filter((layer) => layer.id !== id) };
+      });
+      setSelectedId((cur) => (cur === id ? null : cur));
+    },
+    [apply, templateId],
+  );
+
+  const duplicateSelected = useCallback(() => {
+    const id = selectedId;
+    if (!id || isNativeElement(templateId, id)) return;
+    apply((prev) => {
+      const result = duplicateLayer(prev.layers, id);
+      if (!result) return prev;
+      setSelectedId(result.id);
+      return { ...prev, layers: result.layers };
+    });
+  }, [apply, selectedId, templateId]);
+
+  const reorderLayerById = useCallback(
+    (id: string, dir: 1 | -1) => {
+      if (!id) return;
+      apply((prev) => {
+        const subset = prev.layers.filter((layer) => !layer.removed);
+        const next = reorderLayer(subset, id, dir);
+        if (next === subset) return prev;
+        return { ...prev, layers: replaceSubsetOrder(prev.layers, next) };
+      }, `stack:${id}`);
+    },
+    [apply],
+  );
+
+  const setStackOrder = useCallback(
+    (ordered: Layer[]) => {
+      apply((prev) => ({ ...prev, layers: replaceSubsetOrder(prev.layers, ordered) }), "stack-order");
+    },
+    [apply],
+  );
+
+  const reorderSelected = useCallback(
+    (dir: 1 | -1) => {
+      if (selectedId) reorderLayerById(selectedId, dir);
+    },
+    [reorderLayerById, selectedId],
+  );
+
+  const resetElement = useCallback(
+    (id: string) => {
+      apply((prev) => {
+        const { [id]: _removed, ...restStyles } = prev.elementStyles;
+        if (isNativeElement(templateId, id)) {
+          const fresh = emptyDraft(templateId).layers.find((layer) => layer.id === id);
+          return {
+            ...prev,
+            elementStyles: restStyles,
+            layers: fresh
+              ? prev.layers.map((layer) => (layer.id === id ? { ...fresh, hidden: false } : layer))
+              : prev.layers,
+          };
+        }
+        const fresh = emptyDraft(templateId).layers.find((layer) => layer.id === id);
+        if (!fresh) return prev;
+        return { ...prev, layers: prev.layers.map((layer) => (layer.id === id ? { ...fresh } : layer)) };
+      });
+    },
+    [apply, templateId],
   );
 
   const reportElementResolved = useCallback((id: string, resolved: ResolvedElement) => {
@@ -182,22 +301,46 @@ export function CoverProvider({
     });
   }, []);
 
-  const resetElement = useCallback(
-    (id: string) => {
-      apply((prev) => {
-        const { [id]: _removed, ...rest } = prev.elementStyles;
-        return { ...prev, elementStyles: rest };
-      });
-    },
-    [apply],
-  );
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const typing = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable);
+      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        undo();
+        return;
+      }
+      if (typing) return;
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "d") {
+        e.preventDefault();
+        duplicateSelected();
+        return;
+      }
+      if ((e.key === "]" || e.key === "[") && selectedId) {
+        e.preventDefault();
+        reorderLayerById(selectedId, e.key === "]" ? 1 : -1);
+        return;
+      }
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedId) {
+        const layer = draftRef.current.layers.find((item) => item.id === selectedId);
+        if (layer && !layer.locked) {
+          e.preventDefault();
+          removeLayer(selectedId);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [duplicateSelected, removeLayer, reorderLayerById, selectedId, templateId, undo]);
+
+  const selectedLayer = draft.layers.find((layer) => layer.id === selectedId);
 
   const value = useMemo<CoverContextValue>(
     () => ({
       templateId,
       templateName: meta?.name ?? "模板",
-      showEpisode: meta?.showEpisode ?? false,
-      titleKind: meta?.titleKind ?? "operator",
+      showEpisode: meta?.showEpisode ?? true,
+      titleKind: meta?.titleKind ?? "theme",
       titleLabel:
         meta?.titleLabel ??
         (meta?.titleKind === "stage" ? "地图" : meta?.titleKind === "operation" ? "行动" : meta?.titleKind === "theme" ? "主题" : "标题"),
@@ -205,52 +348,54 @@ export function CoverProvider({
       subtitleLabel: meta?.subtitleLabel ?? "副标题",
       episodeLabel: meta?.episodeLabel ?? "期数",
       signatureLabel: meta?.signatureLabel ?? "署名",
-      showMark: meta?.showMark ?? false,
+      showMark: Boolean(meta?.showMark),
       markLabel: meta?.markLabel ?? "角标",
       defaultImageScale: meta?.defaultImageScale ?? 100,
-      showBackground: meta?.showBackground ?? false,
-      showTextBackground: meta?.showTextBackground ?? false,
-      showBgDim: meta?.showBackground ?? meta?.showBgDim ?? true,
-      showOrnament: meta?.showOrnament ?? false,
+      showBackground: true,
+      showTextBackground: meta?.showTextBackground ?? draft.canvasSkin === "rogue",
+      showBgDim: true,
+      showOrnament: meta?.showOrnament ?? draft.canvasSkin === "lowspec",
       draft,
       selectedId,
+      selectedLayer,
       canUndo,
       undo,
       patchDraft,
       resetDraft,
       selectElement: setSelectedId,
       patchElement,
+      patchLayer,
+      addLayer,
+      removeLayer,
+      duplicateSelected,
+      reorderSelected,
+      reorderLayerById,
+      setStackOrder,
       nudgeElement,
       resetElement,
       resolvedElements,
       reportElementResolved,
     }),
     [
+      addLayer,
       canUndo,
       draft,
-      meta?.episodeLabel,
-      meta?.name,
-      meta?.showEpisode,
-      meta?.signatureLabel,
-      meta?.showMark,
-      meta?.markLabel,
-      meta?.titleKind,
-      meta?.titleLabel,
-      meta?.titlePlaceholder,
-      meta?.subtitleLabel,
-      meta?.defaultImageScale,
-      meta?.showBackground,
-      meta?.showTextBackground,
-      meta?.showBgDim,
-      meta?.showOrnament,
+      duplicateSelected,
+      meta,
       nudgeElement,
       patchDraft,
       patchElement,
-      resetDraft,
+      patchLayer,
+      removeLayer,
+      reorderLayerById,
+      reorderSelected,
       reportElementResolved,
+      resetDraft,
       resetElement,
       resolvedElements,
       selectedId,
+      selectedLayer,
+      setStackOrder,
       templateId,
       undo,
     ],
