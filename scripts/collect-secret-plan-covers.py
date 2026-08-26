@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download 莱茵实验组「机密预案」covers for layout reference."""
+"""Download 莱茵实验组特种队 covers for layout reference."""
 
 from __future__ import annotations
 
@@ -16,6 +16,9 @@ VIEW = "https://api.bilibili.com/x/web-interface/view?bvid="
 # (bvid, dest name) — INDEX.md is the source of truth for notes; this only fetches bytes.
 ROWS = [
     ("BV1TjbDz1Ejx", "01_BV1TjbDz1Ejx.jpg"),
+    ("BV1kKJAzyEJy", "02_BV1kKJAzyEJy.jpg"),
+    ("BV1ewLRzeE4Q", "03_BV1ewLRzeE4Q.jpg"),
+    ("BV1zhxheVEpt", "04_BV1zhxheVEpt.jpg"),
 ]
 
 
