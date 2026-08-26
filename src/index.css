@@ -218,8 +218,8 @@ input[type="checkbox"] {
 }
 
 .sp-stage {
-  letter-spacing: -0.1em;
-  transform: scaleX(0.84);
+  letter-spacing: -0.12em;
+  transform: scaleX(0.78);
   transform-origin: left center;
 }
 

@@ -167,9 +167,9 @@ export function autoFontSize(kind: AutoSize | undefined, len: number, fallback: 
   }
   if (kind === "stageCode") {
     if (len <= 3) return 400;
-    if (len <= 5) return 348;
-    if (len <= 7) return 292;
-    return 232;
+    if (len <= 5) return 360;
+    if (len <= 7) return 300;
+    return 236;
   }
   return fallback;
 }

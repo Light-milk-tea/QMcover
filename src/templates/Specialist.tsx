@@ -10,7 +10,7 @@ import { OperatorLayer } from "./OperatorLayer";
 
 const RED = "#e10600";
 const WHITE = "#f4f4f2";
-const ANGEL_ART = "char_103_angel_2";
+const ANGEL_ART = "char_103_angel_1";
 
 function BlockWord({ text }: { text: string }) {
   return (
@@ -77,49 +77,49 @@ export function Specialist(props: CoverRenderProps) {
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 14} at="22% 58%" />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#8ea0b4]/28 via-[#c5ced6]/10 to-transparent" />
 
-      <div className="absolute inset-y-[-6%] right-[-10%] w-[56%]">
+      <div className="absolute top-[-18%] right-[-2%] bottom-[-16%] left-[50%] z-[2]">
         <OperatorLayer
           {...props}
           layerId="operator-b"
           imageUrl={layerImage(layerB, ANGEL_ART)}
-          imageScale={layerB?.scale ?? 168}
-          imageX={layerB?.imageX ?? 36}
-          imageY={layerB?.imageY ?? -28}
-          fadeLeft
-          fadeLeftSolid={16}
+          imageScale={layerB?.scale ?? 220}
+          imageX={layerB?.imageX ?? 16}
+          imageY={layerB?.imageY ?? 8}
+          transformOrigin="50% 12%"
           objectFit="contain"
-          objectPosition="right bottom"
+          objectPosition="50% 8%"
           emptyHint="立绘B"
-          className="h-full w-full object-contain object-right-bottom"
+          className="h-full w-full object-contain"
           onImageDrag={(dx, dy) => {
             if (!cover || !layerB) return;
             cover.patchLayer("operator-b", {
-              imageX: (layerB.imageX ?? 36) + dx,
-              imageY: (layerB.imageY ?? -28) + dy,
+              imageX: (layerB.imageX ?? 16) + dx,
+              imageY: (layerB.imageY ?? 8) + dy,
             });
           }}
         />
       </div>
 
-      <div className="absolute inset-y-[-2%] right-[2%] w-[64%]">
+      <div className="absolute top-[-10%] right-[18%] bottom-[-8%] left-[16%] z-[3]">
         <OperatorLayer
           {...props}
           fadeLeft
-          fadeLeftSolid={12}
+          fadeLeftSolid={8}
+          transformOrigin="50% 22%"
           objectFit="contain"
-          objectPosition="center bottom"
+          objectPosition="50% 22%"
           className="h-full w-full object-contain"
         />
       </div>
 
-      <CoverElement id="tri" kind="box" className="absolute top-[292px] left-[132px] z-[6]">
+      <CoverElement id="tri" kind="box" className="absolute top-[280px] left-[108px] z-[6]">
         <Viewfinder color={triColor} />
       </CoverElement>
 
       <CoverElement
         id="squad"
         defaultFontSize={squadPx}
-        className="absolute top-[318px] left-[168px] z-[4] font-black whitespace-nowrap"
+        className="absolute top-[308px] left-[148px] z-[4] font-black whitespace-nowrap"
         style={{ lineHeight: 0.88 }}
       >
         <span className="sp-squad inline-block">
@@ -131,7 +131,7 @@ export function Specialist(props: CoverRenderProps) {
         id="stage"
         defaultFont="display"
         defaultFontSize={stagePx}
-        className="absolute top-[548px] left-[168px] z-[4] font-bold whitespace-nowrap"
+        className="absolute top-[568px] left-[148px] z-[4] font-bold whitespace-nowrap"
         style={{ lineHeight: 0.84 }}
       >
         <span className="sp-stage inline-block">
@@ -139,16 +139,16 @@ export function Specialist(props: CoverRenderProps) {
         </span>
       </CoverElement>
 
-      <CoverElement id="ruler" kind="box" className="absolute top-[464px] left-[120px] z-[5]">
-        <div style={{ width: 780, height: 3, background: rulerColor, boxShadow: "0 0 0 0.4px rgb(225 6 0 / 0.4)" }} />
+      <CoverElement id="ruler" kind="box" className="absolute top-[434px] left-[100px] z-[5]">
+        <div style={{ width: 820, height: 3, background: rulerColor, boxShadow: "0 0 0 0.4px rgb(225 6 0 / 0.4)" }} />
       </CoverElement>
 
       {script ? (
         <CoverElement
           id="script"
           defaultFont="script"
-          defaultFontSize={122}
-          className="absolute top-[286px] left-[392px] z-[7] whitespace-nowrap"
+          defaultFontSize={136}
+          className="absolute top-[292px] left-[328px] z-[9] whitespace-nowrap"
           style={{ color: scriptColor, lineHeight: 1 }}
         >
           <span className="relative inline-block" style={{ transform: "rotate(-33deg)", transformOrigin: "left center" }}>
