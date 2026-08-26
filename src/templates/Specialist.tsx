@@ -10,7 +10,7 @@ import { OperatorLayer } from "./OperatorLayer";
 
 const RED = "#e10600";
 const WHITE = "#f4f4f2";
-const ANGEL_ART = "char_103_angel_1";
+const ANGEL_ART = "char_1041_angel2_1";
 
 function BlockWord({ text }: { text: string }) {
   return (
@@ -77,37 +77,37 @@ export function Specialist(props: CoverRenderProps) {
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 14} at="22% 58%" />
       <div className="pointer-events-none absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#8ea0b4]/28 via-[#c5ced6]/10 to-transparent" />
 
-      <div className="absolute top-[-18%] right-[-2%] bottom-[-16%] left-[50%] z-[2]">
+      <div className="absolute top-[-22%] right-[-6%] bottom-[-20%] left-[40%] z-[2]">
         <OperatorLayer
           {...props}
           layerId="operator-b"
           imageUrl={layerImage(layerB, ANGEL_ART)}
-          imageScale={layerB?.scale ?? 220}
-          imageX={layerB?.imageX ?? 16}
-          imageY={layerB?.imageY ?? 8}
-          transformOrigin="50% 12%"
+          imageScale={layerB?.scale ?? 188}
+          imageX={layerB?.imageX ?? 72}
+          imageY={layerB?.imageY ?? -12}
+          transformOrigin="46% 8%"
           objectFit="contain"
-          objectPosition="50% 8%"
+          objectPosition="46% 5%"
           emptyHint="立绘B"
           className="h-full w-full object-contain"
           onImageDrag={(dx, dy) => {
             if (!cover || !layerB) return;
             cover.patchLayer("operator-b", {
-              imageX: (layerB.imageX ?? 16) + dx,
-              imageY: (layerB.imageY ?? 8) + dy,
+              imageX: (layerB.imageX ?? 72) + dx,
+              imageY: (layerB.imageY ?? -12) + dy,
             });
           }}
         />
       </div>
 
-      <div className="absolute top-[-16%] right-[16%] bottom-[-14%] left-[18%] z-[3]">
+      <div className="absolute top-[-4%] right-[12%] bottom-[-2%] left-[28%] z-[5]">
         <OperatorLayer
           {...props}
           fadeLeft
-          fadeLeftSolid={8}
-          transformOrigin="50% 10%"
+          fadeLeftSolid={10}
+          transformOrigin="50% 12%"
           objectFit="contain"
-          objectPosition="50% 8%"
+          objectPosition="50% 10%"
           className="h-full w-full object-contain"
         />
       </div>
@@ -147,11 +147,14 @@ export function Specialist(props: CoverRenderProps) {
         <CoverElement
           id="script"
           defaultFont="script"
-          defaultFontSize={136}
-          className="absolute top-[292px] left-[328px] z-[9] whitespace-nowrap"
-          style={{ color: scriptColor, lineHeight: 1 }}
+          defaultFontSize={186}
+          className="absolute top-[398px] left-[168px] z-[9] whitespace-nowrap"
+          style={{ color: scriptColor, lineHeight: 0.78 }}
         >
-          <span className="relative inline-block" style={{ transform: "rotate(-33deg)", transformOrigin: "left center" }}>
+          <span
+            className="relative inline-block origin-left"
+            style={{ transform: "rotate(-36deg) scaleY(1.08)", transformOrigin: "12% 60%" }}
+          >
             <span aria-hidden className="pointer-events-none absolute top-[0.03em] left-[0.02em] text-black/35">
               {script}
             </span>

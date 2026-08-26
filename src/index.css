@@ -9,13 +9,15 @@
 @import "@fontsource/noto-serif-sc/chinese-simplified-700.css";
 @import "@fontsource/noto-serif-sc/chinese-simplified-900.css";
 @import "@fontsource/great-vibes/400.css";
+@import "@fontsource/the-nautigal/400.css";
+@import "@fontsource/alex-brush/400.css";
 
 @theme {
   --font-sans: "PingFang SC", "HarmonyOS Sans", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-display: "Oswald", "Noto Sans SC", sans-serif;
   --font-cn: "Noto Sans SC", "PingFang SC", sans-serif;
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
-  --font-script: "Great Vibes", "Segoe Script", "Apple Chancery", cursive;
+  --font-script: "The Nautigal", "Alex Brush", "Great Vibes", "Segoe Script", cursive;
   --color-ink: #f1f2f3;
   --color-panel: #ffffff;
   --color-raised: #f6f7f8;
@@ -227,7 +229,10 @@ input[type="checkbox"] {
   font-family: var(--font-script);
   font-weight: 400;
   font-style: normal;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 1px 0 rgb(80 0 0 / 0.35),
+    0 0 18px rgb(225 6 0 / 0.28);
 }
 
 .ef-halftone {

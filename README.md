@@ -132,7 +132,7 @@ npm run dev
 - 花体标（默认 Special type，Great Vibes 斜叠在阵容上）
 - 小标（默认 SPECIAL TYPE，留空则不显示）
 - 背景预设（默认军械厂，高曝灰白）
-- 默认立绘：前缄默德克萨斯精零，后能天使精零（精二特效会挡住后面的人）
+- 默认立绘：前缄默德克萨斯精零，后新约能天使精零（精二特效会挡住后面的人）
 
 构图主参考：`references/secret-plan/01_BV1TjbDz1Ejx.jpg`。不搬莱茵组标和封面署名。
 
