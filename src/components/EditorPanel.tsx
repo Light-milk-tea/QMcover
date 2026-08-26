@@ -18,6 +18,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "madness", label: "杂谈底" },
   { id: "nocore", label: "无核底" },
   { id: "endfield", label: "终末地底" },
+  { id: "specialist", label: "特种队底" },
 ];
 
 export function EditorPanel() {

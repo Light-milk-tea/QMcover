@@ -6,9 +6,9 @@
 
 技术栈：React 19 + Vite + TypeScript + Tailwind CSS 4。
 
-| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 |
-| --- | --- | --- | --- | --- | --- |
-| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) |
+| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 | 特种队 |
+| --- | --- | --- | --- | --- | --- | --- |
+| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) | ![特种队](public/thumbs/specialist.webp) |
 
 相关文档：
 
@@ -51,7 +51,7 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前六套：
+首页列出 `src/data/templates.ts`。当前七套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
@@ -61,10 +61,11 @@ npm run dev
 | `madness` | 决战五星之癫 | 参考五星测评类封面：左暗底栏目名 + 期数 + 干员篇，右拍立得立绘。栏目名固定为「决战五星之癫」。 |
 | `nocore` | 无核论文 | 参考小鬼卡比 SN-EX-8：暗底，左两行金白大字，一条紫线，右立绘。 |
 | `endfield` | 终末地角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
+| `specialist` | 特种队 | 参考莱茵实验组 5特种H15-4：左两行超粗阵容+关卡码，红花体叠字，右立绘，工业底 + 刻度 HUD。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -124,6 +125,17 @@ npm run dev
 
 栏目名和柠黄括号是这套构图的固定件。不搬终末地官方标和参考 UP logo。
 
+### 特种队
+
+- 阵容（默认「5特种」）
+- 关卡（默认 H15-4）
+- 花体标（默认 Special type，留空则不显示）
+- 小标（默认 SPECIAL TYPE，留空则不显示）
+- 背景预设（默认军械厂）
+- 默认立绘：缄默德克萨斯精二
+
+构图主参考：`references/secret-plan/01_BV1TjbDz1Ejx.jpg`。不搬莱茵组标和封面署名。
+
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
 ## 目录
@@ -147,6 +159,7 @@ src/
     Madness.tsx           决战五星之癫
     Nocore.tsx            无核论文
     Endfield.tsx          终末地角色测评
+    Specialist.tsx        特种队
     OperatorLayer.tsx     可拖动立绘
   components/             首页、顶栏、画布、图层面板、编辑栏、立绘库
   store/CoverContext.tsx  当前草稿
@@ -217,6 +230,7 @@ references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提
 | 肉鸽 | `src/templates/Rogue.tsx` | 复刻左立绘 + 右宋体主题 + 空心 ISW-NO，不要整图搬参考封面。 |
 | 决战五星之癫 | `src/templates/Madness.tsx` | 复刻左文右拍立得，不要整图搬参考封面。 |
 | 终末地角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
+| 特种队 | `src/templates/Specialist.tsx` | 复刻左两行粗字 + 红花体 + 右立绘，不要搬组标和封面署名。 |
 
 ## 约定
 

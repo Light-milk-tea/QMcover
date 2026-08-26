@@ -53,7 +53,7 @@ EOF
 
 - 复刻构图，不搬别人的整张封面、官方标、参考 UP 的 logo。
 - 不要把官方立绘、AVG、关卡图、别人封面、`references/` 下的参考 jpg 提交进 git。这些图已被 gitignore。
-- 不要改稳定模板 id（`firstkill` / `lowspec` / `rogue` / `madness` / `nocore` / `endfield`）。改名只改 `name`。
+- 不要改稳定模板 id（`firstkill` / `lowspec` / `rogue` / `madness` / `nocore` / `endfield` / `specialist`）。改名只改 `name`。
 - 立绘和 AVG 只走现有 CDN，不要把大图拷进仓库。
 - 导出靠 `html-to-image`。描边、阴影用双层真实 DOM，不要用伪元素。
 

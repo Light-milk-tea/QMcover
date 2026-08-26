@@ -11,6 +11,7 @@ import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
 import { Nocore } from "./Nocore";
 import { Rogue } from "./Rogue";
+import { Specialist } from "./Specialist";
 
 export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRenderProps>> = {
   firstkill: FirstKill,
@@ -19,6 +20,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   madness: Madness,
   nocore: Nocore,
   endfield: Endfield,
+  specialist: Specialist,
 };
 
 export function CoverView(props: CoverRenderProps) {

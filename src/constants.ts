@@ -22,7 +22,7 @@ export const TEMPLATES_STORAGE_KEY = "qmcover-templates-v1";
 export const BLANK_TEMPLATE_ID = "blank";
 export const CUSTOM_TEMPLATE_PREFIX = "c-";
 
-export const BUILTIN_TEMPLATE_IDS = ["firstkill", "lowspec", "rogue", "madness", "nocore", "endfield"] as const;
+export const BUILTIN_TEMPLATE_IDS = ["firstkill", "lowspec", "rogue", "madness", "nocore", "endfield", "specialist"] as const;
 
 /** 立绘缩放滑条范围。上限要能罩住全身立绘（如丰川祥子精英 0）。 */
 export const IMAGE_SCALE_MIN = 40;

@@ -41,7 +41,7 @@ export type LayerChrome =
   | "sign-dots"
   | "five-star";
 
-export type CanvasSkin = "plain" | "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield";
+export type CanvasSkin = "plain" | "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield" | "specialist";
 
 export type AutoSize =
   | "stage"
@@ -58,7 +58,8 @@ export type AutoSize =
   | "name"
   | "seriesBar"
   | "sign"
-  | "level";
+  | "level"
+  | "squad";
 
 export type LayerBase = {
   id: string;
@@ -171,7 +172,7 @@ export type ResolvedElement = {
   y?: number;
 };
 
-export type BuiltinTemplateId = "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield";
+export type BuiltinTemplateId = "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield" | "specialist";
 
 export type TemplateId = string;
 

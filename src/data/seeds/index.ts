@@ -5,6 +5,7 @@ import { lowspecLayers } from "./lowspec";
 import { madnessLayers } from "./madness";
 import { nocoreLayers } from "./nocore";
 import { rogueLayers } from "./rogue";
+import { specialistLayers } from "./specialist";
 
 const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   firstkill: firstkillLayers,
@@ -13,6 +14,7 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   madness: madnessLayers,
   nocore: nocoreLayers,
   endfield: endfieldLayers,
+  specialist: specialistLayers,
 };
 
 export function getBuiltinLayers(id: BuiltinTemplateId): Layer[] {

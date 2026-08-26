@@ -206,7 +206,13 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={skin === "nocore" ? { objectPosition: "62% 42%" } : undefined}
+          style={
+            skin === "nocore"
+              ? { objectPosition: "62% 42%" }
+              : skin === "specialist"
+                ? { objectPosition: "58% 40%", filter: "saturate(0.72) contrast(1.12) brightness(1.08)" }
+                : undefined
+          }
         />
       ) : skin === "madness" ? (
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_72%_40%,#3a424c_0%,#14181e_46%,#0c1016_100%)]" />
@@ -214,11 +220,18 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
       {skin === "firstkill" ? (
         <div className="absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-[#141618]/78 via-[#141618]/32 to-transparent" />
       ) : null}
+      {skin === "specialist" ? (
+        <>
+          <div className="absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-[#101114]/72 via-[#101114]/28 to-transparent" />
+          <div className="sp-scan pointer-events-none absolute inset-0 opacity-[0.22]" />
+          <div className="sp-grain pointer-events-none absolute inset-0 opacity-[0.4]" />
+        </>
+      ) : null}
       {skin === "nocore" ? <div className="nc-night pointer-events-none absolute inset-0" /> : null}
       <BgDimLayer
         on={bgDim}
         amount={bgDimAmount ?? 42}
-        at={skin === "firstkill" ? "22% 42%" : skin === "nocore" ? "28% 48%" : "40% 46%"}
+        at={skin === "firstkill" ? "22% 42%" : skin === "nocore" ? "28% 48%" : skin === "specialist" ? "28% 48%" : "40% 46%"}
       />
     </>
   );

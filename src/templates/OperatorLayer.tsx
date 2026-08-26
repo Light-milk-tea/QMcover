@@ -20,8 +20,10 @@ type Props = {
   objectFit?: "contain" | "cover";
   showPlaceholder?: boolean;
   fadeRight?: boolean;
+  fadeLeft?: boolean;
   fadeBottom?: boolean;
   fadeRightSolid?: number;
+  fadeLeftSolid?: number;
   fadeBottomSolid?: number;
   transformOrigin?: string;
   objectPosition?: string;
@@ -43,8 +45,10 @@ export function OperatorLayer({
   objectFit = "contain",
   showPlaceholder = true,
   fadeRight = false,
+  fadeLeft = false,
   fadeBottom = false,
   fadeRightSolid = 66,
+  fadeLeftSolid = 22,
   fadeBottomSolid = 86,
   transformOrigin = "center center",
   objectPosition,
@@ -60,7 +64,7 @@ export function OperatorLayer({
   const selected = edit?.selectedId === layerId;
   const interactive = edit?.interactive ?? false;
   const remote = useCdnSrc(imageUrl);
-  const tallRightFade = fadeRight && !fadeBottom;
+  const tallRightFade = fadeRight && !fadeBottom && !fadeLeft;
   const selfLayer = cover?.draft.layers.find((layer) => layer.id === layerId);
   const hidden = Boolean(selfLayer?.hidden || selfLayer?.removed);
   const zIndex = cover ? layerZIndex(cover.draft.layers, layerId) : undefined;
@@ -125,6 +129,10 @@ export function OperatorLayer({
             const solid = Math.min(90, Math.max(20, fadeRightSolid));
             const gone = Math.min(100, solid + 28);
             masks.push(`linear-gradient(90deg, #000 0%, #000 ${solid}%, transparent ${gone}%)`);
+          }
+          if (fadeLeft) {
+            const solid = Math.min(90, Math.max(8, fadeLeftSolid));
+            masks.push(`linear-gradient(90deg, transparent 0%, #000 ${solid}%, #000 100%)`);
           }
           if (fadeBottom) {
             const solid = Math.min(90, Math.max(30, fadeBottomSolid));
