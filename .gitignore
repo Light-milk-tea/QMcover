@@ -45,6 +45,10 @@ references/endfield-review/**/*.jpg
 references/endfield-review/**/*.jpeg
 references/endfield-review/**/*.png
 references/endfield-review/**/*.webp
+references/secret-plan/**/*.jpg
+references/secret-plan/**/*.jpeg
+references/secret-plan/**/*.png
+references/secret-plan/**/*.webp
 
 # capture leftovers
 public/thumbs/*.dataurl

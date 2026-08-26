@@ -18,6 +18,7 @@
 - [肉鸽构图参考](references/rogue/INDEX.md)
 - [无核论文构图参考](references/kirby/INDEX.md)
 - [终末地测评构图参考](references/endfield-review/INDEX.md)
+- [机密预案构图参考](references/secret-plan/INDEX.md)
 
 ## 本地运行
 
@@ -162,6 +163,7 @@ references/crisis-contract/   构图参考，jpg 不提交
 references/rogue/             肉鸽构图参考，jpg 不提交
 references/kirby/             无核论文构图参考，jpg 不提交
 references/endfield-review/   终末地测评构图参考，jpg 不提交
+references/secret-plan/        机密预案构图参考，jpg 不提交
 ```
 
 路由是 hash：`#/` 首页，`#/t/firstkill` 打开对应模板。

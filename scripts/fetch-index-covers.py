@@ -24,6 +24,7 @@ INDEXES = [
     ROOT / "references" / "zc-event" / "INDEX.md",
     ROOT / "references" / "kirby" / "INDEX.md",
     ROOT / "references" / "endfield-review" / "INDEX.md",
+    ROOT / "references" / "secret-plan" / "INDEX.md",
 ]
 
 
