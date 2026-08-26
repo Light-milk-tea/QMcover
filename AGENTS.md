@@ -27,7 +27,7 @@ QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + T
 
 已经开过的 PR 不要擅自关、改状态或合并。用户没说推，本地可以比远程超前。
 
-从 `main` 拉功能分支再改。分支名用小写。不要改 `git config`。
+从 `main` 拉功能分支再改。分支名用小写，用 `docs/`、`feat/`、`chore/` 这类前缀，**不要用 `cursor/`**（GitHub 分支页会看起来像 Cursor 的分支）。不要改 `git config`。
 
 每次 `git commit` 必须用环境变量注入身份，**作者和提交者都只能是下面这组，不要出现 Cursor / cursoragent**：
 
