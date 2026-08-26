@@ -27,7 +27,27 @@ QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + T
 
 已经开过的 PR 不要擅自关、改状态或合并。用户没说推，本地可以比远程超前。
 
-从 `main` 拉功能分支再改。分支名用小写。不要改 `git config`；提交身份用环境变量，见 `SKILL.md`。
+从 `main` 拉功能分支再改。分支名用小写。不要改 `git config`。
+
+每次 `git commit` 必须用环境变量注入身份，**作者和提交者都只能是下面这组，不要出现 Cursor / cursoragent**：
+
+| 字段 | 值 |
+| --- | --- |
+| Name | `Light-milk-tea` |
+| Email | `2362519919@qq.com` |
+
+```bash
+GIT_AUTHOR_NAME='Light-milk-tea' \
+GIT_AUTHOR_EMAIL='2362519919@qq.com' \
+GIT_COMMITTER_NAME='Light-milk-tea' \
+GIT_COMMITTER_EMAIL='2362519919@qq.com' \
+git commit -m "$(cat <<'EOF'
+...
+EOF
+)"
+```
+
+提交后用 `git log -1 --format='%an <%ae> | %cn <%ce>'` 核对。看到 `Cursor Agent` 或 `cursoragent@` 就立刻改掉再交（未推可以 `--amend`；已推必须用户同意才重写）。写法细节见 [SKILL.md](SKILL.md)。
 
 ## 内容红线
 
