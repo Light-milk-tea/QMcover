@@ -100,14 +100,14 @@ export function Specialist(props: CoverRenderProps) {
         />
       </div>
 
-      <div className="absolute top-[-10%] right-[18%] bottom-[-8%] left-[16%] z-[3]">
+      <div className="absolute top-[-16%] right-[16%] bottom-[-14%] left-[18%] z-[3]">
         <OperatorLayer
           {...props}
           fadeLeft
           fadeLeftSolid={8}
-          transformOrigin="50% 22%"
+          transformOrigin="50% 10%"
           objectFit="contain"
-          objectPosition="50% 22%"
+          objectPosition="50% 8%"
           className="h-full w-full object-contain"
         />
       </div>
