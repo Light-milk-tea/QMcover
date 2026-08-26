@@ -210,7 +210,10 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
             skin === "nocore"
               ? { objectPosition: "62% 42%" }
               : skin === "specialist"
-                ? { objectPosition: "58% 40%", filter: "saturate(0.72) contrast(1.12) brightness(1.08)" }
+                ? {
+                    objectPosition: "56% 36%",
+                    filter: "saturate(0.42) contrast(1.14) brightness(1.46) grayscale(0.18)",
+                  }
                 : undefined
           }
         />
@@ -222,16 +225,16 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
       ) : null}
       {skin === "specialist" ? (
         <>
-          <div className="absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-[#101114]/72 via-[#101114]/28 to-transparent" />
-          <div className="sp-scan pointer-events-none absolute inset-0 opacity-[0.22]" />
-          <div className="sp-grain pointer-events-none absolute inset-0 opacity-[0.4]" />
+          <div className="absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#8ea0b4]/28 via-[#c5ced6]/10 to-transparent" />
+          <div className="sp-scan pointer-events-none absolute inset-0 opacity-[0.55]" />
+          <div className="sp-grain pointer-events-none absolute inset-0 opacity-[0.38]" />
         </>
       ) : null}
       {skin === "nocore" ? <div className="nc-night pointer-events-none absolute inset-0" /> : null}
       <BgDimLayer
         on={bgDim}
         amount={bgDimAmount ?? 42}
-        at={skin === "firstkill" ? "22% 42%" : skin === "nocore" ? "28% 48%" : skin === "specialist" ? "28% 48%" : "40% 46%"}
+        at={skin === "firstkill" ? "22% 42%" : skin === "nocore" ? "28% 48%" : skin === "specialist" ? "22% 58%" : "40% 46%"}
       />
     </>
   );

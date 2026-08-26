@@ -177,25 +177,27 @@ export function EditorPanel() {
           }}
           onPick={(op, art) => {
             const keepTitle = draft.title.trim() && draft.title.trim() !== draft.operatorName;
+            const primary = imageLayer.id === "operator";
             patchLayer(imageLayer.id, {
               source: "operator",
               operatorId: op.id,
               artId: art.id,
               imageUrl: artUrl(art.id),
               imageDataUrl: "",
-              imageX: 0,
-              imageY: 0,
-              scale: defaultImageScale,
+              ...(primary
+                ? { imageX: 0, imageY: 0, scale: defaultImageScale }
+                : {}),
             });
+            if (!primary) return;
             patchDraft({
               operatorId: op.id,
               operatorName: op.name,
               artId: art.id,
               imageUrl: artUrl(art.id),
               imageDataUrl: "",
-              imageX: imageLayer.id === "operator" ? 0 : draft.imageX,
-              imageY: imageLayer.id === "operator" ? 0 : draft.imageY,
-              imageScale: imageLayer.id === "operator" ? defaultImageScale : draft.imageScale,
+              imageX: 0,
+              imageY: 0,
+              imageScale: defaultImageScale,
               title: keepTitleOnPick || keepTitle ? draft.title : op.name,
             });
           }}

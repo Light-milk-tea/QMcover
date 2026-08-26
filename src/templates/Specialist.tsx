@@ -1,62 +1,64 @@
 import { CoverElement } from "../components/CoverElement";
+import { artUrl } from "../data/arts";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
 import { autoFontSize } from "../lib/document";
-import type { CoverRenderProps } from "../types";
+import { useCoverOptional } from "../store/CoverContext";
+import type { CoverRenderProps, ImageLayer } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
 
 const RED = "#e10600";
 const WHITE = "#f4f4f2";
+const ANGEL_ART = "char_103_angel_2";
 
 function BlockWord({ text }: { text: string }) {
   return (
     <span className="relative inline-block whitespace-nowrap">
-      <span aria-hidden className="pointer-events-none absolute top-[0.045em] left-[0.035em] text-black">
+      <span aria-hidden className="pointer-events-none absolute top-[0.03em] left-[0.025em] text-black/55">
         {text}
       </span>
-      <span className="cover-type-shadow relative" style={{ color: WHITE }}>
+      <span className="sp-type relative" style={{ color: WHITE }}>
         {text}
       </span>
     </span>
   );
 }
 
-function Ruler({ color }: { color: string }) {
-  const ticks = [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96];
+function Viewfinder({ color }: { color: string }) {
   return (
-    <svg width="980" height="28" viewBox="0 0 980 28" fill="none" aria-hidden>
-      <line x1="0" y1="18" x2="980" y2="18" stroke={color} strokeWidth="3" />
-      {ticks.map((t) => (
-        <line
-          key={t}
-          x1={(t / 100) * 980}
-          y1={t % 24 === 0 ? 4 : 10}
-          x2={(t / 100) * 980}
-          y2="18"
-          stroke={color}
-          strokeWidth={t % 24 === 0 ? 3 : 2}
-        />
-      ))}
+    <svg width="86" height="72" viewBox="0 0 86 72" fill="none" aria-hidden>
+      <path d="M0 18 H72 M0 0 V48" stroke={color} strokeWidth="2.2" />
+      <path d="M0 0 V72" stroke={color} strokeWidth="1.4" opacity="0.7" />
     </svg>
   );
 }
 
+function layerImage(layer: ImageLayer | undefined, fallbackArt: string) {
+  if (layer?.imageDataUrl) return layer.imageDataUrl;
+  if (layer?.imageUrl) return layer.imageUrl;
+  if (layer?.artId) return artUrl(layer.artId);
+  return artUrl(fallbackArt);
+}
+
 export function Specialist(props: CoverRenderProps) {
+  const cover = useCoverOptional();
   const styles = props.elementStyles;
-  const squad = elementText(styles, "squad", props.title.trim() || "5特种");
+  const squad = elementText(styles, "squad", props.title.trim() || "五特种");
   const stage = elementText(styles, "stage", props.subtitle.trim() || "H15-4");
   const script = elementText(styles, "script", props.signature.trim());
   const mark = elementText(styles, "mark", props.mark.trim());
   const rulerColor = styles?.ruler?.color || RED;
-  const triColor = styles?.tri?.color || WHITE;
+  const triColor = styles?.tri?.color || RED;
   const scriptColor = styles?.script?.color || RED;
   const bg = getBgPreset(props.bgPreset);
-  const squadPx = autoFontSize("squad", squad.length, 200);
-  const stagePx = autoFontSize("squad", stage.length, 188);
+  const squadPx = autoFontSize("squad", squad.length, 252);
+  const stagePx = autoFontSize("stageCode", stage.length, 348);
+  const layers = cover?.draft.layers ?? props.layers ?? [];
+  const layerB = layers.find((layer): layer is ImageLayer => layer.kind === "image" && layer.id === "operator-b");
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#16181c]">
+    <div className="relative h-full w-full overflow-hidden bg-[#d8dbe0]">
       {bg.url ? (
         <img
           src={bg.url}
@@ -64,65 +66,93 @@ export function Specialist(props: CoverRenderProps) {
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
           decoding="async"
-          className="pointer-events-none absolute inset-0 h-full w-full scale-[1.06] object-cover"
-          style={{ objectPosition: "58% 40%", filter: "saturate(0.72) contrast(1.12) brightness(1.08)" }}
+          className="pointer-events-none absolute inset-0 h-full w-full scale-[1.08] object-cover"
+          style={{
+            objectPosition: "56% 36%",
+            filter: "saturate(0.42) contrast(1.14) brightness(1.46) grayscale(0.18)",
+          }}
         />
       ) : null}
 
-      <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 36} at="28% 48%" />
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-[42%] bg-gradient-to-r from-[#101114]/72 via-[#101114]/28 to-transparent" />
-      <div className="sp-scan pointer-events-none absolute inset-0 opacity-[0.22]" />
-      <div className="sp-grain pointer-events-none absolute inset-0 opacity-[0.4]" />
+      <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 14} at="22% 58%" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#8ea0b4]/28 via-[#c5ced6]/10 to-transparent" />
 
-      <div className="absolute inset-y-0 right-[-4%] w-[66%]">
+      <div className="absolute inset-y-[-6%] right-[-10%] w-[56%]">
         <OperatorLayer
           {...props}
+          layerId="operator-b"
+          imageUrl={layerImage(layerB, ANGEL_ART)}
+          imageScale={layerB?.scale ?? 168}
+          imageX={layerB?.imageX ?? 36}
+          imageY={layerB?.imageY ?? -28}
           fadeLeft
-          fadeLeftSolid={18}
+          fadeLeftSolid={16}
           objectFit="contain"
           objectPosition="right bottom"
+          emptyHint="立绘B"
           className="h-full w-full object-contain object-right-bottom"
+          onImageDrag={(dx, dy) => {
+            if (!cover || !layerB) return;
+            cover.patchLayer("operator-b", {
+              imageX: (layerB.imageX ?? 36) + dx,
+              imageY: (layerB.imageY ?? -28) + dy,
+            });
+          }}
         />
       </div>
 
-      <CoverElement id="ruler" kind="box" className="absolute top-[248px] left-[64px] z-[3]">
-        <Ruler color={rulerColor} />
-      </CoverElement>
+      <div className="absolute inset-y-[-2%] right-[2%] w-[64%]">
+        <OperatorLayer
+          {...props}
+          fadeLeft
+          fadeLeftSolid={12}
+          objectFit="contain"
+          objectPosition="center bottom"
+          className="h-full w-full object-contain"
+        />
+      </div>
 
-      <CoverElement id="tri" kind="box" className="absolute top-[196px] left-[72px] z-[3]">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden>
-          <polygon points="14,2 26,26 2,26" fill={triColor} />
-        </svg>
+      <CoverElement id="tri" kind="box" className="absolute top-[292px] left-[132px] z-[6]">
+        <Viewfinder color={triColor} />
       </CoverElement>
 
       <CoverElement
         id="squad"
         defaultFontSize={squadPx}
-        className="absolute top-[300px] left-[88px] z-[4] font-black tracking-[-0.06em] whitespace-nowrap"
-        style={{ lineHeight: 0.92 }}
+        className="absolute top-[318px] left-[168px] z-[4] font-black whitespace-nowrap"
+        style={{ lineHeight: 0.88 }}
       >
-        <BlockWord text={squad} />
+        <span className="sp-squad inline-block">
+          <BlockWord text={squad} />
+        </span>
       </CoverElement>
 
       <CoverElement
         id="stage"
+        defaultFont="display"
         defaultFontSize={stagePx}
-        className="absolute top-[528px] left-[88px] z-[4] font-black tracking-[-0.05em] whitespace-nowrap"
-        style={{ lineHeight: 0.92 }}
+        className="absolute top-[548px] left-[168px] z-[4] font-bold whitespace-nowrap"
+        style={{ lineHeight: 0.84 }}
       >
-        <BlockWord text={stage} />
+        <span className="sp-stage inline-block">
+          <BlockWord text={stage} />
+        </span>
+      </CoverElement>
+
+      <CoverElement id="ruler" kind="box" className="absolute top-[464px] left-[120px] z-[5]">
+        <div style={{ width: 780, height: 3, background: rulerColor, boxShadow: "0 0 0 0.4px rgb(225 6 0 / 0.4)" }} />
       </CoverElement>
 
       {script ? (
         <CoverElement
           id="script"
-          defaultFont="serif"
-          defaultFontSize={92}
-          className="absolute top-[392px] left-[168px] z-[5] font-black tracking-[-0.02em] whitespace-nowrap italic"
+          defaultFont="script"
+          defaultFontSize={122}
+          className="absolute top-[286px] left-[392px] z-[7] whitespace-nowrap"
           style={{ color: scriptColor, lineHeight: 1 }}
         >
-          <span className="relative inline-block" style={{ transform: "rotate(-11deg)", transformOrigin: "left center" }}>
-            <span aria-hidden className="pointer-events-none absolute top-[0.04em] left-[0.03em] text-black">
+          <span className="relative inline-block" style={{ transform: "rotate(-33deg)", transformOrigin: "left center" }}>
+            <span aria-hidden className="pointer-events-none absolute top-[0.03em] left-[0.02em] text-black/35">
               {script}
             </span>
             <span className="relative">{script}</span>
@@ -134,15 +164,20 @@ export function Specialist(props: CoverRenderProps) {
         <CoverElement
           id="mark"
           defaultFont="display"
-          defaultFontSize={18}
-          className="absolute top-[948px] left-[88px] z-[4] font-semibold tracking-[0.28em] whitespace-nowrap"
+          defaultFontSize={16}
+          className="absolute top-[972px] left-[168px] z-[6] font-semibold tracking-[0.42em] whitespace-nowrap"
           style={{ color: WHITE }}
         >
-          <span className="inline-flex items-center gap-3 px-2 py-1 ring-1 ring-white/70">
+          <span className="inline-flex items-center gap-3">
+            <i className="block h-px w-10 bg-current opacity-80" />
             {mark}
+            <i className="block h-px w-10 bg-current opacity-80" />
           </span>
         </CoverElement>
       ) : null}
+
+      <div className="sp-scan pointer-events-none absolute inset-0 z-[20] opacity-[0.55]" />
+      <div className="sp-grain pointer-events-none absolute inset-0 z-[21] opacity-[0.38]" />
     </div>
   );
 }

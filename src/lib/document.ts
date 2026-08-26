@@ -159,11 +159,17 @@ export function autoFontSize(kind: AutoSize | undefined, len: number, fallback: 
   }
   if (kind === "level") return len >= 3 ? 84 : 104;
   if (kind === "squad") {
-    if (len <= 2) return 248;
-    if (len <= 3) return 220;
-    if (len <= 4) return 200;
-    if (len <= 6) return 156;
-    return 118;
+    if (len <= 2) return 280;
+    if (len <= 3) return 252;
+    if (len <= 4) return 220;
+    if (len <= 6) return 168;
+    return 128;
+  }
+  if (kind === "stageCode") {
+    if (len <= 3) return 400;
+    if (len <= 5) return 348;
+    if (len <= 7) return 292;
+    return 232;
   }
   return fallback;
 }

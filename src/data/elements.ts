@@ -61,6 +61,7 @@ export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[
   { id: "display", label: "Oswald", className: "font-display" },
   { id: "sans", label: "系统黑体", className: "font-sans" },
   { id: "serif", label: "思源宋体", className: "font-serif" },
+  { id: "script", label: "花体", className: "font-script" },
 ];
 
 export function fontClass(id?: CoverFontId): string {
@@ -167,12 +168,13 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "tag", label: "英文标", kind: "text", defaultFont: "display", textBind: "signature" },
   ],
   specialist: [
+    { id: "operator-b", label: "立绘B", kind: "image" },
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "ruler", label: "刻度线", kind: "box", hasColor: true },
-    { id: "tri", label: "三角", kind: "box", hasColor: true },
+    { id: "ruler", label: "红线", kind: "box", hasColor: true },
+    { id: "tri", label: "取景框", kind: "box", hasColor: true },
     { id: "squad", label: "阵容", kind: "text", defaultFont: "cn", textBind: "title" },
-    { id: "stage", label: "关卡", kind: "text", defaultFont: "cn", textBind: "subtitle" },
-    { id: "script", label: "花体标", kind: "text", defaultFont: "serif", textBind: "signature", hasColor: true },
+    { id: "stage", label: "关卡", kind: "text", defaultFont: "display", textBind: "subtitle" },
+    { id: "script", label: "花体标", kind: "text", defaultFont: "script", textBind: "signature", hasColor: true },
     { id: "mark", label: "小标", kind: "text", defaultFont: "display", textBind: "mark" },
   ],
 };

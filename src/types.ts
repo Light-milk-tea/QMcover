@@ -1,6 +1,6 @@
 export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
-export type CoverFontId = "cn" | "display" | "sans" | "serif";
+export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -59,7 +59,8 @@ export type AutoSize =
   | "seriesBar"
   | "sign"
   | "level"
-  | "squad";
+  | "squad"
+  | "stageCode";
 
 export type LayerBase = {
   id: string;

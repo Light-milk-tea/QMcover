@@ -8,12 +8,14 @@
 @import "@fontsource/noto-sans-sc/900.css";
 @import "@fontsource/noto-serif-sc/chinese-simplified-700.css";
 @import "@fontsource/noto-serif-sc/chinese-simplified-900.css";
+@import "@fontsource/great-vibes/400.css";
 
 @theme {
   --font-sans: "PingFang SC", "HarmonyOS Sans", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-display: "Oswald", "Noto Sans SC", sans-serif;
   --font-cn: "Noto Sans SC", "PingFang SC", sans-serif;
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+  --font-script: "Great Vibes", "Segoe Script", "Apple Chancery", cursive;
   --color-ink: #f1f2f3;
   --color-panel: #ffffff;
   --color-raised: #f6f7f8;
@@ -189,14 +191,43 @@ input[type="checkbox"] {
 .sp-scan {
   background: repeating-linear-gradient(
     180deg,
-    transparent 0 3px,
-    rgba(8, 10, 12, 0.22) 3px 4px
+    rgba(255, 255, 255, 0.16) 0 1px,
+    transparent 1px 3px,
+    rgba(12, 14, 16, 0.08) 3px 4px
   );
 }
 
 .sp-grain {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 0.55px, transparent 0.75px);
-  background-size: 3px 3px;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgb(255 255 255 / 0.08) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 72% 68%, rgb(0 0 0 / 0.1) 0 1px, transparent 1.4px);
+  background-size: 6px 6px, 4px 4px;
+}
+
+.sp-type {
+  text-shadow:
+    0 1px 0 rgb(0 0 0 / 0.28),
+    1px 2px 0 rgb(0 0 0 / 0.18),
+    0 8px 18px rgb(0 0 0 / 0.22);
+}
+
+.sp-squad {
+  letter-spacing: -0.055em;
+  transform: skewX(-4deg);
+  transform-origin: left center;
+}
+
+.sp-stage {
+  letter-spacing: -0.1em;
+  transform: scaleX(0.84);
+  transform-origin: left center;
+}
+
+.sp-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.02em;
 }
 
 .ef-halftone {
