@@ -95,6 +95,7 @@ export function LayerFrame({ layer, previewScale, zIndex, children }: Props) {
   return (
     <div
       data-cover-el={layer.id}
+      data-ignore-export={hidden ? "true" : undefined}
       className="absolute"
       style={{
         left: visual.x,

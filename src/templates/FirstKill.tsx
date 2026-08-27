@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
+import { bgGradeFilter } from "../lib/effects";
 import { elementText } from "../data/elements";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
@@ -64,12 +65,13 @@ export function FirstKill(props: CoverRenderProps) {
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ filter: bgGradeFilter(props.effects?.bgGrade) }}
         />
       ) : null}
 
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 42} at="22% 42%" />
 
-      <div className="absolute inset-y-0 right-[-6%] w-[76%]">
+      <div className="pointer-events-none absolute inset-y-0 right-[-6%] w-[76%] overflow-visible">
         <OperatorLayer
           {...props}
           objectFit="contain"
@@ -77,7 +79,7 @@ export function FirstKill(props: CoverRenderProps) {
         />
       </div>
 
-      <div className="absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-[#141618]/78 via-[#141618]/32 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-[#141618]/78 via-[#141618]/32 to-transparent" />
 
       <div className="absolute top-[96px] left-[80px] w-[1080px]">
         <CoverElement

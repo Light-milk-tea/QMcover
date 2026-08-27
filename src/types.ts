@@ -43,6 +43,52 @@ export type LayerChrome =
 
 export type CanvasSkin = "plain" | "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield" | "specialist";
 
+export type ShaftLightKind = "bloom" | "beam";
+
+export type AmountEffect = {
+  enabled: boolean;
+  amount: number;
+};
+
+export type LightEffect = AmountEffect & {
+  kind: ShaftLightKind;
+  x: number;
+  y: number;
+  rotate: number;
+};
+
+export type ArtGradeEffect = {
+  enabled: boolean;
+  contrast: number;
+  saturate: number;
+  brightness: number;
+  fringe: number;
+};
+
+export type BgGradeEffect = {
+  enabled: boolean;
+  blur: number;
+  grayscale: number;
+  contrast: number;
+  brightness: number;
+};
+
+export type CoverEffects = {
+  light: LightEffect;
+  artGrade: ArtGradeEffect;
+  bgGrade: BgGradeEffect;
+  scanlines: AmountEffect;
+  grain: AmountEffect;
+  chromatic: AmountEffect;
+  glitch: AmountEffect;
+  slashes: AmountEffect;
+  vignette: AmountEffect;
+};
+
+export type CoverEffectsInput = {
+  [K in keyof CoverEffects]?: Partial<CoverEffects[K]>;
+};
+
 export type AutoSize =
   | "stage"
   | "operation"
@@ -107,6 +153,7 @@ export type ImageLayer = LayerBase & {
   artId?: string;
   imageUrl?: string;
   imageDataUrl?: string;
+  artGrade?: ArtGradeEffect;
 };
 
 export type BoxLayer = LayerBase & {
@@ -118,6 +165,17 @@ export type BoxLayer = LayerBase & {
 };
 
 export type Layer = TextLayer | ImageLayer | BoxLayer;
+
+export type ElementOverride = {
+  x?: number;
+  y?: number;
+  fontSize?: number;
+  font?: CoverFontId;
+  color?: string;
+  opacity?: number;
+  text?: string;
+  rotation?: number;
+};
 
 export type CoverDocument = {
   layers: Layer[];
@@ -140,8 +198,16 @@ export type CoverDocument = {
   textBgPreset?: string;
   bgDim?: boolean;
   bgDimAmount?: number;
+  shaftLight?: boolean;
+  shaftLightAmount?: number;
+  shaftLightKind?: ShaftLightKind;
+  shaftLightX?: number;
+  shaftLightY?: number;
+  shaftLightRotate?: number;
+  effects?: CoverEffectsInput;
   ornamentId?: string;
   paper?: string;
+  elementStyles?: Record<string, ElementOverride>;
 };
 
 export type SavedTemplate = {
@@ -152,17 +218,6 @@ export type SavedTemplate = {
   basedOn?: string;
   seed: CoverDocument;
   thumbDataUrl?: string;
-};
-
-export type ElementOverride = {
-  x?: number;
-  y?: number;
-  fontSize?: number;
-  font?: CoverFontId;
-  color?: string;
-  opacity?: number;
-  text?: string;
-  rotation?: number;
 };
 
 export type ResolvedElement = {
@@ -206,6 +261,13 @@ export type TemplateMeta = {
   showBgDim?: boolean;
   defaultBgDim?: boolean;
   defaultBgDimAmount?: number;
+  showShaftLight?: boolean;
+  defaultShaftLight?: boolean;
+  defaultShaftLightAmount?: number;
+  defaultShaftLightKind?: ShaftLightKind;
+  defaultShaftLightX?: number;
+  defaultShaftLightY?: number;
+  defaultShaftLightRotate?: number;
   defaultOperatorId?: string;
   defaultArtId?: string;
   showOrnament?: boolean;
@@ -235,6 +297,13 @@ export type Draft = {
   textBgPreset: string;
   bgDim: boolean;
   bgDimAmount: number;
+  shaftLight: boolean;
+  shaftLightAmount: number;
+  shaftLightKind: ShaftLightKind;
+  shaftLightX: number;
+  shaftLightY: number;
+  shaftLightRotate: number;
+  effects: CoverEffects;
   ornamentId: string;
   layers: Layer[];
   canvasSkin: CanvasSkin;
@@ -263,6 +332,13 @@ export type CoverRenderProps = {
   textBgPreset?: string;
   bgDim?: boolean;
   bgDimAmount?: number;
+  shaftLight?: boolean;
+  shaftLightAmount?: number;
+  shaftLightKind?: ShaftLightKind;
+  shaftLightX?: number;
+  shaftLightY?: number;
+  shaftLightRotate?: number;
+  effects?: CoverEffects;
   ornamentId?: string;
   elementStyles?: Record<string, ElementOverride>;
   layers?: Layer[];

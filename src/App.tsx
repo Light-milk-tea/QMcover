@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CoverStage } from "./components/CoverStage";
 import { EditorPanel } from "./components/EditorPanel";
+import { EffectsPanel } from "./components/EffectsPanel";
 import { HomePage } from "./components/HomePage";
 import { InspectorPanel } from "./components/InspectorPanel";
 import { ThumbCapture } from "./components/ThumbCapture";
@@ -63,6 +64,7 @@ function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string
           await exportCoverPng(stageRef.current, coverFilename(draft.date, templateName, draft.operatorName));
         }}
       />
+      <EffectsPanel />
       <div className="flex min-h-0 flex-1 gap-4 overflow-hidden p-4">
         <InspectorPanel />
         <main className="flex min-h-0 min-w-0 flex-1 flex-col">

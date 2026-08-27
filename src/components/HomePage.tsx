@@ -98,15 +98,17 @@ export function HomePage({ onOpen }: Props) {
                     seed: parsed.document,
                   };
                   upsertSavedTemplate(item);
+                  const imported = emptyDraft(id);
                   saveDraft(id, {
-                    ...emptyDraft(id),
+                    ...imported,
                     ...parsed.document,
                     layers: parsed.document.layers,
-                    canvasSkin: parsed.document.canvasSkin ?? "plain",
+                    canvasSkin: parsed.document.canvasSkin ?? imported.canvasSkin,
+                    effects: imported.effects,
                     imageDataUrl: "",
                     showSafeArea: true,
-                    elementStyles: {},
-                    date: emptyDraft(id).date,
+                    elementStyles: parsed.document.elementStyles ?? {},
+                    date: imported.date,
                   });
                   setMine(loadSavedTemplates());
                   onOpen(id);

@@ -15,6 +15,7 @@ import type {
   TextBind,
   TextLayer,
 } from "../types";
+import { cloneCoverEffects } from "./effects";
 import { uid } from "./id";
 
 export type DocumentFile = {
@@ -159,17 +160,17 @@ export function autoFontSize(kind: AutoSize | undefined, len: number, fallback: 
   }
   if (kind === "level") return len >= 3 ? 84 : 104;
   if (kind === "squad") {
-    if (len <= 2) return 280;
-    if (len <= 3) return 252;
-    if (len <= 4) return 220;
-    if (len <= 6) return 168;
-    return 128;
+    if (len <= 2) return 300;
+    if (len <= 3) return 248;
+    if (len <= 4) return 228;
+    if (len <= 6) return 172;
+    return 132;
   }
   if (kind === "stageCode") {
-    if (len <= 3) return 400;
-    if (len <= 5) return 360;
-    if (len <= 7) return 300;
-    return 236;
+    if (len <= 3) return 440;
+    if (len <= 5) return 408;
+    if (len <= 7) return 328;
+    return 252;
   }
   return fallback;
 }
@@ -216,8 +217,18 @@ export function draftToDocument(draft: Draft): CoverDocument {
     textBgPreset: draft.textBgPreset,
     bgDim: draft.bgDim,
     bgDimAmount: draft.bgDimAmount,
+    shaftLight: draft.shaftLight,
+    shaftLightAmount: draft.shaftLightAmount,
+    shaftLightKind: draft.shaftLightKind,
+    shaftLightX: draft.shaftLightX,
+    shaftLightY: draft.shaftLightY,
+    shaftLightRotate: draft.shaftLightRotate,
+    effects: cloneCoverEffects(draft.effects),
     ornamentId: draft.ornamentId,
     paper: draft.paper,
+    elementStyles: Object.fromEntries(
+      Object.entries(draft.elementStyles ?? {}).map(([id, style]) => [id, { ...style }]),
+    ),
   };
 }
 
@@ -238,7 +249,19 @@ export function parseDocumentFile(raw: unknown): DocumentFile | null {
   const data = raw as Partial<DocumentFile>;
   if (data.kind !== "qmcover-document" || data.version !== 2) return null;
   if (!data.document || !Array.isArray(data.document.layers)) return null;
-  return data as DocumentFile;
+  const layers = data.document.layers.map((layer, index) => {
+    if (!layer || typeof layer !== "object") return null;
+    const item = layer as Layer;
+    if (typeof item.id === "string" && item.id) return item;
+    return { ...item, id: uid("el") || `layer-${index}` };
+  }).filter((layer): layer is Layer => Boolean(layer));
+  return {
+    ...data,
+    document: {
+      ...data.document,
+      layers,
+    },
+  } as DocumentFile;
 }
 
 export function newCustomId(): string {
@@ -393,6 +416,13 @@ export function savedTemplateToMeta(item: SavedTemplate) {
     showBgDim: true,
     defaultBgDim: item.seed.bgDim ?? false,
     defaultBgDimAmount: item.seed.bgDimAmount,
+    showShaftLight: item.seed.canvasSkin === "specialist" || Boolean(item.seed.shaftLight),
+    defaultShaftLight: item.seed.shaftLight ?? item.seed.canvasSkin === "specialist",
+    defaultShaftLightAmount: item.seed.shaftLightAmount,
+    defaultShaftLightKind: item.seed.shaftLightKind ?? (item.seed.canvasSkin === "specialist" ? "beam" : "bloom"),
+    defaultShaftLightX: item.seed.shaftLightX,
+    defaultShaftLightY: item.seed.shaftLightY,
+    defaultShaftLightRotate: item.seed.shaftLightRotate,
     defaultOperatorId: item.seed.operatorId,
     defaultArtId: item.seed.artId,
     canvasSkin: item.seed.canvasSkin ?? "plain",

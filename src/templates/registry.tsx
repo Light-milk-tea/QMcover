@@ -1,8 +1,7 @@
 import type { ComponentType } from "react";
 import { LayerStage } from "../canvas/LayerStage";
 import { ElementEditProvider } from "../components/CoverElement";
-import { isNativeElement } from "../data/elements";
-import { isBuiltinId } from "../lib/document";
+import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { useCoverOptional } from "../store/CoverContext";
 import type { BuiltinTemplateId, CoverRenderProps } from "../types";
 import { Endfield } from "./Endfield";
@@ -26,13 +25,14 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
 export function CoverView(props: CoverRenderProps) {
   const cover = useCoverOptional();
   const templateId = props.templateId ?? cover?.templateId;
+  const viewId = nativeTemplateId(templateId ?? "", props.canvasSkin ?? cover?.draft.canvasSkin);
   const extras = (cover?.draft.layers ?? props.layers ?? []).filter((layer) => {
-    if (!templateId || !isBuiltinId(templateId)) return true;
-    return !isNativeElement(templateId, layer.id);
+    if (!viewId) return true;
+    return !isNativeElement(viewId, layer.id);
   });
 
-  if (templateId && isBuiltinId(templateId)) {
-    const View = TEMPLATE_VIEWS[templateId];
+  if (viewId) {
+    const View = TEMPLATE_VIEWS[viewId];
     return (
       <ElementEditProvider
         styles={props.elementStyles ?? {}}

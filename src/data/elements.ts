@@ -95,9 +95,16 @@ export function normalizeHex(raw: string): string | undefined {
   return `#${hex.toLowerCase()}`;
 }
 
-export function isNativeElement(templateId: string, id: string): boolean {
-  if (!(templateId in TEMPLATE_ELEMENTS)) return false;
-  return TEMPLATE_ELEMENTS[templateId as BuiltinTemplateId].some((el) => el.id === id);
+export function nativeTemplateId(templateId: string, canvasSkin?: string): BuiltinTemplateId | undefined {
+  if (templateId in TEMPLATE_ELEMENTS) return templateId as BuiltinTemplateId;
+  if (canvasSkin && canvasSkin in TEMPLATE_ELEMENTS) return canvasSkin as BuiltinTemplateId;
+  return undefined;
+}
+
+export function isNativeElement(templateId: string, id: string, canvasSkin?: string): boolean {
+  const key = nativeTemplateId(templateId, canvasSkin);
+  if (!key) return false;
+  return TEMPLATE_ELEMENTS[key].some((el) => el.id === id);
 }
 
 export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
@@ -168,13 +175,15 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "tag", label: "英文标", kind: "text", defaultFont: "display", textBind: "signature" },
   ],
   specialist: [
+    { id: "atmosphere", label: "氛围压暗", kind: "box" },
+    { id: "bg-shards", label: "灰三角", kind: "box" },
     { id: "operator-b", label: "立绘B", kind: "image" },
     { id: "operator", label: "立绘", kind: "image" },
-    { id: "ruler", label: "红线", kind: "box", hasColor: true },
-    { id: "tri", label: "取景框", kind: "box", hasColor: true },
     { id: "squad", label: "阵容", kind: "text", defaultFont: "cn", textBind: "title" },
     { id: "stage", label: "关卡", kind: "text", defaultFont: "display", textBind: "subtitle" },
     { id: "script", label: "花体标", kind: "text", defaultFont: "script", textBind: "signature", hasColor: true },
     { id: "mark", label: "小标", kind: "text", defaultFont: "display", textBind: "mark" },
+    { id: "guides", label: "标线", kind: "box" },
+    { id: "corner-shards", label: "红白碎片", kind: "box" },
   ],
 };

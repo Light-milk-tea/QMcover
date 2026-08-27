@@ -5,9 +5,10 @@ import { isBuiltinId } from "../lib/document";
 import { useCover } from "../store/CoverContext";
 import type { Layer } from "../types";
 
-function layerLabel(templateId: string, layer: Layer): string {
-  if (isBuiltinId(templateId)) {
-    const meta = TEMPLATE_ELEMENTS[templateId].find((item) => item.id === layer.id);
+function layerLabel(templateId: string, layer: Layer, canvasSkin?: string): string {
+  const skin = isBuiltinId(templateId) ? templateId : canvasSkin && isBuiltinId(canvasSkin) ? canvasSkin : undefined;
+  if (skin) {
+    const meta = TEMPLATE_ELEMENTS[skin].find((item) => item.id === layer.id);
     if (meta) return meta.label;
   }
   return layer.label;
@@ -56,10 +57,10 @@ export function LayerStackList() {
           <StackRow
             key={el.id}
             id={el.id}
-            label={layerLabel(templateId, el)}
+            label={layerLabel(templateId, el, draft.canvasSkin)}
             locked={el.locked}
             hidden={el.hidden}
-            native={isNativeElement(templateId, el.id)}
+            native={isNativeElement(templateId, el.id, draft.canvasSkin)}
             movable={canMove}
             front={index === 0}
             back={index === stack.length - 1}

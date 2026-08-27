@@ -16,11 +16,13 @@ import {
   UploadSimple,
 } from "@phosphor-icons/react";
 import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN, IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
-import { COVER_FONTS, TEMPLATE_ELEMENTS, isNativeElement, nativeTextValue } from "../data/elements";
+import { COVER_FONTS, TEMPLATE_ELEMENTS, isNativeElement, nativeTemplateId, nativeTextValue } from "../data/elements";
 import { imageLayerPan, isBuiltinId } from "../lib/document";
+import { resolveArtGrade } from "../lib/effects";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
+import { emptyDraft } from "../lib/storage";
 import { useCover } from "../store/CoverContext";
-import type { CoverFontId, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
+import type { ArtGradeEffect, CoverFontId, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
 import { ColorField } from "./ColorField";
 import { Field, fieldClass } from "./Field";
 import { LayerStackList } from "./LayerStackList";
@@ -34,6 +36,66 @@ const BINDS: { id: TextBind; label: string }[] = [
   { id: "mark", label: "角标" },
   { id: "operatorName", label: "干员名" },
 ];
+
+function ArtGradeFields({ value, onChange }: { value?: ArtGradeEffect; onChange: (next: ArtGradeEffect) => void }) {
+  const grade = resolveArtGrade(value);
+  return (
+    <>
+      <label className="mt-3 flex cursor-pointer items-center gap-1.5 text-[13px] text-sub">
+        <input
+          type="checkbox"
+          checked={grade.enabled}
+          onChange={(e) => onChange({ ...grade, enabled: e.target.checked })}
+        />
+        立绘调色
+      </label>
+      {grade.enabled ? (
+        <div className="mt-2 space-y-3">
+          <Field label={`对比 ${grade.contrast}%`}>
+            <input
+              type="range"
+              min={0}
+              max={40}
+              value={grade.contrast}
+              onChange={(e) => onChange({ ...grade, contrast: Number(e.target.value) })}
+              className="w-full"
+            />
+          </Field>
+          <Field label={`饱和 ${grade.saturate}%`}>
+            <input
+              type="range"
+              min={0}
+              max={40}
+              value={grade.saturate}
+              onChange={(e) => onChange({ ...grade, saturate: Number(e.target.value) })}
+              className="w-full"
+            />
+          </Field>
+          <Field label={`亮度 ${grade.brightness}%`}>
+            <input
+              type="range"
+              min={0}
+              max={20}
+              value={grade.brightness}
+              onChange={(e) => onChange({ ...grade, brightness: Number(e.target.value) })}
+              className="w-full"
+            />
+          </Field>
+          <Field label={`描边 ${grade.fringe}`}>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={grade.fringe}
+              onChange={(e) => onChange({ ...grade, fringe: Number(e.target.value) })}
+              className="w-full"
+            />
+          </Field>
+        </div>
+      ) : null}
+    </>
+  );
+}
 
 function RotationField({ value, onChange }: { value: number; onChange: (deg: number) => void }) {
   const deg = Math.round(value);
@@ -89,13 +151,13 @@ export function InspectorPanel() {
     duplicateSelected,
     reorderSelected,
     resetElement,
-    defaultImageScale,
     resolvedElements,
   } = useCover();
   const addRef = useRef<HTMLDetailsElement>(null);
   const builtin = isBuiltinId(templateId);
-  const natives = builtin ? TEMPLATE_ELEMENTS[templateId] : [];
-  const extras = draft.layers.filter((layer) => !isNativeElement(templateId, layer.id));
+  const skinId = nativeTemplateId(templateId, draft.canvasSkin);
+  const natives = skinId ? TEMPLATE_ELEMENTS[skinId] : [];
+  const extras = draft.layers.filter((layer) => !isNativeElement(templateId, layer.id, draft.canvasSkin));
   const nativeMeta = selectedId ? natives.find((el) => el.id === selectedId) : undefined;
   const native = Boolean(nativeMeta);
   const layer = selectedLayer;
@@ -108,7 +170,7 @@ export function InspectorPanel() {
   const currentColor = style.color ?? resolved.color;
   const currentX = style.x ?? resolved.x ?? 0;
   const currentY = style.y ?? resolved.y ?? 0;
-  const currentRotation = native ? (style.rotation ?? 0) : (layer?.rotation ?? 0);
+  const currentRotation = style.rotation ?? layer?.rotation ?? 0;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -181,7 +243,7 @@ export function InspectorPanel() {
           </details>
         </div>
         <LayerStackList />
-        {!builtin && extras.filter((layer) => !layer.removed).length === 0 ? (
+        {!skinId && extras.filter((layer) => !layer.removed).length === 0 ? (
           <p className="mt-2 text-[12px] text-mute">还没有图层，点添加开始排版。</p>
         ) : null}
       </div>
@@ -206,8 +268,18 @@ export function InspectorPanel() {
                   className="grid size-7 place-items-center rounded-[6px] text-sub hover:bg-raised hover:text-accent"
                   onClick={() => {
                     if (nativeMeta.id === "operator") {
-                      patchDraft({ imageX: 0, imageY: 0, imageScale: defaultImageScale });
+                      const fresh = emptyDraft(templateId);
+                      const freshOp = fresh.layers.find((item) => item.id === "operator");
+                      patchDraft({
+                        imageX: fresh.imageX,
+                        imageY: fresh.imageY,
+                        imageScale: fresh.imageScale,
+                      });
                       patchElement(nativeMeta.id, { rotation: 0, x: 0, y: 0 });
+                      patchLayer(nativeMeta.id, {
+                        artGrade:
+                          freshOp?.kind === "image" ? freshOp.artGrade : undefined,
+                      });
                       return;
                     }
                     resetElement(nativeMeta.id);
@@ -228,36 +300,63 @@ export function InspectorPanel() {
 
             {nativeMeta.kind === "image" ? (
               <>
-                <Field label={`水平 ${Math.round(draft.imageX)}`}>
+                {(() => {
+                  const primary = nativeMeta.id === "operator";
+                  const panX = primary ? draft.imageX : (image?.imageX ?? 0);
+                  const panY = primary ? draft.imageY : (image?.imageY ?? 0);
+                  const zoom = primary ? draft.imageScale : (image?.scale ?? draft.imageScale);
+                  const fadeOn = primary ? Boolean(draft.imageEdgeFade) : Boolean(image?.edgeFade);
+                  const fadeAmt = primary
+                    ? (draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT)
+                    : (image?.edgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT);
+                  const setPan = (patch: { imageX?: number; imageY?: number; scale?: number; edgeFade?: boolean; edgeFadeAmount?: number }) => {
+                    if (primary) {
+                      patchDraft({
+                        ...(patch.imageX != null ? { imageX: patch.imageX } : {}),
+                        ...(patch.imageY != null ? { imageY: patch.imageY } : {}),
+                        ...(patch.scale != null ? { imageScale: patch.scale } : {}),
+                        ...(patch.edgeFade != null ? { imageEdgeFade: patch.edgeFade } : {}),
+                        ...(patch.edgeFadeAmount != null ? { imageEdgeFadeAmount: patch.edgeFadeAmount } : {}),
+                      });
+                      if (patch.scale != null || patch.imageX != null || patch.imageY != null || patch.edgeFade != null || patch.edgeFadeAmount != null) {
+                        patchLayer(nativeMeta.id, patch);
+                      }
+                      return;
+                    }
+                    patchLayer(nativeMeta.id, patch);
+                  };
+                  return (
+                    <>
+                <Field label={`水平 ${Math.round(panX)}`}>
                   <input
                     type="range"
                     min={-600}
                     max={600}
-                    value={draft.imageX}
-                    onChange={(e) => patchDraft({ imageX: Number(e.target.value) })}
+                    value={panX}
+                    onChange={(e) => setPan({ imageX: Number(e.target.value) })}
                     className="w-full"
                   />
                 </Field>
                 <div className="mt-3">
-                  <Field label={`垂直 ${Math.round(draft.imageY)}`}>
+                  <Field label={`垂直 ${Math.round(panY)}`}>
                     <input
                       type="range"
                       min={-600}
                       max={600}
-                      value={draft.imageY}
-                      onChange={(e) => patchDraft({ imageY: Number(e.target.value) })}
+                      value={panY}
+                      onChange={(e) => setPan({ imageY: Number(e.target.value) })}
                       className="w-full"
                     />
                   </Field>
                 </div>
                 <div className="mt-3">
-                  <Field label={`缩放 ${draft.imageScale}%`}>
+                  <Field label={`缩放 ${zoom}%`}>
                     <input
                       type="range"
                       min={IMAGE_SCALE_MIN}
                       max={IMAGE_SCALE_MAX}
-                      value={draft.imageScale}
-                      onChange={(e) => patchDraft({ imageScale: Number(e.target.value) })}
+                      value={zoom}
+                      onChange={(e) => setPan({ scale: Number(e.target.value) })}
                       className="w-full"
                     />
                   </Field>
@@ -268,25 +367,32 @@ export function InspectorPanel() {
                 <label className="mt-3 flex cursor-pointer items-center gap-1.5 text-[13px] text-sub">
                   <input
                     type="checkbox"
-                    checked={draft.imageEdgeFade ?? false}
-                    onChange={(e) => patchDraft({ imageEdgeFade: e.target.checked })}
+                    checked={fadeOn}
+                    onChange={(e) => setPan({ edgeFade: e.target.checked })}
                   />
                   边缘虚化
                 </label>
-                {draft.imageEdgeFade ? (
+                {fadeOn ? (
                   <div className="mt-2">
-                    <Field label={`虚化宽度 ${draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}%`}>
+                    <Field label={`虚化宽度 ${fadeAmt}%`}>
                       <input
                         type="range"
                         min={IMAGE_EDGE_FADE_MIN}
                         max={IMAGE_EDGE_FADE_MAX}
-                        value={draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
-                        onChange={(e) => patchDraft({ imageEdgeFadeAmount: Number(e.target.value) })}
+                        value={fadeAmt}
+                        onChange={(e) => setPan({ edgeFadeAmount: Number(e.target.value) })}
                         className="w-full"
                       />
                     </Field>
                   </div>
                 ) : null}
+                <ArtGradeFields
+                  value={image?.artGrade}
+                  onChange={(artGrade) => patchLayer(nativeMeta.id, { artGrade })}
+                />
+                    </>
+                  );
+                })()}
               </>
             ) : (
               <>
@@ -616,6 +722,10 @@ export function InspectorPanel() {
                     </Field>
                   </div>
                 ) : null}
+                <ArtGradeFields
+                  value={image.artGrade}
+                  onChange={(artGrade) => patchLayer(layer.id, { artGrade })}
+                />
               </>
             ) : null}
 

@@ -11,7 +11,17 @@ import {
 } from "../lib/document";
 import { isNativeElement } from "../data/elements";
 import { getTemplate } from "../data/templates";
-import type { Draft, ElementOverride, ImageLayer, Layer, ResolvedElement, TemplateId, TitleKind } from "../types";
+import { cloneCoverEffects } from "../lib/effects";
+import type {
+  CoverEffects,
+  Draft,
+  ElementOverride,
+  ImageLayer,
+  Layer,
+  ResolvedElement,
+  TemplateId,
+  TitleKind,
+} from "../types";
 
 const HISTORY_LIMIT = 40;
 const COALESCE_MS = 520;
@@ -19,6 +29,7 @@ const COALESCE_MS = 520;
 function cloneDraft(draft: Draft): Draft {
   return {
     ...draft,
+    effects: cloneCoverEffects(draft.effects),
     layers: draft.layers.map((layer) => ({ ...layer })),
     elementStyles: Object.fromEntries(
       Object.entries(draft.elementStyles ?? {}).map(([id, style]) => [id, { ...style }]),
@@ -42,6 +53,7 @@ type CoverContextValue = {
   showBackground: boolean;
   showTextBackground: boolean;
   showBgDim: boolean;
+  showShaftLight: boolean;
   showOrnament: boolean;
   draft: Draft;
   selectedId: string | null;
@@ -49,6 +61,8 @@ type CoverContextValue = {
   canUndo: boolean;
   undo: () => void;
   patchDraft: (patch: Partial<Draft>) => void;
+  patchEffect: <K extends keyof CoverEffects>(id: K, patch: Partial<CoverEffects[K]>) => void;
+  setEffects: (effects: CoverEffects) => void;
   resetDraft: () => void;
   selectElement: (id: string | null) => void;
   patchElement: (id: string, patch: Partial<ElementOverride>) => void;
@@ -131,6 +145,42 @@ export function CoverProvider({
     [apply],
   );
 
+  const syncLegacyEffects = useCallback((prev: Draft, effects: CoverEffects): Draft => {
+    return {
+      ...prev,
+      effects,
+      bgDim: effects.vignette.enabled,
+      bgDimAmount: effects.vignette.amount,
+      shaftLight: effects.light.enabled,
+      shaftLightAmount: effects.light.amount,
+      shaftLightKind: effects.light.kind,
+      shaftLightX: effects.light.x,
+      shaftLightY: effects.light.y,
+      shaftLightRotate: effects.light.rotate,
+    };
+  }, []);
+
+  const patchEffect = useCallback(
+    <K extends keyof CoverEffects>(id: K, patch: Partial<CoverEffects[K]>) => {
+      apply((prev) => {
+        const current = prev.effects[id] ?? cloneCoverEffects(prev.effects)[id];
+        const effects = {
+          ...cloneCoverEffects(prev.effects),
+          [id]: { ...current, ...patch },
+        } as CoverEffects;
+        return syncLegacyEffects(prev, effects);
+      }, `effect:${id}:${Object.keys(patch).sort().join(",")}`);
+    },
+    [apply, syncLegacyEffects],
+  );
+
+  const setEffects = useCallback(
+    (effects: CoverEffects) => {
+      apply((prev) => syncLegacyEffects(prev, cloneCoverEffects(effects)), "effects:set");
+    },
+    [apply, syncLegacyEffects],
+  );
+
   const resetDraft = useCallback(() => {
     apply(() => emptyDraft(templateId));
     setSelectedId(null);
@@ -149,7 +199,7 @@ export function CoverProvider({
     (id: string, patch: Partial<ElementOverride>) => {
       const key = `el:${id}:${Object.keys(patch).sort().join(",")}`;
       apply((prev) => {
-        if (isNativeElement(templateId, id)) {
+        if (isNativeElement(templateId, id, prev.canvasSkin)) {
           return {
             ...prev,
             elementStyles: {
@@ -175,7 +225,7 @@ export function CoverProvider({
   const nudgeElement = useCallback(
     (id: string, dx: number, dy: number) => {
       apply((prev) => {
-        if (isNativeElement(templateId, id)) {
+        if (isNativeElement(templateId, id, prev.canvasSkin)) {
           const cur = prev.elementStyles[id] ?? {};
           return {
             ...prev,
@@ -215,7 +265,7 @@ export function CoverProvider({
   const removeLayer = useCallback(
     (id: string) => {
       apply((prev) => {
-        if (isNativeElement(templateId, id)) {
+        if (isNativeElement(templateId, id, prev.canvasSkin)) {
           return { ...prev, layers: patchLayerIn(prev.layers, id, { hidden: true, removed: true }) };
         }
         return { ...prev, layers: prev.layers.filter((layer) => layer.id !== id) };
@@ -227,7 +277,7 @@ export function CoverProvider({
 
   const duplicateSelected = useCallback(() => {
     const id = selectedId;
-    if (!id || isNativeElement(templateId, id)) return;
+    if (!id || isNativeElement(templateId, id, draftRef.current.canvasSkin)) return;
     apply((prev) => {
       const result = duplicateLayer(prev.layers, id);
       if (!result) return prev;
@@ -267,7 +317,7 @@ export function CoverProvider({
     (id: string) => {
       apply((prev) => {
         const { [id]: _removed, ...restStyles } = prev.elementStyles;
-        if (isNativeElement(templateId, id)) {
+        if (isNativeElement(templateId, id, prev.canvasSkin)) {
           const fresh = emptyDraft(templateId).layers.find((layer) => layer.id === id);
           return {
             ...prev,
@@ -354,6 +404,7 @@ export function CoverProvider({
       showBackground: true,
       showTextBackground: meta?.showTextBackground ?? draft.canvasSkin === "rogue",
       showBgDim: true,
+      showShaftLight: meta?.showShaftLight ?? draft.canvasSkin === "specialist",
       showOrnament: meta?.showOrnament ?? draft.canvasSkin === "lowspec",
       draft,
       selectedId,
@@ -361,6 +412,8 @@ export function CoverProvider({
       canUndo,
       undo,
       patchDraft,
+      patchEffect,
+      setEffects,
       resetDraft,
       selectElement: setSelectedId,
       patchElement,
@@ -384,6 +437,7 @@ export function CoverProvider({
       meta,
       nudgeElement,
       patchDraft,
+      patchEffect,
       patchElement,
       patchLayer,
       removeLayer,
@@ -396,6 +450,7 @@ export function CoverProvider({
       selectedId,
       selectedLayer,
       setStackOrder,
+      setEffects,
       templateId,
       undo,
     ],

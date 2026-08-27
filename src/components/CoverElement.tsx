@@ -82,12 +82,13 @@ export function CoverElement({
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
   const override = edit?.styles[id] ?? {};
+  const nativeLayer = cover?.draft.layers.find((layer) => layer.id === id);
   const font = override.font ?? defaultFont;
   const fontSize = override.fontSize ?? defaultFontSize;
   const color = impliedColor(className, style, override.color);
   const x = override.x ?? defaultX;
   const y = override.y ?? defaultY;
-  const rotation = override.rotation ?? 0;
+  const rotation = override.rotation ?? nativeLayer?.rotation ?? 0;
   const pos = useRef({ x, y });
   pos.current = { x, y };
   useEffect(() => {
@@ -95,9 +96,9 @@ export function CoverElement({
   }, [cover, id, fontSize, font, color, x, y]);
   const selected = edit?.selectedId === id;
   const interactive = edit?.interactive ?? false;
-  const nativeLayer = cover?.draft.layers.find((layer) => layer.id === id);
   const hidden =
-    isNativeElement(cover?.templateId ?? "", id) && Boolean(nativeLayer?.hidden || nativeLayer?.removed);
+    isNativeElement(cover?.templateId ?? "", id, cover?.draft.canvasSkin) &&
+    Boolean(nativeLayer?.hidden || nativeLayer?.removed);
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     if (!interactive || !edit) return;

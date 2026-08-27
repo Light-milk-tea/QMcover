@@ -1,6 +1,7 @@
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
+import { bgGradeFilter } from "../lib/effects";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -172,6 +173,7 @@ export function Endfield(props: CoverRenderProps) {
             className="h-full w-full object-cover"
             style={{
               objectPosition: "38% 42%",
+              filter: bgGradeFilter(props.effects?.bgGrade),
               WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 58%, transparent 100%)",
               maskImage: "linear-gradient(90deg, #000 0%, #000 58%, transparent 100%)",
             }}
@@ -193,7 +195,7 @@ export function Endfield(props: CoverRenderProps) {
 
       {props.bgDim ? <BgDimLayer on amount={props.bgDimAmount ?? 28} at="22% 48%" className="z-[2]" /> : null}
 
-      <div className="absolute inset-y-0 left-[-4%] w-[54%] overflow-visible">
+      <div className="pointer-events-none absolute inset-y-0 left-[-4%] w-[54%] overflow-visible">
         <OperatorLayer
           {...props}
           fadeRight

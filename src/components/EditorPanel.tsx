@@ -18,7 +18,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "madness", label: "杂谈底" },
   { id: "nocore", label: "无核底" },
   { id: "endfield", label: "终末地底" },
-  { id: "specialist", label: "特种队底" },
+  { id: "specialist", label: "职业队底" },
 ];
 
 export function EditorPanel() {
@@ -48,6 +48,7 @@ export function EditorPanel() {
     uploadLayer
       ? undefined
       : selectedImage ??
+        draft.layers.find((layer): layer is ImageLayer => layer.id === "operator" && layer.kind === "image" && !layer.removed) ??
         draft.layers.find((layer): layer is ImageLayer => layer.kind === "image" && layer.source !== "upload" && !layer.removed);
   const resolvedPlaceholder =
     titlePlaceholder ||
@@ -132,10 +133,6 @@ export function EditorPanel() {
         label={showTextBackground ? "画布背景" : "背景"}
         value={draft.bgPreset}
         onChange={(bgPreset) => patchDraft({ bgPreset })}
-        dim={draft.bgDim}
-        dimAmount={draft.bgDimAmount}
-        onDimChange={(bgDim) => patchDraft({ bgDim })}
-        onDimAmountChange={(bgDimAmount) => patchDraft({ bgDimAmount })}
       />
 
       {showTextBackground ? (

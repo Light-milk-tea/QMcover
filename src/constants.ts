@@ -28,6 +28,11 @@ export const BUILTIN_TEMPLATE_IDS = ["firstkill", "lowspec", "rogue", "madness",
 export const IMAGE_SCALE_MIN = 40;
 export const IMAGE_SCALE_MAX = 350;
 
+export const SHAFT_LIGHT_DEFAULT = 52;
+export const SHAFT_LIGHT_X_DEFAULT = 54;
+export const SHAFT_LIGHT_Y_DEFAULT = 6;
+export const SHAFT_LIGHT_ROTATE_DEFAULT = 8;
+
 /** 立绘四边虚化宽度，单位是立绘盒子的百分比。 */
 export const IMAGE_EDGE_FADE_MIN = 6;
 export const IMAGE_EDGE_FADE_MAX = 36;

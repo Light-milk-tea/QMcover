@@ -2,6 +2,7 @@ import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
 import { getOrnament } from "../data/ornaments";
+import { bgGradeFilter } from "../lib/effects";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -33,10 +34,12 @@ function BandScene({
   url,
   objectPosition,
   veil,
+  filter,
 }: {
   url: string | null;
   objectPosition: string;
   veil: string;
+  filter?: string;
 }) {
   return (
     <>
@@ -48,7 +51,7 @@ function BandScene({
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full scale-[1.12] object-cover"
-          style={{ objectPosition }}
+          style={{ objectPosition, filter }}
         />
       ) : (
         <div className="pointer-events-none absolute inset-0 bg-[#0c2430]" />
@@ -144,7 +147,7 @@ export function LowSpec(props: CoverRenderProps) {
   return (
     <div className="relative h-full w-full overflow-hidden bg-[#080a0e]">
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 38} at="28% 48%" className="z-[1]" />
-      <div className="absolute inset-y-0 left-[-10%] w-[58%]">
+      <div className="pointer-events-none absolute inset-y-0 left-[-10%] w-[58%] overflow-visible">
         <OperatorLayer
           {...props}
           fadeRight
@@ -162,6 +165,7 @@ export function LowSpec(props: CoverRenderProps) {
             url={scene}
             objectPosition="78% 18%"
             veil="linear-gradient(180deg, rgba(8,28,36,0.12) 0%, rgba(6,22,30,0.38) 100%), linear-gradient(90deg, rgba(4,12,18,0.28), transparent 42%)"
+            filter={bgGradeFilter(props.effects?.bgGrade)}
           />
           <div className="relative z-[1] flex w-full items-end pb-[26px] pl-[38%] pr-[56px]">
             <CoverElement
@@ -260,6 +264,7 @@ export function LowSpec(props: CoverRenderProps) {
             url={scene}
             objectPosition="78% 86%"
             veil="linear-gradient(180deg, rgba(4,10,16,0.48) 0%, rgba(2,6,12,0.72) 100%), linear-gradient(90deg, rgba(2,8,12,0.3), transparent 40%)"
+            filter={bgGradeFilter(props.effects?.bgGrade)}
           />
           <div className="relative flex h-full items-center pl-[34%] pr-[56px]">
             <CoverElement

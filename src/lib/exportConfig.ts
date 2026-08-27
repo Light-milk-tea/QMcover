@@ -26,6 +26,10 @@ export async function captureThumb(node: HTMLElement): Promise<string> {
     width: BILI_COVER.width,
     height: BILI_COVER.height,
     cacheBust: false,
+    style: {
+      transform: "none",
+      transformOrigin: "top left",
+    },
     filter: (el) => {
       if (el instanceof HTMLElement && el.dataset.ignoreExport === "true") return false;
       return true;

@@ -7,6 +7,10 @@ export async function exportCoverPng(node: HTMLElement, filename: string): Promi
     height: BILI_COVER.height,
     pixelRatio: 1,
     cacheBust: true,
+    style: {
+      transform: "none",
+      transformOrigin: "top left",
+    },
     filter: (el) => {
       if (el instanceof HTMLElement && el.dataset.ignoreExport === "true") return false;
       return true;

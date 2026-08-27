@@ -5,6 +5,7 @@ import { displaySubtitle, displayTitle } from "../lib/interpolate";
 import { useCover } from "../store/CoverContext";
 import { CoverView } from "../templates/registry";
 import { getTemplate } from "../data/templates";
+import { CoverEffectsStage } from "../effects/CoverEffectsStage";
 import type { Draft, TemplateId } from "../types";
 import { SafeArea } from "./SafeArea";
 import { ScaledFrame } from "./ScaledFrame";
@@ -35,8 +36,15 @@ export function draftToRenderProps(
     imageEdgeFadeAmount: draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
     bgPreset: draft.bgPreset,
     textBgPreset: draft.textBgPreset,
-    bgDim: draft.bgDim,
-    bgDimAmount: draft.bgDimAmount,
+    bgDim: false,
+    bgDimAmount: draft.effects.vignette.amount,
+    shaftLight: false,
+    shaftLightAmount: draft.effects.light.amount,
+    shaftLightKind: draft.effects.light.kind,
+    shaftLightX: draft.effects.light.x,
+    shaftLightY: draft.effects.light.y,
+    shaftLightRotate: draft.effects.light.rotate,
+    effects: draft.effects,
     ornamentId: draft.ornamentId,
     elementStyles: draft.elementStyles ?? {},
     layers: draft.layers,
@@ -64,17 +72,19 @@ export function CoverStage({ stageRef }: Props) {
             className="relative overflow-hidden"
             style={{ width: BILI_COVER.width, height: BILI_COVER.height }}
           >
-            <CoverView
-              {...draftToRenderProps(templateId, draft, {
-                previewScale: scale,
-                onImageDrag: (dx, dy) => {
-                  patchDraft({
-                    imageX: draft.imageX + dx,
-                    imageY: draft.imageY + dy,
-                  });
-                },
-              })}
-            />
+            <CoverEffectsStage effects={draft.effects} skin={draft.canvasSkin} layeredLight={draft.canvasSkin === "specialist"}>
+              <CoverView
+                {...draftToRenderProps(templateId, draft, {
+                  previewScale: scale,
+                  onImageDrag: (dx, dy) => {
+                    patchDraft({
+                      imageX: draft.imageX + dx,
+                      imageY: draft.imageY + dy,
+                    });
+                  },
+                })}
+              />
+            </CoverEffectsStage>
           </div>
           {draft.showSafeArea ? (
             <div className="pointer-events-none absolute inset-0">

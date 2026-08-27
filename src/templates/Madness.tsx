@@ -2,6 +2,7 @@ import { CoverElement } from "../components/CoverElement";
 import { findOperatorByName } from "../data/arts";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
+import { bgGradeFilter } from "../lib/effects";
 import type { CoverRenderProps } from "../types";
 import { OperatorLayer } from "./OperatorLayer";
 
@@ -108,6 +109,7 @@ export function Madness(props: CoverRenderProps) {
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style={{ filter: bgGradeFilter(props.effects?.bgGrade) }}
         />
       ) : (
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_72%_40%,#3a424c_0%,#14181e_46%,#0c1016_100%)]" />

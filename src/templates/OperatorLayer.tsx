@@ -7,10 +7,14 @@ import { layerZIndex } from "../lib/document";
 import { useCoverOptional } from "../store/CoverContext";
 import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN } from "../constants";
 import { useCdnSrc } from "../lib/cdn";
+import { artGradeFilter, type ArtFringeRole } from "../lib/effects";
+import type { ArtGradeEffect } from "../types";
 
 type Props = {
   layerId?: string;
   imageUrl: string;
+  artGrade?: ArtGradeEffect;
+  fringeRole?: ArtFringeRole;
   imageScale: number;
   imageX: number;
   imageY: number;
@@ -56,6 +60,8 @@ export function OperatorLayer({
   imageEdgeFadeAmount = IMAGE_EDGE_FADE_DEFAULT,
   framed = false,
   emptyHint = "从立绘库点选",
+  artGrade,
+  fringeRole,
 }: Props) {
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
@@ -64,19 +70,18 @@ export function OperatorLayer({
   const selected = edit?.selectedId === layerId;
   const interactive = edit?.interactive ?? false;
   const remote = useCdnSrc(imageUrl);
-  const tallRightFade = fadeRight && !fadeBottom && !fadeLeft;
   const selfLayer = cover?.draft.layers.find((layer) => layer.id === layerId);
   const hidden = Boolean(selfLayer?.hidden || selfLayer?.removed);
   const zIndex = cover ? layerZIndex(cover.draft.layers, layerId) : undefined;
 
-  const rotation = edit?.styles[layerId]?.rotation ?? 0;
-  const ownChrome = isNativeElement(cover?.templateId ?? "", layerId);
+  const rotation = edit?.styles[layerId]?.rotation ?? selfLayer?.rotation ?? 0;
+  const ownChrome = cover ? isNativeElement(cover.templateId, layerId, cover.draft.canvasSkin) : !framed;
   const insideFrame = framed || !ownChrome;
+  const expandArt = !insideFrame && !fadeBottom && objectFit !== "cover";
   const panX = insideFrame ? 0 : imageX;
   const panY = insideFrame ? 0 : imageY;
 
-  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest("[data-rotate-handle]")) return;
+  const onPointerDown = (e: PointerEvent<HTMLImageElement>) => {
     if (insideFrame) return;
     e.stopPropagation();
     if (interactive) edit?.select(layerId);
@@ -96,6 +101,17 @@ export function OperatorLayer({
     );
   }
 
+  const wrapTransform = [
+    !insideFrame && (panX || panY) ? `translate(${panX}px, ${panY}px)` : "",
+    rotation ? `rotate(${rotation}deg)` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const layerGrade = selfLayer?.kind === "image" ? selfLayer.artGrade : undefined;
+  const grade = layerGrade ?? artGrade;
+  const role = fringeRole ?? (layerId === "operator-b" ? "back" : "front");
+  const gradeFilter = artGradeFilter(grade, role);
+
   return (
     <div
       data-cover-el={layerId}
@@ -103,25 +119,17 @@ export function OperatorLayer({
       style={{
         zIndex,
         visibility: hidden ? "hidden" : undefined,
-        pointerEvents: hidden || insideFrame ? "none" : undefined,
-        ...(rotation ? { transform: `rotate(${rotation}deg)`, transformOrigin: "center center" } : {}),
-      }}
-      onPointerDown={onPointerDown}
-      onPointerMove={(e) => {
-        if (!dragging.current) return;
-        const scale = previewScale || 1;
-        onImageDrag((e.clientX - last.current.x) / scale, (e.clientY - last.current.y) / scale);
-        last.current = { x: e.clientX, y: e.clientY };
-      }}
-      onPointerUp={() => {
-        dragging.current = false;
+        pointerEvents: "none",
+        transform: wrapTransform || undefined,
+        transformOrigin: rotation ? "center center" : transformOrigin,
+        filter: gradeFilter,
       }}
     >
       <div
         className={
-          tallRightFade
-            ? "absolute left-0 top-[-200%] h-[500%] w-full overflow-visible"
-            : "h-full w-full overflow-visible"
+          expandArt
+            ? "pointer-events-none absolute left-0 top-[-200%] h-[500%] w-full overflow-visible"
+            : "pointer-events-none h-full w-full overflow-visible"
         }
         style={(() => {
           const masks: string[] = [];
@@ -163,8 +171,18 @@ export function OperatorLayer({
           draggable={false}
           onLoad={remote.onLoad}
           onError={remote.onError}
+          onPointerDown={onPointerDown}
+          onPointerMove={(e) => {
+            if (!dragging.current) return;
+            const scale = previewScale || 1;
+            onImageDrag((e.clientX - last.current.x) / scale, (e.clientY - last.current.y) / scale);
+            last.current = { x: e.clientX, y: e.clientY };
+          }}
+          onPointerUp={() => {
+            dragging.current = false;
+          }}
           className={
-            tallRightFade
+            expandArt
               ? "absolute left-0 top-[40%] h-[20%] w-full select-none"
               : "h-full w-full select-none"
           }
@@ -172,8 +190,8 @@ export function OperatorLayer({
             objectFit,
             objectPosition,
             transformOrigin,
-            transform: `translate(${panX}px, ${panY}px) scale(${imageScale / 100})`,
-            pointerEvents: "auto",
+            transform: `scale(${imageScale / 100})`,
+            pointerEvents: hidden || insideFrame ? "none" : "auto",
             cursor: dragging.current ? "grabbing" : "grab",
             ...(imageEdgeFade
               ? (() => {

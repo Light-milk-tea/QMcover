@@ -3,6 +3,7 @@ import { BILI_COVER } from "../constants";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
 import { useCdnSrc } from "../lib/cdn";
+import { bgGradeFilter } from "../lib/effects";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -121,7 +122,7 @@ export function Rogue(props: CoverRenderProps) {
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: BG_POS }}
+          style={{ objectPosition: BG_POS, filter: bgGradeFilter(props.effects?.bgGrade) }}
           onLoad={canvasRemote.onLoad}
           onError={canvasRemote.onError}
         />
@@ -170,7 +171,7 @@ export function Rogue(props: CoverRenderProps) {
         <HollowMark text={watermarkFlip} />
       </CoverElement>
 
-      <div className="absolute inset-y-0 left-[-6%] w-[52%]">
+      <div className="pointer-events-none absolute inset-y-0 left-[-6%] w-[52%] overflow-visible">
         <OperatorLayer
           {...props}
           fadeRight

@@ -1,6 +1,7 @@
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
+import { bgGradeFilter } from "../lib/effects";
 import type { CoverRenderProps } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
@@ -87,7 +88,7 @@ export function Nocore(props: CoverRenderProps) {
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: "62% 42%" }}
+          style={{ objectPosition: "62% 42%", filter: bgGradeFilter(props.effects?.bgGrade) }}
         />
       ) : null}
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount ?? 42} at="28% 48%" />
@@ -136,7 +137,7 @@ export function Nocore(props: CoverRenderProps) {
         </CoverElement>
       ) : null}
 
-      <div className="absolute inset-y-0 right-[-2%] w-[40%]">
+      <div className="pointer-events-none absolute inset-y-0 right-[-2%] w-[40%] overflow-visible">
         <OperatorLayer
           {...props}
           objectFit="contain"

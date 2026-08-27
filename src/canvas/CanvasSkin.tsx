@@ -1,13 +1,24 @@
 import { getBgPreset } from "../data/backgrounds";
 import { getOrnament } from "../data/ornaments";
 import { useCdnSrc } from "../lib/cdn";
-import type { CanvasSkin } from "../types";
+import { bgGradeFilter } from "../lib/effects";
+import type { BgGradeEffect, CanvasSkin } from "../types";
 import { BgDimLayer } from "../templates/BgDimLayer";
 
 const LEMON = "#fdfe3e";
 const PAPER = "#f3f3f1";
 
-function BandScene({ url, objectPosition, veil }: { url: string | null; objectPosition: string; veil: string }) {
+function BandScene({
+  url,
+  objectPosition,
+  veil,
+  filter,
+}: {
+  url: string | null;
+  objectPosition: string;
+  veil: string;
+  filter?: string;
+}) {
   return (
     <>
       {url ? (
@@ -18,7 +29,7 @@ function BandScene({ url, objectPosition, veil }: { url: string | null; objectPo
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full scale-[1.12] object-cover"
-          style={{ objectPosition }}
+          style={{ objectPosition, filter }}
         />
       ) : (
         <div className="pointer-events-none absolute inset-0 bg-[#0c2430]" />
@@ -81,14 +92,16 @@ type Props = {
   bgDimAmount?: number;
   ornamentId?: string;
   paper?: string;
+  bgGrade?: BgGradeEffect;
 };
 
-export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmount, ornamentId, paper }: Props) {
+export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmount, ornamentId, paper, bgGrade }: Props) {
   const bg = getBgPreset(bgPreset);
   const fill = getBgPreset(textBgPreset || bgPreset);
   const canvasRemote = useCdnSrc(bg.url ?? "");
   const fillRemote = useCdnSrc(fill.url ?? "");
   const canvasUrl = canvasRemote.src || null;
+  const gradeFilter = bgGradeFilter(bgGrade);
 
   if (skin === "endfield") {
     return (
@@ -109,6 +122,7 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
               className="h-full w-full object-cover"
               style={{
                 objectPosition: "38% 42%",
+                filter: gradeFilter,
                 WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 58%, transparent 100%)",
                 maskImage: "linear-gradient(90deg, #000 0%, #000 58%, transparent 100%)",
               }}
@@ -137,6 +151,7 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
               url={scene}
               objectPosition="78% 18%"
               veil="linear-gradient(180deg, rgba(8,28,36,0.12) 0%, rgba(6,22,30,0.38) 100%), linear-gradient(90deg, rgba(4,12,18,0.28), transparent 42%)"
+              filter={gradeFilter}
             />
           </div>
           <div className="relative z-[3] min-h-0 flex-1 overflow-hidden">
@@ -149,6 +164,7 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
               url={scene}
               objectPosition="78% 86%"
               veil="linear-gradient(180deg, rgba(4,10,16,0.48) 0%, rgba(2,6,12,0.72) 100%), linear-gradient(90deg, rgba(2,8,12,0.3), transparent 40%)"
+              filter={gradeFilter}
             />
           </div>
         </div>
@@ -167,7 +183,7 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
             referrerPolicy="no-referrer"
             decoding="async"
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: "42% 40%" }}
+            style={{ objectPosition: "42% 40%", filter: gradeFilter }}
             onLoad={canvasRemote.onLoad}
             onError={canvasRemote.onError}
           />
@@ -208,13 +224,15 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           style={
             skin === "nocore"
-              ? { objectPosition: "62% 42%" }
+              ? { objectPosition: "62% 42%", filter: gradeFilter }
               : skin === "specialist"
                 ? {
-                    objectPosition: "56% 36%",
-                    filter: "saturate(0.42) contrast(1.14) brightness(1.46) grayscale(0.18)",
+                    objectPosition: "58% 28%",
+                    filter: gradeFilter,
                   }
-                : undefined
+                : gradeFilter
+                  ? { filter: gradeFilter }
+                  : undefined
           }
         />
       ) : skin === "madness" ? (
@@ -224,11 +242,7 @@ export function CanvasBackdrop({ skin, bgPreset, textBgPreset, bgDim, bgDimAmoun
         <div className="absolute inset-y-0 left-0 w-[36%] bg-gradient-to-r from-[#141618]/78 via-[#141618]/32 to-transparent" />
       ) : null}
       {skin === "specialist" ? (
-        <>
-          <div className="absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#8ea0b4]/28 via-[#c5ced6]/10 to-transparent" />
-          <div className="sp-scan pointer-events-none absolute inset-0 opacity-[0.55]" />
-          <div className="sp-grain pointer-events-none absolute inset-0 opacity-[0.38]" />
-        </>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#0c1014]/42 via-[#0c1014]/12 to-transparent" />
       ) : null}
       {skin === "nocore" ? <div className="nc-night pointer-events-none absolute inset-0" /> : null}
       <BgDimLayer

@@ -42,6 +42,7 @@ function ImageView({ layer, props }: { layer: ImageLayer; props: CoverRenderProp
       emptyHint={layer.source === "upload" ? "上传本地图片" : "从立绘库点选"}
       className="h-full w-full"
       framed
+      artGrade={layer.artGrade}
       onImageDrag={() => undefined}
     />
   );
@@ -86,10 +87,11 @@ export function LayerStage(
             bgDimAmount={props.bgDimAmount}
             ornamentId={props.ornamentId}
             paper={props.paper ?? cover?.draft.paper}
+            bgGrade={props.effects?.bgGrade}
           />
         )}
         {[...layers]
-          .filter((layer) => !layer.removed)
+          .filter((layer) => !layer.removed && typeof layer.id === "string")
           .sort((a, b) => a.id.localeCompare(b.id))
           .map((layer) => (
             <LayerFrame
