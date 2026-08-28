@@ -31,7 +31,15 @@ function BlockWord({ text }: { text: string }) {
 function AtmosphereWash() {
   return (
     <CoverElement id="atmosphere" kind="box" className="pointer-events-none absolute inset-0">
-      <div className="absolute inset-y-0 left-0 w-[38%] bg-gradient-to-r from-[#0c1014]/42 via-[#0c1014]/12 to-transparent" />
+      <div
+        className="absolute inset-y-0 left-0 w-[38%]"
+        style={{
+          background:
+            "linear-gradient(180deg, transparent 0 16%, rgb(12 16 20 / 0.16) 36%, rgb(12 16 20 / 0.4) 100%)",
+          maskImage: "linear-gradient(90deg, #000 0%, #000 42%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 42%, transparent 100%)",
+        }}
+      />
       <div
         className="absolute inset-0"
         style={{
@@ -91,7 +99,7 @@ function CornerShards() {
     <CoverElement
       id="corner-shards"
       kind="box"
-      className="pointer-events-none absolute top-[560px] left-[1480px] z-[12] h-[520px] w-[440px]"
+      className="pointer-events-none absolute top-[600px] left-[1560px] z-[12] h-[520px] w-[440px]"
     >
       <svg className="pointer-events-none h-full w-full" viewBox="0 0 440 520" fill="none" aria-hidden>
         <polygon points="180,520 440,520 440,0 354,42" fill="rgb(8 12 16 / 0.5)" />

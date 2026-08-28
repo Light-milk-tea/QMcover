@@ -41,38 +41,59 @@ function BloomLight({ effect }: { effect: LightEffectConfig }) {
   );
 }
 
-function LightCone({
+function CanvasWash({ effect, surface = false }: { effect: LightEffectConfig; surface?: boolean }) {
+  const t = opacity(effect.amount);
+  const corner = (surface ? 0.2 : 0.72) * t;
+  const haze = (surface ? 0.08 : 0.28) * t;
+  return (
+    <div
+      data-light-corner=""
+      className="absolute inset-0"
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: [
+          `radial-gradient(ellipse 88% 72% at 0% 0%, rgb(255 255 255 / ${corner}) 0%, rgb(236 246 252 / ${haze}) 46%, transparent 78%)`,
+          `linear-gradient(180deg, rgb(255 255 255 / ${haze}) 0%, transparent 42%)`,
+          `linear-gradient(90deg, rgb(255 255 255 / ${haze * 0.85}) 0%, transparent 36%)`,
+        ].join(", "),
+        mixBlendMode: "screen",
+      }}
+    />
+  );
+}
+
+function LightSlab({
   effect,
-  width,
-  strength,
-  blur,
-  height,
-  spread,
+  surface = false,
+  inset = -20,
+  width = 156,
+  strength = 1,
+  blur = 16,
 }: {
   effect: LightEffectConfig;
-  width: number;
-  strength: number;
-  blur: number;
-  height: number;
-  spread: number;
+  surface?: boolean;
+  inset?: number;
+  width?: number;
+  strength?: number;
+  blur?: number;
 }) {
   const t = opacity(effect.amount);
   const x = clamp(effect.x);
   const y = clamp(effect.y);
-  const top = 50 - Math.max(12, spread * 0.34);
-  const bottomLeft = 50 - spread / 2;
-  const bottomRight = 50 + spread / 2;
   return (
     <div
+      data-light-cone=""
       className="absolute"
       style={{
-        left: `${x}%`,
-        top: `${y - 28}%`,
+        position: "absolute",
+        left: `${inset + (x - 30) * 0.28}%`,
+        top: `${-18 + y * 0.18}%`,
         width: `${width}%`,
-        height: `${height}%`,
-        opacity: strength * t,
-        transform: `translateX(-50%) rotate(${effect.rotate}deg)`,
-        transformOrigin: "50% 8%",
+        height: "156%",
+        opacity: strength,
+        transform: `skewX(${-effect.rotate}deg)`,
+        transformOrigin: "0 0",
         filter: `blur(${blur}px)`,
         mixBlendMode: "screen",
       }}
@@ -80,60 +101,19 @@ function LightCone({
       <div
         className="absolute inset-0"
         style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, rgb(218 235 246 / 0.2) 24%, rgb(255 255 255 / 0.88) 50%, rgb(226 239 247 / 0.22) 76%, transparent 100%)",
-          clipPath: `polygon(${top}% 0%, ${100 - top}% 0%, ${bottomRight}% 100%, ${bottomLeft}% 100%)`,
-          WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 58%, rgb(0 0 0 / 0.86) 82%, rgb(0 0 0 / 0.4) 94%, transparent 100%)",
-          maskImage: "linear-gradient(180deg, #000 0%, #000 58%, rgb(0 0 0 / 0.86) 82%, rgb(0 0 0 / 0.4) 94%, transparent 100%)",
+          background: `linear-gradient(90deg, rgb(255 255 255 / ${0.7 * t}) 0%, rgb(255 255 255 / ${0.42 * t}) 28%, rgb(232 244 250 / ${0.18 * t}) 56%, transparent 84%)`,
         }}
       />
     </div>
   );
 }
 
-function SourceGlow({ effect, surface = false }: { effect: LightEffectConfig; surface?: boolean }) {
-  const t = opacity(effect.amount);
-  const x = clamp(effect.x);
-  const y = clamp(effect.y);
-  const topGlow = Math.min(1, (surface ? 0.22 : 1.55) * t);
-  const topHaze = Math.min(1, (surface ? 0.09 : 0.72) * t);
-  return (
-    <div
-      className="absolute inset-0"
-      style={{
-        background: `radial-gradient(ellipse ${surface ? "48% 42%" : "92% 70%"} at ${x - 8}% ${y - 22}%, rgb(255 255 255 / ${topGlow}) 0%, rgb(226 240 249 / ${topHaze}) 36%, transparent 80%)`,
-      }}
-    />
-  );
-}
-
-function DiagonalFog({ effect, surface = false }: { effect: LightEffectConfig; surface?: boolean }) {
-  const t = opacity(effect.amount);
-  const x = clamp(effect.x);
-  const y = clamp(effect.y);
-  return (
-    <div
-      className="absolute inset-0"
-      style={{
-        transform: `rotate(${effect.rotate}deg)`,
-        transformOrigin: `${x}% ${y}%`,
-        background: `radial-gradient(ellipse ${surface ? "28% 110%" : "48% 170%"} at ${x}% ${y}%, rgb(255 255 255 / ${
-          (surface ? 0.14 : 0.42) * t
-        }) 0%, rgb(214 233 244 / ${(surface ? 0.05 : 0.16) * t}) 50%, transparent 86%)`,
-        mixBlendMode: "screen",
-      }}
-    />
-  );
-}
-
 function FullBeamLight({ effect }: { effect: LightEffectConfig }) {
   return (
     <>
-      <SourceGlow effect={effect} />
-      <DiagonalFog effect={effect} />
-      <LightCone effect={effect} width={72} height={198} spread={120} blur={18} strength={0.4} />
-      <LightCone effect={effect} width={46} height={182} spread={96} blur={10} strength={0.5} />
-      <LightCone effect={effect} width={20} height={168} spread={62} blur={5} strength={0.4} />
+      <CanvasWash effect={effect} />
+      <LightSlab effect={effect} inset={-22} width={168} strength={0.9} blur={18} />
+      <LightSlab effect={effect} inset={-6} width={118} strength={0.55} blur={8} />
     </>
   );
 }
@@ -141,10 +121,8 @@ function FullBeamLight({ effect }: { effect: LightEffectConfig }) {
 function BeamSurfaceLight({ effect }: { effect: LightEffectConfig }) {
   return (
     <>
-      <SourceGlow effect={effect} surface />
-      <DiagonalFog effect={effect} surface />
-      <LightCone effect={effect} width={40} height={172} spread={98} blur={10} strength={0.28} />
-      <LightCone effect={effect} width={14} height={158} spread={50} blur={4} strength={0.2} />
+      <CanvasWash effect={effect} surface />
+      <LightSlab effect={effect} surface inset={-18} width={150} strength={0.38} blur={12} />
     </>
   );
 }
@@ -152,7 +130,11 @@ function BeamSurfaceLight({ effect }: { effect: LightEffectConfig }) {
 export function SpecialistLightUnderlay({ effect }: { effect?: LightEffectConfig }) {
   if (!effect?.enabled || effect.amount <= 0 || effect.kind !== "beam") return null;
   return (
-    <div data-effect="light-underlay" className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div
+      data-effect="light-underlay"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}
+    >
       <FullBeamLight effect={effect} />
     </div>
   );
