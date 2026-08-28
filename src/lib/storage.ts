@@ -24,7 +24,7 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 5;
+const DEFAULTS_VERSION = 6;
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
@@ -314,9 +314,18 @@ function migrateSpecialistLayout(draft: Draft): Draft {
     if (layer.id === "mark" && layer.kind === "text" && layer.x === 132 && layer.y === 986) {
       return { ...layer, x: 170, y: 992 };
     }
+    if (layer.id === "corner-shards" && layer.x === 1480 && layer.y === 560) {
+      return { ...layer, x: 1560, y: 600 };
+    }
     return layer;
   });
   const styles = { ...(draft.elementStyles ?? {}) };
+  const shards = styles["corner-shards"];
+  if (shards && shards.x === 80 && shards.y === 40) {
+    const { x: _x, y: _y, ...rest } = shards;
+    if (Object.keys(rest).length) styles["corner-shards"] = rest;
+    else delete styles["corner-shards"];
+  }
   const script = styles.script;
   if (script && (script.fontSize == null || script.fontSize >= 180)) {
     const { fontSize: _fontSize, x: _x, y: _y, rotation: _rotation, ...rest } = script;
@@ -389,6 +398,17 @@ function migrateSpecialistLayout(draft: Draft): Draft {
     draft.effects.glitch.amount === 16 &&
     draft.effects.slashes.amount === 8 &&
     draft.effects.vignette.amount === 30;
+  const currentDocumentEffects =
+    draft.effects.light.amount === 40 &&
+    draft.effects.light.x === 30 &&
+    draft.effects.light.y === 0 &&
+    draft.effects.light.rotate === -12 &&
+    draft.effects.scanlines.amount === 24 &&
+    draft.effects.grain.amount === 28 &&
+    draft.effects.chromatic.amount === 4 &&
+    draft.effects.glitch.amount === 16 &&
+    draft.effects.slashes.amount === 8 &&
+    draft.effects.vignette.amount === 30;
   const reference = referenceCoverEffects();
   const shouldMigrateEffects =
     legacyEffects ||
@@ -396,7 +416,8 @@ function migrateSpecialistLayout(draft: Draft): Draft {
     strongReferenceEffects ||
     tunedReferenceEffects ||
     clearColorReferenceEffects ||
-    diagonalReferenceEffects;
+    diagonalReferenceEffects ||
+    currentDocumentEffects;
   const effects = shouldMigrateEffects
     ? {
         ...reference,

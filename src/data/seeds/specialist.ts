@@ -122,8 +122,8 @@ export const specialistLayers: Layer[] = [
   boxLayer({
     id: "corner-shards",
     label: "红白碎片",
-    x: 1480,
-    y: 560,
+    x: 1560,
+    y: 600,
     w: 440,
     h: 520,
     fill: "transparent",

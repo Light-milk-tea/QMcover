@@ -71,10 +71,10 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
     },
     artGrade: { ...ART_GRADE },
     bgGrade: { ...BG_GRADE, enabled: specialist },
-    scanlines: amount(specialist, specialist ? 24 : 24),
+    scanlines: amount(false, specialist ? 11 : 24),
     grain: amount(specialist, specialist ? 28 : 24),
     chromatic: amount(specialist, specialist ? 4 : 12),
-    glitch: amount(specialist, specialist ? 16 : 24),
+    glitch: amount(false, specialist ? 16 : 24),
     slashes: amount(false, specialist ? 8 : 20),
     vignette: amount(legacy.bgDim ?? specialist, legacy.bgDimAmount ?? (specialist ? 30 : 48)),
   };
