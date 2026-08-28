@@ -1,0 +1,22 @@
+---
+description: UI 改动必须用 Vitest Browser + Playwright Chromium 跑测试，禁止用 Edge 预览冒充验收
+alwaysApply: true
+---
+
+# UI 必须用 Vitest Chromium 校对
+
+涉及组件、页面交互、样式导致的可见行为变化时：
+
+1. 同步写或更新 `*.browser.test.tsx`。
+2. 用本仓库的 Playwright **Chromium** 跑受影响测试，不要开 Edge：
+   `npx vitest run <file> --browser.headless`
+3. 失败则修改并重跑，最多 3 轮；仍红则报告失败，不要假装完成。
+4. 回复里写清跑了什么命令、通过/失败。没跑测试不准说做完。
+
+禁止：
+
+- 用 Cursor Playwright MCP 的 **Edge**（`msedge`）代替 Vitest 验收
+- 用 jsdom / 系统浏览器「点一遍」冒充本规则的验收
+- 为变绿删除断言
+
+纯函数可用普通 Vitest；整页点开编辑器时 MCP 也必须用 Playwright Chromium，不要 Edge。

@@ -66,4 +66,15 @@ npm run dev
 
 默认 `http://localhost:5173/`。路由是 hash：`#/` 首页，`#/t/<模板id>` 编辑器。
 
-改 UI 或模板时，在浏览器里点一遍相关页面，不要只看代码。
+改 UI 或模板时，用 Vitest Browser + Playwright **Chromium** 校对，不要用系统 Edge / MCP Edge 点一遍就算验收。
+
+## UI 验收（Vitest Browser + Playwright）
+
+改组件、交互或可见样式时：
+
+- 写或更新 `*.browser.test.tsx`，在 Playwright Chromium 里跑，不用 jsdom，也不用 Edge。
+- 校对：`npx vitest run <file> --browser.headless`，或 `npm test`。
+- 要看窗口：`npm run test:browser`（同样是 Chromium）。
+- 红就修再跑；没跑绿不准说做完。
+- 需要打开整页编辑器时，Playwright MCP 也必须走这套 Chromium，禁止 `--browser=msedge`。
+- 细则见 Cursor skill `vitest-browser-playwright`。

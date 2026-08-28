@@ -18,6 +18,9 @@ dist-ssr
 .idea
 .DS_Store
 .playwright-mcp
+.playwright-browsers/
+src/**/__screenshots__/
+.vitest-attachments/
 *.suo
 *.ntvs*
 *.njsproj

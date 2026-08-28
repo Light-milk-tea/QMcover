@@ -27,7 +27,7 @@ npm install
 npm run dev
 ```
 
-浏览器打开终端提示的本地地址（默认 `http://localhost:5173/`）。
+本机看效果可以打开终端提示的地址（默认 `http://localhost:5173/`）。AI 改 UI 的验收走 Playwright **Chromium**（`npm test`），不要用 Edge。
 
 | 命令 | 作用 |
 | --- | --- |
@@ -35,6 +35,9 @@ npm run dev
 | `npm run build` | 类型检查 + 生产构建 |
 | `npm run preview` | 预览构建结果 |
 | `npm run lint` | oxlint |
+| `npm test` | 无头 Chromium 跑浏览器测试 |
+| `npm run test:browser` | 有窗口跑浏览器测试 |
+| `npm run playwright:install` | 安装测试用 Chromium |
 | `npm run operators` | 从游戏表重建干员目录 |
 
 ## 使用
