@@ -65,14 +65,12 @@ function CanvasWash({ effect, surface = false }: { effect: LightEffectConfig; su
 
 function LightSlab({
   effect,
-  surface = false,
   inset = -20,
   width = 156,
   strength = 1,
   blur = 16,
 }: {
   effect: LightEffectConfig;
-  surface?: boolean;
   inset?: number;
   width?: number;
   strength?: number;
@@ -122,7 +120,7 @@ function BeamSurfaceLight({ effect }: { effect: LightEffectConfig }) {
   return (
     <>
       <CanvasWash effect={effect} surface />
-      <LightSlab effect={effect} surface inset={-18} width={150} strength={0.38} blur={12} />
+      <LightSlab effect={effect} inset={-18} width={150} strength={0.38} blur={12} />
     </>
   );
 }
