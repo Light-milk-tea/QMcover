@@ -8,12 +8,14 @@ type Props = {
   label?: string;
   value: string;
   onChange: (id: string) => void;
+  compact?: boolean;
 };
 
 export function BackgroundPicker({
   label = "背景",
   value,
   onChange,
+  compact = false,
 }: Props) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<BgCategory | "all">("all");
@@ -38,7 +40,7 @@ export function BackgroundPicker({
   }, [category, query]);
 
   return (
-    <div className="border-b border-line px-4 py-3">
+    <div className={compact ? "" : "border-b border-line px-4 py-3"}>
       <div className="mb-1.5 flex items-center justify-between gap-3">
         <p className="text-[13px] text-sub">{label}</p>
         <p className="min-w-0 truncate text-[12px] text-accent" title={current.name}>

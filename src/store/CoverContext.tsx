@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { loadDraft, saveDraft, emptyDraft } from "../lib/storage";
 import {
   createBoxLayer,
+  createDecorationLayer,
   createImageLayer,
   createTextLayer,
   duplicateLayer,
@@ -68,12 +69,14 @@ type CoverContextValue = {
   patchElement: (id: string, patch: Partial<ElementOverride>) => void;
   patchLayer: (id: string, patch: Partial<Layer>) => void;
   addLayer: (kind: "text" | "box" | "image" | "upload", init?: Partial<ImageLayer>) => void;
+  addDecoration: (presetId: string) => void;
   removeLayer: (id: string) => void;
   duplicateSelected: () => void;
   reorderSelected: (dir: 1 | -1) => void;
   reorderLayerById: (id: string, dir: 1 | -1) => void;
   setStackOrder: (ordered: Layer[]) => void;
   nudgeElement: (id: string, dx: number, dy: number) => void;
+  moveElement: (id: string, dx: number, dy: number) => void;
   resetElement: (id: string) => void;
   resolvedElements: Record<string, ResolvedElement>;
   reportElementResolved: (id: string, resolved: ResolvedElement) => void;
@@ -243,6 +246,49 @@ export function CoverProvider({
     [apply, templateId],
   );
 
+  const moveElement = useCallback(
+    (id: string, dx: number, dy: number) => {
+      apply((prev) => {
+        const layer = prev.layers.find((item) => item.id === id);
+        if (isNativeElement(templateId, id, prev.canvasSkin)) {
+          if (layer?.kind === "image") {
+            if (id === "operator") {
+              return {
+                ...prev,
+                imageX: prev.imageX + dx,
+                imageY: prev.imageY + dy,
+              };
+            }
+            return {
+              ...prev,
+              layers: patchLayerIn(prev.layers, id, {
+                imageX: (layer.imageX ?? 0) + dx,
+                imageY: (layer.imageY ?? 0) + dy,
+              }),
+            };
+          }
+          const cur = prev.elementStyles[id] ?? {};
+          return {
+            ...prev,
+            elementStyles: {
+              ...prev.elementStyles,
+              [id]: { ...cur, x: (cur.x ?? 0) + dx, y: (cur.y ?? 0) + dy },
+            },
+          };
+        }
+        if (!layer) return prev;
+        return {
+          ...prev,
+          layers: patchLayerIn(prev.layers, id, {
+            x: layer.x + dx,
+            y: layer.y + dy,
+          }),
+        };
+      }, `move:${id}`);
+    },
+    [apply, templateId],
+  );
+
   const addLayer = useCallback(
     (kind: "text" | "box" | "image" | "upload", init?: Partial<ImageLayer>) => {
       let createdId = "";
@@ -254,6 +300,26 @@ export function CoverProvider({
             : kind === "text"
               ? createTextLayer(at)
               : createImageLayer(at, kind === "upload" ? "upload" : "operator", init);
+        createdId = layer.id;
+        return { ...prev, layers: [...prev.layers, layer] };
+      });
+      if (createdId) setSelectedId(createdId);
+    },
+    [apply],
+  );
+
+  const addDecoration = useCallback(
+    (presetId: string) => {
+      let createdId = "";
+      apply((prev) => {
+        const layer = createDecorationLayer(presetId, {
+          operatorId: prev.operatorId,
+          artId: prev.artId,
+          imageUrl: prev.imageUrl,
+          imageDataUrl: prev.imageDataUrl,
+          frameBgPreset: prev.bgPreset,
+        });
+        if (!layer) return prev;
         createdId = layer.id;
         return { ...prev, layers: [...prev.layers, layer] };
       });
@@ -419,22 +485,26 @@ export function CoverProvider({
       patchElement,
       patchLayer,
       addLayer,
+      addDecoration,
       removeLayer,
       duplicateSelected,
       reorderSelected,
       reorderLayerById,
       setStackOrder,
       nudgeElement,
+      moveElement,
       resetElement,
       resolvedElements,
       reportElementResolved,
     }),
     [
       addLayer,
+      addDecoration,
       canUndo,
       draft,
       duplicateSelected,
       meta,
+      moveElement,
       nudgeElement,
       patchDraft,
       patchEffect,

@@ -1,4 +1,5 @@
 import { BLANK_TEMPLATE_ID, BUILTIN_TEMPLATE_IDS, CUSTOM_TEMPLATE_PREFIX } from "../constants";
+import { getDecoration } from "../data/decorations";
 import type {
   AutoSize,
   BoxLayer,
@@ -52,6 +53,7 @@ export function imageLayerPan(
   layer: ImageLayer,
   draft?: { imageX?: number; imageY?: number },
 ): { x: number; y: number } {
+  if (layer.frame) return { x: 0, y: 0 };
   return {
     x: layer.imageX ?? (layer.id === "operator" ? (draft?.imageX ?? 0) : 0),
     y: layer.imageY ?? (layer.id === "operator" ? (draft?.imageY ?? 0) : 0),
@@ -319,6 +321,41 @@ export function createBoxLayer(at: { x: number; y: number }): BoxLayer {
     h: 120,
     fill: "#141618",
     color: "#141618",
+  });
+}
+
+export function createDecorationLayer(
+  presetId: string,
+  frameDefaults?: Pick<ImageLayer, "operatorId" | "artId" | "imageUrl" | "imageDataUrl" | "frameBgPreset">,
+): Layer | undefined {
+  const preset = getDecoration(presetId);
+  if (!preset) return undefined;
+  if (preset.kind === "polaroid") {
+    return imageLayer({
+      id: uid("el"),
+      label: preset.layer.label,
+      x: preset.layer.x,
+      y: preset.layer.y,
+      w: preset.layer.w,
+      h: preset.layer.h,
+      rotation: preset.layer.rotation ?? 3.4,
+      source: "operator",
+      frame: "polaroid",
+      frameBgPreset: frameDefaults?.frameBgPreset || "lungmen-night",
+      frameBgScale: 100,
+      frameBgX: 0,
+      frameBgY: 0,
+      scale: 118,
+      imageX: 0,
+      imageY: 0,
+      objectFit: "contain",
+      objectPosition: "center bottom",
+      ...frameDefaults,
+    });
+  }
+  return boxLayer({
+    id: uid("el"),
+    ...preset.layer,
   });
 }
 

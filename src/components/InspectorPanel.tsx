@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowCounterClockwise,
   CaretDown,
@@ -23,7 +23,9 @@ import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/re
 import { emptyDraft } from "../lib/storage";
 import { useCover } from "../store/CoverContext";
 import type { ArtGradeEffect, CoverFontId, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
+import { BackgroundPicker } from "./BackgroundPicker";
 import { ColorField } from "./ColorField";
+import { DecorationPicker } from "./DecorationPicker";
 import { Field, fieldClass } from "./Field";
 import { LayerStackList } from "./LayerStackList";
 
@@ -147,6 +149,7 @@ export function InspectorPanel() {
     patchLayer,
     patchDraft,
     addLayer,
+    addDecoration,
     removeLayer,
     duplicateSelected,
     reorderSelected,
@@ -154,6 +157,7 @@ export function InspectorPanel() {
     resolvedElements,
   } = useCover();
   const addRef = useRef<HTMLDetailsElement>(null);
+  const [showDecorations, setShowDecorations] = useState(false);
   const builtin = isBuiltinId(templateId);
   const skinId = nativeTemplateId(templateId, draft.canvasSkin);
   const natives = skinId ? TEMPLATE_ELEMENTS[skinId] : [];
@@ -185,60 +189,89 @@ export function InspectorPanel() {
       <div className="border-b border-line px-4 py-3">
         <div className="flex items-center justify-between">
           <p className="text-[13px] text-sub">图层</p>
-          <details ref={addRef} className="relative">
+          <details
+            ref={addRef}
+            className="relative"
+            onToggle={(event) => {
+              if (!event.currentTarget.open) setShowDecorations(false);
+            }}
+          >
             <summary className="flex h-7 cursor-pointer list-none items-center gap-1 rounded-[6px] px-2 text-[12px] text-sub hover:bg-raised hover:text-accent">
               <Plus size={12} />
               添加
             </summary>
-            <div className="absolute top-8 right-0 z-20 w-36 rounded-[8px] border border-line bg-panel py-1 shadow-lg">
-              {(
-                [
-                  ["text", "文字", TextT],
-                  ["box", "色块", Square],
-                  ["image", "立绘", ImageSquare],
-                ] as const
-              ).map(([kind, label, Icon]) => (
-                <button
-                  key={kind}
-                  type="button"
-                  className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
-                  onClick={() => {
-                    addLayer(kind);
+            <div className={`absolute top-8 right-0 z-20 rounded-[8px] border border-line bg-panel shadow-lg ${showDecorations ? "w-[228px]" : "w-36 py-1"}`}>
+              {showDecorations ? (
+                <DecorationPicker
+                  onBack={() => setShowDecorations(false)}
+                  onSelect={(presetId) => {
+                    addDecoration(presetId);
+                    setShowDecorations(false);
                     if (addRef.current) addRef.current.open = false;
-                  }}
-                >
-                  <Icon size={14} />
-                  {label}
-                </button>
-              ))}
-              <label className="relative flex h-8 w-full cursor-pointer items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised">
-                <UploadSimple size={14} />
-                上传图
-                <input
-                  type="file"
-                  accept={IMAGE_FILE_ACCEPT}
-                  className="absolute inset-0 cursor-pointer opacity-0"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    e.target.value = "";
-                    if (addRef.current) addRef.current.open = false;
-                    if (!file) return;
-                    void readImageAsDataUrl(file)
-                      .then((imageDataUrl) => {
-                        addLayer("upload", {
-                          imageDataUrl,
-                          imageUrl: "",
-                          artId: "",
-                          operatorId: "",
-                          label: imageFileLabel(file.name),
-                        });
-                      })
-                      .catch(() => {
-                        window.alert("这张图片读不出来，换一张 png / jpg / webp 再试。");
-                      });
                   }}
                 />
-              </label>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
+                    onClick={() => {
+                      addLayer("text");
+                      if (addRef.current) addRef.current.open = false;
+                    }}
+                  >
+                    <TextT size={14} />
+                    文字
+                  </button>
+                  <button
+                    type="button"
+                    className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
+                    onClick={() => setShowDecorations(true)}
+                  >
+                    <Square size={14} />
+                    装饰
+                  </button>
+                  <button
+                    type="button"
+                    className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
+                    onClick={() => {
+                      addLayer("image");
+                      if (addRef.current) addRef.current.open = false;
+                    }}
+                  >
+                    <ImageSquare size={14} />
+                    立绘
+                  </button>
+                  <label className="relative flex h-8 w-full cursor-pointer items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised">
+                    <UploadSimple size={14} />
+                    上传图
+                    <input
+                      type="file"
+                      accept={IMAGE_FILE_ACCEPT}
+                      className="absolute inset-0 cursor-pointer opacity-0"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        e.target.value = "";
+                        if (addRef.current) addRef.current.open = false;
+                        if (!file) return;
+                        void readImageAsDataUrl(file)
+                          .then((imageDataUrl) => {
+                            addLayer("upload", {
+                              imageDataUrl,
+                              imageUrl: "",
+                              artId: "",
+                              operatorId: "",
+                              label: imageFileLabel(file.name),
+                            });
+                          })
+                          .catch(() => {
+                            window.alert("这张图片读不出来，换一张 png / jpg / webp 再试。");
+                          });
+                      }}
+                    />
+                  </label>
+                </>
+              )}
             </div>
           </details>
         </div>
@@ -651,6 +684,72 @@ export function InspectorPanel() {
 
             {image ? (
               <>
+                {image.frame === "polaroid" ? (
+                  <div className="mb-3 rounded-[7px] border border-line bg-raised/45 p-3">
+                    <p className="mb-3 text-[12px] font-medium text-text">拍立得内容</p>
+                    <BackgroundPicker
+                      compact
+                      label="画框背景"
+                      value={image.frameBgPreset ?? "ink"}
+                      onChange={(frameBgPreset) => patchLayer(image.id, { frameBgPreset })}
+                    />
+                    <div className="mt-3">
+                      <Field label={`背景缩放 ${image.frameBgScale ?? 100}%`}>
+                        <input
+                          type="range"
+                          min={80}
+                          max={220}
+                          value={image.frameBgScale ?? 100}
+                          onChange={(e) => patchLayer(image.id, { frameBgScale: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <Field label={`背景 X ${Math.round(image.frameBgX ?? 0)}`}>
+                        <input
+                          type="range"
+                          min={-400}
+                          max={400}
+                          value={image.frameBgX ?? 0}
+                          onChange={(e) => patchLayer(image.id, { frameBgX: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                      <Field label={`背景 Y ${Math.round(image.frameBgY ?? 0)}`}>
+                        <input
+                          type="range"
+                          min={-400}
+                          max={400}
+                          value={image.frameBgY ?? 0}
+                          onChange={(e) => patchLayer(image.id, { frameBgY: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                      <Field label={`立绘 X ${Math.round(image.imageX ?? 0)}`}>
+                        <input
+                          type="range"
+                          min={-600}
+                          max={600}
+                          value={image.imageX ?? 0}
+                          onChange={(e) => patchLayer(image.id, { imageX: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                      <Field label={`立绘 Y ${Math.round(image.imageY ?? 0)}`}>
+                        <input
+                          type="range"
+                          min={-600}
+                          max={600}
+                          value={image.imageY ?? 0}
+                          onChange={(e) => patchLayer(image.id, { imageY: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                    </div>
+                    <p className="mt-3 text-[11px] leading-relaxed text-mute">立绘在右侧立绘库选择，也可以上传本地图片。</p>
+                  </div>
+                ) : null}
                 {image.source === "upload" ? (
                   <label className="relative mt-3 inline-flex h-8 cursor-pointer items-center gap-1.5 overflow-hidden rounded-[6px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
                     <UploadSimple size={14} />

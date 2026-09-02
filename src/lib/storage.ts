@@ -462,12 +462,54 @@ function ensureLayers(templateId: TemplateId, draft: Draft): Draft {
   };
 }
 
+function migratePolaroidDecorations(draft: Draft): Draft {
+  const layers = draft.layers.map((layer): Layer => {
+    const legacyPolaroid =
+      layer.kind === "box" &&
+      layer.id.startsWith("el-") &&
+      layer.label === "拍立得" &&
+      layer.chrome === "paper" &&
+      layer.effect === "polaroid";
+    if (!legacyPolaroid) return layer;
+    return {
+      id: layer.id,
+      kind: "image",
+      source: "operator",
+      frame: "polaroid",
+      label: layer.label,
+      x: layer.x,
+      y: layer.y,
+      w: layer.w,
+      h: layer.h,
+      opacity: layer.opacity,
+      locked: layer.locked,
+      hidden: layer.hidden,
+      removed: layer.removed,
+      rotation: layer.rotation ?? 3.4,
+      frameBgPreset: draft.bgPreset,
+      frameBgScale: 100,
+      frameBgX: 0,
+      frameBgY: 0,
+      operatorId: draft.operatorId,
+      artId: draft.artId,
+      imageUrl: draft.imageUrl,
+      imageDataUrl: draft.imageDataUrl,
+      scale: 118,
+      imageX: 0,
+      imageY: 0,
+      objectFit: "contain",
+      objectPosition: "center bottom",
+    };
+  });
+  return { ...draft, layers };
+}
+
 export function loadDraft(templateId: TemplateId): Draft {
   const saved = loadState().drafts[templateId];
   if (!saved) return emptyDraft(templateId);
   const empty = emptyDraft(templateId);
   const missingArt = !saved.imageUrl && !saved.imageDataUrl && !saved.operatorId;
-  const next = ensureLayers(templateId, {
+  const next = migratePolaroidDecorations(ensureLayers(templateId, {
     ...empty,
     ...saved,
     elementStyles: saved.elementStyles ?? {},
@@ -485,7 +527,7 @@ export function loadDraft(templateId: TemplateId): Draft {
           imageUrl: empty.imageUrl,
         }
       : {}),
-  });
+  }));
   const normalized = {
     ...next,
     effects: normalizeCoverEffects(next.canvasSkin, saved.effects, {

@@ -294,6 +294,127 @@ export function renderBoxChrome(layer: BoxLayer) {
       </svg>
     );
   }
+  if (chrome === "sign-dots") {
+    return (
+      <span className="flex h-full w-full items-center justify-between gap-[7px]">
+        {[0, 1, 2].map((item) => (
+          <i key={item} className="block h-full flex-1 rounded-full bg-current" />
+        ))}
+      </span>
+    );
+  }
+  if (chrome === "yellow-dashes") {
+    const marks = [
+      { x: 92, y: 20, w: 92, h: 11, r: -16 },
+      { x: 244, y: 52, w: 58, h: 9, r: 14 },
+      { x: 384, y: 6, w: 76, h: 10, r: -7 },
+      { x: 520, y: 78, w: 50, h: 8, r: -26 },
+      { x: 0, y: 72, w: 44, h: 8, r: 20 },
+      { x: 316, y: 132, w: 36, h: 7, r: 8 },
+    ];
+    return (
+      <svg className="h-full w-full" viewBox="0 0 580 160" preserveAspectRatio="none" aria-hidden>
+        {marks.map((mark) => (
+          <g key={`${mark.x}-${mark.y}`} transform={`rotate(${mark.r} ${mark.x + mark.w / 2} ${mark.y + mark.h / 2})`}>
+            <rect x={mark.x + 5} y={mark.y + 6} width={mark.w} height={mark.h} fill="rgba(22,18,12,0.3)" />
+            <rect x={mark.x} y={mark.y} width={mark.w} height={mark.h} fill="currentColor" />
+          </g>
+        ))}
+      </svg>
+    );
+  }
+  if (chrome === "dot-grid") {
+    return (
+      <span
+        className="block h-full w-full"
+        style={{
+          backgroundImage: "radial-gradient(circle, currentColor 1.2px, transparent 1.5px)",
+          backgroundSize: "17px 16px",
+          opacity: 0.62,
+        }}
+      />
+    );
+  }
+  if (chrome === "halftone-fade") {
+    return (
+      <span
+        className="block h-full w-full"
+        style={{
+          backgroundImage: "radial-gradient(circle, currentColor 1.05px, transparent 1.2px)",
+          backgroundSize: "7px 7px",
+          WebkitMaskImage: "linear-gradient(180deg, #000 0%, #000 42%, transparent 88%)",
+          maskImage: "linear-gradient(180deg, #000 0%, #000 42%, transparent 88%)",
+        }}
+      />
+    );
+  }
+  if (chrome === "halftone-side") {
+    return (
+      <span
+        className="block h-full w-full"
+        style={{
+          backgroundImage: "radial-gradient(circle, currentColor 1.15px, transparent 1.3px)",
+          backgroundSize: "9px 9px",
+          WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 28%, transparent 78%)",
+          maskImage: "linear-gradient(90deg, #000 0%, #000 28%, transparent 78%)",
+        }}
+      />
+    );
+  }
+  if (chrome === "soft-shards") {
+    return (
+      <svg className="h-full w-full" viewBox="1048 0 870 760" preserveAspectRatio="none" aria-hidden>
+        <polygon points="1180,40 1410,210 1264,248" fill="rgb(246 246 248 / 0.34)" />
+        <polygon points="1388,8 1688,168 1540,214" fill="rgb(236 238 242 / 0.24)" />
+        <polygon points="1608,90 1918,40 1918,280" fill="rgb(250 250 252 / 0.2)" />
+        <polygon points="1048,220 1176,318 1088,352" fill="rgb(255 255 255 / 0.16)" />
+        <polygon points="1720,620 1918,520 1918,760" fill="rgb(230 232 236 / 0.14)" />
+      </svg>
+    );
+  }
+  if (chrome === "corner-shards") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 440 520" preserveAspectRatio="none" aria-hidden>
+        <polygon points="180,520 440,520 440,0 354,42" fill="rgb(8 12 16 / 0.5)" />
+        <polygon points="230,520 292,520 440,158 440,14" fill="rgb(246 248 248 / 0.72)" />
+        <polygon points="312,520 370,520 440,354 440,210" fill="rgb(226 231 234 / 0.54)" />
+        <polygon points="8,386 118,334 192,178 104,206" fill="rgb(225 10 20 / 0.9)" />
+        <polygon points="78,444 180,392 256,238 168,266" fill="rgb(243 245 245 / 0.74)" />
+        <polygon points="160,492 256,446 324,310 244,336" fill="rgb(225 10 20 / 0.76)" />
+      </svg>
+    );
+  }
+  if (chrome === "tactical-guides") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 960 540" preserveAspectRatio="none" aria-hidden>
+        <path d="M0 66 H960 M0 233 H960 M93 0 V540" stroke="rgb(220 20 28 / 0.48)" strokeWidth="1.2" />
+        <path d="M0 99 H515 M0 465 H940" stroke="rgb(236 242 246 / 0.22)" />
+        <path d="M17 355 H175 M17 360 H127 M451 436 H584 M462 441 H544 M639 465 H727" stroke="rgb(238 242 244 / 0.38)" />
+        <path d="M725 97 h18 M734 88 v18 M510 468 h20 M520 458 v20" stroke="rgb(238 242 244 / 0.48)" />
+        <text x="20" y="350" fill="rgb(238 242 244 / 0.44)" fontSize="10" letterSpacing="3">SPECIALIST ARRAY</text>
+        <text x="452" y="431" fill="rgb(238 242 244 / 0.4)" fontSize="9" letterSpacing="3">RESTRICTED OPERATION</text>
+        <text x="685" y="486" fill="rgb(238 242 244 / 0.36)" fontSize="8" letterSpacing="3">TACTICAL COVER</text>
+      </svg>
+    );
+  }
+  if (chrome === "ornament-corner" || chrome === "ornament-lace") {
+    const src = chrome === "ornament-corner" ? "/ornaments/corner.svg" : "/ornaments/lace.svg";
+    return (
+      <span
+        className="block h-full w-full bg-current"
+        style={{
+          WebkitMaskImage: `url("${src}")`,
+          maskImage: `url("${src}")`,
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+        }}
+      />
+    );
+  }
   if (chrome === "bracket-l" || chrome === "bracket-r") {
     const side = chrome === "bracket-l" ? "l" : "r";
     return (
@@ -308,6 +429,7 @@ export function renderBoxChrome(layer: BoxLayer) {
     );
   }
   if (chrome === "ef-triangle") {
+    const clipId = `ef-tri-clip-${layer.id.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
     return (
       <span className="relative block h-full w-full">
         <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1180 860" preserveAspectRatio="none" style={{ transform: "translate(12px, 14px)" }}>
@@ -315,12 +437,12 @@ export function renderBoxChrome(layer: BoxLayer) {
         </svg>
         <svg className="relative h-full w-full" viewBox="0 0 1180 860" preserveAspectRatio="none" aria-hidden>
           <defs>
-            <clipPath id="ef-tri-clip" clipPathUnits="userSpaceOnUse">
+            <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
               <polygon points={TRI_POINTS} />
             </clipPath>
           </defs>
           <polygon points={TRI_POINTS} fill="currentColor" />
-          <g clipPath="url(#ef-tri-clip)" fill="none" stroke="#b89620" strokeWidth="2.1" opacity="0.38">
+          <g clipPath={`url(#${clipId})`} fill="none" stroke="#b89620" strokeWidth="2.1" opacity="0.38">
             {TRI_TOPO.map((d) => (
               <path key={d} d={d} />
             ))}

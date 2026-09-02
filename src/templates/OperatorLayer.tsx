@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import type { PointerEvent } from "react";
 import { useElementEdit } from "../components/CoverElement";
-import { RotateHandle } from "../components/RotateHandle";
 import { isNativeElement } from "../data/elements";
 import { layerZIndex } from "../lib/document";
 import { useCoverOptional } from "../store/CoverContext";
@@ -67,10 +66,9 @@ export function OperatorLayer({
   const last = useRef({ x: 0, y: 0 });
   const edit = useElementEdit();
   const cover = useCoverOptional();
-  const selected = edit?.selectedId === layerId;
-  const interactive = edit?.interactive ?? false;
   const remote = useCdnSrc(imageUrl);
   const selfLayer = cover?.draft.layers.find((layer) => layer.id === layerId);
+  const interactive = (edit?.interactive ?? false) && !selfLayer?.locked;
   const hidden = Boolean(selfLayer?.hidden || selfLayer?.removed);
   const zIndex = cover ? layerZIndex(cover.draft.layers, layerId) : undefined;
 
@@ -238,18 +236,6 @@ export function OperatorLayer({
             </span>
           </span>
         </span>
-      ) : null}
-      {selected && interactive && ownChrome ? (
-        <>
-          <span
-            data-ignore-export="true"
-            className="pointer-events-none absolute inset-0 border-2 border-accent"
-          />
-          <RotateHandle
-            rotation={rotation}
-            onChange={(deg) => edit?.patchElement(layerId, { rotation: deg })}
-          />
-        </>
       ) : null}
     </div>
   );

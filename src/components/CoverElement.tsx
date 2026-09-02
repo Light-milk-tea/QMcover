@@ -3,7 +3,6 @@ import { fontClass, isNativeElement } from "../data/elements";
 import { layerZIndex } from "../lib/document";
 import { useCoverOptional } from "../store/CoverContext";
 import type { CoverFontId, ElementKind, ElementOverride } from "../types";
-import { RotateHandle } from "./RotateHandle";
 
 function impliedColor(className: string, style?: CSSProperties, override?: string): string | undefined {
   if (override) return override;
@@ -94,8 +93,7 @@ export function CoverElement({
   useEffect(() => {
     cover?.reportElementResolved(id, { fontSize, font, color, x, y });
   }, [cover, id, fontSize, font, color, x, y]);
-  const selected = edit?.selectedId === id;
-  const interactive = edit?.interactive ?? false;
+  const interactive = (edit?.interactive ?? false) && !nativeLayer?.locked;
   const hidden =
     isNativeElement(cover?.templateId ?? "", id, cover?.draft.canvasSkin) &&
     Boolean(nativeLayer?.hidden || nativeLayer?.removed);
@@ -145,15 +143,6 @@ export function CoverElement({
       }}
     >
       {children}
-      {selected && interactive ? (
-        <>
-          <span
-            data-ignore-export="true"
-            className="pointer-events-none absolute inset-[-8px] border-2 border-accent"
-          />
-          <RotateHandle rotation={rotation} onChange={(deg) => edit.patchElement(id, { rotation: deg })} />
-        </>
-      ) : null}
     </div>
   );
 }

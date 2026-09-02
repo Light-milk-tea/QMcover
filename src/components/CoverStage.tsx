@@ -9,6 +9,7 @@ import { CoverEffectsStage } from "../effects/CoverEffectsStage";
 import type { Draft, TemplateId } from "../types";
 import { SafeArea } from "./SafeArea";
 import { ScaledFrame } from "./ScaledFrame";
+import { SelectionOverlay } from "./SelectionOverlay";
 
 export function draftToRenderProps(
   templateId: TemplateId,
@@ -85,6 +86,7 @@ export function CoverStage({ stageRef }: Props) {
                 })}
               />
             </CoverEffectsStage>
+            <SelectionOverlay stageRef={stageRef} previewScale={scale} />
           </div>
           {draft.showSafeArea ? (
             <div className="pointer-events-none absolute inset-0">

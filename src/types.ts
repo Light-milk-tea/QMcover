@@ -4,6 +4,8 @@ export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script";
 
 export type ElementKind = "text" | "box" | "image";
 
+export type ImageFrame = "polaroid";
+
 export type TextBind = "custom" | "title" | "subtitle" | "episode" | "signature" | "mark" | "operatorName";
 
 export type LayerEffect =
@@ -39,7 +41,16 @@ export type LayerChrome =
   | "ef-triangle"
   | "bar-accent"
   | "sign-dots"
-  | "five-star";
+  | "five-star"
+  | "yellow-dashes"
+  | "dot-grid"
+  | "halftone-fade"
+  | "halftone-side"
+  | "soft-shards"
+  | "corner-shards"
+  | "tactical-guides"
+  | "ornament-corner"
+  | "ornament-lace";
 
 export type CanvasSkin = "plain" | "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield" | "specialist";
 
@@ -138,6 +149,11 @@ export type TextLayer = LayerBase & {
 export type ImageLayer = LayerBase & {
   kind: "image";
   source: "operator" | "upload";
+  frame?: ImageFrame;
+  frameBgPreset?: string;
+  frameBgScale?: number;
+  frameBgX?: number;
+  frameBgY?: number;
   scale?: number;
   imageX?: number;
   imageY?: number;

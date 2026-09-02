@@ -7,6 +7,7 @@ import { OperatorLayer } from "../templates/OperatorLayer";
 import { CanvasBackdrop, skinGlassUrl } from "./CanvasSkin";
 import { renderBoxChrome, renderTextContent } from "./LayerChrome";
 import { LayerFrame } from "./LayerFrame";
+import { PolaroidFrame } from "./PolaroidFrame";
 import { ElementEditProvider } from "../components/CoverElement";
 import { useCoverOptional } from "../store/CoverContext";
 
@@ -22,6 +23,17 @@ function imageSrc(layer: ImageLayer, props: CoverRenderProps): string {
 function ImageView({ layer, props }: { layer: ImageLayer; props: CoverRenderProps }) {
   const src = imageSrc(layer, props);
   const scale = layer.scale ?? props.imageScale;
+
+  if (layer.frame === "polaroid") {
+    return (
+      <PolaroidFrame
+        layer={layer}
+        imageUrl={src}
+        previewScale={props.previewScale}
+        showPlaceholder={props.showPlaceholder}
+      />
+    );
+  }
 
   return (
     <OperatorLayer
