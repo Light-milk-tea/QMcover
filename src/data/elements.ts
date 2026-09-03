@@ -186,4 +186,18 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "guides", label: "标线", kind: "box" },
     { id: "corner-shards", label: "红白碎片", kind: "box" },
   ],
+  "operator-preview": [
+    { id: "frame", label: "战术边框", kind: "box" },
+    { id: "watermark", label: "英文水印", kind: "text", defaultFont: "serif", textBind: "signature" },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "mark", label: "顶部小标", kind: "text", defaultFont: "display", textBind: "mark" },
+    { id: "subject", label: "栏目对象", kind: "text", defaultFont: "serif", textDefault: "干员" },
+    { id: "series", label: "栏目名", kind: "text", defaultFont: "serif", textDefault: "前瞻分析" },
+    { id: "episode", label: "期数", kind: "text", defaultFont: "display", textBind: "episode" },
+    { id: "title", label: "主标题", kind: "text", defaultFont: "serif", textBind: "title" },
+    { id: "analysis", label: "英文分析标", kind: "text", defaultFont: "display", textDefault: "ANALYSIS" },
+    { id: "badge-bg", label: "蓝色栏目条", kind: "box", hasColor: true },
+    { id: "badge", label: "栏目条文字", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "micro", label: "底部小字", kind: "text", defaultFont: "display", textDefault: "WHISPERS FROM THE FUTURE" },
+  ],
 };

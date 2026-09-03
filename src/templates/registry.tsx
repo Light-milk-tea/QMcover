@@ -9,6 +9,7 @@ import { FirstKill } from "./FirstKill";
 import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
 import { Nocore } from "./Nocore";
+import { OperatorPreview } from "./OperatorPreview";
 import { Rogue } from "./Rogue";
 import { Specialist } from "./Specialist";
 
@@ -20,6 +21,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   nocore: Nocore,
   endfield: Endfield,
   specialist: Specialist,
+  "operator-preview": OperatorPreview,
 };
 
 export function CoverView(props: CoverRenderProps) {

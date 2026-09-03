@@ -52,7 +52,16 @@ export type LayerChrome =
   | "ornament-corner"
   | "ornament-lace";
 
-export type CanvasSkin = "plain" | "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield" | "specialist";
+export type CanvasSkin =
+  | "plain"
+  | "firstkill"
+  | "lowspec"
+  | "rogue"
+  | "madness"
+  | "nocore"
+  | "endfield"
+  | "specialist"
+  | "operator-preview";
 
 export type ShaftLightKind = "bloom" | "beam";
 
@@ -244,7 +253,15 @@ export type ResolvedElement = {
   y?: number;
 };
 
-export type BuiltinTemplateId = "firstkill" | "lowspec" | "rogue" | "madness" | "nocore" | "endfield" | "specialist";
+export type BuiltinTemplateId =
+  | "firstkill"
+  | "lowspec"
+  | "rogue"
+  | "madness"
+  | "nocore"
+  | "endfield"
+  | "specialist"
+  | "operator-preview";
 
 export type TemplateId = string;
 

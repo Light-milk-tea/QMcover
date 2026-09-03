@@ -52,6 +52,10 @@ references/secret-plan/**/*.jpg
 references/secret-plan/**/*.jpeg
 references/secret-plan/**/*.png
 references/secret-plan/**/*.webp
+references/operator-preview/**/*.jpg
+references/operator-preview/**/*.jpeg
+references/operator-preview/**/*.png
+references/operator-preview/**/*.webp
 
 # capture leftovers
 public/thumbs/*.dataurl

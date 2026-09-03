@@ -17,3 +17,14 @@ test("首页列出模板，点职业队会打开 specialist", async () => {
   await screen.getByText("职业队", { exact: true }).click();
   expect(opened).toBe("specialist");
 });
+
+test("首页列出干员前瞻分析模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect
+    .element(screen.getByRole("button", { name: "干员前瞻分析 冷蓝战术分析模板" }))
+    .toBeVisible();
+  await screen.getByText("干员前瞻分析", { exact: true }).click();
+  expect(opened).toBe("operator-preview");
+});

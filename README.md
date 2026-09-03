@@ -6,9 +6,9 @@
 
 技术栈：React 19 + Vite + TypeScript + Tailwind CSS 4。
 
-| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 | 职业队 |
-| --- | --- | --- | --- | --- | --- | --- |
-| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) | ![职业队](public/thumbs/specialist.webp) |
+| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 | 职业队 | 干员前瞻分析 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) | ![职业队](public/thumbs/specialist.webp) | ![干员前瞻分析](public/thumbs/operator-preview.webp) |
 
 相关文档：
 
@@ -19,6 +19,7 @@
 - [无核论文构图参考](references/kirby/INDEX.md)
 - [终末地测评构图参考](references/endfield-review/INDEX.md)
 - [莱茵实验组特种队构图参考](references/secret-plan/INDEX.md)
+- [干员前瞻构图参考](references/operator-preview/INDEX.md)
 
 ## 本地运行
 
@@ -54,7 +55,7 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前七套：
+首页列出 `src/data/templates.ts`。当前八套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
@@ -65,10 +66,11 @@ npm run dev
 | `nocore` | 无核论文 | 参考小鬼卡比 SN-EX-8：暗底，左两行金白大字，一条紫线，右立绘。 |
 | `endfield` | 终末地角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
 | `specialist` | 职业队 | 参考日常关卡封面：左超大号阵容+关卡码，红花体斜叠，双立绘近景，工业底加光柱和后期。 |
+| `operator-preview` | 干员前瞻分析 | 冷蓝战术底：左立绘，右「干员 + 前瞻分析 + 期数」，白色宋体主标题和蓝色解析条。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -140,6 +142,18 @@ npm run dev
 
 构图主参考：`references/secret-plan/01_BV1TjbDz1Ejx.jpg`。不搬莱茵组标和封面署名。
 
+### 干员前瞻分析
+
+- 主标题（默认「强度预测」，按字数自动缩放）
+- 蓝条文字（默认「技能解析」）
+- 分析期数（默认 1，画面显示 `#1`）
+- 英文水印（默认 OPERATOR）
+- 顶部小标（默认 OPERATOR INTEL）
+- 背景预设（默认军工厂）和局部暗角
+- 默认立绘：莫斯提马精英 0
+
+构图主参考：`references/operator-preview/01_BV1PWtJ6iEzk.jpg`。只复刻构图骨架，不搬原作者系列标识。
+
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
 ## 目录
@@ -164,6 +178,7 @@ src/
     Nocore.tsx            无核论文
     Endfield.tsx          终末地角色测评
     Specialist.tsx        职业队
+    OperatorPreview.tsx   干员前瞻分析
     OperatorLayer.tsx     可拖动立绘
   components/             首页、顶栏、画布、图层面板、编辑栏、立绘库
   store/CoverContext.tsx  当前草稿
@@ -181,6 +196,7 @@ references/rogue/             肉鸽构图参考，jpg 不提交
 references/kirby/             无核论文构图参考，jpg 不提交
 references/endfield-review/   终末地测评构图参考，jpg 不提交
 references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提交
+references/operator-preview/   干员前瞻构图参考，jpg 不提交
 ```
 
 路由是 hash：`#/` 首页，`#/t/firstkill` 打开对应模板。
@@ -235,6 +251,7 @@ references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提
 | 决战五星之癫 | `src/templates/Madness.tsx` | 复刻左文右拍立得，不要整图搬参考封面。 |
 | 终末地角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
 | 职业队 | `src/templates/Specialist.tsx` | 复刻左两行粗字 + 红花体 + 右立绘，不要搬组标和封面署名。 |
+| 干员前瞻分析 | `src/templates/OperatorPreview.tsx` | 复刻左立绘 + 右宋体大字 + 蓝色栏目条，不要搬原作者系列标识。 |
 
 ## 约定
 
@@ -242,4 +259,4 @@ references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提
 - 不把 `references/` 下的参考 jpg 提交进 git。
 - 不要用渐变色块冒充合约氛围图；场景底用游戏 AVG。
 - 立绘显示不要等预加载完成再挂 `<img>`，否则会卡在「立绘载入中」。
-- `firstkill` / `lowspec` / `rogue` / `madness` / `nocore` 这些模板 id 保持稳定，改名只改 `name` 字段。
+- `firstkill` / `lowspec` / `rogue` / `madness` / `nocore` / `endfield` / `specialist` / `operator-preview` 这些模板 id 保持稳定，改名只改 `name` 字段。

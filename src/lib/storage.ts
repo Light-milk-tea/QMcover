@@ -24,7 +24,7 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 6;
+const DEFAULTS_VERSION = 11;
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
@@ -179,11 +179,69 @@ function applySpecialistDocumentEffects(draft: Draft): Draft {
   };
 }
 
+function migrateOperatorPreviewLayout(draft: Draft): Draft {
+  const legacyDefault =
+    draft.operatorId === "char_1027_greyy2" ||
+    draft.operatorId === "char_4042_lumen" ||
+    draft.operatorId === "char_427_vigil" ||
+    (draft.operatorId === "char_213_mostma" &&
+      draft.imageScale === 350 &&
+      draft.imageX === -40 &&
+      draft.imageY === 470);
+  const legacyGrade =
+    draft.effects.bgGrade.enabled &&
+    draft.effects.bgGrade.grayscale >= 30 &&
+    draft.effects.bgGrade.brightness <= 72;
+  const legacyEpisode = draft.episode === 6;
+  if (!legacyDefault && !legacyGrade && !legacyEpisode) return draft;
+
+  const current = emptyDraft("operator-preview");
+  if (!legacyDefault) {
+    return {
+      ...draft,
+      episode: legacyEpisode ? current.episode : draft.episode,
+      effects: {
+        ...draft.effects,
+        bgGrade: current.effects.bgGrade,
+        grain: current.effects.grain,
+      },
+    };
+  }
+  const nativeLayers = getBuiltinLayers("operator-preview");
+  const nativeIds = new Set(nativeLayers.map((layer) => layer.id));
+  const extras = draft.layers.filter((layer) => !nativeIds.has(layer.id));
+  const elementStyles = Object.fromEntries(
+    Object.entries(draft.elementStyles ?? {}).filter(([id]) => !nativeIds.has(id)),
+  );
+  return {
+    ...draft,
+    operatorName: current.operatorName,
+    operatorId: current.operatorId,
+    artId: current.artId,
+    imageUrl: current.imageUrl,
+    imageScale: current.imageScale,
+    imageX: current.imageX,
+    imageY: current.imageY,
+    episode: legacyEpisode ? current.episode : draft.episode,
+    layers: [...nativeLayers, ...extras],
+    elementStyles,
+    effects: {
+      ...draft.effects,
+      bgGrade: current.effects.bgGrade,
+      grain: current.effects.grain,
+    },
+  };
+}
+
 function migrateDraftDefaults(state: PersistedState): PersistedState {
   if ((state.defaultsVersion ?? 0) >= DEFAULTS_VERSION) return state;
   const drafts: PersistedState["drafts"] = {};
   for (const [id, draft] of Object.entries(state.drafts)) {
     if (!draft) continue;
+    if (id === "operator-preview") {
+      drafts[id] = migrateOperatorPreviewLayout(draft);
+      continue;
+    }
     if (id === "specialist" || draft.canvasSkin === "specialist") {
       drafts[id] = id === "specialist" ? applySpecialistDocumentEffects(draft) : draft;
       continue;
