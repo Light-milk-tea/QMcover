@@ -28,34 +28,10 @@ src/**/__screenshots__/
 *.sw?
 
 # Bilibili cover references (other UP artwork, do not commit)
-references/crisis-contract/**/*.jpg
-references/crisis-contract/**/*.jpeg
-references/crisis-contract/**/*.png
-references/crisis-contract/**/*.webp
-references/rogue/**/*.jpg
-references/rogue/**/*.jpeg
-references/rogue/**/*.png
-references/rogue/**/*.webp
-references/zc-event/**/*.jpg
-references/zc-event/**/*.jpeg
-references/zc-event/**/*.png
-references/zc-event/**/*.webp
-references/kirby/**/*.jpg
-references/kirby/**/*.jpeg
-references/kirby/**/*.png
-references/kirby/**/*.webp
-references/endfield-review/**/*.jpg
-references/endfield-review/**/*.jpeg
-references/endfield-review/**/*.png
-references/endfield-review/**/*.webp
-references/secret-plan/**/*.jpg
-references/secret-plan/**/*.jpeg
-references/secret-plan/**/*.png
-references/secret-plan/**/*.webp
-references/operator-preview/**/*.jpg
-references/operator-preview/**/*.jpeg
-references/operator-preview/**/*.png
-references/operator-preview/**/*.webp
+references/**/*.jpg
+references/**/*.jpeg
+references/**/*.png
+references/**/*.webp
 
 # capture leftovers
 public/thumbs/*.dataurl
@@ -66,4 +42,3 @@ tmp-backgrounds/
 # local cache and one-off exports
 npm_cache/
 /*_模板_*.png
-
