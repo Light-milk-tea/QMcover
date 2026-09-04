@@ -67,6 +67,7 @@ export function applyElementStyles(layers: Layer[], styles: Record<string, Eleme
     const next = cloneLayer(layer);
     if (style.x != null) next.x += style.x;
     if (style.y != null) next.y += style.y;
+    if (style.w != null) next.w = style.w;
     if (style.opacity != null) next.opacity = style.opacity;
     if (style.color) next.color = style.color;
     if (style.rotation != null) next.rotation = (next.rotation ?? 0) + style.rotation;

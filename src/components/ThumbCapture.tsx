@@ -6,7 +6,7 @@ import { CoverView } from "../templates/registry";
 import type { TemplateId } from "../types";
 import { draftToRenderProps } from "./CoverStage";
 import { TEMPLATES } from "../data/templates";
-import { CoverEffectsStage } from "../effects/CoverEffectsStage";
+import { CoverEffectsStage, usesLayeredLight } from "../effects/CoverEffectsStage";
 
 const WIDTH = 960;
 const SCALE = WIDTH / BILI_COVER.width;
@@ -78,7 +78,7 @@ export function ThumbCapture({ templateId }: Props) {
           transform: `scale(${SCALE})`,
         }}
       >
-        <CoverEffectsStage effects={draft.effects} skin={draft.canvasSkin} layeredLight={draft.canvasSkin === "specialist"}>
+        <CoverEffectsStage effects={draft.effects} skin={draft.canvasSkin} layeredLight={usesLayeredLight(draft.canvasSkin)}>
           <CoverView
             {...draftToRenderProps(templateId, draft, {
               previewScale: SCALE,

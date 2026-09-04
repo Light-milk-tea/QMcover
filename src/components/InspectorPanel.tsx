@@ -15,7 +15,16 @@ import {
   Trash,
   UploadSimple,
 } from "@phosphor-icons/react";
-import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN, IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
+import {
+  IMAGE_EDGE_FADE_DEFAULT,
+  IMAGE_EDGE_FADE_MAX,
+  IMAGE_EDGE_FADE_MIN,
+  IMAGE_SCALE_MAX,
+  IMAGE_SCALE_MIN,
+  STAGE_BAR_WIDTH_DEFAULT,
+  STAGE_BAR_WIDTH_MAX,
+  STAGE_BAR_WIDTH_MIN,
+} from "../constants";
 import { COVER_FONTS, TEMPLATE_ELEMENTS, isNativeElement, nativeTemplateId, nativeTextValue } from "../data/elements";
 import { imageLayerPan, isBuiltinId } from "../lib/document";
 import { resolveArtGrade } from "../lib/effects";
@@ -174,6 +183,7 @@ export function InspectorPanel() {
   const currentColor = style.color ?? resolved.color;
   const currentX = style.x ?? resolved.x ?? 0;
   const currentY = style.y ?? resolved.y ?? 0;
+  const currentW = style.w ?? layer?.w ?? STAGE_BAR_WIDTH_DEFAULT;
   const currentRotation = style.rotation ?? layer?.rotation ?? 0;
 
   useEffect(() => {
@@ -472,12 +482,26 @@ export function InspectorPanel() {
                     />
                   </Field>
                 </div>
+                {nativeMeta.hasWidth ? (
+                  <div className="mt-3">
+                    <Field label={`宽度 ${Math.round(currentW)}`}>
+                      <input
+                        type="range"
+                        min={STAGE_BAR_WIDTH_MIN}
+                        max={STAGE_BAR_WIDTH_MAX}
+                        value={currentW}
+                        onChange={(e) => patchElement(nativeMeta.id, { w: Number(e.target.value) })}
+                        className="w-full"
+                      />
+                    </Field>
+                  </div>
+                ) : null}
                 <div className="mt-3">
                   <RotationField value={currentRotation} onChange={(rotation) => patchElement(nativeMeta.id, { rotation })} />
                 </div>
                 {nativeMeta.hasOpacity ? (
                   <div className="mt-3">
-                    <Field label={`暗度 ${style.opacity ?? nativeMeta.defaultOpacity ?? 100}`}>
+                    <Field label={`${nativeMeta.id === "wash" ? "透明度" : "暗度"} ${style.opacity ?? nativeMeta.defaultOpacity ?? 100}`}>
                       <input
                         type="range"
                         min={0}

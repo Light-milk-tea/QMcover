@@ -5,7 +5,7 @@ import { displaySubtitle, displayTitle } from "../lib/interpolate";
 import { useCover } from "../store/CoverContext";
 import { CoverView } from "../templates/registry";
 import { getTemplate } from "../data/templates";
-import { CoverEffectsStage } from "../effects/CoverEffectsStage";
+import { CoverEffectsStage, usesLayeredLight } from "../effects/CoverEffectsStage";
 import type { Draft, TemplateId } from "../types";
 import { SafeArea } from "./SafeArea";
 import { ScaledFrame } from "./ScaledFrame";
@@ -73,7 +73,7 @@ export function CoverStage({ stageRef }: Props) {
             className="relative overflow-hidden"
             style={{ width: BILI_COVER.width, height: BILI_COVER.height }}
           >
-            <CoverEffectsStage effects={draft.effects} skin={draft.canvasSkin} layeredLight={draft.canvasSkin === "specialist"}>
+            <CoverEffectsStage effects={draft.effects} skin={draft.canvasSkin} layeredLight={usesLayeredLight(draft.canvasSkin)}>
               <CoverView
                 {...draftToRenderProps(templateId, draft, {
                   previewScale: scale,

@@ -13,28 +13,50 @@ function easedOpacity(amount: number) {
   return Math.sqrt(opacity(amount));
 }
 
+const BLOOM_SPAN = 300;
+const CANVAS_ASPECT = 9 / 16;
+
+function bloomEllipse(canvasW: number, canvasH: number) {
+  return `${(canvasW / BLOOM_SPAN) * 100}% ${((canvasH * CANVAS_ASPECT) / BLOOM_SPAN) * 100}%`;
+}
+
+function bloomAt(dx: number, dy: number) {
+  return `${50 + (dx / BLOOM_SPAN) * 100}% ${50 + ((dy * CANVAS_ASPECT) / BLOOM_SPAN) * 100}%`;
+}
+
 function BloomLight({ effect }: { effect: LightEffectConfig }) {
   const t = opacity(effect.amount);
   const x = clamp(effect.x);
   const y = clamp(effect.y);
   return (
-    <div className="absolute inset-0" style={{ transform: `rotate(${effect.rotate}deg)`, transformOrigin: `${x}% ${y}%` }}>
+    <div
+      data-light-bloom=""
+      className="absolute"
+      style={{
+        left: `${x}%`,
+        top: `${y}%`,
+        width: `${BLOOM_SPAN}%`,
+        aspectRatio: "1 / 1",
+        transform: `translate(-50%, -50%) rotate(${effect.rotate}deg)`,
+        transformOrigin: "center center",
+      }}
+    >
       <div
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse 28% 96% at ${x}% ${y}%, rgb(255 255 255 / ${0.52 * t}) 0%, rgb(255 255 255 / ${0.24 * t}) 32%, rgb(255 255 255 / ${0.07 * t}) 56%, transparent 74%)`,
+          background: `radial-gradient(ellipse ${bloomEllipse(28, 96)} at ${bloomAt(0, 0)}, rgb(255 255 255 / ${0.52 * t}) 0%, rgb(255 255 255 / ${0.24 * t}) 32%, rgb(255 255 255 / ${0.07 * t}) 56%, transparent 74%)`,
         }}
       />
       <div
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse 90% 64% at ${x}% ${Math.max(0, y - 10)}%, rgb(255 255 255 / ${0.72 * t}) 0%, rgb(246 246 248 / ${0.3 * t}) 36%, transparent 70%)`,
+          background: `radial-gradient(ellipse ${bloomEllipse(90, 64)} at ${bloomAt(0, Math.max(-y, -10))}, rgb(255 255 255 / ${0.72 * t}) 0%, rgb(246 246 248 / ${0.3 * t}) 36%, transparent 70%)`,
         }}
       />
       <div
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse 46% 40% at ${x + 2}% ${y + 14}%, rgb(255 255 255 / ${0.34 * t}) 0%, transparent 72%)`,
+          background: `radial-gradient(ellipse ${bloomEllipse(46, 40)} at ${bloomAt(2, 14)}, rgb(255 255 255 / ${0.34 * t}) 0%, transparent 72%)`,
         }}
       />
     </div>
@@ -125,21 +147,31 @@ function BeamSurfaceLight({ effect }: { effect: LightEffectConfig }) {
   );
 }
 
-export function SpecialistLightUnderlay({ effect }: { effect?: LightEffectConfig }) {
-  if (!effect?.enabled || effect.amount <= 0 || effect.kind !== "beam") return null;
+export function usesLayeredLight(skin?: CanvasSkin) {
+  return skin === "specialist" || skin === "solo";
+}
+
+export function LightUnderlay({ effect }: { effect?: LightEffectConfig }) {
+  if (!effect?.enabled || effect.amount <= 0) return null;
   return (
     <div
       data-effect="light-underlay"
       className="pointer-events-none absolute inset-0 overflow-hidden"
       style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}
     >
-      <FullBeamLight effect={effect} />
+      {effect.kind === "beam" ? <FullBeamLight effect={effect} /> : <BloomLight effect={effect} />}
     </div>
   );
 }
 
+export function SpecialistLightUnderlay({ effect }: { effect?: LightEffectConfig }) {
+  if (effect?.kind !== "beam") return null;
+  return <LightUnderlay effect={effect} />;
+}
+
 function LightOverlay({ effect, surfaceOnly = false }: { effect: LightEffectConfig; surfaceOnly?: boolean }) {
   if (!effect.enabled || effect.amount <= 0) return null;
+  if (surfaceOnly && effect.kind !== "beam") return null;
   return (
     <div data-effect="light" className="absolute inset-0">
       {effect.kind === "beam" ? surfaceOnly ? <BeamSurfaceLight effect={effect} /> : <FullBeamLight effect={effect} /> : <BloomLight effect={effect} />}
@@ -219,6 +251,8 @@ const VIGNETTE_AT: Record<CanvasSkin, string> = {
   endfield: "22% 48%",
   specialist: "78% 62%",
   "operator-preview": "24% 48%",
+  "fourstar-nocore": "30% 48%",
+  solo: "26% 48%",
 };
 
 function VignetteOverlay({ skin, amount }: { skin: CanvasSkin; amount: number }) {

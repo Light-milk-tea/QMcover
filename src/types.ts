@@ -50,7 +50,16 @@ export type LayerChrome =
   | "corner-shards"
   | "tactical-guides"
   | "ornament-corner"
-  | "ornament-lace";
+  | "ornament-lace"
+  | "ak-star"
+  | "radar-arcs"
+  | "dash-ticks"
+  | "originium"
+  | "reticle"
+  | "hex-cell"
+  | "ring-ticks"
+  | "chain-rule"
+  | "ak-mark";
 
 export type CanvasSkin =
   | "plain"
@@ -61,9 +70,12 @@ export type CanvasSkin =
   | "nocore"
   | "endfield"
   | "specialist"
-  | "operator-preview";
+  | "operator-preview"
+  | "fourstar-nocore"
+  | "solo";
 
 export type ShaftLightKind = "bloom" | "beam";
+export type LightDepth = "behind" | "front";
 
 export type AmountEffect = {
   enabled: boolean;
@@ -72,6 +84,7 @@ export type AmountEffect = {
 
 export type LightEffect = AmountEffect & {
   kind: ShaftLightKind;
+  depth: LightDepth;
   x: number;
   y: number;
   rotate: number;
@@ -170,6 +183,8 @@ export type ImageLayer = LayerBase & {
   edgeFadeAmount?: number;
   fadeRight?: boolean;
   fadeRightSolid?: number;
+  fadeLeft?: boolean;
+  fadeLeftSolid?: number;
   objectFit?: "contain" | "cover";
   objectPosition?: string;
   transformOrigin?: string;
@@ -194,6 +209,7 @@ export type Layer = TextLayer | ImageLayer | BoxLayer;
 export type ElementOverride = {
   x?: number;
   y?: number;
+  w?: number;
   fontSize?: number;
   font?: CoverFontId;
   color?: string;
@@ -261,7 +277,9 @@ export type BuiltinTemplateId =
   | "nocore"
   | "endfield"
   | "specialist"
-  | "operator-preview";
+  | "operator-preview"
+  | "fourstar-nocore"
+  | "solo";
 
 export type TemplateId = string;
 

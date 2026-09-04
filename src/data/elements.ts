@@ -9,6 +9,7 @@ export type CoverElMeta = {
   hasOpacity?: boolean;
   defaultOpacity?: number;
   hasColor?: boolean;
+  hasWidth?: boolean;
   textBind?: Exclude<TextBind, "custom">;
   textDefault?: string;
 };
@@ -199,5 +200,31 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "badge-bg", label: "蓝色栏目条", kind: "box", hasColor: true },
     { id: "badge", label: "栏目条文字", kind: "text", defaultFont: "cn", textBind: "subtitle" },
     { id: "micro", label: "底部小字", kind: "text", defaultFont: "display", textDefault: "WHISPERS FROM THE FUTURE" },
+  ],
+  "fourstar-nocore": [
+    { id: "floor", label: "棋盘地", kind: "box" },
+    { id: "paper", label: "撕纸", kind: "box" },
+    { id: "glow", label: "顶光晕", kind: "box" },
+    { id: "hud", label: "青绿线框", kind: "box" },
+    { id: "puppets", label: "提线偶", kind: "box" },
+    { id: "frame", label: "金框", kind: "box", hasColor: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "title", label: "主标题", kind: "text", defaultFont: "cn", textBind: "title" },
+    { id: "stage-bar", label: "关卡条", kind: "box", hasColor: true, hasWidth: true },
+    { id: "stage", label: "关卡码", kind: "text", defaultFont: "serif", textBind: "subtitle" },
+    { id: "micro", label: "英文小字", kind: "text", defaultFont: "display", textBind: "signature" },
+    { id: "fade", label: "底压暗", kind: "box" },
+  ],
+  solo: [
+    { id: "wash", label: "红雾", kind: "box", hasOpacity: true, defaultOpacity: 74 },
+    { id: "light", label: "光效", kind: "box" },
+    { id: "ak-mark", label: "方舟标", kind: "box", hasColor: true },
+    { id: "title-bar", label: "标题黑条", kind: "box", hasColor: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "stage", label: "关卡码", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "title", label: "主标题", kind: "text", defaultFont: "serif", textBind: "title" },
+    { id: "rule", label: "白线", kind: "box", hasColor: true, hasWidth: true },
+    { id: "rule-red", label: "红线", kind: "box", hasColor: true, hasWidth: true },
+    { id: "slogan", label: "英文标", kind: "text", defaultFont: "display", textBind: "signature" },
   ],
 };

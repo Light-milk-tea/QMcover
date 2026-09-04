@@ -6,11 +6,13 @@ import { useCoverOptional } from "../store/CoverContext";
 import type { BuiltinTemplateId, CoverRenderProps } from "../types";
 import { Endfield } from "./Endfield";
 import { FirstKill } from "./FirstKill";
+import { FourstarNocore } from "./FourstarNocore";
 import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
 import { Nocore } from "./Nocore";
 import { OperatorPreview } from "./OperatorPreview";
 import { Rogue } from "./Rogue";
+import { Solo } from "./Solo";
 import { Specialist } from "./Specialist";
 
 export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRenderProps>> = {
@@ -22,6 +24,8 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   endfield: Endfield,
   specialist: Specialist,
   "operator-preview": OperatorPreview,
+  "fourstar-nocore": FourstarNocore,
+  solo: Solo,
 };
 
 export function CoverView(props: CoverRenderProps) {

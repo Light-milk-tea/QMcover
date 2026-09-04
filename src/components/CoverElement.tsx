@@ -93,6 +93,7 @@ export function CoverElement({
   useEffect(() => {
     cover?.reportElementResolved(id, { fontSize, font, color, x, y });
   }, [cover, id, fontSize, font, color, x, y]);
+  const opacity = override.opacity;
   const interactive = (edit?.interactive ?? false) && !nativeLayer?.locked;
   const hidden =
     isNativeElement(cover?.templateId ?? "", id, cover?.draft.canvasSkin) &&
@@ -132,6 +133,7 @@ export function CoverElement({
         ...style,
         fontSize: fontSize,
         ...(override.color ? { color: override.color } : {}),
+        ...(opacity != null ? { opacity: Math.min(1, Math.max(0, opacity / 100)) } : {}),
         transform: `translate(${x}px, ${y}px)${rotation ? ` rotate(${rotation}deg)` : ""}${style?.transform ? ` ${style.transform}` : ""}`,
         zIndex: cover ? layerZIndex(cover.draft.layers, id) : undefined,
         cursor: interactive ? (dragging.current ? "grabbing" : "grab") : undefined,

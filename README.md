@@ -6,9 +6,9 @@
 
 技术栈：React 19 + Vite + TypeScript + Tailwind CSS 4。
 
-| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 | 职业队 | 干员前瞻分析 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) | ![职业队](public/thumbs/specialist.webp) | ![干员前瞻分析](public/thumbs/operator-preview.webp) |
+| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 | 职业队 | 干员前瞻分析 | 四星无核 | 仅需一人 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) | ![职业队](public/thumbs/specialist.webp) | ![干员前瞻分析](public/thumbs/operator-preview.webp) | ![四星无核](public/thumbs/fourstar-nocore.webp) | ![仅需一人](public/thumbs/solo.webp) |
 
 相关文档：
 
@@ -20,6 +20,8 @@
 - [终末地测评构图参考](references/endfield-review/INDEX.md)
 - [莱茵实验组特种队构图参考](references/secret-plan/INDEX.md)
 - [干员前瞻构图参考](references/operator-preview/INDEX.md)
+- [四星无核首杀构图参考](references/fourstar-nocore/INDEX.md)
+- [仅需一人构图参考](references/solo-clear/INDEX.md)
 
 ## 本地运行
 
@@ -55,7 +57,7 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前八套：
+首页列出 `src/data/templates.ts`。当前十套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
@@ -67,10 +69,12 @@ npm run dev
 | `endfield` | 终末地角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
 | `specialist` | 职业队 | 参考日常关卡封面：左超大号阵容+关卡码，红花体斜叠，双立绘近景，工业底加光柱和后期。 |
 | `operator-preview` | 干员前瞻分析 | 冷蓝战术底：左立绘，右「干员 + 前瞻分析 + 期数」，白色宋体主标题和蓝色解析条。 |
+| `fourstar-nocore` | 四星无核 | 暗底拼贴：左斜抬黑体主标题 + 米色关卡条，右立绘，身后几何金框。 |
+| `solo` | 仅需一人 | 暗红氛围：左上关卡码 + 宋体「××单人」+ 白线英文标，右半身立绘。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview`、`fourstar-nocore`、`solo` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -154,6 +158,28 @@ npm run dev
 
 构图主参考：`references/operator-preview/01_BV1PWtJ6iEzk.jpg`。只复刻构图骨架，不搬原作者系列标识。
 
+### 四星无核
+
+- 主标题（默认「四星无核」，按字数缩放，斜抬黑体）
+- 关卡（默认 QM-8，坐在米色梯形条上）
+- 英文小字（默认 NO CORE）
+- 暗底拼贴：棋盘格、青绿线框、几何提线偶、斜金框
+- 默认立绘：跃跃精英 0（精二特效会盖住拼贴底）
+- 金框里是几何地块，不搬参考图的实机截图
+
+构图主参考：`references/fourstar-nocore/01_BV1qipFzMEDS.jpg`。不搬整张封面、署名和框内录像。和「无核论文」不是同一套构图。
+
+### 仅需一人
+
+- 关卡码（默认 QM-EX-8，超大号无衬线）
+- 主标题（默认「酒神单人」，宋体黑，压在黑条上）
+- 英文标（默认 ONE OPERATOR ONLY，跟在细白线下）
+- 红雾（可关、可调透明度）
+- 默认立绘：酒神精英 0（精二立绘自带场景，会冲掉暗红底）
+- 默认背景：哥伦比亚场景 38_g17_1 + 红雾（透明度 74）
+
+构图主参考：`references/solo-clear/01_BV1awbAzSERP.jpg`。不搬整张封面和署名。
+
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
 ## 目录
@@ -179,6 +205,8 @@ src/
     Endfield.tsx          终末地角色测评
     Specialist.tsx        职业队
     OperatorPreview.tsx   干员前瞻分析
+    FourstarNocore.tsx    四星无核
+    Solo.tsx              仅需一人
     OperatorLayer.tsx     可拖动立绘
   components/             首页、顶栏、画布、图层面板、编辑栏、立绘库
   store/CoverContext.tsx  当前草稿
@@ -197,6 +225,8 @@ references/kirby/             无核论文构图参考，jpg 不提交
 references/endfield-review/   终末地测评构图参考，jpg 不提交
 references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提交
 references/operator-preview/   干员前瞻构图参考，jpg 不提交
+references/fourstar-nocore/    四星无核首杀构图参考，jpg 不提交
+references/solo-clear/         仅需一人构图参考，jpg 不提交
 ```
 
 路由是 hash：`#/` 首页，`#/t/firstkill` 打开对应模板。
@@ -252,6 +282,8 @@ references/operator-preview/   干员前瞻构图参考，jpg 不提交
 | 终末地角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
 | 职业队 | `src/templates/Specialist.tsx` | 复刻左两行粗字 + 红花体 + 右立绘，不要搬组标和封面署名。 |
 | 干员前瞻分析 | `src/templates/OperatorPreview.tsx` | 复刻左立绘 + 右宋体大字 + 蓝色栏目条，不要搬原作者系列标识。 |
+| 四星无核 | `src/templates/FourstarNocore.tsx` | 复刻左斜抬标题 + 米色关卡条 + 右立绘金框，不要搬整图和实机截图。 |
+| 仅需一人 | `src/templates/Solo.tsx` | 复刻左字组 + 暗红氛围 + 右立绘，不要搬整图和署名。 |
 
 ## 约定
 
@@ -259,4 +291,4 @@ references/operator-preview/   干员前瞻构图参考，jpg 不提交
 - 不把 `references/` 下的参考 jpg 提交进 git。
 - 不要用渐变色块冒充合约氛围图；场景底用游戏 AVG。
 - 立绘显示不要等预加载完成再挂 `<img>`，否则会卡在「立绘载入中」。
-- `firstkill` / `lowspec` / `rogue` / `madness` / `nocore` / `endfield` / `specialist` / `operator-preview` 这些模板 id 保持稳定，改名只改 `name` 字段。
+- `firstkill` / `lowspec` / `rogue` / `madness` / `nocore` / `endfield` / `specialist` / `operator-preview` / `fourstar-nocore` / `solo` 这些模板 id 保持稳定，改名只改 `name` 字段。

@@ -24,7 +24,7 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 11;
+const DEFAULTS_VERSION = 35;
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
@@ -240,6 +240,43 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
     if (!draft) continue;
     if (id === "operator-preview") {
       drafts[id] = migrateOperatorPreviewLayout(draft);
+      continue;
+    }
+    if (id === "solo") {
+      const current = emptyDraft("solo");
+      drafts[id] = {
+        ...draft,
+        imageScale: current.imageScale,
+        imageX: current.imageX,
+        imageY: current.imageY,
+        bgPreset: current.bgPreset,
+        textBgPreset: current.textBgPreset,
+        layers: getBuiltinLayers("solo"),
+        elementStyles: {},
+        effects: current.effects,
+      };
+      continue;
+    }
+    if (id === "fourstar-nocore") {
+      const current = emptyDraft("fourstar-nocore");
+      drafts[id] = {
+        ...draft,
+        title: current.title,
+        subtitle: current.subtitle,
+        signature: current.signature,
+        operatorName: current.operatorName,
+        operatorId: current.operatorId,
+        artId: current.artId,
+        imageUrl: current.imageUrl,
+        imageScale: current.imageScale,
+        imageX: current.imageX,
+        imageY: current.imageY,
+        bgPreset: current.bgPreset,
+        textBgPreset: current.textBgPreset,
+        layers: getBuiltinLayers("fourstar-nocore"),
+        elementStyles: {},
+        effects: current.effects,
+      };
       continue;
     }
     if (id === "specialist" || draft.canvasSkin === "specialist") {

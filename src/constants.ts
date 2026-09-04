@@ -31,6 +31,8 @@ export const BUILTIN_TEMPLATE_IDS = [
   "endfield",
   "specialist",
   "operator-preview",
+  "fourstar-nocore",
+  "solo",
 ] as const;
 
 /** 立绘缩放滑条范围。上限要能罩住全身立绘（如丰川祥子精英 0）。 */
@@ -46,3 +48,7 @@ export const SHAFT_LIGHT_ROTATE_DEFAULT = 8;
 export const IMAGE_EDGE_FADE_MIN = 6;
 export const IMAGE_EDGE_FADE_MAX = 36;
 export const IMAGE_EDGE_FADE_DEFAULT = 16;
+
+export const STAGE_BAR_WIDTH_DEFAULT = 478;
+export const STAGE_BAR_WIDTH_MIN = 280;
+export const STAGE_BAR_WIDTH_MAX = 1400;

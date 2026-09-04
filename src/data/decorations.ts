@@ -1,14 +1,156 @@
 import type { BoxLayer } from "../types";
 
+export type DecorationGroup = "ark" | "template";
+
 export type DecorationPreset = {
   id: string;
   name: string;
   description: string;
+  group?: DecorationGroup;
   kind?: "box" | "polaroid";
   layer: Omit<BoxLayer, "id" | "kind">;
 };
 
+const ARK_DECORATIONS: DecorationPreset[] = [
+  {
+    id: "ak-mark",
+    name: "方舟标",
+    description: "明日方舟中文标，方舟二字下有绿线",
+    group: "ark",
+    layer: {
+      label: "方舟标",
+      x: 48,
+      y: 36,
+      w: 320,
+      h: 78,
+      chrome: "ak-mark",
+      color: "#eef6e4",
+    },
+  },
+  {
+    id: "ak-star",
+    name: "四角星",
+    description: "明日方舟界面常用的四向星标",
+    group: "ark",
+    layer: {
+      label: "四角星",
+      x: 80,
+      y: 64,
+      w: 240,
+      h: 240,
+      chrome: "ak-star",
+      color: "#d8e8c4",
+    },
+  },
+  {
+    id: "radar-arcs",
+    name: "雷达弧",
+    description: "左下起的同心弧和斜虚线",
+    group: "ark",
+    layer: {
+      label: "雷达弧",
+      x: 0,
+      y: 0,
+      w: 420,
+      h: 420,
+      chrome: "radar-arcs",
+      color: "#c6e84a",
+    },
+  },
+  {
+    id: "dash-ticks",
+    name: "斜刻度",
+    description: "带刻度的斜向虚线",
+    group: "ark",
+    layer: {
+      label: "斜刻度",
+      x: 40,
+      y: 80,
+      w: 520,
+      h: 72,
+      chrome: "dash-ticks",
+      color: "#e8f0d8",
+    },
+  },
+  {
+    id: "originium",
+    name: "源石棱",
+    description: "棱角源石结晶，不是官方贴图",
+    group: "ark",
+    layer: {
+      label: "源石棱",
+      x: 96,
+      y: 88,
+      w: 200,
+      h: 232,
+      chrome: "originium",
+      color: "#9ad14a",
+    },
+  },
+  {
+    id: "reticle",
+    name: "准星",
+    description: "作战准心和角括",
+    group: "ark",
+    layer: {
+      label: "准星",
+      x: 120,
+      y: 96,
+      w: 160,
+      h: 160,
+      chrome: "reticle",
+      color: "#e8f2d2",
+    },
+  },
+  {
+    id: "hex-cell",
+    name: "六边形",
+    description: "罗德岛设备上的六角单元",
+    group: "ark",
+    layer: {
+      label: "六边形",
+      x: 110,
+      y: 90,
+      w: 176,
+      h: 192,
+      chrome: "hex-cell",
+      color: "#c8d8b0",
+    },
+  },
+  {
+    id: "ring-ticks",
+    name: "圆环刻度",
+    description: "圆周刻度盘",
+    group: "ark",
+    layer: {
+      label: "圆环刻度",
+      x: 100,
+      y: 80,
+      w: 188,
+      h: 188,
+      chrome: "ring-ticks",
+      color: "#dce8c8",
+    },
+  },
+  {
+    id: "chain-rule",
+    name: "链节线",
+    description: "一排相扣链节，可当署名两侧饰线",
+    group: "ark",
+    layer: {
+      label: "链节线",
+      x: 80,
+      y: 920,
+      w: 360,
+      h: 28,
+      chrome: "chain-rule",
+      color: "#c6e84a",
+    },
+  },
+];
+
 export const DECORATIONS: DecorationPreset[] = [
+  ...ARK_DECORATIONS,
   {
     id: "cc-triangle",
     name: "合约三角",

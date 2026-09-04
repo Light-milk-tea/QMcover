@@ -397,6 +397,116 @@ export function renderBoxChrome(layer: BoxLayer) {
       </svg>
     );
   }
+  if (chrome === "ak-mark") {
+    return (
+      <svg data-ak-mark="" className="h-full w-full" viewBox="0 0 320 78" preserveAspectRatio="xMinYMid meet" aria-hidden>
+        <text
+          x="2"
+          y="56"
+          fill="currentColor"
+          fontSize="54"
+          fontWeight="900"
+          fontFamily="var(--font-cn), 'Noto Sans SC', sans-serif"
+          letterSpacing="-2.2"
+        >
+          明日
+          <tspan fill="currentColor">方舟</tspan>
+        </text>
+        <rect x="154" y="64" width="154" height="5" fill="#8fbf32" />
+      </svg>
+    );
+  }
+  if (chrome === "ak-star") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 100 100" fill="none" aria-hidden>
+        <path d="M50 6 L54.6 45.4 L94 50 L54.6 54.6 L50 94 L45.4 54.6 L6 50 L45.4 45.4 Z" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M50 22 L52.4 47.6 L78 50 L52.4 52.4 L50 78 L47.6 52.4 L22 50 L47.6 47.6 Z" fill="currentColor" opacity="0.22" />
+        <path d="M18 18 L28 28 M82 18 L72 28 M18 82 L28 72 M82 82 L72 72" stroke="currentColor" strokeWidth="1" opacity="0.55" />
+      </svg>
+    );
+  }
+  if (chrome === "radar-arcs") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 200 200" fill="none" aria-hidden>
+        <circle cx="36" cy="164" r="52" stroke="currentColor" strokeWidth="1" opacity="0.28" />
+        <circle cx="36" cy="164" r="92" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+        <circle cx="36" cy="164" r="132" stroke="currentColor" strokeWidth="1.2" opacity="0.55" />
+        <path d="M36 32 A132 132 0 0 1 168 164" stroke="currentColor" strokeWidth="2.2" />
+        <path d="M36 164 L148 52" stroke="currentColor" strokeWidth="1" strokeDasharray="5 6" opacity="0.7" />
+        <path d="M36 164 H188 M36 164 V12" stroke="currentColor" strokeWidth="0.8" opacity="0.35" />
+      </svg>
+    );
+  }
+  if (chrome === "dash-ticks") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 480 72" fill="none" aria-hidden>
+        <path d="M8 60 L472 12" stroke="currentColor" strokeWidth="1.6" strokeDasharray="10 7" />
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
+          const t = i / 8;
+          const x = 8 + t * 464;
+          const y = 60 - t * 48;
+          return <path key={i} d={`M${x} ${y - 7} L${x} ${y + 7}`} stroke="currentColor" strokeWidth="1.1" opacity="0.7" />;
+        })}
+      </svg>
+    );
+  }
+  if (chrome === "originium") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 120 140" fill="none" aria-hidden>
+        <polygon points="60,8 86,46 72,78 48,70 36,40" fill="currentColor" opacity="0.2" />
+        <polygon points="60,8 86,46 72,78 48,70 36,40" stroke="currentColor" strokeWidth="1.6" />
+        <polygon points="72,78 108,70 98,118 64,126" stroke="currentColor" strokeWidth="1.4" />
+        <polygon points="36,40 18,86 48,118 48,70" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M60 8 L48 70 L72 78 Z" fill="currentColor" opacity="0.34" />
+      </svg>
+    );
+  }
+  if (chrome === "reticle") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 100 100" fill="none" aria-hidden>
+        <circle cx="50" cy="50" r="28" stroke="currentColor" strokeWidth="1.4" />
+        <circle cx="50" cy="50" r="6" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M50 8 V28 M50 72 V92 M8 50 H28 M72 50 H92" stroke="currentColor" strokeWidth="1.4" />
+        <path d="M18 18 H30 V30 M82 18 H70 V30 M18 82 H30 V70 M82 82 H70 V70" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    );
+  }
+  if (chrome === "hex-cell") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 120 130" fill="none" aria-hidden>
+        <path d="M60 8 L104 33 V83 L60 108 L16 83 V33 Z" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M60 28 L86 43 V73 L60 88 L34 73 V43 Z" stroke="currentColor" strokeWidth="1.1" opacity="0.7" />
+        <path d="M104 33 L148 58 V108 L104 133" stroke="currentColor" strokeWidth="1" opacity="0.28" />
+        <circle cx="60" cy="68" r="3" fill="currentColor" />
+      </svg>
+    );
+  }
+  if (chrome === "ring-ticks") {
+    const ticks = Array.from({ length: 24 }, (_, i) => {
+      const a = (i * Math.PI) / 12;
+      const inner = i % 3 === 0 ? 34 : 38;
+      const x1 = 50 + Math.cos(a) * inner;
+      const y1 = 50 + Math.sin(a) * inner;
+      const x2 = 50 + Math.cos(a) * 46;
+      const y2 = 50 + Math.sin(a) * 46;
+      return <path key={i} d={`M${x1.toFixed(1)} ${y1.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}`} stroke="currentColor" strokeWidth={i % 3 === 0 ? 1.5 : 1} />;
+    });
+    return (
+      <svg className="h-full w-full" viewBox="0 0 100 100" fill="none" aria-hidden>
+        <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="1.2" opacity="0.45" />
+        {ticks}
+      </svg>
+    );
+  }
+  if (chrome === "chain-rule") {
+    return (
+      <svg className="h-full w-full" viewBox="0 0 320 24" fill="none" aria-hidden>
+        {Array.from({ length: 8 }, (_, i) => (
+          <ellipse key={i} cx={20 + i * 40} cy="12" rx="11" ry="7" stroke="currentColor" strokeWidth="1.6" />
+        ))}
+      </svg>
+    );
+  }
   if (chrome === "ornament-corner" || chrome === "ornament-lace") {
     const src = chrome === "ornament-corner" ? "/ornaments/corner.svg" : "/ornaments/lace.svg";
     return (

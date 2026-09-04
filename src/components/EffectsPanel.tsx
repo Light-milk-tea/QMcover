@@ -95,7 +95,7 @@ function EffectColumn({
 }
 
 export function EffectsPanel() {
-  const { draft, patchEffect, setEffects } = useCover();
+  const { draft, patchEffect, setEffects, templateId } = useCover();
   const [open, setOpen] = useState(false);
   const light = draft.effects.light;
   const bg = draft.effects.bgGrade ?? { enabled: false, blur: 12, grayscale: 68, contrast: 30, brightness: 72 };
@@ -161,8 +161,31 @@ export function EffectsPanel() {
                     </button>
                   ))}
                 </div>
+                {templateId === "solo" || draft.canvasSkin === "solo" ? (
+                  <div className="flex gap-1" role="group" aria-label="打光位置">
+                    {(
+                      [
+                        { id: "behind", label: "立绘下" },
+                        { id: "front", label: "立绘上" },
+                      ] as const
+                    ).map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        aria-pressed={(light.depth ?? "behind") === item.id}
+                        disabled={!light.enabled}
+                        onClick={() => patchEffect("light", { depth: item.id })}
+                        className={`h-7 rounded-[6px] px-2.5 text-[12px] transition-colors disabled:opacity-35 ${
+                          (light.depth ?? "behind") === item.id ? "bg-accent text-white" : "bg-raised text-sub hover:text-accent"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
-              <p className="mt-0.5 pl-6 text-[11px] text-mute">柔光或从顶部落下的竖光</p>
+              <p className="mt-0.5 pl-6 text-[11px] text-mute">柔光或竖光；仅需一人可选择打在立绘上方或下方</p>
             </div>
             <div className="mt-3 grid grid-cols-5 gap-3">
               <Range label="强度" value={light.amount} disabled={!light.enabled} onChange={(amount) => patchEffect("light", { amount })} />

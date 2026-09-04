@@ -61,21 +61,28 @@ const BG_GRADE: BgGradeEffect = {
 export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}): CoverEffects {
   const specialist = skin === "specialist";
   const operatorPreview = skin === "operator-preview";
+  const fourstar = skin === "fourstar-nocore";
+  const solo = skin === "solo";
   return {
     light: {
-      enabled: legacy.shaftLight ?? specialist,
-      amount: legacy.shaftLightAmount ?? (specialist ? 40 : SHAFT_LIGHT_DEFAULT),
+      enabled: legacy.shaftLight ?? (specialist || fourstar || solo),
+      amount: legacy.shaftLightAmount ?? (specialist ? 40 : fourstar ? 42 : solo ? 38 : SHAFT_LIGHT_DEFAULT),
       kind: legacy.shaftLightKind ?? (specialist ? "beam" : "bloom"),
-      x: legacy.shaftLightX ?? (specialist ? 30 : SHAFT_LIGHT_X_DEFAULT),
-      y: legacy.shaftLightY ?? (specialist ? 0 : SHAFT_LIGHT_Y_DEFAULT),
-      rotate: legacy.shaftLightRotate ?? (specialist ? -12 : SHAFT_LIGHT_ROTATE_DEFAULT),
+      x: legacy.shaftLightX ?? (specialist ? 30 : fourstar ? 58 : solo ? 74 : SHAFT_LIGHT_X_DEFAULT),
+      y: legacy.shaftLightY ?? (specialist || fourstar || solo ? 0 : SHAFT_LIGHT_Y_DEFAULT),
+      rotate: legacy.shaftLightRotate ?? (specialist ? -12 : fourstar ? 6 : solo ? 10 : SHAFT_LIGHT_ROTATE_DEFAULT),
+      depth: "behind",
     },
     artGrade: { ...ART_GRADE },
     bgGrade: operatorPreview
       ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 24, contrast: 18, brightness: 80 }
-      : { ...BG_GRADE, enabled: specialist },
+      : fourstar
+        ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 42, contrast: 16, brightness: 72 }
+        : solo
+          ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 18, contrast: 22, brightness: 100 }
+          : { ...BG_GRADE, enabled: specialist },
     scanlines: amount(false, specialist ? 11 : 24),
-    grain: amount(specialist || operatorPreview, specialist ? 28 : operatorPreview ? 22 : 24),
+    grain: amount(specialist || operatorPreview || fourstar || solo, specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 24 : 24),
     chromatic: amount(specialist, specialist ? 4 : 12),
     glitch: amount(false, specialist ? 16 : 24),
     slashes: amount(false, specialist ? 8 : 20),

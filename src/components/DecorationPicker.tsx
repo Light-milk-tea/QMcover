@@ -42,6 +42,26 @@ function DecorationPreview({ preset }: { preset: DecorationPreset }) {
   );
 }
 
+function PresetButton({
+  preset,
+  onSelect,
+}: {
+  preset: DecorationPreset;
+  onSelect: (presetId: string) => void;
+}) {
+  return (
+    <button
+      type="button"
+      title={preset.description}
+      className="rounded-[7px] border border-line p-1.5 text-left hover:border-accent hover:bg-accent/5"
+      onClick={() => onSelect(preset.id)}
+    >
+      <DecorationPreview preset={preset} />
+      <span className="mt-1.5 block truncate text-[11px] text-text">{preset.name}</span>
+    </button>
+  );
+}
+
 export function DecorationPicker({
   onSelect,
   onBack,
@@ -62,21 +82,17 @@ export function DecorationPicker({
         </button>
         <div>
           <p className="text-[13px] font-medium text-text">添加装饰</p>
-          <p className="text-[11px] text-mute">复用模板里的构图组件</p>
+          <p className="text-[11px] text-mute">方舟几何饰件和模板构件</p>
         </div>
       </div>
       <div className="grid max-h-[460px] grid-cols-2 gap-1.5 overflow-y-auto pr-1">
-        {DECORATIONS.map((preset) => (
-          <button
-            key={preset.id}
-            type="button"
-            title={preset.description}
-            className="rounded-[7px] border border-line p-1.5 text-left hover:border-accent hover:bg-accent/5"
-            onClick={() => onSelect(preset.id)}
-          >
-            <DecorationPreview preset={preset} />
-            <span className="mt-1.5 block truncate text-[11px] text-text">{preset.name}</span>
-          </button>
+        <p className="col-span-2 px-0.5 pt-0.5 text-[11px] text-mute">方舟饰件</p>
+        {DECORATIONS.filter((preset) => preset.group === "ark").map((preset) => (
+          <PresetButton key={preset.id} preset={preset} onSelect={onSelect} />
+        ))}
+        <p className="col-span-2 px-0.5 pt-1.5 text-[11px] text-mute">模板构件</p>
+        {DECORATIONS.filter((preset) => preset.group !== "ark").map((preset) => (
+          <PresetButton key={preset.id} preset={preset} onSelect={onSelect} />
         ))}
       </div>
     </div>

@@ -59,6 +59,12 @@ test("添加菜单用装饰图库替代单一色块", async () => {
 
   await screen.getByRole("button", { name: "装饰", exact: true }).click();
   await expect.element(screen.getByText("添加装饰", { exact: true })).toBeVisible();
+  await expect.element(screen.getByText("方舟饰件", { exact: true })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "方舟标", exact: true })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "四角星", exact: true })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "雷达弧", exact: true })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "源石棱", exact: true })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "准星", exact: true })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: "合约三角", exact: true })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: "拍立得", exact: true })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: "红白角片", exact: true })).toBeInTheDocument();
@@ -97,6 +103,25 @@ test("选择模板装饰后加入画布、自动选中并可拖动", async () =>
 
   drag(overlay.element() as HTMLElement, 30, 15);
   await expect.element(status).not.toHaveTextContent("|520,250");
+});
+
+test("明日方舟四角星可以加入画布", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <DecorationFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByText("添加", { exact: true }).click();
+  await screen.getByRole("button", { name: "装饰", exact: true }).click();
+  await screen.getByRole("button", { name: "四角星", exact: true }).click();
+
+  const status = screen.getByTestId("selected-decoration");
+  await expect.element(status).toHaveTextContent("|四角星|ak-star|80,64");
+  const selectedId = status.element().textContent?.split("|")[0];
+  const frame = document.querySelector<HTMLElement>(`[data-cover-el="${selectedId}"]`);
+  expect(frame?.querySelector("path")).not.toBeNull();
+  expect(getComputedStyle(frame!).color).toBe("rgb(216, 232, 196)");
 });
 
 test("职业队模板的工业碎片可以作为独立装饰加入", async () => {

@@ -63,10 +63,26 @@ export function coverImage(cover: { imageDataUrl: string; imageUrl?: string; art
 export function defaultArtFields(operatorId?: string, artId?: string) {
   const op = operatorId ? findOperator(operatorId) : undefined;
   const art = op ? (artId ? op.arts.find((a) => a.id === artId) : undefined) ?? preferredArt(op) : undefined;
+  if (art) {
+    return {
+      operatorName: op?.name ?? "",
+      operatorId: op?.id ?? "",
+      artId: art.id,
+      imageUrl: artUrl(art.id),
+    };
+  }
+  if (artId) {
+    return {
+      operatorName: "",
+      operatorId: operatorId ?? "",
+      artId,
+      imageUrl: artUrl(artId),
+    };
+  }
   return {
-    operatorName: op?.name ?? "",
-    operatorId: op?.id ?? "",
-    artId: art?.id ?? "",
-    imageUrl: art ? artUrl(art.id) : "",
+    operatorName: "",
+    operatorId: operatorId ?? "",
+    artId: "",
+    imageUrl: "",
   };
 }

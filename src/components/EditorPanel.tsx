@@ -2,6 +2,7 @@ import { UploadSimple } from "@phosphor-icons/react";
 import { IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
 import { artUrl } from "../data/arts";
 import { ORNAMENTS } from "../data/ornaments";
+import { getBuiltinLayers } from "../data/seeds";
 import { isBuiltinId } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { useCover } from "../store/CoverContext";
@@ -20,6 +21,8 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "endfield", label: "终末地底" },
   { id: "specialist", label: "职业队底" },
   { id: "operator-preview", label: "前瞻分析底" },
+  { id: "fourstar-nocore", label: "四星无核底" },
+  { id: "solo", label: "仅需一人底" },
 ];
 
 export function EditorPanel() {
@@ -28,6 +31,7 @@ export function EditorPanel() {
     draft,
     patchDraft,
     patchLayer,
+    patchElement,
     selectedLayer,
     titleKind,
     titleLabel,
@@ -45,6 +49,10 @@ export function EditorPanel() {
 
   const selectedImage = selectedLayer?.kind === "image" ? (selectedLayer as ImageLayer) : undefined;
   const uploadLayer = selectedImage?.source === "upload" ? selectedImage : undefined;
+  const soloWash = templateId === "solo" || draft.canvasSkin === "solo";
+  const washLayer = draft.layers.find((layer) => layer.id === "wash");
+  const washOn = !washLayer || (!washLayer.hidden && !washLayer.removed);
+  const washOpacity = draft.elementStyles.wash?.opacity ?? washLayer?.opacity ?? 100;
   const imageLayer =
     uploadLayer
       ? undefined
@@ -135,6 +143,41 @@ export function EditorPanel() {
         value={draft.bgPreset}
         onChange={(bgPreset) => patchDraft({ bgPreset })}
       />
+      {soloWash ? (
+        <div className="border-b border-line px-4 py-2">
+          <label className="flex h-8 cursor-pointer items-center justify-between text-[13px] text-sub">
+            红雾
+            <input
+              type="checkbox"
+              checked={washOn}
+              onChange={(event) => {
+                const on = event.target.checked;
+                if (washLayer) {
+                  patchLayer("wash", on ? { hidden: false, removed: false } : { hidden: true, removed: false });
+                  return;
+                }
+                const seed = getBuiltinLayers("solo").find((layer) => layer.id === "wash");
+                if (!seed) return;
+                patchDraft({ layers: [...draft.layers, { ...seed, hidden: !on, removed: false }] });
+              }}
+            />
+          </label>
+          {washOn ? (
+            <div className="mt-1">
+              <Field label={`透明度 ${washOpacity}`}>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={washOpacity}
+                  onChange={(event) => patchElement("wash", { opacity: Number(event.target.value) })}
+                  className="w-full"
+                />
+              </Field>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
 
       {showTextBackground ? (
         <BackgroundPicker label="字背景" value={draft.textBgPreset || draft.bgPreset} onChange={(textBgPreset) => patchDraft({ textBgPreset })} />

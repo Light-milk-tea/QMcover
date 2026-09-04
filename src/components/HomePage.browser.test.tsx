@@ -28,3 +28,21 @@ test("首页列出干员前瞻分析模板并能打开", async () => {
   await screen.getByText("干员前瞻分析", { exact: true }).click();
   expect(opened).toBe("operator-preview");
 });
+
+test("首页列出四星无核模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "四星无核 精一四星首杀拼贴模板" })).toBeVisible();
+  await screen.getByText("四星无核", { exact: true }).click();
+  expect(opened).toBe("fourstar-nocore");
+});
+
+test("首页列出仅需一人模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "仅需一人 单人通关暗红氛围模板" })).toBeVisible();
+  await screen.getByText("仅需一人", { exact: true }).click();
+  expect(opened).toBe("solo");
+});
