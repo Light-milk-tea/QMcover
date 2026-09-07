@@ -4,6 +4,8 @@
 
 ## 仓库是什么
 
+远程：[https://github.com/Light-milk-tea/QMcover.git](https://github.com/Light-milk-tea/QMcover.git)
+
 QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + TypeScript + Tailwind CSS 4）。草稿在 `localStorage`，不接后端。
 
 相关文档：
@@ -13,21 +15,19 @@ QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + T
 - [doc/模仿参考图生成模板.md](doc/模仿参考图生成模板.md) 按参考图复刻构图
 - [SKILL.md](SKILL.md) Commit-as-Prompt（用户要求提交时用）
 
-## Git：你让推再推
+## Git：直接在 main 上干活
 
-默认只在本地干活，**不要自己推远程、不要自己开 PR、不要合并、不要动 `main`。**
+远程就是上面的仓库。默认只在本地改，**用户说推再推**。推的时候 **直接推 `origin/main`**，不要另开功能分支，不要用 `cursor/`、`feat/`、`docs/` 这类前缀开分支。
 
 | 动作 | 何时可以 |
 | --- | --- |
 | 改文件、跑起来验证 | 用户给了任务就可以 |
 | `git commit` | 用户要提交，或任务告一段落需要落盘；按 [SKILL.md](SKILL.md) 写 WHAT/WHY/HOW |
-| `git push` | **用户明确说「推」** |
+| `git push` | **用户明确说「推」**：`git push origin main` |
 | 开 / 更新 PR | **用户明确说开 PR 或更新 PR** |
-| 合并 PR、推 `main`、force push、amend | 用户点名要求 |
+| 合并 PR、force push、amend | 用户点名要求 |
 
-已经开过的 PR 不要擅自关、改状态或合并。用户没说推，本地可以比远程超前。
-
-从 `main` 拉功能分支再改。分支名用小写，用 `docs/`、`feat/`、`chore/` 这类前缀，**不要用 `cursor/`**（GitHub 分支页会看起来像 Cursor 的分支）。不要改 `git config`。
+已经开过的 PR 不要擅自关、改状态或合并。用户没说推，本地可以比远程超前。不要改 `git config`。
 
 每次 `git commit` 必须用环境变量注入身份，**作者和提交者都只能是下面这组，不要出现 Cursor / cursoragent**：
 
