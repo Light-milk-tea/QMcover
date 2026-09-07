@@ -189,7 +189,8 @@ test("空稿带上酒神默认立绘和关卡码", () => {
   expect(draft.bgPreset).toBe("38_g17_1");
   expect(draft.textBgPreset).toBe("21_G5_victoria_street_n_ruins");
   expect(draft.layers.find((layer) => layer.id === "wash")?.opacity).toBe(74);
-  expect(draft.layers.find((layer) => layer.id === "operator" && layer.kind === "image")?.imageX).toBe(24);
+  const operatorLayer = draft.layers.find((layer) => layer.id === "operator");
+  expect(operatorLayer?.kind === "image" ? operatorLayer.imageX : undefined).toBe(24);
   expect(draft.effects.bgGrade.brightness).toBe(100);
   expect(draft.layers.some((layer) => layer.id === "slash-a")).toBe(false);
   expect(draft.layers.some((layer) => layer.id === "slash-b")).toBe(false);

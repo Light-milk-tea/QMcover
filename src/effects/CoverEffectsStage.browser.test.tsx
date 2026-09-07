@@ -53,6 +53,7 @@ test("倾斜柔光层大于画布，旋转后仍盖住右上角", async () => {
       enabled: true,
       amount: 42,
       kind: "bloom" as const,
+      depth: "behind" as const,
       x: 58,
       y: 0,
       rotate: 20,
@@ -75,7 +76,7 @@ test("倾斜柔光层大于画布，旋转后仍盖住右上角", async () => {
   await expect.element(probe).toBeVisible();
   const node = probe.element();
   const box = node.getBoundingClientRect();
-  const bloom = node.querySelector("[data-light-bloom]");
+  const bloom = node.querySelector<HTMLElement>("[data-light-bloom]");
   expect(bloom).not.toBeNull();
 
   expect(bloom!.offsetWidth).toBeGreaterThan(node.clientWidth);
@@ -95,6 +96,7 @@ test("分层柔光不盖在画布内容上面", async () => {
       enabled: true,
       amount: 38,
       kind: "bloom" as const,
+      depth: "behind" as const,
       x: 74,
       y: 0,
       rotate: 10,
