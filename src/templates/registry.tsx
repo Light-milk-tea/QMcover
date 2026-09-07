@@ -5,6 +5,7 @@ import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { useCoverOptional } from "../store/CoverContext";
 import type { BuiltinTemplateId, CoverRenderProps } from "../types";
 import { Endfield } from "./Endfield";
+import { EmergencyLesson } from "./EmergencyLesson";
 import { FirstKill } from "./FirstKill";
 import { FourstarNocore } from "./FourstarNocore";
 import { LowSpec } from "./LowSpec";
@@ -19,6 +20,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   firstkill: FirstKill,
   lowspec: LowSpec,
   rogue: Rogue,
+  "emergency-lesson": EmergencyLesson,
   madness: Madness,
   nocore: Nocore,
   endfield: Endfield,

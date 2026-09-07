@@ -1,5 +1,6 @@
 import type { BuiltinTemplateId, Layer } from "../../types";
 import { endfieldLayers } from "./endfield";
+import { emergencyLessonLayers } from "./emergencyLesson";
 import { firstkillLayers } from "./firstkill";
 import { fourstarNocoreLayers } from "./fourstarNocore";
 import { lowspecLayers } from "./lowspec";
@@ -14,6 +15,7 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   firstkill: firstkillLayers,
   lowspec: lowspecLayers,
   rogue: rogueLayers,
+  "emergency-lesson": emergencyLessonLayers,
   madness: madnessLayers,
   nocore: nocoreLayers,
   endfield: endfieldLayers,

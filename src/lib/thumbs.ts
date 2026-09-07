@@ -1,4 +1,5 @@
 import endfieldThumb from "../assets/thumbs/endfield-shot.webp";
+import emergencyLessonThumb from "../assets/thumbs/emergency-lesson-shot.webp";
 import firstkillThumb from "../assets/thumbs/firstkill-shot.webp";
 import fourstarNocoreThumb from "../assets/thumbs/fourstar-nocore-shot.webp";
 import madnessThumb from "../assets/thumbs/madness-shot.webp";
@@ -14,6 +15,7 @@ const THUMB_REV: Partial<Record<TemplateId, number>> = {
 
 const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   firstkill: firstkillThumb,
+  "emergency-lesson": emergencyLessonThumb,
   madness: madnessThumb,
   rogue: rogueThumb,
   endfield: endfieldThumb,

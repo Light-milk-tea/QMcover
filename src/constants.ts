@@ -26,6 +26,7 @@ export const BUILTIN_TEMPLATE_IDS = [
   "firstkill",
   "lowspec",
   "rogue",
+  "emergency-lesson",
   "madness",
   "nocore",
   "endfield",

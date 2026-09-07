@@ -63,6 +63,7 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
   const operatorPreview = skin === "operator-preview";
   const fourstar = skin === "fourstar-nocore";
   const solo = skin === "solo";
+  const emergencyLesson = skin === "emergency-lesson";
   return {
     light: {
       enabled: legacy.shaftLight ?? (specialist || fourstar || solo),
@@ -74,7 +75,9 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
       depth: "behind",
     },
     artGrade: { ...ART_GRADE },
-    bgGrade: operatorPreview
+    bgGrade: emergencyLesson
+      ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 22, contrast: 32, brightness: 68 }
+      : operatorPreview
       ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 24, contrast: 18, brightness: 80 }
       : fourstar
         ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 42, contrast: 16, brightness: 72 }
@@ -82,7 +85,10 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
           ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 18, contrast: 22, brightness: 100 }
           : { ...BG_GRADE, enabled: specialist },
     scanlines: amount(false, specialist ? 11 : 24),
-    grain: amount(specialist || operatorPreview || fourstar || solo, specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 24 : 24),
+    grain: amount(
+      specialist || operatorPreview || fourstar || solo || emergencyLesson,
+      specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 24 : emergencyLesson ? 30 : 24,
+    ),
     chromatic: amount(specialist, specialist ? 4 : 12),
     glitch: amount(false, specialist ? 16 : 24),
     slashes: amount(false, specialist ? 8 : 20),

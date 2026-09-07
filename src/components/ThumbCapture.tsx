@@ -52,6 +52,7 @@ export function ThumbCapture({ templateId }: Props) {
         width: WIDTH,
         height: BILI_COVER.height * SCALE,
         cacheBust: false,
+        filter: (node) => !(node instanceof HTMLElement && node.dataset.ignoreExport === "true"),
       });
       if (!cancelled) window.__QM_THUMB = url;
     })().catch((err: unknown) => {

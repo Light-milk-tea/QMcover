@@ -46,3 +46,12 @@ test("首页列出仅需一人模板并能打开", async () => {
   await screen.getByText("仅需一人", { exact: true }).click();
   expect(opened).toBe("solo");
 });
+
+test("首页列出紧急授课模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "紧急授课 五人无藏肉鸽模板" })).toBeVisible();
+  await screen.getByText("紧急授课", { exact: true }).click();
+  expect(opened).toBe("emergency-lesson");
+});

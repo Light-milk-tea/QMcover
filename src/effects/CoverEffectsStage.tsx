@@ -246,6 +246,7 @@ const VIGNETTE_AT: Record<CanvasSkin, string> = {
   firstkill: "22% 42%",
   lowspec: "28% 48%",
   rogue: "72% 48%",
+  "emergency-lesson": "50% 46%",
   madness: "26% 46%",
   nocore: "28% 48%",
   endfield: "22% 48%",
