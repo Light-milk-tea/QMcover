@@ -14,6 +14,7 @@
 
 - [如何加模板](TEMPLATES.md)
 - [按参考图做新模板](doc/模仿参考图生成模板.md)
+- [封面视觉迭代与验收（紧急授课经验）](doc/封面视觉迭代与验收.md)
 - [危机合约构图参考](references/crisis-contract/INDEX.md)
 - [肉鸽构图参考](references/rogue/INDEX.md)
 - [无核论文构图参考](references/kirby/INDEX.md)
