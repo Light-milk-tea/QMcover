@@ -87,7 +87,7 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
     scanlines: amount(false, specialist ? 11 : 24),
     grain: amount(
       specialist || operatorPreview || fourstar || solo || emergencyLesson,
-      specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 24 : emergencyLesson ? 30 : 24,
+      specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 24 : emergencyLesson ? 8 : 24,
     ),
     chromatic: amount(specialist, specialist ? 4 : 12),
     glitch: amount(false, specialist ? 16 : 24),
