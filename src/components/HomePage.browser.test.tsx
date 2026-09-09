@@ -6,6 +6,13 @@ beforeEach(() => {
   localStorage.clear();
 });
 
+test("首页列出先锋六人模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+  await screen.getByRole("button", { name: "先锋六人 灰金网点职业队模板" }).click();
+  expect(opened).toBe("six-vanguard");
+});
+
 test("首页列出模板，点职业队会打开 specialist", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);

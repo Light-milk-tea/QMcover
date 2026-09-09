@@ -24,7 +24,7 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 35;
+const DEFAULTS_VERSION = 36;
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
@@ -233,8 +233,47 @@ function migrateOperatorPreviewLayout(draft: Draft): Draft {
   };
 }
 
+function migrateSoloUserLayout(draft: Draft): Draft {
+  const current = emptyDraft("solo");
+  const elementStyles = { ...draft.elementStyles };
+  // Overrides are absolute translations. Keep custom positions; remove the
+  // approved values now baked into the component defaults.
+  for (const [id, x, y] of [
+    ["stage", -2.363110539845758, -52.00964010282776],
+    ["title", 30.241002570694096, -3.0366323907455017],
+  ] as const) {
+    const value = elementStyles[id];
+    if (!value) continue;
+    const next = { ...value };
+    if (next.x === x) delete next.x;
+    if (next.y === y) delete next.y;
+    if (Object.keys(next).length) elementStyles[id] = next;
+    else delete elementStyles[id];
+  }
+  const oldDefault = draft.artId === current.artId &&
+    ((draft.imageScale === 440 && draft.imageX === 400 && draft.imageY === 220) ||
+     (draft.imageScale === 203 && draft.imageX === 24 && draft.imageY === 121));
+  return {
+    ...draft,
+    ...(oldDefault ? { imageScale: current.imageScale, imageX: current.imageX, imageY: current.imageY } : {}),
+    elementStyles,
+    layers: draft.layers.map(layer => layer.id === "ak-mark"
+      ? { ...layer, hidden: true, removed: true }
+      : oldDefault && layer.id === "operator" && layer.kind === "image"
+        ? { ...layer, scale: current.imageScale, imageX: current.imageX, imageY: current.imageY }
+        : layer),
+  };
+}
+
 function migrateDraftDefaults(state: PersistedState): PersistedState {
   if ((state.defaultsVersion ?? 0) >= DEFAULTS_VERSION) return state;
+  if ((state.defaultsVersion ?? 0) >= 35) {
+    const solo = state.drafts.solo;
+    const next = { ...state, defaultsVersion: DEFAULTS_VERSION,
+      drafts: { ...state.drafts, ...(solo ? { solo: migrateSoloUserLayout(solo) } : {}) } };
+    saveState(next);
+    return next;
+  }
   const drafts: PersistedState["drafts"] = {};
   for (const [id, draft] of Object.entries(state.drafts)) {
     if (!draft) continue;
@@ -346,6 +385,49 @@ function mergeNativeLayers(templateId: TemplateId, draft: Draft): Draft {
       !(templateId === "specialist" && (layer.id === "tri" || layer.id === "ruler")),
   );
   return { ...draft, layers: [...natives, ...extras] };
+}
+
+function migrateSixVanguardLayout(draft: Draft): Draft {
+  const { ["count-mark"]: _removed, ...elementStyles } = draft.elementStyles;
+  draft = {
+    ...draft,
+    elementStyles,
+    layers: draft.layers.filter((layer) => layer.id !== "count-mark"),
+  };
+  const oldArt = draft.artId === "char_4026_vulpis_1" || draft.operatorId === "char_4026_vulpis";
+  const oldGuessedDorothy =
+    draft.artId === "char_4048_doroth_1" &&
+    draft.imageScale === 380 &&
+    draft.imageX === -40 &&
+    draft.imageY === -80;
+  if (!oldArt && !oldGuessedDorothy) return draft;
+  const art = defaultArtFields("char_4048_doroth", "char_4048_doroth_1");
+  return {
+    ...draft,
+    operatorName: art.operatorName,
+    operatorId: art.operatorId,
+    artId: art.artId,
+    imageUrl: art.imageUrl,
+    imageScale: 177,
+    imageX: -215.5387931034468,
+    imageY: -40.73275862068997,
+    layers: draft.layers.map((layer) =>
+      layer.id === "operator" && layer.kind === "image"
+        ? {
+            ...layer,
+            operatorId: art.operatorId,
+            artId: art.artId,
+            imageUrl: art.imageUrl,
+            scale: 177,
+            imageX: -215.5387931034468,
+            imageY: -40.73275862068997,
+            w: 1400,
+            objectPosition: "left top",
+            transformOrigin: "left top",
+          }
+        : layer,
+    ),
+  };
 }
 
 function migrateSpecialistLayout(draft: Draft): Draft {
@@ -639,7 +721,11 @@ export function loadDraft(templateId: TemplateId): Draft {
       shaftLightRotate: saved.shaftLightRotate ?? empty.shaftLightRotate,
     }),
   };
-  const laidOut = templateId === "specialist" ? migrateSpecialistLayout(normalized) : normalized;
+  const laidOut = templateId === "specialist"
+    ? migrateSpecialistLayout(normalized)
+    : templateId === "six-vanguard"
+      ? migrateSixVanguardLayout(normalized)
+      : normalized;
   return {
     ...laidOut,
     layers: hydrateImageArtGrade(laidOut.layers, laidOut.effects.artGrade, laidOut.canvasSkin === "specialist"),

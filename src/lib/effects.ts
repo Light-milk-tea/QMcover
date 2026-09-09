@@ -64,6 +64,7 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
   const fourstar = skin === "fourstar-nocore";
   const solo = skin === "solo";
   const emergencyLesson = skin === "emergency-lesson";
+  const sixVanguard = skin === "six-vanguard";
   return {
     light: {
       enabled: legacy.shaftLight ?? (specialist || fourstar || solo),
@@ -75,7 +76,9 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
       depth: "behind",
     },
     artGrade: { ...ART_GRADE },
-    bgGrade: emergencyLesson
+    bgGrade: sixVanguard
+      ? { ...BG_GRADE, enabled: true, blur: 1, grayscale: 100, contrast: 8, brightness: 110 }
+      : emergencyLesson
       ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 22, contrast: 32, brightness: 68 }
       : operatorPreview
       ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 24, contrast: 18, brightness: 80 }
@@ -87,7 +90,7 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
     scanlines: amount(false, specialist ? 11 : 24),
     grain: amount(
       specialist || operatorPreview || fourstar || solo || emergencyLesson,
-      specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 24 : emergencyLesson ? 8 : 24,
+      specialist ? 28 : operatorPreview ? 22 : fourstar ? 26 : solo ? 8 : emergencyLesson ? 8 : 24,
     ),
     chromatic: amount(specialist, specialist ? 4 : 12),
     glitch: amount(false, specialist ? 16 : 24),

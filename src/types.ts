@@ -63,6 +63,7 @@ export type LayerChrome =
 
 export type CanvasSkin =
   | "plain"
+  | "six-vanguard"
   | "firstkill"
   | "lowspec"
   | "rogue"
@@ -271,6 +272,7 @@ export type ResolvedElement = {
 };
 
 export type BuiltinTemplateId =
+  | "six-vanguard"
   | "firstkill"
   | "lowspec"
   | "rogue"

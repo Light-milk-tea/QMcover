@@ -109,6 +109,21 @@ export function isNativeElement(templateId: string, id: string, canvasSkin?: str
 }
 
 export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
+  "six-vanguard": [
+    { id: "echo", label: "灰色人物叠影", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "geometry", label: "斜框与三角纹", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "edge-type-top", label: "顶部虚焦字", kind: "text", defaultFont: "sans", textDefault: "PIONEER", hasOpacity: true, defaultOpacity: 48 },
+    { id: "edge-type-bottom", label: "底部虚焦字", kind: "text", defaultFont: "sans", textDefault: "VANGUARD", hasOpacity: true, defaultOpacity: 50 },
+    { id: "gold-rule", label: "金色斜线", kind: "box", hasColor: true },
+    { id: "flecks", label: "纸面白点", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "halftone", label: "网点纸纹", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "mark-bg", label: "红标底色", kind: "box", hasColor: true },
+    { id: "mark", label: "红标文字", kind: "text", defaultFont: "sans", textBind: "mark" },
+    { id: "squad", label: "阵容标题", kind: "text", defaultFont: "serif", textBind: "subtitle" },
+    { id: "stage", label: "关卡码", kind: "text", defaultFont: "sans", textBind: "title" },
+    { id: "script", label: "英文花体", kind: "text", defaultFont: "script", textBind: "signature" },
+  ],
   firstkill: [
     { id: "operator", label: "立绘", kind: "image" },
     { id: "stage", label: "地图名", kind: "text", defaultFont: "cn", textBind: "title" },

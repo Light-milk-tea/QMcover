@@ -23,6 +23,7 @@ export const BLANK_TEMPLATE_ID = "blank";
 export const CUSTOM_TEMPLATE_PREFIX = "c-";
 
 export const BUILTIN_TEMPLATE_IDS = [
+  "six-vanguard",
   "firstkill",
   "lowspec",
   "rogue",
