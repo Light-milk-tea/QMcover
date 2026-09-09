@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { CoverElement } from "../components/CoverElement";
 import { renderBoxChrome } from "../canvas/LayerChrome";
 import { BILI_COVER, STAGE_BAR_WIDTH_MAX, STAGE_BAR_WIDTH_MIN } from "../constants";
@@ -13,24 +14,23 @@ import { OperatorLayer } from "./OperatorLayer";
 
 const WHITE = "#ffffff";
 const RED_RULE = "#8a121c";
-const TEXT_STACK_WIDTH = 820;
-const STACK_LEFT = 128;
-const STACK_TOP = 268;
-const TITLE_GAP = 28;
-const TITLE_BAR_PAD = 72;
-const RULE_WIDTH_DEFAULT = 788;
-const RED_RULE_WIDTH_DEFAULT = 800;
+const TEXT_STACK_WIDTH = 1040;
+const STACK_LEFT = 40;
+const STACK_TOP = 300;
+const TITLE_GAP = 16;
+const TITLE_BAR_PAD = 0;
+const RULE_WIDTH_DEFAULT = 950;
+const RED_RULE_WIDTH_DEFAULT = 960;
 
 function titleSize(length: number) {
   if (length <= 2) return 216;
-  if (length <= 4) return 176;
-  if (length <= 6) return 138;
-  return 108;
+  if (length <= 4) return 235;
+  return Math.floor(920 / Math.max(length, 1));
 }
 
 function stageSize(length: number) {
   if (length <= 5) return 228;
-  if (length <= 7) return 212;
+  if (length <= 7) return 250;
   if (length <= 9) return 176;
   return 148;
 }
@@ -40,8 +40,8 @@ function GlowWord({ text, stroke = "0.01em #101014" }: { text: string; stroke?: 
     <span data-solo-title-face="" className="relative inline-block whitespace-nowrap leading-none">
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 text-white/55"
-        style={{ filter: "blur(8px)" }}
+        className="pointer-events-none absolute inset-0 text-black/65"
+        style={{ filter: "blur(4px)" }}
       >
         {text}
       </span>
@@ -73,6 +73,7 @@ function barWidth(props: CoverRenderProps, id: string, fallback: number) {
 }
 
 export function Solo(props: CoverRenderProps) {
+  const smokeId = useId().replace(/:/g, "");
   const cover = useCoverOptional();
   const styles = props.elementStyles;
   const title = elementText(styles, "title", props.title.trim() || "酒神单人");
@@ -136,6 +137,21 @@ export function Solo(props: CoverRenderProps) {
               "radial-gradient(ellipse 88% 78% at 34% 50%, rgb(118 10 16 / 0.88) 0%, rgb(58 6 10 / 0.52) 48%, transparent 76%), radial-gradient(ellipse 56% 46% at 82% 8%, rgb(200 40 34 / 0.34) 0%, transparent 64%), radial-gradient(ellipse 40% 36% at 18% 78%, rgb(40 4 8 / 0.55) 0%, transparent 70%)",
           }}
         />
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" fill="none" aria-hidden>
+          <defs>
+            <filter id={smokeId} x="-20%" y="-50%" width="140%" height="200%">
+              <feTurbulence type="fractalNoise" baseFrequency=".005 .014" numOctaves="3" seed="17" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="100" />
+              <feGaussianBlur stdDeviation="24" />
+            </filter>
+          </defs>
+          <g filter={`url(#${smokeId})`}>
+            <path d="M-120 200 Q380 -60 960 210 T2000 160" stroke="#d90829" strokeWidth="110" opacity=".65" />
+            <path d="M-100 365 Q460 90 970 340 T2030 280" stroke="#65051c" strokeWidth="95" opacity=".75" />
+            <path d="M-100 488 Q280 225 920 454" stroke="#ed1233" strokeWidth="48" opacity=".5" />
+            <path d="M-120 1000 Q320 680 760 876 T1900 860" stroke="#a91a28" strokeWidth="150" opacity=".65" />
+          </g>
+        </svg>
       </CoverElement>
 
       <div data-solo-light="" className="pointer-events-none absolute inset-0" style={{ zIndex: zLight }}>
@@ -144,7 +160,7 @@ export function Solo(props: CoverRenderProps) {
         </CoverElement>
       </div>
 
-      <CoverElement
+      {markLayer && !markLayer.hidden && !markLayer.removed ? <CoverElement
         id="ak-mark"
         kind="box"
         defaultX={48}
@@ -163,7 +179,7 @@ export function Solo(props: CoverRenderProps) {
           chrome: "ak-mark",
           color: styles?.["ak-mark"]?.color ?? markLayer?.color ?? "#eef6e4",
         })}
-      </CoverElement>
+      </CoverElement> : null}
 
       {props.bgDim ? <BgDimLayer on amount={props.bgDimAmount ?? 32} at="24% 48%" className="z-[3]" /> : null}
 
@@ -190,7 +206,7 @@ export function Solo(props: CoverRenderProps) {
         <OperatorLayer
           {...props}
           fadeLeft
-          fadeLeftSolid={22}
+          fadeLeftSolid={8}
           objectFit="contain"
           objectPosition="52% 18%"
           transformOrigin="center 16%"
@@ -215,8 +231,8 @@ export function Solo(props: CoverRenderProps) {
           id="stage"
           defaultFont="cn"
           defaultFontSize={stageSize(stage.length)}
-          defaultX={-22}
-          defaultY={-52}
+          defaultX={-2.363110539845758}
+          defaultY={-52.00964010282776}
           className="w-full text-center font-black tracking-[-0.02em] whitespace-nowrap"
           style={{ lineHeight: 0.8, width: "100%", height: stageRowH, textAlign: "center" }}
         >
@@ -228,8 +244,8 @@ export function Solo(props: CoverRenderProps) {
             id="title"
             defaultFont="serif"
             defaultFontSize={titleSize(title.length)}
-            defaultX={11}
-            defaultY={-10}
+            defaultX={30.241002570694096}
+            defaultY={-3.0366323907455017}
             className="absolute inset-0 z-[1] overflow-visible font-black tracking-[-0.02em]"
           >
             <span
@@ -266,9 +282,9 @@ export function Solo(props: CoverRenderProps) {
 
         <CoverElement
           id="slogan"
-          defaultFont="display"
-          defaultFontSize={22}
-          className="relative mt-[10px] w-full text-center font-medium tracking-[0.32em] whitespace-nowrap"
+          defaultFont="cn"
+          defaultFontSize={42}
+          className="relative mt-[10px] w-full text-center font-normal tracking-[0.16em] whitespace-nowrap"
           style={{ color: WHITE, width: "100%", textAlign: "center" }}
         >
           {slogan}

@@ -6,7 +6,7 @@ import { EditorPanel } from "../components/EditorPanel";
 import { EffectsPanel } from "../components/EffectsPanel";
 import { InspectorPanel } from "../components/InspectorPanel";
 import "../index.css";
-import { emptyDraft } from "../lib/storage";
+import { emptyDraft, loadState, saveState } from "../lib/storage";
 import { CoverProvider } from "../store/CoverContext";
 import { Solo } from "./Solo";
 
@@ -71,7 +71,7 @@ test("仅需一人模板显示关卡码、宋体标题和英文标", async () =>
   expect(washEl).not.toBeNull();
   expect(getComputedStyle(washEl!).opacity).toBe("1");
   expect(screen.container.querySelector('[data-cover-el="light"]')).not.toBeNull();
-  expect(screen.container.querySelector("[data-ak-mark]")?.textContent).toContain("明日方舟");
+  expect(screen.container.querySelector("[data-ak-mark]")).toBeNull();
   expect(operator).not.toBeNull();
 
   const canvas = screen.container.querySelector("[data-solo-canvas]") as HTMLElement;
@@ -89,7 +89,10 @@ test("仅需一人模板显示关卡码、宋体标题和英文标", async () =>
   expect(Math.abs(barBox.left - canvasBox.left)).toBeLessThan(8);
   const titleFace = title!.querySelector("[data-solo-title-face]") as HTMLElement;
   const faceBox = titleFace.getBoundingClientRect();
-  expect(faceBox.top).toBeGreaterThanOrEqual(barBox.top - 1);
+  expect(faceBox.width).toBeGreaterThan(canvasBox.width * 0.45);
+  expect(sloganBox.height).toBeGreaterThan(40);
+  // 用户配置将标题相对黑条上移约 3px。
+  expect(faceBox.top - barBox.top).toBeCloseTo(-3.0366323907455017, 1);
   expect(faceBox.bottom).toBeLessThanOrEqual(barBox.bottom + 1);
   const barSlot = screen.container.querySelector("[data-solo-title-bar]") as HTMLElement;
   const operatorSlot = screen.container.querySelector("[data-operator-slot]") as HTMLElement;
@@ -104,9 +107,9 @@ test("仅需一人模板显示关卡码、宋体标题和英文标", async () =>
   const axis = mid(titleBox);
   expect(mid(stageBox)).toBeLessThan(axis);
   expect(Math.abs(mid(stageBox) - axis)).toBeLessThan(40);
-  expect(Math.abs(mid(ruleBox) - axis)).toBeLessThan(16);
-  expect(Math.abs(mid(ruleRedBox) - axis)).toBeLessThan(16);
-  expect(Math.abs(mid(sloganBox) - axis)).toBeLessThan(16);
+  expect(Math.abs(mid(ruleBox) - axis)).toBeLessThan(32);
+  expect(Math.abs(mid(ruleRedBox) - axis)).toBeLessThan(32);
+  expect(Math.abs(mid(sloganBox) - axis)).toBeLessThan(32);
   expect(stage?.className).toContain("font-cn");
 
   const scene = screen.container.querySelector("[data-cover-bg]") as HTMLElement | null;
@@ -183,14 +186,14 @@ test("空稿带上酒神默认立绘和关卡码", () => {
   expect(draft.operatorId).toBe("char_1042_phatm2");
   expect(draft.artId).toBe("char_1042_phatm2_1");
   expect(draft.operatorName).toBe("酒神");
-  expect(draft.imageScale).toBe(203);
-  expect(draft.imageX).toBe(24);
-  expect(draft.imageY).toBe(121);
+  expect(draft.imageScale).toBe(244);
+  expect(draft.imageX).toBe(192.2750642673525);
+  expect(draft.imageY).toBe(182.0179948586127);
   expect(draft.bgPreset).toBe("38_g17_1");
   expect(draft.textBgPreset).toBe("21_G5_victoria_street_n_ruins");
   expect(draft.layers.find((layer) => layer.id === "wash")?.opacity).toBe(74);
   const operatorLayer = draft.layers.find((layer) => layer.id === "operator");
-  expect(operatorLayer?.kind === "image" ? operatorLayer.imageX : undefined).toBe(24);
+  expect(operatorLayer?.kind === "image" ? operatorLayer.imageX : undefined).toBe(192.2750642673525);
   expect(draft.effects.bgGrade.brightness).toBe(100);
   expect(draft.layers.some((layer) => layer.id === "slash-a")).toBe(false);
   expect(draft.layers.some((layer) => layer.id === "slash-b")).toBe(false);
@@ -297,7 +300,7 @@ test("光效在立绘后面，垂直可调", async () => {
   );
 
   await expect.element(screen.getByRole("button", { name: /光效/ })).toBeVisible();
-  await expect.element(screen.getByRole("button", { name: /方舟标/ })).toBeVisible();
+  expect(screen.getByRole("button", { name: /方舟标/ }).query()).toBeNull();
   await expect.element(screen.getByRole("button", { name: /立绘/ })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: /标题黑条/ })).toBeVisible();
   expect(screen.getByRole("button", { name: /涡旋/ }).query()).toBeNull();
@@ -309,7 +312,7 @@ test("光效在立绘后面，垂直可调", async () => {
   expect(Number(getComputedStyle(operatorSlot).zIndex)).toBeGreaterThan(Number(getComputedStyle(lightSlot).zIndex));
   expect(screen.container.querySelector("[data-effects-overlay] [data-light-bloom]")).toBeNull();
   expect(light.querySelector("[data-light-bloom]")).not.toBeNull();
-  expect(screen.container.querySelector("[data-ak-mark]")?.textContent).toContain("明日方舟");
+  expect(screen.container.querySelector("[data-ak-mark]")).toBeNull();
 
   await screen.getByRole("button", { name: /特效/ }).click();
   await expect.element(screen.getByRole("button", { name: "立绘下" })).toBeVisible();
@@ -320,4 +323,43 @@ test("光效在立绘后面，垂直可调", async () => {
   await expect.element(screen.getByRole("slider", { name: /垂直/ })).toBeVisible();
   await screen.getByRole("slider", { name: /垂直/ }).fill("80");
   expect(getComputedStyle(light).transform).toMatch(/80/);
+});
+
+
+test("长标题和关卡码不会越出左侧文字区", async () => {
+  const screen = await render(
+    <div style={{ width: 1920, height: 1080 }}>
+      <Solo title="酒神单人无伤通关" subtitle="AT-EX-8突袭" signature="ONE OPERATOR ONLY"
+        mark="" episode={1} date="2026-09-09" operatorName="" imageUrl=""
+        imageScale={440} imageX={400} imageY={220} previewScale={1}
+        onImageDrag={() => undefined} showPlaceholder={false} bgPreset="ink" />
+    </div>,
+  );
+  await document.fonts.ready;
+  const canvas = screen.container.querySelector('[data-solo-canvas]')!.getBoundingClientRect();
+  for (const id of ['title', 'stage']) {
+    const face = screen.container.querySelector(`[data-cover-el="${id}"] [data-solo-title-face]`)!.getBoundingClientRect();
+    expect(face.left).toBeGreaterThanOrEqual(canvas.left);
+    expect(face.right).toBeLessThan(canvas.left + canvas.width * .62);
+    expect(face.bottom).toBeLessThan(canvas.bottom - 120);
+  }
+});
+
+
+test("采用用户布局时移除已固化偏移，保留其他草稿与自定义样式", () => {
+  const solo = emptyDraft("solo");
+  solo.imageScale = 440; solo.imageX = 400; solo.imageY = 220;
+  solo.elementStyles = {
+    stage: { x: -2.363110539845758, y: -52.00964010282776, color: "#ff0000" },
+    title: { x: 30.241002570694096, y: -3.0366323907455017 },
+    slogan: { x: 19 },
+  };
+  const other = emptyDraft("emergency-lesson");
+  saveState({ defaultsVersion: 35, drafts: { solo, "emergency-lesson": other } });
+  const migrated = loadState();
+  expect(migrated.drafts.solo?.imageScale).toBe(244);
+  expect(migrated.drafts.solo?.elementStyles).toEqual({ stage: { color: "#ff0000" }, slogan: { x: 19 } });
+  expect(migrated.drafts.solo?.layers.find(l => l.id === "ak-mark")?.removed).toBe(true);
+  expect(migrated.drafts["emergency-lesson"]).toEqual(other);
+  expect(loadState()).toEqual(migrated);
 });
