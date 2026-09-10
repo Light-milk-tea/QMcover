@@ -1,6 +1,7 @@
 export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
-export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script";
+export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script"
+  | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -64,6 +65,7 @@ export type LayerChrome =
 export type CanvasSkin =
   | "plain"
   | "six-vanguard"
+  | "strength-review"
   | "firstkill"
   | "lowspec"
   | "rogue"
@@ -213,6 +215,7 @@ export type ElementOverride = {
   y?: number;
   w?: number;
   fontSize?: number;
+  letterSpacing?: number;
   font?: CoverFontId;
   color?: string;
   opacity?: number;
@@ -265,6 +268,7 @@ export type SavedTemplate = {
 
 export type ResolvedElement = {
   fontSize?: number;
+  letterSpacing?: number;
   font?: CoverFontId;
   color?: string;
   x?: number;
@@ -273,6 +277,7 @@ export type ResolvedElement = {
 
 export type BuiltinTemplateId =
   | "six-vanguard"
+  | "strength-review"
   | "firstkill"
   | "lowspec"
   | "rogue"

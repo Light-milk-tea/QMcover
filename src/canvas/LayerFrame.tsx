@@ -1,4 +1,5 @@
 import { type PointerEvent, useRef, type ReactNode } from "react";
+import { fontClass } from "../data/elements";
 import { imageLayerPan } from "../lib/document";
 import { useCoverOptional } from "../store/CoverContext";
 import type { Layer } from "../types";
@@ -57,13 +58,17 @@ export function LayerFrame({ layer, previewScale, zIndex, children }: Props) {
     <div
       data-cover-el={layer.id}
       data-ignore-export={hidden ? "true" : undefined}
-      className="absolute"
+      className={`absolute ${layer.kind === "text" ? fontClass(layer.font) : ""} ${layer.kind === "text" && layer.letterSpacing != null ? "cover-tracking-override" : ""}`}
       style={{
         left: visual.x,
         top: visual.y,
         width: visual.w,
         height: visual.h,
         color: layer.color,
+        ...(layer.kind === "text" && layer.letterSpacing != null ? {
+          letterSpacing: layer.letterSpacing,
+          "--cover-letter-spacing": `${layer.letterSpacing}px`,
+        } : {}),
         opacity: hidden ? 0.28 : (layer.opacity != null && layer.kind !== "box" ? layer.opacity / 100 : 1),
         transform: [layer.id === "watermark-flip" ? "scaleY(-1)" : "", layer.rotation ? `rotate(${layer.rotation}deg)` : ""]
           .filter(Boolean)

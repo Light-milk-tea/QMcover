@@ -88,7 +88,7 @@ export function OperatorLayer({
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
-  if (hidden && !imageUrl) return null;
+  if (hidden) return null;
 
   if (!imageUrl) {
     if (!showPlaceholder) return <div className={className} />;
@@ -109,18 +109,36 @@ export function OperatorLayer({
   const grade = layerGrade ?? artGrade;
   const role = fringeRole ?? (layerId === "operator-b" ? "back" : "front");
   const gradeFilter = artGradeFilter(grade, role);
+  const edge = Math.min(IMAGE_EDGE_FADE_MAX, Math.max(IMAGE_EDGE_FADE_MIN, imageEdgeFadeAmount));
+  const inner = 100 - edge;
+  const edgeFadeMask = imageEdgeFade
+    ? [
+        `linear-gradient(to right, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
+        `linear-gradient(to bottom, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
+      ].join(", ")
+    : undefined;
 
   return (
     <div
       data-cover-el={layerId}
+      data-edge-fade={imageEdgeFade ? String(edge) : undefined}
       className={`relative ${className}`}
       style={{
         zIndex,
-        visibility: hidden ? "hidden" : undefined,
         pointerEvents: "none",
         transform: wrapTransform || undefined,
         transformOrigin: rotation ? "center center" : transformOrigin,
         filter: gradeFilter,
+        ...(edgeFadeMask
+          ? {
+              WebkitMaskImage: edgeFadeMask,
+              maskImage: edgeFadeMask,
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskComposite: "source-in" as const,
+              maskComposite: "intersect" as const,
+            }
+          : {}),
       }}
     >
       <div
@@ -189,26 +207,8 @@ export function OperatorLayer({
             objectPosition,
             transformOrigin,
             transform: `scale(${imageScale / 100})`,
-            pointerEvents: hidden || insideFrame ? "none" : "auto",
+            pointerEvents: insideFrame ? "none" : "auto",
             cursor: dragging.current ? "grabbing" : "grab",
-            ...(imageEdgeFade
-              ? (() => {
-                  const edge = Math.min(IMAGE_EDGE_FADE_MAX, Math.max(IMAGE_EDGE_FADE_MIN, imageEdgeFadeAmount));
-                  const inner = 100 - edge;
-                  const masks = [
-                    `linear-gradient(to right, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
-                    `linear-gradient(to bottom, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
-                  ].join(", ");
-                  return {
-                    WebkitMaskImage: masks,
-                    maskImage: masks,
-                    WebkitMaskRepeat: "no-repeat",
-                    maskRepeat: "no-repeat",
-                    WebkitMaskComposite: "source-in" as const,
-                    maskComposite: "intersect" as const,
-                  };
-                })()
-              : {}),
           }}
         />
       </div>

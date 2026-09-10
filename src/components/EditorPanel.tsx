@@ -23,6 +23,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "operator-preview", label: "前瞻分析底" },
   { id: "fourstar-nocore", label: "四星无核底" },
   { id: "solo", label: "仅需一人底" },
+  { id: "strength-review", label: "强度测评底" },
 ];
 
 export function EditorPanel() {

@@ -48,7 +48,7 @@ npm run dev
 
 1. 首页点一张模板，进入 `#/t/<模板id>`。
 2. 右侧改地图 / 标题、副标题、危机等级或期数、行动名或署名。
-3. 左侧点图层，或直接点画布上的字，可改位置、字体、字号、颜色。选中后也可拖动。
+3. 左侧点图层，或直接点画布上的字，可改位置、字体、字号、颜色。选中后也可拖动。 字体菜单新增思源宋体常规 / 中等、思源黑体常规、霞鹜文楷、站酷小薇体、马善政楷书；细笔画封面推荐中等宋体或常规宋体。
 4. 立绘库按职业筛选，点干员再点立绘。库里没有的皮肤可上传。
 5. 危机合约、低配攻略、无核论文模板可换 AVG 场景底。
 6. 拖动立绘调位置，滑条调缩放。安全区勾选后显示 B 站裁切提示框，不进导出。
@@ -58,7 +58,7 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前十一套：
+首页列出 `src/data/templates.ts`。当前十三套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
@@ -74,10 +74,11 @@ npm run dev
 | `fourstar-nocore` | 四星无核 | 暗底拼贴：左斜抬黑体主标题 + 米色关卡条，右立绘，身后几何金框。 |
 | `solo` | 仅需一人 | 暗红氛围：左上关卡码 + 宋体「××单人」+ 白线英文标，右半身立绘。 |
 | `six-vanguard` | 先锋六人 | 左侧多萝西近景，右侧阵容标题与超大斜体关卡码；灰金网点、人物叠影和红色职业条。 |
+| `strength-review` | 强度测评 | 左主立绘（默认皮肤近景）、右侧三技能金框、底部两行叠金标题；小人层默认空，稍后接入。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview`、`fourstar-nocore`、`solo` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview`、`fourstar-nocore`、`solo`、`six-vanguard`、`strength-review` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -288,6 +289,7 @@ references/solo-clear/         仅需一人构图参考，jpg 不提交
 | 干员前瞻分析 | `src/templates/OperatorPreview.tsx` | 复刻左立绘 + 右宋体大字 + 蓝色栏目条，不要搬原作者系列标识。 |
 | 四星无核 | `src/templates/FourstarNocore.tsx` | 复刻左斜抬标题 + 米色关卡条 + 右立绘金框，不要搬整图和实机截图。 |
 | 仅需一人 | `src/templates/Solo.tsx` | 复刻左字组 + 暗红氛围 + 右立绘，不要搬整图和署名。 |
+| 强度测评 | `src/templates/StrengthReview.tsx` | 复刻单立绘 + 三技能框 + 叠金标题，不要搬罗德岛底纹、官方标和技能外框贴图。 |
 
 ## 约定
 

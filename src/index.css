@@ -6,11 +6,17 @@
 @import "@fontsource/noto-sans-sc/400.css";
 @import "@fontsource/noto-sans-sc/700.css";
 @import "@fontsource/noto-sans-sc/900.css";
+@import "@fontsource/noto-serif-sc/chinese-simplified-400.css";
+@import "@fontsource/noto-serif-sc/chinese-simplified-500.css";
 @import "@fontsource/noto-serif-sc/chinese-simplified-700.css";
+@import "@fontsource/lxgw-wenkai/500.css";
+@import "@fontsource/zcool-xiaowei/400.css";
+@import "@fontsource/ma-shan-zheng/400.css";
 @import "@fontsource/noto-serif-sc/chinese-simplified-900.css";
 @import "@fontsource/great-vibes/400.css";
 @import "@fontsource/the-nautigal/400.css";
 @import "@fontsource/alex-brush/400.css";
+@import "./fonts.css";
 
 @theme {
   --font-sans: "PingFang SC", "HarmonyOS Sans", "Microsoft YaHei", "Noto Sans SC", sans-serif;

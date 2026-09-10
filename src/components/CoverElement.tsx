@@ -78,6 +78,7 @@ export function CoverElement({
 }: Props) {
   const edit = useElementEdit();
   const cover = useCoverOptional();
+  const elementRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
   const override = edit?.styles[id] ?? {};
@@ -91,8 +92,11 @@ export function CoverElement({
   const pos = useRef({ x, y });
   pos.current = { x, y };
   useEffect(() => {
-    cover?.reportElementResolved(id, { fontSize, font, color, x, y });
-  }, [cover, id, fontSize, font, color, x, y]);
+    const letterSpacing = elementRef.current
+      ? parseFloat(getComputedStyle(elementRef.current).letterSpacing) || 0
+      : 0;
+    cover?.reportElementResolved(id, { fontSize, font, color, x, y, letterSpacing });
+  }, [cover, id, fontSize, font, color, x, y, override.letterSpacing]);
   const opacity = override.opacity;
   const interactive = (edit?.interactive ?? false) && !nativeLayer?.locked;
   const hidden =
@@ -127,11 +131,16 @@ export function CoverElement({
 
   return (
     <div
+      ref={elementRef}
       data-cover-el={id}
-      className={`${positioned ? "" : "relative"} block ${fontClass(font)} ${className}`}
+      className={`${positioned ? "" : "relative"} block ${fontClass(font)} ${override.letterSpacing != null ? "cover-tracking-override" : ""} ${className}`}
       style={{
         ...style,
         fontSize: fontSize,
+        ...(override.letterSpacing != null ? {
+          letterSpacing: override.letterSpacing,
+          "--cover-letter-spacing": `${override.letterSpacing}px`,
+        } : {}),
         ...(override.color ? { color: override.color } : {}),
         ...(opacity != null ? { opacity: Math.min(1, Math.max(0, opacity / 100)) } : {}),
         transform: `translate(${x}px, ${y}px)${rotation ? ` rotate(${rotation}deg)` : ""}${style?.transform ? ` ${style.transform}` : ""}`,

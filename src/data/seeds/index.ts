@@ -11,9 +11,11 @@ import { rogueLayers } from "./rogue";
 import { soloLayers } from "./solo";
 import { specialistLayers } from "./specialist";
 import { sixVanguardLayers } from "./sixVanguard";
+import { strengthReviewLayers } from "./strengthReview";
 
 const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   "six-vanguard": sixVanguardLayers,
+  "strength-review": strengthReviewLayers,
   firstkill: firstkillLayers,
   lowspec: lowspecLayers,
   rogue: rogueLayers,

@@ -9,6 +9,7 @@ import rogueThumb from "../assets/thumbs/rogue-shot.webp";
 import specialistThumb from "../assets/thumbs/specialist-shot.webp";
 import type { TemplateId } from "../types";
 import sixVanguardThumb from "../assets/thumbs/six-vanguard-shot.webp";
+import strengthReviewThumb from "../assets/thumbs/strength-review-shot.webp";
 
 const THUMB_REV: Partial<Record<TemplateId, number>> = {
   nocore: 13,
@@ -16,6 +17,7 @@ const THUMB_REV: Partial<Record<TemplateId, number>> = {
 
 const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   "six-vanguard": sixVanguardThumb,
+  "strength-review": strengthReviewThumb,
   firstkill: firstkillThumb,
   "emergency-lesson": emergencyLessonThumb,
   madness: madnessThumb,

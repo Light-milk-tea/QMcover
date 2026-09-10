@@ -63,6 +63,12 @@ export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[
   { id: "sans", label: "系统黑体", className: "font-sans" },
   { id: "serif", label: "思源宋体", className: "font-serif" },
   { id: "script", label: "花体", className: "font-script" },
+  { id: "serif-regular", label: "思源宋体 · 常规", className: "cover-font-preset cover-font-serif-regular" },
+  { id: "serif-medium", label: "思源宋体 · 中等", className: "cover-font-preset cover-font-serif-medium" },
+  { id: "cn-regular", label: "思源黑体 · 常规", className: "cover-font-preset cover-font-cn-regular" },
+  { id: "wenkai", label: "霞鹜文楷", className: "cover-font-preset cover-font-wenkai" },
+  { id: "xiaowei", label: "站酷小薇体", className: "cover-font-preset cover-font-xiaowei" },
+  { id: "mashan", label: "马善政楷书", className: "cover-font-preset cover-font-mashan" },
 ];
 
 export function fontClass(id?: CoverFontId): string {
@@ -123,6 +129,16 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "squad", label: "阵容标题", kind: "text", defaultFont: "serif", textBind: "subtitle" },
     { id: "stage", label: "关卡码", kind: "text", defaultFont: "sans", textBind: "title" },
     { id: "script", label: "英文花体", kind: "text", defaultFont: "script", textBind: "signature" },
+  ],
+  "strength-review": [
+    { id: "atmosphere", label: "背景立绘", kind: "box" },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "chibi", label: "基建小人", kind: "image" },
+    { id: "skill-1", label: "技能一", kind: "box" },
+    { id: "skill-2", label: "技能二", kind: "box" },
+    { id: "skill-3", label: "技能三", kind: "box" },
+    { id: "name", label: "干员名", kind: "text", defaultFont: "serif-medium", textBind: "title" },
+    { id: "series", label: "栏目名", kind: "text", defaultFont: "serif-medium", textBind: "subtitle" },
   ],
   firstkill: [
     { id: "operator", label: "立绘", kind: "image" },

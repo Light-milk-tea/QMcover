@@ -243,6 +243,7 @@ function SlashesOverlay({ amount }: { amount: number }) {
 
 const VIGNETTE_AT: Record<CanvasSkin, string> = {
   "six-vanguard": "15% 75%",
+  "strength-review": "50% 78%",
   plain: "40% 46%",
   firstkill: "22% 42%",
   lowspec: "28% 48%",

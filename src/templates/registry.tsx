@@ -16,9 +16,11 @@ import { Rogue } from "./Rogue";
 import { Solo } from "./Solo";
 import { Specialist } from "./Specialist";
 import { SixVanguard } from "./SixVanguard";
+import { StrengthReview } from "./StrengthReview";
 
 export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRenderProps>> = {
   "six-vanguard": SixVanguard,
+  "strength-review": StrengthReview,
   firstkill: FirstKill,
   lowspec: LowSpec,
   rogue: Rogue,

@@ -5,6 +5,8 @@ const CHAR_URL =
   "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/main/gamedata/excel/character_table.json";
 const SKIN_URL =
   "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/main/gamedata/excel/skin_table.json";
+const SKILL_URL =
+  "https://raw.githubusercontent.com/yuanyan3060/ArknightsGameResource/main/gamedata/excel/skill_table.json";
 
 const SKIP_PROF = new Set(["TOKEN", "TRAP"]);
 
@@ -47,12 +49,14 @@ function kindRank(kind) {
   return 3;
 }
 
-const [charRes, skinRes] = await Promise.all([fetch(CHAR_URL), fetch(SKIN_URL)]);
+const [charRes, skinRes, skillRes] = await Promise.all([fetch(CHAR_URL), fetch(SKIN_URL), fetch(SKILL_URL)]);
 if (!charRes.ok) throw new Error(`character_table ${charRes.status}`);
 if (!skinRes.ok) throw new Error(`skin_table ${skinRes.status}`);
+if (!skillRes.ok) throw new Error(`skill_table ${skillRes.status}`);
 
 const characters = await charRes.json();
 const skins = await skinRes.json();
+const skillTable = await skillRes.json();
 const charSkins = skins.charSkins ?? skins;
 
 const artsByChar = new Map();
@@ -88,6 +92,17 @@ for (const [id, char] of Object.entries(characters)) {
     arts.push({ id: `${id}_1`, label: "精英0", kind: "elite0" });
   }
 
+  const skills = (Array.isArray(char.skills) ? char.skills : [])
+    .map((slot) => {
+      const skillId = slot?.skillId;
+      if (!skillId) return null;
+      const skill = skillTable[skillId];
+      const iconId = skill?.iconId || skillId;
+      const name = skill?.levels?.[0]?.name || skillId;
+      return { id: skillId, name, iconId };
+    })
+    .filter(Boolean);
+
   operators.push({
     id,
     name: char.name,
@@ -96,6 +111,7 @@ for (const [id, char] of Object.entries(characters)) {
     profession: char.profession,
     professionCn: PROF_CN[char.profession] ?? char.profession,
     arts,
+    skills,
   });
 }
 

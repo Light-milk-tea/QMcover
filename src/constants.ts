@@ -24,6 +24,7 @@ export const CUSTOM_TEMPLATE_PREFIX = "c-";
 
 export const BUILTIN_TEMPLATE_IDS = [
   "six-vanguard",
+  "strength-review",
   "firstkill",
   "lowspec",
   "rogue",
@@ -37,9 +38,9 @@ export const BUILTIN_TEMPLATE_IDS = [
   "solo",
 ] as const;
 
-/** 立绘缩放滑条范围。上限要能罩住全身立绘（如丰川祥子精英 0）。 */
+/** 立绘缩放滑条范围。上限要能罩住全身立绘，以及皮肤全景里的脸部近景。 */
 export const IMAGE_SCALE_MIN = 40;
-export const IMAGE_SCALE_MAX = 350;
+export const IMAGE_SCALE_MAX = 420;
 
 export const SHAFT_LIGHT_DEFAULT = 52;
 export const SHAFT_LIGHT_X_DEFAULT = 54;

@@ -54,6 +54,13 @@ test("首页列出仅需一人模板并能打开", async () => {
   expect(opened).toBe("solo");
 });
 
+test("首页列出强度测评模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+  await screen.getByRole("button", { name: "强度测评 单立绘技能测评模板" }).click();
+  expect(opened).toBe("strength-review");
+});
+
 test("首页列出紧急授课模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);

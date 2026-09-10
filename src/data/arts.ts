@@ -9,6 +9,12 @@ export type OperatorArt = {
   kind: ArtKind;
 };
 
+export type OperatorSkill = {
+  id: string;
+  name: string;
+  iconId: string;
+};
+
 export type Operator = {
   id: string;
   name: string;
@@ -17,6 +23,7 @@ export type Operator = {
   profession: string;
   professionCn: string;
   arts: OperatorArt[];
+  skills?: OperatorSkill[];
 };
 
 export const OPERATORS = catalog.operators as Operator[];
@@ -40,8 +47,21 @@ export function artUrl(portraitId: string): string {
   return `${artBase()}/skin/${encodeURIComponent(`${portraitId}b`)}.png`;
 }
 
+export function skillUrl(iconId: string): string {
+  return `${artBase()}/skill/${encodeURIComponent(`skill_icon_${iconId}`)}.png`;
+}
+
+export function operatorSkills(op?: Operator | string): OperatorSkill[] {
+  const found = typeof op === "string" ? findOperator(op) : op;
+  return found?.skills?.slice(0, 3) ?? [];
+}
+
 export function preferredArt(op: Operator): OperatorArt {
   return op.arts.find((a) => a.kind === "elite2") ?? op.arts[0];
+}
+
+export function elite0Art(op: Operator): OperatorArt {
+  return op.arts.find((a) => a.kind === "elite0") ?? op.arts[op.arts.length - 1] ?? op.arts[0];
 }
 
 export function findOperator(id: string): Operator | undefined {

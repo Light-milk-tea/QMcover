@@ -74,6 +74,7 @@ export function applyElementStyles(layers: Layer[], styles: Record<string, Eleme
     if (next.kind === "text") {
       if (style.fontSize != null) next.fontSize = style.fontSize;
       if (style.font) next.font = style.font;
+      if (style.letterSpacing != null) next.letterSpacing = style.letterSpacing;
     }
     return next;
   });

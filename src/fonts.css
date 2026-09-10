@@ -1,0 +1,44 @@
+/* Explicit font presets must reach the real glyph layers, including nested
+   stroke/shadow spans that otherwise force font-black or a template family. */
+.cover-font-preset,
+.cover-font-preset :where(span) {
+  font-family: var(--cover-preset-family) !important;
+  font-weight: var(--cover-preset-weight) !important;
+  font-synthesis: none;
+}
+
+.cover-font-serif-regular {
+  --cover-preset-family: "Noto Serif SC", serif;
+  --cover-preset-weight: 400;
+}
+
+.cover-font-serif-medium {
+  --cover-preset-family: "Noto Serif SC", serif;
+  --cover-preset-weight: 500;
+}
+
+.cover-font-cn-regular {
+  --cover-preset-family: "Noto Sans SC", sans-serif;
+  --cover-preset-weight: 400;
+}
+
+.cover-font-wenkai {
+  --cover-preset-family: "LXGW WenKai", "Noto Serif SC", serif;
+  --cover-preset-weight: 500;
+}
+
+.cover-font-xiaowei {
+  --cover-preset-family: "ZCOOL XiaoWei", "Noto Serif SC", serif;
+  --cover-preset-weight: 400;
+}
+
+.cover-font-mashan {
+  --cover-preset-family: "Ma Shan Zheng", "Noto Serif SC", serif;
+  --cover-preset-weight: 400;
+}
+
+/* Apply explicit spacing consistently to fill, outline, and shadow glyphs. */
+.cover-tracking-override,
+.cover-tracking-override :where(span) {
+  letter-spacing: var(--cover-letter-spacing) !important;
+}

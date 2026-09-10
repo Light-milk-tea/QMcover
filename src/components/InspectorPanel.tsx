@@ -25,17 +25,18 @@ import {
   STAGE_BAR_WIDTH_MAX,
   STAGE_BAR_WIDTH_MIN,
 } from "../constants";
-import { COVER_FONTS, TEMPLATE_ELEMENTS, isNativeElement, nativeTemplateId, nativeTextValue } from "../data/elements";
-import { imageLayerPan, isBuiltinId } from "../lib/document";
+import { TEMPLATE_ELEMENTS, isNativeElement, nativeTemplateId, nativeTextValue } from "../data/elements";
+import { displayBoundText, imageLayerPan, isBuiltinId } from "../lib/document";
 import { resolveArtGrade } from "../lib/effects";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { emptyDraft } from "../lib/storage";
 import { useCover } from "../store/CoverContext";
-import type { ArtGradeEffect, CoverFontId, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
+import type { ArtGradeEffect, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
 import { BackgroundPicker } from "./BackgroundPicker";
 import { ColorField } from "./ColorField";
 import { DecorationPicker } from "./DecorationPicker";
 import { Field, fieldClass } from "./Field";
+import { FontPicker } from "./FontPicker";
 import { LayerStackList } from "./LayerStackList";
 
 const BINDS: { id: TextBind; label: string }[] = [
@@ -530,21 +531,18 @@ export function InspectorPanel() {
                       </Field>
                     </div>
                     <div className="mt-3">
-                      <Field label="字体">
-                        <select
-                          className={fieldClass}
-                          value={currentFont}
-                          onChange={(e) => {
-                            patchElement(nativeMeta.id, { font: e.target.value as CoverFontId });
-                          }}
-                        >
-                          {COVER_FONTS.map((f) => (
-                            <option key={f.id} value={f.id}>
-                              {f.label}
-                            </option>
-                          ))}
-                        </select>
-                      </Field>
+                      <FontPicker value={currentFont} text={nativeTextValue(templateId, nativeMeta, draft, style)}
+                        onChange={(font) => patchElement(nativeMeta.id, { font })} />
+                      <div className="mt-3">
+                        <Field label="字距（px）">
+                          <input type="number" min={-20} max={80} step={0.5} className={fieldClass}
+                            value={style.letterSpacing ?? Math.round((resolved.letterSpacing ?? 0) * 10) / 10}
+                            onChange={(e) => {
+                              const value = e.target.valueAsNumber;
+                              if (Number.isFinite(value)) patchElement(nativeMeta.id, { letterSpacing: Math.min(80, Math.max(-20, value)) });
+                            }} />
+                        </Field>
+                      </div>
                     </div>
                   </>
                 ) : null}
@@ -677,15 +675,18 @@ export function InspectorPanel() {
                   </Field>
                 </div>
                 <div className="mt-3">
-                  <Field label="字体">
-                    <select className={fieldClass} value={text.font} onChange={(e) => patchLayer(layer.id, { font: e.target.value as CoverFontId })}>
-                      {COVER_FONTS.map((f) => (
-                        <option key={f.id} value={f.id}>
-                          {f.label}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
+                  <FontPicker value={text.font} text={displayBoundText(text, draft)}
+                    onChange={(font) => patchLayer(layer.id, { font })} />
+                  <div className="mt-3">
+                    <Field label="字距（px）">
+                      <input type="number" min={-20} max={80} step={0.5} className={fieldClass}
+                        value={text.letterSpacing ?? 0}
+                        onChange={(e) => {
+                          const value = e.target.valueAsNumber;
+                          if (Number.isFinite(value)) patchLayer(layer.id, { letterSpacing: Math.min(80, Math.max(-20, value)) });
+                        }} />
+                    </Field>
+                  </div>
                 </div>
                 <details className="mt-3">
                   <summary className="cursor-pointer text-[12px] text-mute">高级效果</summary>

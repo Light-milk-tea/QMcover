@@ -382,9 +382,110 @@ function mergeNativeLayers(templateId: TemplateId, draft: Draft): Draft {
   const extras = draft.layers.filter(
     (layer) =>
       !seeds.some((seed) => seed.id === layer.id) &&
-      !(templateId === "specialist" && (layer.id === "tri" || layer.id === "ruler")),
+      !(templateId === "specialist" && (layer.id === "tri" || layer.id === "ruler")) &&
+      !(templateId === "strength-review" && layer.id === "operator-b"),
   );
   return { ...draft, layers: [...natives, ...extras] };
+}
+
+function migrateStrengthReviewLayout(draft: Draft): Draft {
+  const operator = draft.layers.find((layer) => layer.id === "operator" && layer.kind === "image");
+  const hasB = draft.layers.some((layer) => layer.id === "operator-b");
+  const oldMainElite0 =
+    operator?.kind === "image" &&
+    operator.artId === "char_4182_oblvns_1" &&
+    draft.artId === "char_4182_oblvns_1";
+  const current = emptyDraft("strength-review");
+  const nextA = current.layers.find((layer) => layer.id === "operator" && layer.kind === "image");
+  let next = draft;
+  if (oldMainElite0 && nextA?.kind === "image") {
+    next = {
+      ...draft,
+      artId: current.artId,
+      imageUrl: current.imageUrl,
+      imageScale: current.imageScale,
+      imageX: current.imageX,
+      imageY: current.imageY,
+      layers: draft.layers.map((layer) =>
+        layer.id === "operator" && layer.kind === "image"
+          ? {
+              ...layer,
+              artId: nextA.artId,
+              imageUrl: nextA.imageUrl,
+              scale: nextA.scale,
+              imageX: nextA.imageX,
+              imageY: nextA.imageY,
+              x: nextA.x,
+              y: nextA.y,
+              w: nextA.w,
+              h: nextA.h,
+              objectPosition: nextA.objectPosition,
+              transformOrigin: nextA.transformOrigin,
+            }
+          : layer,
+      ),
+    };
+  }
+  // Only move the previous untouched crop; uploaded art and custom pans stay put.
+  const oldDefaultCrop =
+    next.artId === "char_4182_oblvns_avemujica#1" &&
+    !next.imageDataUrl &&
+    next.imageScale === 378 && next.imageX === -18 && next.imageY === -268 &&
+    operator?.kind === "image" && !operator.imageDataUrl &&
+    operator.artId === next.artId && nextA?.kind === "image" && operator.imageUrl === nextA.imageUrl &&
+    next.imageUrl === current.imageUrl && operator.scale === 378 &&
+    operator.imageX === -18 && operator.imageY === -268;
+  if (oldDefaultCrop) {
+    next = {
+      ...next,
+      imageX: current.imageX,
+      imageY: current.imageY,
+      layers: next.layers.map((layer) =>
+        layer.id === "operator" && layer.kind === "image"
+          ? { ...layer, imageX: current.imageX, imageY: current.imageY }
+          : layer,
+      ),
+    };
+  }
+  const oldLayout: Record<string, { x: number; y: number; w: number; h: number; fontSize?: number }> = {
+    "skill-1": { x: 1008, y: 396, w: 188, h: 188 },
+    "skill-2": { x: 1220, y: 396, w: 188, h: 188 },
+    "skill-3": { x: 1432, y: 396, w: 188, h: 188 },
+    name: { x: 600, y: 598, w: 1240, h: 220, fontSize: 228 },
+    series: { x: 600, y: 778, w: 1240, h: 260, fontSize: 268 },
+  };
+  const previousSkills: typeof oldLayout = {
+    "skill-1": { x: 1080, y: 386, w: 220, h: 220 },
+    "skill-2": { x: 1314, y: 386, w: 220, h: 220 },
+    "skill-3": { x: 1548, y: 386, w: 220, h: 220 },
+  };
+  next = {
+    ...next,
+    layers: next.layers.map((layer) => {
+      const old = layer.w === 220 && layer.h === 220
+        ? previousSkills[layer.id] ?? oldLayout[layer.id]
+        : oldLayout[layer.id];
+      const seed = current.layers.find((item) => item.id === layer.id);
+      if (!old || !seed) return layer;
+      const updated = { ...layer };
+      for (const key of ["x", "y", "w", "h"] as const) {
+        if (layer[key] === old[key]) updated[key] = seed[key];
+      }
+      if (updated.kind === "text" && seed.kind === "text") {
+        if (updated.fontSize === old.fontSize) updated.fontSize = seed.fontSize;
+        if (updated.color === "#efc44a") updated.color = seed.color;
+        if (updated.font === "serif" && !next.elementStyles[layer.id]?.font) updated.font = seed.font;
+      }
+      return updated;
+    }),
+  };
+  if (!hasB && !oldMainElite0) return next;
+  const { ["operator-b"]: _dropped, ...elementStyles } = next.elementStyles ?? {};
+  return {
+    ...next,
+    elementStyles,
+    layers: next.layers.filter((layer) => layer.id !== "operator-b"),
+  };
 }
 
 function migrateSixVanguardLayout(draft: Draft): Draft {
@@ -725,7 +826,9 @@ export function loadDraft(templateId: TemplateId): Draft {
     ? migrateSpecialistLayout(normalized)
     : templateId === "six-vanguard"
       ? migrateSixVanguardLayout(normalized)
-      : normalized;
+      : templateId === "strength-review"
+        ? migrateStrengthReviewLayout(normalized)
+        : normalized;
   return {
     ...laidOut,
     layers: hydrateImageArtGrade(laidOut.layers, laidOut.effects.artGrade, laidOut.canvasSkin === "specialist"),

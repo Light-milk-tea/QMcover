@@ -213,6 +213,7 @@ export function CoverProvider({
         }
         const mapped: Partial<Layer> = {};
         if (patch.fontSize != null) (mapped as { fontSize?: number }).fontSize = patch.fontSize;
+        if (patch.letterSpacing != null) (mapped as { letterSpacing?: number }).letterSpacing = patch.letterSpacing;
         if (patch.font) (mapped as { font?: Layer["kind"] }).font = patch.font as never;
         if (patch.color) mapped.color = patch.color;
         if (patch.opacity != null) mapped.opacity = patch.opacity;
@@ -406,6 +407,7 @@ export function CoverProvider({
       const cur = prev[id];
       if (
         cur?.fontSize === resolved.fontSize &&
+        cur?.letterSpacing === resolved.letterSpacing &&
         cur?.font === resolved.font &&
         cur?.color === resolved.color &&
         cur?.x === resolved.x &&
