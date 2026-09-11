@@ -1,6 +1,8 @@
 import {
   BLANK_TEMPLATE_ID,
   IMAGE_EDGE_FADE_DEFAULT,
+  IMAGE_EDGE_FADE_MODE_DEFAULT,
+  normalizeEdgeFadeMode,
   LEGACY_STORAGE_KEY,
   SHAFT_LIGHT_DEFAULT,
   SHAFT_LIGHT_ROTATE_DEFAULT,
@@ -9,11 +11,12 @@ import {
   STORAGE_KEY,
 } from "../constants";
 import { defaultArtFields } from "../data/arts";
+import { defaultChibiPick } from "../data/chibis";
 import { DEFAULT_BG_PRESET } from "../data/backgrounds";
 import { DEFAULT_ORNAMENT, ORNAMENTS } from "../data/ornaments";
 import { getBuiltinLayers } from "../data/seeds";
 import { getTemplate } from "../data/templates";
-import type { Draft, Layer, TemplateId } from "../types";
+import type { Draft, ImageLayer, Layer, TemplateId } from "../types";
 import { todayISO } from "./dates";
 import { applyElementStyles, cloneLayers, defaultCanvasSkin, isBuiltinId } from "./document";
 import { hydrateImageArtGrade, normalizeCoverEffects, referenceCoverEffects } from "./effects";
@@ -74,6 +77,7 @@ export function emptyDraft(templateId: TemplateId): Draft {
     imageY: seed?.imageY ?? meta?.defaultImageY ?? 0,
     imageEdgeFade: seed?.imageEdgeFade ?? false,
     imageEdgeFadeAmount: seed?.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
+    imageEdgeFadeMode: normalizeEdgeFadeMode(seed?.imageEdgeFadeMode ?? IMAGE_EDGE_FADE_MODE_DEFAULT),
     showSafeArea: true,
     bgPreset: seed?.bgPreset ?? meta?.defaultBgPreset ?? DEFAULT_BG_PRESET,
     textBgPreset: seed?.textBgPreset ?? meta?.defaultTextBgPreset ?? meta?.defaultBgPreset ?? DEFAULT_BG_PRESET,
@@ -130,6 +134,7 @@ function migrateLegacyDraft(templateId: TemplateId, saved: Partial<Draft>): Draf
     imageY: saved.imageY ?? empty.imageY,
     imageEdgeFade: saved.imageEdgeFade ?? false,
     imageEdgeFadeAmount: saved.imageEdgeFadeAmount ?? empty.imageEdgeFadeAmount,
+    imageEdgeFadeMode: normalizeEdgeFadeMode(saved.imageEdgeFadeMode ?? empty.imageEdgeFadeMode),
     showSafeArea: saved.showSafeArea ?? true,
     bgPreset: saved.bgPreset ?? empty.bgPreset,
     textBgPreset: saved.textBgPreset ?? empty.textBgPreset,
@@ -459,12 +464,19 @@ function migrateStrengthReviewLayout(draft: Draft): Draft {
     "skill-2": { x: 1314, y: 386, w: 220, h: 220 },
     "skill-3": { x: 1548, y: 386, w: 220, h: 220 },
   };
+  const previousGoldSkills: typeof oldLayout = {
+    "skill-1": { x: 1000, y: 380, w: 236, h: 236 },
+    "skill-2": { x: 1230, y: 380, w: 236, h: 236 },
+    "skill-3": { x: 1460, y: 380, w: 236, h: 236 },
+  };
   next = {
     ...next,
     layers: next.layers.map((layer) => {
       const old = layer.w === 220 && layer.h === 220
         ? previousSkills[layer.id] ?? oldLayout[layer.id]
-        : oldLayout[layer.id];
+        : layer.w === 236 && layer.h === 236
+          ? previousGoldSkills[layer.id]
+          : oldLayout[layer.id];
       const seed = current.layers.find((item) => item.id === layer.id);
       if (!old || !seed) return layer;
       const updated = { ...layer };
@@ -477,6 +489,81 @@ function migrateStrengthReviewLayout(draft: Draft): Draft {
         if (updated.font === "serif" && !next.elementStyles[layer.id]?.font) updated.font = seed.font;
       }
       return updated;
+    }),
+  };
+  next = {
+    ...next,
+    layers: next.layers.map((layer) => {
+      if (layer.id !== "chibi" || layer.kind !== "image") return layer;
+      const imageUrl = layer.imageUrl && /\/skin\/[^/?#]+b\.png/i.test(layer.imageUrl) ? "" : layer.imageUrl;
+      const emptyPlaceholder = !layer.imageDataUrl && !imageUrl && !layer.artId && !layer.operatorId;
+      const seed = current.layers.find((item) => item.id === "chibi" && item.kind === "image");
+      const oldChibiBox =
+        !layer.hidden &&
+        !layer.removed &&
+        ((layer.x === 728 && layer.y === 188 && layer.w === 320 && layer.h === 500 && (layer.scale ?? 100) === 138
+          && !(layer.imageX || layer.imageY))
+        || (layer.x === 812 && layer.y === 268 && layer.w === 248 && layer.h === 400 && (layer.scale ?? 100) === 100
+          && !(layer.imageX || layer.imageY)));
+      let nextLayer: ImageLayer = { ...layer, source: "chibi" as const, imageUrl };
+      const operatorId = operator?.kind === "image" ? operator.operatorId || next.operatorId : next.operatorId;
+      const pick = defaultChibiPick(operatorId);
+      if (emptyPlaceholder && !layer.hidden && !layer.removed && pick) {
+        nextLayer = { ...nextLayer, ...pick };
+      }
+      const oldSkinDefault =
+        !layer.imageDataUrl &&
+        !layer.hidden &&
+        !layer.removed &&
+        layer.operatorId === "char_4182_oblvns" &&
+        (layer.artId === "char_4182_oblvns_avemujica#1" || /oblvns_avemujica/.test(layer.imageUrl || ""));
+      if (oldSkinDefault && pick) {
+        nextLayer = { ...nextLayer, ...pick };
+      }
+      if (oldChibiBox && seed?.kind === "image") {
+        nextLayer = {
+          ...nextLayer,
+          x: seed.x,
+          y: seed.y,
+          w: seed.w,
+          h: seed.h,
+          scale: seed.scale,
+          imageX: seed.imageX,
+          imageY: seed.imageY,
+        };
+      }
+      return nextLayer;
+    }),
+  };
+  next = {
+    ...next,
+    layers: next.layers.map((layer) => {
+      if (layer.id !== "atmosphere" || layer.kind !== "box" || layer.removed) return layer;
+      if (layer.x === 0 && layer.y === 0 && layer.w === 1920 && layer.h === 1080) {
+        return { ...layer, hidden: true, removed: true };
+      }
+      return layer;
+    }),
+    elementStyles: Object.fromEntries(
+      Object.entries(next.elementStyles ?? {}).flatMap(([id, style]) => {
+        if (!/^skill-[123]$/.test(id)) return [[id, style]];
+        const baked = id === "skill-1" ? { x: 10, y: 1 } : id === "skill-2" ? { x: 58 } : { x: 94, y: -2 };
+        const onlyXY = Object.keys(style).every((key) => key === "x" || key === "y");
+        const xOk = style.x == null || style.x === baked.x;
+        const yOk = style.y == null || ("y" in baked && Math.round(style.y) === baked.y) || !("y" in baked);
+        if (onlyXY && xOk && yOk) return [];
+        return [[id, style]];
+      }),
+    ),
+  };
+  next = {
+    ...next,
+    layers: next.layers.map((layer) => {
+      if (layer.kind !== "image" || layer.artGrade) return layer;
+      if (layer.id !== "operator" && layer.id !== "chibi") return layer;
+      const seed = current.layers.find((item) => item.id === layer.id);
+      if (seed?.kind !== "image" || !seed.artGrade) return layer;
+      return { ...layer, artGrade: { ...seed.artGrade } };
     }),
   };
   if (!hasB && !oldMainElite0) return next;
@@ -796,6 +883,7 @@ export function loadDraft(templateId: TemplateId): Draft {
     ornamentId: ORNAMENTS.some((item) => item.id === saved.ornamentId) ? saved.ornamentId : empty.ornamentId,
     imageEdgeFade: saved.imageEdgeFade ?? false,
     imageEdgeFadeAmount: saved.imageEdgeFadeAmount ?? empty.imageEdgeFadeAmount,
+    imageEdgeFadeMode: normalizeEdgeFadeMode(saved.imageEdgeFadeMode ?? empty.imageEdgeFadeMode),
     mark: saved.mark ?? empty.mark,
     ...(missingArt
       ? {

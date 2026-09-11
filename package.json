@@ -13,6 +13,7 @@
     "playwright:install": "playwright install chromium chromium-headless-shell",
     "preview": "vite preview",
     "operators": "node scripts/build-operators.mjs",
+    "chibis": "node scripts/build-chibis.mjs",
     "backgrounds": "node scripts/build-backgrounds.mjs"
   },
   "dependencies": {

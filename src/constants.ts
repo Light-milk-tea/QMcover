@@ -47,10 +47,20 @@ export const SHAFT_LIGHT_X_DEFAULT = 54;
 export const SHAFT_LIGHT_Y_DEFAULT = 6;
 export const SHAFT_LIGHT_ROTATE_DEFAULT = 8;
 
-/** 立绘四边虚化宽度，单位是立绘盒子的百分比。 */
-export const IMAGE_EDGE_FADE_MIN = 6;
-export const IMAGE_EDGE_FADE_MAX = 36;
+/** 立绘虚化宽度，单位是立绘盒子的百分比。 */
+export const IMAGE_EDGE_FADE_MIN = 2;
+export const IMAGE_EDGE_FADE_MAX = 72;
 export const IMAGE_EDGE_FADE_DEFAULT = 16;
+export const IMAGE_EDGE_FADE_MODE_DEFAULT = "all" as const;
+export const EDGE_FADE_MODE_OPTIONS = [
+  { id: "left", label: "左侧" },
+  { id: "right", label: "右侧" },
+  { id: "all", label: "四周" },
+] as const;
+
+export function normalizeEdgeFadeMode(value: unknown): "left" | "right" | "all" {
+  return value === "left" || value === "right" || value === "all" ? value : IMAGE_EDGE_FADE_MODE_DEFAULT;
+}
 
 export const STAGE_BAR_WIDTH_DEFAULT = 478;
 export const STAGE_BAR_WIDTH_MIN = 280;

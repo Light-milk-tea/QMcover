@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { CoverElement } from "../components/CoverElement";
-import { IMAGE_EDGE_FADE_DEFAULT } from "../constants";
+import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MODE_DEFAULT } from "../constants";
 import {
   artUrl,
   findOperator,
@@ -9,6 +9,7 @@ import {
   skillUrl,
   type OperatorSkill,
 } from "../data/arts";
+import { resolveChibiUrl } from "../data/chibis";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
 import { useCdnSrc } from "../lib/cdn";
@@ -24,8 +25,11 @@ const GOLD_INK = "#322313";
 const MAIN_ART = "char_4182_oblvns_avemujica#1";
 const DEFAULT_OP = "char_4182_oblvns";
 const SKILL_SIZE = 236;
-const SKILL_TOP = 380;
-const SKILL_LEFT = [1000, 1230, 1460];
+const SKILL_BOXES = [
+  { left: 1010, top: 381 },
+  { left: 1288, top: 380 },
+  { left: 1554, top: 378 },
+] as const;
 const STROKE = [
   [-1, 0],
   [1, 0],
@@ -138,9 +142,18 @@ export function StrengthReview(props: CoverRenderProps) {
   const seriesPx = fitSize(series, 208, 1010);
   const bg = getBgPreset(props.bgPreset);
   const bgRemote = useCdnSrc(bg.url ?? "");
-  const chibiUrl = layerChibi?.imageDataUrl || layerChibi?.imageUrl || (layerChibi?.artId ? artUrl(layerChibi.artId) : "");
+  const layerAtmosphere = layers.find((layer) => layer.id === "atmosphere");
+  const atmosphereHidden = Boolean(layerAtmosphere?.hidden || layerAtmosphere?.removed);
+  const chibiHidden = Boolean(layerChibi?.hidden || layerChibi?.removed);
+  const chibiSrc = chibiHidden ? "" : resolveChibiUrl(layerChibi ?? {});
   const zOperator = cover ? layerZIndex(layers, "operator") : 1;
   const zChibi = cover ? layerZIndex(layers, "chibi") : 3;
+  const chibiBox = {
+    left: layerChibi?.x ?? 812,
+    top: layerChibi?.y ?? 268,
+    width: layerChibi?.w ?? 248,
+    height: layerChibi?.h ?? 400,
+  };
 
   const mainUrl = layerImage(layerA, MAIN_ART);
   const wash = useCdnSrc(bgRemote.src ? "" : mainUrl);
@@ -149,6 +162,7 @@ export function StrengthReview(props: CoverRenderProps) {
     <div data-strength-review-canvas className="relative h-full w-full overflow-hidden bg-[#05060a]">
       {bgRemote.src ? (
         <img
+          data-sr-bg=""
           src={bgRemote.src}
           alt=""
           crossOrigin="anonymous"
@@ -157,35 +171,37 @@ export function StrengthReview(props: CoverRenderProps) {
           onLoad={bgRemote.onLoad}
           onError={bgRemote.onError}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: "52% 30%", filter: bgGradeFilter(props.effects?.bgGrade) ?? "brightness(0.42) saturate(0.7)" }}
+          style={{ objectPosition: "52% 30%", filter: bgGradeFilter(props.effects?.bgGrade) }}
         />
       ) : null}
-      <CoverElement id="atmosphere" kind="box" className="pointer-events-none absolute inset-0">
-        {!bgRemote.src && wash.src ? (
-          <img
-            data-sr-atmosphere=""
-            src={wash.src}
-            alt=""
-            crossOrigin="anonymous"
-            referrerPolicy="no-referrer"
-            decoding="async"
-            onLoad={wash.onLoad}
-            onError={wash.onError}
-            className="pointer-events-none absolute inset-0 h-full w-full scale-[1.08] object-cover"
+      {atmosphereHidden ? null : (
+        <CoverElement id="atmosphere" kind="box" className="pointer-events-none absolute inset-0">
+          {!bgRemote.src && wash.src ? (
+            <img
+              data-sr-atmosphere=""
+              src={wash.src}
+              alt=""
+              crossOrigin="anonymous"
+              referrerPolicy="no-referrer"
+              decoding="async"
+              onLoad={wash.onLoad}
+              onError={wash.onError}
+              className="pointer-events-none absolute inset-0 h-full w-full scale-[1.08] object-cover"
+              style={{
+                objectPosition: "38% 32%",
+                filter: "blur(1px) saturate(0.62) brightness(0.38) contrast(1.16)",
+              }}
+            />
+          ) : null}
+          <div
+            className="pointer-events-none absolute inset-0"
             style={{
-              objectPosition: "38% 32%",
-              filter: "blur(1px) saturate(0.62) brightness(0.38) contrast(1.16)",
+              background:
+                "radial-gradient(ellipse 40% 46% at 22% 20%, rgb(168 184 208 / 0.16) 0%, transparent 68%), radial-gradient(ellipse 46% 50% at 78% 6%, rgb(232 238 248 / 0.2) 0%, rgb(140 154 176 / 0.07) 38%, transparent 70%), radial-gradient(ellipse 38% 36% at 96% 2%, rgb(5 6 10 / 0.45) 0%, transparent 70%), linear-gradient(180deg, rgb(5 6 10 / 0.12) 0%, transparent 36%, rgb(5 6 10 / 0.2) 80%, rgb(5 6 10 / 0.42) 100%)",
             }}
           />
-        ) : null}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 40% 46% at 22% 20%, rgb(168 184 208 / 0.16) 0%, transparent 68%), radial-gradient(ellipse 46% 50% at 78% 6%, rgb(232 238 248 / 0.2) 0%, rgb(140 154 176 / 0.07) 38%, transparent 70%), radial-gradient(ellipse 38% 36% at 96% 2%, rgb(5 6 10 / 0.45) 0%, transparent 70%), linear-gradient(180deg, rgb(5 6 10 / 0.12) 0%, transparent 36%, rgb(5 6 10 / 0.2) 80%, rgb(5 6 10 / 0.42) 100%)",
-          }}
-        />
-      </CoverElement>
+        </CoverElement>
+      )}
       <BgDimLayer on={props.bgDim} amount={props.bgDimAmount} at="50% 82%" className="z-[1]" />
 
       <div
@@ -208,6 +224,7 @@ export function StrengthReview(props: CoverRenderProps) {
           imageY={props.imageY}
           imageEdgeFade={layerA?.edgeFade ?? props.imageEdgeFade}
           imageEdgeFadeAmount={layerA?.edgeFadeAmount ?? props.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
+          imageEdgeFadeMode={layerA?.edgeFadeMode ?? props.imageEdgeFadeMode ?? IMAGE_EDGE_FADE_MODE_DEFAULT}
           transformOrigin="center 10%"
           objectFit="contain"
           objectPosition="40% 8%"
@@ -220,51 +237,63 @@ export function StrengthReview(props: CoverRenderProps) {
         />
       </div>
 
-      <div
-        data-chibi-slot
-        className="absolute top-[268px] left-[812px] h-[400px] w-[248px] overflow-visible"
-        style={{ zIndex: zChibi }}
+      <CoverElement
+        id="chibi"
+        kind="box"
+        className="absolute overflow-visible"
+        style={{ ...chibiBox, zIndex: zChibi }}
       >
-        {chibiUrl ? (
-          <OperatorLayer
-            layerId="chibi"
-            imageUrl={chibiUrl}
-            imageScale={layerChibi?.scale ?? 100}
-            imageX={layerChibi?.imageX ?? 0}
-            imageY={layerChibi?.imageY ?? 0}
-            imageEdgeFade={layerChibi?.edgeFade ?? false}
-            imageEdgeFadeAmount={layerChibi?.edgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
-            previewScale={props.previewScale}
-            showPlaceholder={false}
-            transformOrigin="center bottom"
-            objectFit="contain"
-            objectPosition="center bottom"
-            emptyHint="基建小人"
-            className="h-full w-full object-contain"
-            onImageDrag={(dx, dy) => {
-              if (!cover || !layerChibi) return;
-              cover.patchLayer("chibi", {
-                imageX: (layerChibi.imageX ?? 0) + dx,
-                imageY: (layerChibi.imageY ?? 0) + dy,
-              });
-            }}
-          />
-        ) : (
-          <CoverElement id="chibi" kind="box" className="h-full w-full" />
-        )}
-      </div>
+        <div data-chibi-slot className="h-full w-full">
+          {chibiSrc ? (
+            <OperatorLayer
+              layerId="chibi"
+              imageUrl={chibiSrc}
+              imageScale={layerChibi?.scale ?? 119}
+              imageX={layerChibi?.imageX ?? -33}
+              imageY={layerChibi?.imageY ?? 29}
+              imageEdgeFade={layerChibi?.edgeFade ?? false}
+              imageEdgeFadeAmount={layerChibi?.edgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
+              imageEdgeFadeMode={layerChibi?.edgeFadeMode ?? IMAGE_EDGE_FADE_MODE_DEFAULT}
+              previewScale={props.previewScale}
+              showPlaceholder={false}
+              transformOrigin="center bottom"
+              objectFit="contain"
+              objectPosition="center bottom"
+              artGrade={layerChibi?.artGrade}
+              emptyHint="基建小人"
+              className="h-full w-full object-contain"
+              onImageDrag={(dx, dy) => {
+                if (!cover || !layerChibi) return;
+                cover.patchLayer("chibi", {
+                  imageX: (layerChibi.imageX ?? 0) + dx,
+                  imageY: (layerChibi.imageY ?? 0) + dy,
+                });
+              }}
+            />
+          ) : null}
+        </div>
+      </CoverElement>
 
-      {skills.map((skill, index) => (
-        <CoverElement
-          key={skill.id}
-          id={`skill-${index + 1}`}
-          kind="box"
-          className="absolute z-[7]"
-          style={{ top: SKILL_TOP, left: SKILL_LEFT[index], width: SKILL_SIZE, height: SKILL_SIZE }}
-        >
-          <SkillFrame skill={skill} index={index} />
-        </CoverElement>
-      ))}
+      {skills.map((skill, index) => {
+        const box = layers.find((layer) => layer.id === `skill-${index + 1}`);
+        const fallback = SKILL_BOXES[index];
+        return (
+          <CoverElement
+            key={skill.id}
+            id={`skill-${index + 1}`}
+            kind="box"
+            className="absolute z-[7]"
+            style={{
+              top: box?.y ?? fallback.top,
+              left: box?.x ?? fallback.left,
+              width: box?.w ?? SKILL_SIZE,
+              height: box?.h ?? SKILL_SIZE,
+            }}
+          >
+            <SkillFrame skill={skill} index={index} />
+          </CoverElement>
+        );
+      })}
 
       <CoverElement
         id="name"

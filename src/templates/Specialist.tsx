@@ -1,5 +1,5 @@
 import { CoverElement } from "../components/CoverElement";
-import { IMAGE_EDGE_FADE_DEFAULT } from "../constants";
+import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MODE_DEFAULT } from "../constants";
 import { artUrl } from "../data/arts";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
@@ -173,6 +173,7 @@ export function Specialist(props: CoverRenderProps) {
           imageY={layerB?.imageY ?? 260}
           imageEdgeFade={layerB?.edgeFade ?? false}
           imageEdgeFadeAmount={layerB?.edgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
+          imageEdgeFadeMode={layerB?.edgeFadeMode ?? IMAGE_EDGE_FADE_MODE_DEFAULT}
           previewScale={props.previewScale}
           showPlaceholder={props.showPlaceholder}
           transformOrigin="center 18%"

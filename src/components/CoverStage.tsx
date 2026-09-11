@@ -35,6 +35,7 @@ export function draftToRenderProps(
     imageY: draft.imageY,
     imageEdgeFade: draft.imageEdgeFade ?? false,
     imageEdgeFadeAmount: draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
+    imageEdgeFadeMode: draft.imageEdgeFadeMode,
     bgPreset: draft.bgPreset,
     textBgPreset: draft.textBgPreset,
     bgDim: false,

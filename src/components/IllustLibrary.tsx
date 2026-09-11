@@ -1,4 +1,4 @@
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, UploadSimple } from "@phosphor-icons/react";
 import { useEffect, useMemo, useState } from "react";
 import {
   artUrl,
@@ -9,8 +9,12 @@ import {
   type Operator,
   type OperatorArt,
 } from "../data/arts";
+import { chibiIdFor, chibiUrl, firstChibiArt, hasChibi } from "../data/chibis";
 import { warmupArt, warmupArtNow } from "../lib/preloadImage";
-import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN } from "../constants";
+import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
+import { IMAGE_EDGE_FADE_DEFAULT } from "../constants";
+import type { EdgeFadeMode } from "../types";
+import { EdgeFadeFields } from "./EdgeFadeFields";
 import { fieldClass } from "./Field";
 
 const RECENT_KEY = "qmcover-recent-ops";
@@ -30,40 +34,62 @@ function pushRecent(id: string): void {
   localStorage.setItem(RECENT_KEY, JSON.stringify(next));
 }
 
+type LibraryKind = "art" | "chibi";
+
 type Props = {
+  kind?: LibraryKind;
   operatorId: string;
   artId: string;
   uploaded?: boolean;
   edgeFade?: boolean;
   edgeFadeAmount?: number;
+  edgeFadeMode?: EdgeFadeMode;
   onEdgeFadeChange?: (on: boolean) => void;
   onEdgeFadeAmountChange?: (amount: number) => void;
+  onEdgeFadeModeChange?: (mode: EdgeFadeMode) => void;
   onPick: (operator: Operator, art: OperatorArt) => void;
+  onUpload?: (imageDataUrl: string, fileName: string) => void;
 };
 
 export function IllustLibrary({
+  kind = "art",
   operatorId,
   artId,
   uploaded,
   edgeFade = false,
   edgeFadeAmount = IMAGE_EDGE_FADE_DEFAULT,
+  edgeFadeMode,
   onEdgeFadeChange,
   onEdgeFadeAmountChange,
+  onEdgeFadeModeChange,
   onPick,
+  onUpload,
 }: Props) {
   const [query, setQuery] = useState("");
   const [rarity, setRarity] = useState(0);
   const [profession, setProfession] = useState("");
   const [page, setPage] = useState(1);
   const [recent, setRecent] = useState(readRecent);
+  const [browseId, setBrowseId] = useState(operatorId);
 
-  const selected = OPERATORS.find((op) => op.id === operatorId);
+  useEffect(() => {
+    setBrowseId(operatorId);
+  }, [operatorId]);
+
+  const selected = OPERATORS.find((op) => op.id === (browseId || operatorId));
   const selectedArt = selected?.arts.find((art) => art.id === artId);
   const currentLabel = uploaded
-    ? "上传立绘"
+    ? kind === "chibi"
+      ? "上传小人"
+      : "上传立绘"
     : selected
       ? `${selected.name}${selectedArt ? ` · ${selectedArt.label}` : ""}`
       : "未选";
+  const previewUrl = (op: Operator, art?: OperatorArt) => {
+    if (kind !== "chibi") return art ? artUrl(art.id) : "";
+    if (!art || !hasChibi(op.id, art)) return "";
+    return chibiUrl(chibiIdFor(op.id, art));
+  };
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -89,11 +115,20 @@ export function IllustLibrary({
     setPage(1);
   }, [profession, query, rarity]);
 
-  const pick = (op: Operator, art = preferredArt(op)) => {
-    if (!art) return;
-    warmupArtNow(artUrl(art.id));
+  const pick = (op: Operator, art = kind === "chibi" ? firstChibiArt(op) : preferredArt(op)) => {
+    if (!art) {
+      setBrowseId(op.id);
+      return;
+    }
+    if (kind === "chibi" && !hasChibi(op.id, art)) {
+      setBrowseId(op.id);
+      return;
+    }
+    const url = previewUrl(op, art);
+    if (url) warmupArtNow(url);
     pushRecent(op.id);
     setRecent(readRecent());
+    setBrowseId(op.id);
     onPick(op, art);
   };
 
@@ -106,34 +141,45 @@ export function IllustLibrary({
       <div className="px-4 pt-3 pb-2">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
-            <h2 className="text-[15px] font-medium text-text">立绘库</h2>
-            {onEdgeFadeChange ? (
-              <label className="flex cursor-pointer items-center gap-1.5 text-[12px] text-sub">
+            <h2 className="text-[15px] font-medium text-text">{kind === "chibi" ? "小人库" : "立绘库"}</h2>
+          </div>
+          <div className="flex min-w-0 items-center gap-2">
+            {kind === "chibi" && onUpload ? (
+              <label className="inline-flex h-7 cursor-pointer items-center gap-1 rounded-[6px] px-1.5 text-[12px] text-sub hover:bg-raised hover:text-accent">
+                <UploadSimple size={12} />
+                上传小人
                 <input
-                  type="checkbox"
-                  checked={edgeFade}
-                  onChange={(e) => onEdgeFadeChange(e.target.checked)}
+                  type="file"
+                  accept={IMAGE_FILE_ACCEPT}
+                  className="sr-only"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    e.target.value = "";
+                    if (!file) return;
+                    void readImageAsDataUrl(file)
+                      .then((imageDataUrl) => onUpload(imageDataUrl, imageFileLabel(file.name)))
+                      .catch(() => {
+                        window.alert("这张图片读不出来，换一张 png / jpg / webp 再试。");
+                      });
+                  }}
                 />
-                边缘虚化
               </label>
             ) : null}
+            <p className="min-w-0 truncate text-[12px] text-accent" title={currentLabel}>
+              {currentLabel}
+            </p>
           </div>
-          <p className="min-w-0 truncate text-[12px] text-accent" title={currentLabel}>
-            {currentLabel}
-          </p>
         </div>
-        {onEdgeFadeChange && edgeFade ? (
-          <label className="mt-2 block">
-            <span className="mb-1 block text-[12px] text-sub">虚化宽度 {edgeFadeAmount}%</span>
-            <input
-              type="range"
-              min={IMAGE_EDGE_FADE_MIN}
-              max={IMAGE_EDGE_FADE_MAX}
-              value={edgeFadeAmount}
-              onChange={(e) => onEdgeFadeAmountChange?.(Number(e.target.value))}
-              className="w-full"
-            />
-          </label>
+        {onEdgeFadeChange ? (
+          <EdgeFadeFields
+            compact
+            enabled={edgeFade}
+            amount={edgeFadeAmount}
+            mode={edgeFadeMode}
+            onEnabledChange={onEdgeFadeChange}
+            onAmountChange={onEdgeFadeAmountChange}
+            onModeChange={onEdgeFadeModeChange ?? (() => undefined)}
+          />
         ) : null}
         <input
           className={`${fieldClass} mt-3`}
@@ -177,11 +223,20 @@ export function IllustLibrary({
             </span>
           </p>
           <div className="flex flex-wrap gap-1.5">
-            {selected.arts.map((art) => (
-              <Chip key={art.id} active={artId === art.id} onClick={() => pick(selected, art)}>
-                {art.label}
-              </Chip>
-            ))}
+            {selected.arts.map((art) => {
+              const available = kind === "art" || hasChibi(selected.id, art);
+              return (
+                <Chip
+                  key={art.id}
+                  active={artId === art.id}
+                  disabled={!available}
+                  title={available ? undefined : "暂无基建小人，可上传"}
+                  onClick={() => pick(selected, art)}
+                >
+                  {art.label}
+                </Chip>
+              );
+            })}
           </div>
         </div>
       ) : null}
@@ -223,10 +278,18 @@ export function IllustLibrary({
                 key={op.id}
                 op={op}
                 active={op.id === operatorId}
-                onClick={() => pick(op)}
+                muted={kind === "chibi" && !firstChibiArt(op)}
+                onClick={() => {
+                  if (kind === "chibi" && !firstChibiArt(op)) {
+                    setBrowseId(op.id);
+                    return;
+                  }
+                  pick(op);
+                }}
                 onWarm={() => {
-                  const art = preferredArt(op);
-                  if (art) warmupArt(artUrl(art.id));
+                  const art = kind === "chibi" ? firstChibiArt(op) : preferredArt(op);
+                  const url = art ? previewUrl(op, art) : "";
+                  if (url) warmupArt(url);
                 }}
               />
             ))}
@@ -242,17 +305,27 @@ function Chip({
   active,
   onClick,
   children,
+  disabled,
+  title,
 }: {
   active: boolean;
   onClick: () => void;
   children: string;
+  disabled?: boolean;
+  title?: string;
 }) {
   return (
     <button
       type="button"
+      title={title}
+      disabled={disabled}
       onClick={onClick}
       className={`h-7 shrink-0 rounded-[6px] px-2.5 text-[13px] transition-colors ${
-        active ? "bg-accent text-white" : "bg-raised text-sub hover:text-accent"
+        disabled
+          ? "cursor-not-allowed bg-raised text-mute opacity-50"
+          : active
+            ? "bg-accent text-white"
+            : "bg-raised text-sub hover:text-accent"
       }`}
     >
       {children}
@@ -328,11 +401,13 @@ function pagerNums(page: number, pageCount: number): Array<number | "…"> {
 function OperatorCell({
   op,
   active,
+  muted,
   onClick,
   onWarm,
 }: {
   op: Operator;
   active: boolean;
+  muted?: boolean;
   onClick: () => void;
   onWarm: () => void;
 }) {
@@ -343,8 +418,8 @@ function OperatorCell({
       onPointerEnter={onWarm}
       onPointerDown={onWarm}
       onFocus={onWarm}
-      title={`${op.name} ${op.nameEn}`}
-      className="group text-center"
+      title={muted ? `${op.name} 暂无基建小人，可上传` : `${op.name} ${op.nameEn}`}
+      className={`group text-center ${muted ? "opacity-45" : ""}`}
     >
       <span
         className={`block overflow-hidden rounded-[6px] bg-raised ${

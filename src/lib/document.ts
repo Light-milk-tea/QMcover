@@ -217,6 +217,7 @@ export function draftToDocument(draft: Draft): CoverDocument {
     imageY: draft.imageY,
     imageEdgeFade: draft.imageEdgeFade,
     imageEdgeFadeAmount: draft.imageEdgeFadeAmount,
+    imageEdgeFadeMode: draft.imageEdgeFadeMode,
     bgPreset: draft.bgPreset,
     textBgPreset: draft.textBgPreset,
     bgDim: draft.bgDim,
@@ -361,18 +362,23 @@ export function createDecorationLayer(
   });
 }
 
+export function isChibiLayer(layer: Pick<ImageLayer, "id" | "source">): boolean {
+  return layer.source === "chibi" || layer.id === "chibi";
+}
+
 export function createImageLayer(
   at: { x: number; y: number },
-  source: "operator" | "upload" = "operator",
+  source: "operator" | "upload" | "chibi" = "operator",
   extras?: Partial<ImageLayer>,
 ): ImageLayer {
+  const chibi = source === "chibi";
   return imageLayer({
     id: uid("el"),
-    label: source === "upload" ? "上传图" : "立绘",
+    label: source === "upload" ? "上传图" : chibi ? "小人" : "立绘",
     x: at.x,
     y: at.y,
-    w: 720,
-    h: 980,
+    w: chibi ? 248 : 720,
+    h: chibi ? 400 : 980,
     objectFit: "contain",
     objectPosition: "center bottom",
     ...extras,

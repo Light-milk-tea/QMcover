@@ -1,0 +1,43 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>chibi render</title>
+<style>
+  html, body { margin: 0; background: transparent; overflow: hidden; }
+</style>
+<script src="https://unpkg.com/pixi.js@7.4.2/dist/pixi.min.js"></script>
+<script src="https://unpkg.com/pixi-spine@4.0.6/dist/pixi-spine.js"></script>
+<script>
+  window.renderChibi = async function renderChibi(base, width = 512, height = 640) {
+    const app = new PIXI.Application({
+      width,
+      height,
+      backgroundAlpha: 0,
+      antialias: true,
+      preserveDrawingBuffer: true,
+    });
+    document.body.innerHTML = "";
+    document.body.appendChild(app.view);
+    const alias = `chibi-${base}-${Date.now()}`;
+    PIXI.Assets.add({ alias, src: `${base}.skel` });
+    const resource = await PIXI.Assets.load(alias);
+    const data = resource.spineData || resource;
+    const actor = new PIXI.spine.Spine(data);
+    const names = actor.spineData.animations.map((a) => a.name);
+    const prefer = names.find((n) => /^(relax|idle)$/i.test(n))
+      || names.find((n) => /relax|idle|sit/i.test(n))
+      || names[0];
+    if (prefer) actor.state.setAnimation(0, prefer, false);
+    actor.autoUpdate = false;
+    actor.update(0);
+    const bounds = actor.getBounds();
+    const scale = Math.min((width * 0.84) / Math.max(bounds.width, 1), (height * 0.84) / Math.max(bounds.height, 1));
+    actor.scale.set(scale);
+    actor.position.set(
+      width / 2 - (bounds.x + bounds.width / 2) * scale,
+      height * 0.92 - (bounds.y + bounds.height) * scale,
+    );
+    app.stage.addChild(actor);
+    app.renderer.render(app.stage);
+    return { png: app.view.toDataURL("image/png"), animation: prefer, animations: names };
+  };
+</script>

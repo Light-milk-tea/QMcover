@@ -8,7 +8,7 @@ import { ThumbCapture } from "./components/ThumbCapture";
 import { TopBar } from "./components/TopBar";
 import { isTemplateId } from "./data/templates";
 import { isBuiltinId } from "./lib/document";
-import { coverFilename, exportCoverPng } from "./lib/exportCover";
+import { coverFilename, exportCoverPng, warmupCoverExport } from "./lib/exportCover";
 import { displaySubtitle, displayTitle } from "./lib/interpolate";
 import { CoverProvider, useCover } from "./store/CoverContext";
 import type { TemplateId } from "./types";
@@ -52,6 +52,11 @@ function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string
   const { templateName, draft, titleKind } = useCover();
   const title = displayTitle(draft, titleKind);
   const subtitle = displaySubtitle(draft);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => warmupCoverExport(stageRef.current), 500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-ink">

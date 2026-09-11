@@ -11,6 +11,7 @@ export const CDN_HOSTS = [
 
 export const ART_REPO = "yuanyan3060/ArknightsGameResource@main";
 export const AVG_REPO = "Aceship/Arknight-Images@main";
+export const CHIBI_REPO = "Light-milk-tea/ArknightsChibi@main";
 
 const STORAGE_KEY = "qmcover-cdn-host";
 const PROBE_PATH = `${ART_REPO}/avatar/char_002_amiya.png`;
@@ -40,18 +41,33 @@ export function avgBackgroundBase(): string {
   return `${currentHost}/${AVG_REPO}/avg/backgrounds`;
 }
 
+export function chibiBase(): string {
+  return `${currentHost}/${CHIBI_REPO}`;
+}
+
 export function rewriteGhUrl(url: string, host = currentHost): string {
   if (!url || url.startsWith("data:")) return url;
   if (!url.includes("/gh/")) return url;
   return url.replace(/^https:\/\/[^/]+\/gh/, host);
 }
 
+function localChibiMirror(url: string): string {
+  if (!import.meta.env.DEV || !url.includes("ArknightsChibi")) return "";
+  const match = url.match(/\/chibi\/([^/?#]+)/i);
+  if (!match) return "";
+  const file = decodeURIComponent(match[1]).replace(/\.png$/i, "");
+  return `/chibi/${encodeURIComponent(file)}.png`;
+}
+
 export function ghMirrors(url: string): string[] {
-  if (!url || url.startsWith("data:") || !url.includes("/gh/")) return url ? [url] : [];
+  if (!url || url.startsWith("data:")) return url ? [url] : [];
+  const local = localChibiMirror(url);
+  if (!url.includes("/gh/")) return local ? [local, url] : [url];
   const start = CDN_HOSTS.indexOf(currentHost as (typeof CDN_HOSTS)[number]);
   const ordered =
     start > 0 ? [...CDN_HOSTS.slice(start), ...CDN_HOSTS.slice(0, start)] : [...CDN_HOSTS];
-  return ordered.map((host) => rewriteGhUrl(url, host));
+  const mirrors = ordered.map((host) => rewriteGhUrl(url, host));
+  return local ? [local, ...mirrors] : mirrors;
 }
 
 function setHost(host: string, persist: boolean) {

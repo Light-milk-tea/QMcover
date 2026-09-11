@@ -144,7 +144,7 @@ export function CoverElement({
         ...(override.color ? { color: override.color } : {}),
         ...(opacity != null ? { opacity: Math.min(1, Math.max(0, opacity / 100)) } : {}),
         transform: `translate(${x}px, ${y}px)${rotation ? ` rotate(${rotation}deg)` : ""}${style?.transform ? ` ${style.transform}` : ""}`,
-        zIndex: cover ? layerZIndex(cover.draft.layers, id) : undefined,
+        zIndex: cover ? layerZIndex(cover.draft.layers, id) : style?.zIndex,
         cursor: interactive ? (dragging.current ? "grabbing" : "grab") : undefined,
       }}
       onPointerDown={onPointerDown}

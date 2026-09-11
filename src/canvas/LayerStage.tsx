@@ -1,7 +1,8 @@
 import { artUrl } from "../data/arts";
+import { resolveChibiUrl } from "../data/chibis";
 import { fontClass } from "../data/elements";
-import { IMAGE_EDGE_FADE_DEFAULT } from "../constants";
-import { layerZIndex } from "../lib/document";
+import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MODE_DEFAULT } from "../constants";
+import { isChibiLayer, layerZIndex } from "../lib/document";
 import type { CoverRenderProps, Draft, ImageLayer, Layer } from "../types";
 import { OperatorLayer } from "../templates/OperatorLayer";
 import { CanvasBackdrop, skinGlassUrl } from "./CanvasSkin";
@@ -12,6 +13,7 @@ import { ElementEditProvider } from "../components/CoverElement";
 import { useCoverOptional } from "../store/CoverContext";
 
 function imageSrc(layer: ImageLayer, props: CoverRenderProps): string {
+  if (isChibiLayer(layer)) return resolveChibiUrl(layer);
   if (layer.imageDataUrl) return layer.imageDataUrl;
   if (layer.imageUrl) return layer.imageUrl;
   if (layer.artId) return artUrl(layer.artId);
@@ -50,8 +52,9 @@ function ImageView({ layer, props }: { layer: ImageLayer; props: CoverRenderProp
       fadeRightSolid={layer.fadeRightSolid}
       imageEdgeFade={layer.edgeFade ?? (layer.id === "operator" ? props.imageEdgeFade : false)}
       imageEdgeFadeAmount={layer.edgeFadeAmount ?? props.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
+      imageEdgeFadeMode={layer.edgeFadeMode ?? (layer.id === "operator" ? props.imageEdgeFadeMode : undefined) ?? IMAGE_EDGE_FADE_MODE_DEFAULT}
       showPlaceholder={props.showPlaceholder}
-      emptyHint={layer.source === "upload" ? "上传本地图片" : "从立绘库点选"}
+      emptyHint={layer.source === "upload" ? "上传本地图片" : isChibiLayer(layer) ? "从小人库点选" : "从立绘库点选"}
       className="h-full w-full"
       framed
       artGrade={layer.artGrade}

@@ -9,6 +9,7 @@ import {
   ImageSquare,
   Lock,
   LockOpen,
+  Person,
   Plus,
   Square,
   TextT,
@@ -17,8 +18,6 @@ import {
 } from "@phosphor-icons/react";
 import {
   IMAGE_EDGE_FADE_DEFAULT,
-  IMAGE_EDGE_FADE_MAX,
-  IMAGE_EDGE_FADE_MIN,
   IMAGE_SCALE_MAX,
   IMAGE_SCALE_MIN,
   STAGE_BAR_WIDTH_DEFAULT,
@@ -31,10 +30,11 @@ import { resolveArtGrade } from "../lib/effects";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { emptyDraft } from "../lib/storage";
 import { useCover } from "../store/CoverContext";
-import type { ArtGradeEffect, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
+import type { ArtGradeEffect, EdgeFadeMode, ImageLayer, LayerEffect, TextBind, TextLayer } from "../types";
 import { BackgroundPicker } from "./BackgroundPicker";
 import { ColorField } from "./ColorField";
 import { DecorationPicker } from "./DecorationPicker";
+import { EdgeFadeFields } from "./EdgeFadeFields";
 import { Field, fieldClass } from "./Field";
 import { FontPicker } from "./FontPicker";
 import { LayerStackList } from "./LayerStackList";
@@ -253,6 +253,17 @@ export function InspectorPanel() {
                     <ImageSquare size={14} />
                     立绘
                   </button>
+                  <button
+                    type="button"
+                    className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
+                    onClick={() => {
+                      addLayer("chibi");
+                      if (addRef.current) addRef.current.open = false;
+                    }}
+                  >
+                    <Person size={14} />
+                    小人
+                  </button>
                   <label className="relative flex h-8 w-full cursor-pointer items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised">
                     <UploadSimple size={14} />
                     上传图
@@ -353,7 +364,15 @@ export function InspectorPanel() {
                   const fadeAmt = primary
                     ? (draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT)
                     : (image?.edgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT);
-                  const setPan = (patch: { imageX?: number; imageY?: number; scale?: number; edgeFade?: boolean; edgeFadeAmount?: number }) => {
+                  const fadeMode = primary ? draft.imageEdgeFadeMode ?? image?.edgeFadeMode : image?.edgeFadeMode;
+                  const setPan = (patch: {
+                    imageX?: number;
+                    imageY?: number;
+                    scale?: number;
+                    edgeFade?: boolean;
+                    edgeFadeAmount?: number;
+                    edgeFadeMode?: EdgeFadeMode;
+                  }) => {
                     if (primary) {
                       patchDraft({
                         ...(patch.imageX != null ? { imageX: patch.imageX } : {}),
@@ -361,8 +380,9 @@ export function InspectorPanel() {
                         ...(patch.scale != null ? { imageScale: patch.scale } : {}),
                         ...(patch.edgeFade != null ? { imageEdgeFade: patch.edgeFade } : {}),
                         ...(patch.edgeFadeAmount != null ? { imageEdgeFadeAmount: patch.edgeFadeAmount } : {}),
+                        ...(patch.edgeFadeMode != null ? { imageEdgeFadeMode: patch.edgeFadeMode } : {}),
                       });
-                      if (patch.scale != null || patch.imageX != null || patch.imageY != null || patch.edgeFade != null || patch.edgeFadeAmount != null) {
+                      if (patch.scale != null || patch.imageX != null || patch.imageY != null || patch.edgeFade != null || patch.edgeFadeAmount != null || patch.edgeFadeMode != null) {
                         patchLayer(nativeMeta.id, patch);
                       }
                       return;
@@ -408,28 +428,14 @@ export function InspectorPanel() {
                 <div className="mt-3">
                   <RotationField value={currentRotation} onChange={(rotation) => patchElement(nativeMeta.id, { rotation })} />
                 </div>
-                <label className="mt-3 flex cursor-pointer items-center gap-1.5 text-[13px] text-sub">
-                  <input
-                    type="checkbox"
-                    checked={fadeOn}
-                    onChange={(e) => setPan({ edgeFade: e.target.checked })}
-                  />
-                  边缘虚化
-                </label>
-                {fadeOn ? (
-                  <div className="mt-2">
-                    <Field label={`虚化宽度 ${fadeAmt}%`}>
-                      <input
-                        type="range"
-                        min={IMAGE_EDGE_FADE_MIN}
-                        max={IMAGE_EDGE_FADE_MAX}
-                        value={fadeAmt}
-                        onChange={(e) => setPan({ edgeFadeAmount: Number(e.target.value) })}
-                        className="w-full"
-                      />
-                    </Field>
-                  </div>
-                ) : null}
+                <EdgeFadeFields
+                  enabled={fadeOn}
+                  amount={fadeAmt}
+                  mode={fadeMode}
+                  onEnabledChange={(edgeFade) => setPan({ edgeFade })}
+                  onAmountChange={(edgeFadeAmount) => setPan({ edgeFadeAmount })}
+                  onModeChange={(edgeFadeMode) => setPan({ edgeFadeMode })}
+                />
                 <ArtGradeFields
                   value={image?.artGrade}
                   onChange={(artGrade) => patchLayer(nativeMeta.id, { artGrade })}
@@ -775,10 +781,16 @@ export function InspectorPanel() {
                     <p className="mt-3 text-[11px] leading-relaxed text-mute">立绘在右侧立绘库选择，也可以上传本地图片。</p>
                   </div>
                 ) : null}
-                {image.source === "upload" ? (
+                {image.source === "upload" || image.source === "chibi" ? (
                   <label className="relative mt-3 inline-flex h-8 cursor-pointer items-center gap-1.5 overflow-hidden rounded-[6px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
                     <UploadSimple size={14} />
-                    {image.imageDataUrl ? "更换图片" : "选择图片"}
+                    {image.source === "chibi"
+                      ? image.imageDataUrl || image.imageUrl
+                        ? "更换小人"
+                        : "上传小人"
+                      : image.imageDataUrl
+                        ? "更换图片"
+                        : "选择图片"}
                     <input
                       type="file"
                       accept={IMAGE_FILE_ACCEPT}
@@ -789,12 +801,17 @@ export function InspectorPanel() {
                         if (!file) return;
                         void readImageAsDataUrl(file).then((imageDataUrl) => {
                           patchLayer(layer.id, {
-                            source: "upload",
+                            source: image.source === "chibi" ? "chibi" : "upload",
                             imageDataUrl,
                             imageUrl: "",
-                            artId: "",
-                            operatorId: "",
-                            label: layer.label === "上传图" ? imageFileLabel(file.name) : layer.label,
+                            artId: image.source === "chibi" ? image.artId : "",
+                            operatorId: image.source === "chibi" ? image.operatorId : "",
+                            label:
+                              image.source === "chibi"
+                                ? layer.label
+                                : layer.label === "上传图"
+                                  ? imageFileLabel(file.name)
+                                  : layer.label,
                           });
                         });
                       }}
@@ -817,35 +834,23 @@ export function InspectorPanel() {
                     />
                   </Field>
                 </div>
-                <label className="mt-3 flex cursor-pointer items-center gap-1.5 text-[13px] text-sub">
-                  <input
-                    type="checkbox"
-                    checked={image.edgeFade ?? draft.imageEdgeFade ?? false}
-                    onChange={(e) => {
-                      patchLayer(layer.id, { edgeFade: e.target.checked });
-                      if (layer.id === "operator") patchDraft({ imageEdgeFade: e.target.checked });
-                    }}
-                  />
-                  边缘虚化
-                </label>
-                {(image.edgeFade ?? draft.imageEdgeFade) ? (
-                  <div className="mt-2">
-                    <Field label={`虚化 ${image.edgeFadeAmount ?? draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}%`}>
-                      <input
-                        type="range"
-                        min={IMAGE_EDGE_FADE_MIN}
-                        max={IMAGE_EDGE_FADE_MAX}
-                        value={image.edgeFadeAmount ?? draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
-                        onChange={(e) => {
-                          const imageEdgeFadeAmount = Number(e.target.value);
-                          patchLayer(layer.id, { edgeFadeAmount: imageEdgeFadeAmount });
-                          if (layer.id === "operator") patchDraft({ imageEdgeFadeAmount });
-                        }}
-                        className="w-full"
-                      />
-                    </Field>
-                  </div>
-                ) : null}
+                <EdgeFadeFields
+                  enabled={image.edgeFade ?? draft.imageEdgeFade ?? false}
+                  amount={image.edgeFadeAmount ?? draft.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT}
+                  mode={image.edgeFadeMode ?? draft.imageEdgeFadeMode}
+                  onEnabledChange={(edgeFade) => {
+                    patchLayer(layer.id, { edgeFade });
+                    if (layer.id === "operator") patchDraft({ imageEdgeFade: edgeFade });
+                  }}
+                  onAmountChange={(imageEdgeFadeAmount) => {
+                    patchLayer(layer.id, { edgeFadeAmount: imageEdgeFadeAmount });
+                    if (layer.id === "operator") patchDraft({ imageEdgeFadeAmount });
+                  }}
+                  onModeChange={(imageEdgeFadeMode) => {
+                    patchLayer(layer.id, { edgeFadeMode: imageEdgeFadeMode });
+                    if (layer.id === "operator") patchDraft({ imageEdgeFadeMode });
+                  }}
+                />
                 <ArtGradeFields
                   value={image.artGrade}
                   onChange={(artGrade) => patchLayer(layer.id, { artGrade })}

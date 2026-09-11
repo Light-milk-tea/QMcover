@@ -1,9 +1,12 @@
 import { artUrl } from "../arts";
+import { chibiUrl } from "../chibis";
 import { boxLayer, imageLayer, textLayer } from "../../lib/document";
+import { defaultArtGrade } from "../../lib/effects";
 import type { Layer } from "../../types";
 
 const MAIN_ART = "char_4182_oblvns_avemujica#1";
 const OPERATOR_ID = "char_4182_oblvns";
+const CHIBI_ART = "char_4182_oblvns_1";
 
 export const strengthReviewLayers: Layer[] = [
   boxLayer({
@@ -14,6 +17,8 @@ export const strengthReviewLayers: Layer[] = [
     w: 1920,
     h: 1080,
     fill: "transparent",
+    hidden: true,
+    removed: true,
   }),
   imageLayer({
     id: "operator",
@@ -32,6 +37,7 @@ export const strengthReviewLayers: Layer[] = [
     operatorId: OPERATOR_ID,
     artId: MAIN_ART,
     imageUrl: artUrl(MAIN_ART),
+    artGrade: { ...defaultArtGrade(true), contrast: 5, saturate: 10 },
   }),
   imageLayer({
     id: "chibi",
@@ -40,20 +46,23 @@ export const strengthReviewLayers: Layer[] = [
     y: 268,
     w: 248,
     h: 400,
-    scale: 100,
-    source: "operator",
+    scale: 119,
+    imageX: -33,
+    imageY: 29,
+    source: "chibi",
     objectFit: "contain",
     objectPosition: "center bottom",
     transformOrigin: "center bottom",
-    imageUrl: "",
-    artId: "",
-    operatorId: "",
+    imageUrl: chibiUrl(OPERATOR_ID),
+    artId: CHIBI_ART,
+    operatorId: OPERATOR_ID,
+    artGrade: { ...defaultArtGrade(true), contrast: 5, saturate: 4 },
   }),
   boxLayer({
     id: "skill-1",
     label: "技能一",
-    x: 1000,
-    y: 380,
+    x: 1010,
+    y: 381,
     w: 236,
     h: 236,
     fill: "transparent",
@@ -61,7 +70,7 @@ export const strengthReviewLayers: Layer[] = [
   boxLayer({
     id: "skill-2",
     label: "技能二",
-    x: 1230,
+    x: 1288,
     y: 380,
     w: 236,
     h: 236,
@@ -70,8 +79,8 @@ export const strengthReviewLayers: Layer[] = [
   boxLayer({
     id: "skill-3",
     label: "技能三",
-    x: 1460,
-    y: 380,
+    x: 1554,
+    y: 378,
     w: 236,
     h: 236,
     fill: "transparent",

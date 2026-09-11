@@ -112,10 +112,11 @@ test("仅需一人模板显示关卡码、宋体标题和英文标", async () =>
   expect(Math.abs(mid(sloganBox) - axis)).toBeLessThan(32);
   expect(stage?.className).toContain("font-cn");
 
-  const scene = screen.container.querySelector("[data-cover-bg]") as HTMLElement | null;
+  const scene = screen.container.querySelector("[data-cover-bg]") as HTMLImageElement | null;
   const veil = screen.container.querySelector("[data-cover-bg-veil]") as HTMLElement | null;
   const wash = screen.container.querySelector('[data-cover-el="wash"]');
   expect(scene).not.toBeNull();
+  expect(scene?.getAttribute("src") ?? "").toMatch(/\/gh\/|\/avg\/backgrounds\//);
   expect(wash).not.toBeNull();
   expect(veil?.style.background).toContain("0.58");
 });

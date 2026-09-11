@@ -95,8 +95,8 @@ export function TopBar({ onExport, onBack, stageRef, onSavedTemplate }: Props) {
             try {
               await onExport();
               setMsg("已下载");
-            } catch {
-              setMsg("导出失败");
+            } catch (error) {
+              setMsg(error instanceof Error && error.message === "export-timeout" ? "导出超时，请再试" : "导出失败");
             } finally {
               setBusy(false);
             }

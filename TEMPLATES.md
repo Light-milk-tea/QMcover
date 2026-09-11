@@ -15,4 +15,4 @@
 5. 对照主参考逐轮调整并检查实际导出。涉及 UI 时新增或更新 `*.browser.test.tsx`，用 Vitest Browser 的 Playwright Chromium 跑绿。
 6. 构图定了之后，打开 `#/__thumb/<id>` 导出 960×540 WebP，同时更新 `public/thumbs/`、`src/assets/thumbs/` 和 `src/lib/thumbs.ts`。
 
-复刻的是构图（字在哪、条在哪），不是别人的整张封面。编辑器里的立绘运行时加载，不进仓库。
+复刻的是构图（字在哪、条在哪），不是别人的整张封面。编辑器里的立绘和基建小人运行时加载，不进仓库。小人图层 `source: "chibi"`，地址走 `chibiUrl`，不要 fallback 成全身立绘。

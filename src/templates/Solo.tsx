@@ -5,6 +5,7 @@ import { BILI_COVER, STAGE_BAR_WIDTH_MAX, STAGE_BAR_WIDTH_MIN } from "../constan
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
 import { LightUnderlay } from "../effects/CoverEffectsStage";
+import { useCdnSrc } from "../lib/cdn";
 import { layerZIndex } from "../lib/document";
 import { bgGradeFilter } from "../lib/effects";
 import { useCoverOptional } from "../store/CoverContext";
@@ -80,6 +81,7 @@ export function Solo(props: CoverRenderProps) {
   const stage = elementText(styles, "stage", props.subtitle.trim() || "QM-EX-8");
   const slogan = elementText(styles, "slogan", props.signature.trim() || "ONE OPERATOR ONLY");
   const bg = getBgPreset(props.bgPreset);
+  const remoteBg = useCdnSrc(bg.url ?? "");
   const ruleW = barWidth(props, "rule", RULE_WIDTH_DEFAULT);
   const redRuleW = barWidth(props, "rule-red", RED_RULE_WIDTH_DEFAULT);
   const stackW = Math.max(TEXT_STACK_WIDTH, ruleW, redRuleW);
@@ -110,13 +112,15 @@ export function Solo(props: CoverRenderProps) {
       {bg.url ? (
         <img
           data-cover-bg=""
-          src={bg.url}
+          src={remoteBg.src}
           alt=""
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
           decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full scale-[1.08] object-cover"
           style={{ objectPosition: "46% 38%", filter: bgGradeFilter(props.effects?.bgGrade) }}
+          onLoad={remoteBg.onLoad}
+          onError={remoteBg.onError}
         />
       ) : null}
       <CoverElement

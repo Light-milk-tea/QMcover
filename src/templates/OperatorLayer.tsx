@@ -1,13 +1,38 @@
 import { useRef } from "react";
-import type { PointerEvent } from "react";
+import type { CSSProperties, PointerEvent } from "react";
 import { useElementEdit } from "../components/CoverElement";
 import { isNativeElement } from "../data/elements";
-import { layerZIndex } from "../lib/document";
+import { isChibiLayer, layerZIndex } from "../lib/document";
 import { useCoverOptional } from "../store/CoverContext";
-import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MAX, IMAGE_EDGE_FADE_MIN } from "../constants";
+import {
+  IMAGE_EDGE_FADE_DEFAULT,
+  IMAGE_EDGE_FADE_MAX,
+  IMAGE_EDGE_FADE_MIN,
+  IMAGE_EDGE_FADE_MODE_DEFAULT,
+  normalizeEdgeFadeMode,
+} from "../constants";
 import { useCdnSrc } from "../lib/cdn";
 import { artGradeFilter, type ArtFringeRole } from "../lib/effects";
-import type { ArtGradeEffect } from "../types";
+import type { ArtGradeEffect, EdgeFadeMode } from "../types";
+
+/** 多层 mask 必须写满 100% 尺寸，否则 Chromium 在 no-repeat 下会把渐变收成左上角一小块。 */
+function cssMask(layers: string[]): CSSProperties | undefined {
+  if (layers.length === 0) return undefined;
+  const each = (value: string) => layers.map(() => value).join(", ");
+  return {
+    WebkitMaskImage: layers.join(", "),
+    maskImage: layers.join(", "),
+    WebkitMaskSize: each("100% 100%"),
+    maskSize: each("100% 100%"),
+    WebkitMaskRepeat: each("no-repeat"),
+    maskRepeat: each("no-repeat"),
+    WebkitMaskPosition: each("center"),
+    maskPosition: each("center"),
+    ...(layers.length > 1
+      ? { WebkitMaskComposite: "source-in" as const, maskComposite: "intersect" as const }
+      : {}),
+  };
+}
 
 type Props = {
   layerId?: string;
@@ -32,6 +57,7 @@ type Props = {
   objectPosition?: string;
   imageEdgeFade?: boolean;
   imageEdgeFadeAmount?: number;
+  imageEdgeFadeMode?: EdgeFadeMode;
   framed?: boolean;
   emptyHint?: string;
 };
@@ -57,6 +83,7 @@ export function OperatorLayer({
   objectPosition,
   imageEdgeFade = false,
   imageEdgeFadeAmount = IMAGE_EDGE_FADE_DEFAULT,
+  imageEdgeFadeMode = IMAGE_EDGE_FADE_MODE_DEFAULT,
   framed = false,
   emptyHint = "从立绘库点选",
   artGrade,
@@ -70,6 +97,7 @@ export function OperatorLayer({
   const selfLayer = cover?.draft.layers.find((layer) => layer.id === layerId);
   const interactive = (edit?.interactive ?? false) && !selfLayer?.locked;
   const hidden = Boolean(selfLayer?.hidden || selfLayer?.removed);
+  const chibi = selfLayer?.kind === "image" && isChibiLayer(selfLayer);
   const zIndex = cover ? layerZIndex(cover.draft.layers, layerId) : undefined;
 
   const rotation = edit?.styles[layerId]?.rotation ?? selfLayer?.rotation ?? 0;
@@ -111,107 +139,130 @@ export function OperatorLayer({
   const gradeFilter = artGradeFilter(grade, role);
   const edge = Math.min(IMAGE_EDGE_FADE_MAX, Math.max(IMAGE_EDGE_FADE_MIN, imageEdgeFadeAmount));
   const inner = 100 - edge;
-  const edgeFadeMask = imageEdgeFade
-    ? [
-        `linear-gradient(to right, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
-        `linear-gradient(to bottom, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`,
-      ].join(", ")
-    : undefined;
+  const fadeMode = normalizeEdgeFadeMode(
+    (selfLayer?.kind === "image" ? selfLayer.edgeFadeMode : undefined) ?? imageEdgeFadeMode,
+  );
+  const edgeFadeX = !imageEdgeFade
+    ? undefined
+    : fadeMode === "left"
+      ? cssMask([`linear-gradient(to right, transparent, #000 ${edge}%, #000 100%)`])
+      : fadeMode === "right"
+        ? cssMask([`linear-gradient(to right, #000 0%, #000 ${inner}%, transparent)`])
+        : cssMask([`linear-gradient(to right, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`]);
+  const edgeFadeY =
+    imageEdgeFade && fadeMode === "all"
+      ? cssMask([`linear-gradient(to bottom, transparent, #000 ${edge}%, #000 ${inner}%, transparent)`])
+      : undefined;
+  const sideFadeMask = (() => {
+    const masks: string[] = [];
+    if (fadeRight) {
+      const solid = Math.min(90, Math.max(20, fadeRightSolid));
+      const gone = Math.min(100, solid + 28);
+      masks.push(`linear-gradient(90deg, #000 0%, #000 ${solid}%, transparent ${gone}%)`);
+    }
+    if (fadeLeft) {
+      const solid = Math.min(90, Math.max(8, fadeLeftSolid));
+      masks.push(`linear-gradient(90deg, transparent 0%, #000 ${solid}%, #000 100%)`);
+    }
+    if (fadeBottom) {
+      const solid = Math.min(90, Math.max(30, fadeBottomSolid));
+      masks.push(`linear-gradient(180deg, #000 0%, #000 ${solid}%, transparent 100%)`);
+    }
+    return cssMask(masks);
+  })();
+
+  const imgBoxClass = expandArt
+    ? "absolute left-0 top-[40%] h-[20%] w-full"
+    : "h-full w-full";
+  const picture = (
+    <img
+      src={remote.src}
+      alt=""
+      crossOrigin="anonymous"
+      referrerPolicy="no-referrer"
+      decoding="async"
+      fetchPriority="high"
+      draggable={false}
+      onLoad={remote.onLoad}
+      onError={remote.onError}
+      onPointerDown={onPointerDown}
+      onPointerMove={(e) => {
+        if (!dragging.current) return;
+        const scale = previewScale || 1;
+        onImageDrag((e.clientX - last.current.x) / scale, (e.clientY - last.current.y) / scale);
+        last.current = { x: e.clientX, y: e.clientY };
+      }}
+      onPointerUp={() => {
+        dragging.current = false;
+      }}
+      className="h-full w-full select-none"
+      style={{
+        objectFit,
+        objectPosition,
+        pointerEvents: insideFrame ? "none" : "auto",
+        cursor: dragging.current ? "grabbing" : "grab",
+      }}
+    />
+  );
+  const artBox = (
+    <div
+      className={
+        expandArt
+          ? "pointer-events-none absolute left-0 top-[-200%] h-[500%] w-full overflow-visible"
+          : "pointer-events-none h-full w-full overflow-visible"
+      }
+      style={sideFadeMask}
+    >
+      <div
+        className={imgBoxClass}
+        style={{
+          transformOrigin,
+          transform: `scale(${imageScale / 100})`,
+        }}
+      >
+        {edgeFadeX ? (
+          <div data-edge-fade-x="" className="h-full w-full" style={edgeFadeX}>
+            {edgeFadeY ? (
+              <div data-edge-fade-y="" className="h-full w-full" style={edgeFadeY}>
+                {picture}
+              </div>
+            ) : (
+              picture
+            )}
+          </div>
+        ) : (
+          picture
+        )}
+      </div>
+    </div>
+  );
+
+  const movedArt = (
+    <div
+      data-art-pan=""
+      className="relative h-full w-full"
+      style={{
+        transform: wrapTransform || undefined,
+        transformOrigin: rotation ? "center center" : transformOrigin,
+        filter: gradeFilter,
+      }}
+    >
+      {artBox}
+    </div>
+  );
 
   return (
     <div
       data-cover-el={layerId}
       data-edge-fade={imageEdgeFade ? String(edge) : undefined}
+      data-edge-fade-mode={imageEdgeFade ? fadeMode : undefined}
       className={`relative ${className}`}
       style={{
         zIndex,
         pointerEvents: "none",
-        transform: wrapTransform || undefined,
-        transformOrigin: rotation ? "center center" : transformOrigin,
-        filter: gradeFilter,
-        ...(edgeFadeMask
-          ? {
-              WebkitMaskImage: edgeFadeMask,
-              maskImage: edgeFadeMask,
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskComposite: "source-in" as const,
-              maskComposite: "intersect" as const,
-            }
-          : {}),
       }}
     >
-      <div
-        className={
-          expandArt
-            ? "pointer-events-none absolute left-0 top-[-200%] h-[500%] w-full overflow-visible"
-            : "pointer-events-none h-full w-full overflow-visible"
-        }
-        style={(() => {
-          const masks: string[] = [];
-          if (fadeRight) {
-            const solid = Math.min(90, Math.max(20, fadeRightSolid));
-            const gone = Math.min(100, solid + 28);
-            masks.push(`linear-gradient(90deg, #000 0%, #000 ${solid}%, transparent ${gone}%)`);
-          }
-          if (fadeLeft) {
-            const solid = Math.min(90, Math.max(8, fadeLeftSolid));
-            masks.push(`linear-gradient(90deg, transparent 0%, #000 ${solid}%, #000 100%)`);
-          }
-          if (fadeBottom) {
-            const solid = Math.min(90, Math.max(30, fadeBottomSolid));
-            masks.push(`linear-gradient(180deg, #000 0%, #000 ${solid}%, transparent 100%)`);
-          }
-          if (masks.length === 0) return undefined;
-          const image = masks.join(", ");
-          return {
-            WebkitMaskImage: image,
-            maskImage: image,
-            WebkitMaskRepeat: "no-repeat",
-            maskRepeat: "no-repeat",
-            WebkitMaskPosition: "center",
-            maskPosition: "center",
-            ...(masks.length > 1
-              ? { WebkitMaskComposite: "source-in" as const, maskComposite: "intersect" as const }
-              : {}),
-          };
-        })()}
-      >
-        <img
-          src={remote.src}
-          alt=""
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-          decoding="async"
-          fetchPriority="high"
-          draggable={false}
-          onLoad={remote.onLoad}
-          onError={remote.onError}
-          onPointerDown={onPointerDown}
-          onPointerMove={(e) => {
-            if (!dragging.current) return;
-            const scale = previewScale || 1;
-            onImageDrag((e.clientX - last.current.x) / scale, (e.clientY - last.current.y) / scale);
-            last.current = { x: e.clientX, y: e.clientY };
-          }}
-          onPointerUp={() => {
-            dragging.current = false;
-          }}
-          className={
-            expandArt
-              ? "absolute left-0 top-[40%] h-[20%] w-full select-none"
-              : "h-full w-full select-none"
-          }
-          style={{
-            objectFit,
-            objectPosition,
-            transformOrigin,
-            transform: `scale(${imageScale / 100})`,
-            pointerEvents: insideFrame ? "none" : "auto",
-            cursor: dragging.current ? "grabbing" : "grab",
-          }}
-        />
-      </div>
+      {movedArt}
       {remote.loading || remote.failed ? (
         <span
           data-ignore-export="true"
@@ -232,7 +283,7 @@ export function OperatorLayer({
                 remote.failed ? "text-[#ffe4ea]" : "text-[#fff6ea]"
               }`}
             >
-              {remote.failed ? "立绘加载失败" : "立绘载入中"}
+              {remote.failed ? (chibi ? "小人加载失败" : "立绘加载失败") : chibi ? "小人载入中" : "立绘载入中"}
             </span>
           </span>
         </span>

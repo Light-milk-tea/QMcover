@@ -68,7 +68,7 @@ type CoverContextValue = {
   selectElement: (id: string | null) => void;
   patchElement: (id: string, patch: Partial<ElementOverride>) => void;
   patchLayer: (id: string, patch: Partial<Layer>) => void;
-  addLayer: (kind: "text" | "box" | "image" | "upload", init?: Partial<ImageLayer>) => void;
+  addLayer: (kind: "text" | "box" | "image" | "upload" | "chibi", init?: Partial<ImageLayer>) => void;
   addDecoration: (presetId: string) => void;
   removeLayer: (id: string) => void;
   duplicateSelected: () => void;
@@ -291,7 +291,7 @@ export function CoverProvider({
   );
 
   const addLayer = useCallback(
-    (kind: "text" | "box" | "image" | "upload", init?: Partial<ImageLayer>) => {
+    (kind: "text" | "box" | "image" | "upload" | "chibi", init?: Partial<ImageLayer>) => {
       let createdId = "";
       apply((prev) => {
         const at = { x: 240, y: 240 };
@@ -300,7 +300,7 @@ export function CoverProvider({
             ? createBoxLayer(at)
             : kind === "text"
               ? createTextLayer(at)
-              : createImageLayer(at, kind === "upload" ? "upload" : "operator", init);
+              : createImageLayer(at, kind === "upload" ? "upload" : kind === "chibi" ? "chibi" : "operator", init);
         createdId = layer.id;
         return { ...prev, layers: [...prev.layers, layer] };
       });

@@ -7,6 +7,8 @@ export type ElementKind = "text" | "box" | "image";
 
 export type ImageFrame = "polaroid";
 
+export type EdgeFadeMode = "left" | "right" | "all";
+
 export type TextBind = "custom" | "title" | "subtitle" | "episode" | "signature" | "mark" | "operatorName";
 
 export type LayerEffect =
@@ -174,7 +176,7 @@ export type TextLayer = LayerBase & {
 
 export type ImageLayer = LayerBase & {
   kind: "image";
-  source: "operator" | "upload";
+  source: "operator" | "upload" | "chibi";
   frame?: ImageFrame;
   frameBgPreset?: string;
   frameBgScale?: number;
@@ -185,6 +187,7 @@ export type ImageLayer = LayerBase & {
   imageY?: number;
   edgeFade?: boolean;
   edgeFadeAmount?: number;
+  edgeFadeMode?: EdgeFadeMode;
   fadeRight?: boolean;
   fadeRightSolid?: number;
   fadeLeft?: boolean;
@@ -240,6 +243,7 @@ export type CoverDocument = {
   imageY?: number;
   imageEdgeFade?: boolean;
   imageEdgeFadeAmount?: number;
+  imageEdgeFadeMode?: EdgeFadeMode;
   bgPreset?: string;
   textBgPreset?: string;
   bgDim?: boolean;
@@ -352,6 +356,7 @@ export type Draft = {
   imageY: number;
   imageEdgeFade: boolean;
   imageEdgeFadeAmount: number;
+  imageEdgeFadeMode: EdgeFadeMode;
   showSafeArea: boolean;
   bgPreset: string;
   textBgPreset: string;
@@ -385,6 +390,7 @@ export type CoverRenderProps = {
   imageY: number;
   imageEdgeFade?: boolean;
   imageEdgeFadeAmount?: number;
+  imageEdgeFadeMode?: EdgeFadeMode;
   previewScale: number;
   onImageDrag: (dx: number, dy: number) => void;
   showPlaceholder?: boolean;

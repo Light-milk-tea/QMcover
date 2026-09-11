@@ -43,13 +43,14 @@ npm run dev
 | `npm run test:browser` | 有窗口跑浏览器测试 |
 | `npm run playwright:install` | 安装测试用 Chromium |
 | `npm run operators` | 从游戏表重建干员目录 |
+| `npm run chibis` | 从 PRTS Spine 渲基建小人静帧到 `.chibi-out/`（不进本仓库） |
 
 ## 使用
 
 1. 首页点一张模板，进入 `#/t/<模板id>`。
 2. 右侧改地图 / 标题、副标题、危机等级或期数、行动名或署名。
 3. 左侧点图层，或直接点画布上的字，可改位置、字体、字号、颜色。选中后也可拖动。 字体菜单新增思源宋体常规 / 中等、思源黑体常规、霞鹜文楷、站酷小薇体、马善政楷书；细笔画封面推荐中等宋体或常规宋体。
-4. 立绘库按职业筛选，点干员再点立绘。库里没有的皮肤可上传。
+4. 立绘库按职业筛选，点干员再点立绘。库里没有的皮肤可上传。添加「小人」后右侧是小人库，点选基建站姿；没有静帧的皮肤会灰掉，可上传。
 5. 危机合约、低配攻略、无核论文模板可换 AVG 场景底。
 6. 拖动立绘调位置，滑条调缩放。安全区勾选后显示 B 站裁切提示框，不进导出。
 7. **新建**会清空当前模板草稿（先确认）。**导出封面**下载 PNG。
@@ -74,7 +75,7 @@ npm run dev
 | `fourstar-nocore` | 四星无核 | 暗底拼贴：左斜抬黑体主标题 + 米色关卡条，右立绘，身后几何金框。 |
 | `solo` | 仅需一人 | 暗红氛围：左上关卡码 + 宋体「××单人」+ 白线英文标，右半身立绘。 |
 | `six-vanguard` | 先锋六人 | 左侧多萝西近景，右侧阵容标题与超大斜体关卡码；灰金网点、人物叠影和红色职业条。 |
-| `strength-review` | 强度测评 | 左主立绘（默认皮肤近景）、右侧三技能金框、底部两行叠金标题；小人层默认空，稍后接入。 |
+| `strength-review` | 强度测评 | 左主立绘（默认皮肤近景）、中间叠精0基建小人、右侧三技能金框、底部两行叠金标题；换干员时小人跟着走，也可在小人库另选或上传。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
@@ -198,6 +199,8 @@ src/
     elements.ts           可编辑图层
     backgrounds.ts        AVG 背景预设
     arts.ts               立绘 / 头像 CDN
+    chibis.ts             基建小人 CDN
+    chibis.json           已渲小人目录（无 PNG）
     operators.json        干员目录（脚本生成）
   templates/              各模板画面
     registry.tsx          id → 组件
@@ -222,6 +225,8 @@ src/
     interpolate.ts        展示用标题
 scripts/
   build-operators.mjs     拉 character / skin 表，写 operators.json
+  build-chibis.mjs        探测 PRTS Spine、渲静帧到 .chibi-out（发布到独立仓）
+  chibi-render.html       小人渲帧页（Playwright + Pixi）
   collect-cc-covers.py    重新收集构图参考图（不进 git）
   collect-endfield-review-covers.py  终末地测评封面
 references/crisis-contract/   构图参考，jpg 不提交
@@ -248,6 +253,19 @@ references/solo-clear/         仅需一人构图参考，jpg 不提交
 - 头像：`…/avatar/<charId>.png`
 
 目录 `src/data/operators.json` 由 `npm run operators` 从同仓库的 `character_table.json`、`skin_table.json` 生成。游戏出新干员或皮肤后跑一次。库里没有的图可以本地上传。
+
+### 基建小人
+
+网上只有 Spine 三件套，封面导出用静帧 PNG。本仓库**不提交**渲好的小人图。静帧发到 [Light-milk-tea/ArknightsChibi](https://github.com/Light-milk-tea/ArknightsChibi)，jsDelivr：`…/chibi/<id>.png`（`#` 换成 `-`）。点选目录是 `src/data/chibis.json`，当前约 569 张（267 名干员 + 部分时装），全量还没渲完。
+
+本机：
+
+```bash
+npm run chibis
+# 或全量：node scripts/build-chibis.mjs --all --write-catalog
+```
+
+开发时 Vite 从 `public/chibi/` 读静帧（已 gitignore），不走空的 jsDelivr。把 `.chibi-out/chibi/` 和 `manifest.json` 拷到独立仓库再推后，生产才走 CDN。版权与立绘相同：仅学习交流。部分皮肤没有基建模型，小人库里会灰掉，可上传本地图。
 
 ### 危机合约背景
 
@@ -293,7 +311,7 @@ references/solo-clear/         仅需一人构图参考，jpg 不提交
 
 ## 约定
 
-- 不把官方立绘、AVG、关卡图、别人封面提交进 git。
+- 不把官方立绘、AVG、关卡图、别人封面、渲好的基建小人 PNG 提交进 git。
 - 不把 `references/` 下的参考 jpg 提交进 git。
 - 不要用渐变色块冒充合约氛围图；场景底用游戏 AVG。
 - 立绘显示不要等预加载完成再挂 `<img>`，否则会卡在「立绘载入中」。

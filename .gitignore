@@ -38,6 +38,8 @@ public/thumbs/*.dataurl
 public/thumbs/*.jpg
 tmp-compare/
 tmp-backgrounds/
+.chibi-out/
+public/chibi/*.png
 
 # local cache and one-off exports
 npm_cache/

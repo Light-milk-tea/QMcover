@@ -1,9 +1,11 @@
 import { UploadSimple } from "@phosphor-icons/react";
 import { IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
 import { artUrl } from "../data/arts";
+import { chibiIdFor, chibiUrl, followingChibiPatch, hasChibi } from "../data/chibis";
+import { isNativeElement } from "../data/elements";
 import { ORNAMENTS } from "../data/ornaments";
 import { getBuiltinLayers } from "../data/seeds";
-import { isBuiltinId } from "../lib/document";
+import { isBuiltinId, isChibiLayer } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { useCover } from "../store/CoverContext";
 import type { CanvasSkin, ImageLayer } from "../types";
@@ -50,16 +52,17 @@ export function EditorPanel() {
 
   const selectedImage = selectedLayer?.kind === "image" ? (selectedLayer as ImageLayer) : undefined;
   const uploadLayer = selectedImage?.source === "upload" ? selectedImage : undefined;
+  const chibiLayer = selectedImage && isChibiLayer(selectedImage) ? selectedImage : undefined;
   const soloWash = templateId === "solo" || draft.canvasSkin === "solo";
   const washLayer = draft.layers.find((layer) => layer.id === "wash");
   const washOn = !washLayer || (!washLayer.hidden && !washLayer.removed);
   const washOpacity = draft.elementStyles.wash?.opacity ?? washLayer?.opacity ?? 100;
   const imageLayer =
-    uploadLayer
+    uploadLayer || chibiLayer
       ? undefined
       : selectedImage ??
         draft.layers.find((layer): layer is ImageLayer => layer.id === "operator" && layer.kind === "image" && !layer.removed) ??
-        draft.layers.find((layer): layer is ImageLayer => layer.kind === "image" && layer.source !== "upload" && !layer.removed);
+        draft.layers.find((layer): layer is ImageLayer => layer.kind === "image" && layer.source !== "upload" && !isChibiLayer(layer) && !layer.removed);
   const resolvedPlaceholder =
     titlePlaceholder ||
     (titleKind === "stage" ? "无序矿区" : titleKind === "operation" ? "沃伦姆德的薄暮" : titleKind === "theme" ? "命运共享" : draft.operatorName || "点选干员后自动填入");
@@ -202,6 +205,38 @@ export function EditorPanel() {
         />
       ) : null}
 
+      {chibiLayer ? (
+        <IllustLibrary
+          kind="chibi"
+          operatorId={chibiLayer.operatorId || ""}
+          artId={chibiLayer.artId || ""}
+          uploaded={Boolean(chibiLayer.imageDataUrl)}
+          edgeFade={chibiLayer.edgeFade ?? false}
+          edgeFadeAmount={chibiLayer.edgeFadeAmount}
+          edgeFadeMode={chibiLayer.edgeFadeMode}
+          onEdgeFadeChange={(edgeFade) => patchLayer(chibiLayer.id, { edgeFade })}
+          onEdgeFadeAmountChange={(edgeFadeAmount) => patchLayer(chibiLayer.id, { edgeFadeAmount })}
+          onEdgeFadeModeChange={(edgeFadeMode) => patchLayer(chibiLayer.id, { edgeFadeMode })}
+          onUpload={(imageDataUrl) => {
+            patchLayer(chibiLayer.id, {
+              source: "chibi",
+              imageDataUrl,
+              imageUrl: "",
+            });
+          }}
+          onPick={(op, art) => {
+            const key = chibiIdFor(op.id, art);
+            patchLayer(chibiLayer.id, {
+              source: "chibi",
+              operatorId: op.id,
+              artId: art.id,
+              imageUrl: hasChibi(op.id, art) ? chibiUrl(key) : "",
+              imageDataUrl: "",
+            });
+          }}
+        />
+      ) : null}
+
       {imageLayer ? (
         <IllustLibrary
           operatorId={imageLayer.operatorId || draft.operatorId}
@@ -209,6 +244,7 @@ export function EditorPanel() {
           uploaded={Boolean(imageLayer.imageDataUrl || (imageLayer.id === "operator" && draft.imageDataUrl))}
           edgeFade={imageLayer.edgeFade ?? draft.imageEdgeFade ?? false}
           edgeFadeAmount={imageLayer.edgeFadeAmount ?? draft.imageEdgeFadeAmount}
+          edgeFadeMode={imageLayer.edgeFadeMode ?? draft.imageEdgeFadeMode}
           onEdgeFadeChange={(imageEdgeFade) => {
             patchLayer(imageLayer.id, { edgeFade: imageEdgeFade });
             if (imageLayer.id === "operator") patchDraft({ imageEdgeFade });
@@ -217,9 +253,14 @@ export function EditorPanel() {
             patchLayer(imageLayer.id, { edgeFadeAmount: imageEdgeFadeAmount });
             if (imageLayer.id === "operator") patchDraft({ imageEdgeFadeAmount });
           }}
+          onEdgeFadeModeChange={(imageEdgeFadeMode) => {
+            patchLayer(imageLayer.id, { edgeFadeMode: imageEdgeFadeMode });
+            if (imageLayer.id === "operator") patchDraft({ imageEdgeFadeMode });
+          }}
           onPick={(op, art) => {
             const keepTitle = draft.title.trim() && draft.title.trim() !== draft.operatorName;
             const primary = imageLayer.id === "operator";
+            const previousOperatorId = imageLayer.operatorId || draft.operatorId;
             patchLayer(imageLayer.id, {
               source: "operator",
               operatorId: op.id,
@@ -242,6 +283,11 @@ export function EditorPanel() {
               imageScale: defaultImageScale,
               title: keepTitleOnPick || keepTitle ? draft.title : op.name,
             });
+            const chibi = draft.layers.find((layer): layer is ImageLayer => layer.id === "chibi" && layer.kind === "image");
+            const follow = isNativeElement(templateId, "chibi", draft.canvasSkin)
+              ? followingChibiPatch(chibi, previousOperatorId, op, art)
+              : null;
+            if (follow) patchLayer("chibi", follow);
           }}
         />
       ) : null}
@@ -255,6 +301,17 @@ export function EditorPanel() {
               max={IMAGE_SCALE_MAX}
               value={uploadLayer.scale ?? draft.imageScale}
               onChange={(e) => patchLayer(uploadLayer.id, { scale: Number(e.target.value) })}
+              className="w-full"
+            />
+          </Field>
+        ) : chibiLayer ? (
+          <Field label={`小人缩放 ${chibiLayer.scale ?? 100}%`}>
+            <input
+              type="range"
+              min={IMAGE_SCALE_MIN}
+              max={IMAGE_SCALE_MAX}
+              value={chibiLayer.scale ?? 100}
+              onChange={(e) => patchLayer(chibiLayer.id, { scale: Number(e.target.value) })}
               className="w-full"
             />
           </Field>
@@ -274,8 +331,26 @@ export function EditorPanel() {
             />
           </Field>
         ) : null}
-        <div className={`flex items-center justify-between gap-3 ${uploadLayer || imageLayer ? "mt-3" : ""}`}>
-          {imageLayer ? (
+        <div className={`flex items-center justify-between gap-3 ${uploadLayer || imageLayer || chibiLayer ? "mt-3" : ""}`}>
+          {chibiLayer ? (
+            <label className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
+              <UploadSimple size={16} />
+              上传小人
+              <input
+                type="file"
+                accept={IMAGE_FILE_ACCEPT}
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (!file) return;
+                  void readImageAsDataUrl(file).then((imageDataUrl) => {
+                    patchLayer(chibiLayer.id, { source: "chibi", imageDataUrl, imageUrl: "" });
+                  });
+                }}
+              />
+            </label>
+          ) : imageLayer ? (
             <label className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
               <UploadSimple size={16} />
               上传立绘
