@@ -256,7 +256,7 @@ references/solo-clear/         仅需一人构图参考，jpg 不提交
 
 ### 基建小人
 
-网上只有 Spine 三件套，封面导出用静帧 PNG。本仓库**不提交**渲好的小人图。静帧发到 [Light-milk-tea/ArknightsChibi](https://github.com/Light-milk-tea/ArknightsChibi)，jsDelivr：`…/chibi/<id>.png`（`#` 换成 `-`）。点选目录是 `src/data/chibis.json`，当前约 569 张（267 名干员 + 部分时装），全量还没渲完。
+网上只有 Spine 三件套，封面导出用静帧 PNG。本仓库**不提交**渲好的小人图。静帧发到 [Light-milk-tea/ArknightsChibi](https://github.com/Light-milk-tea/ArknightsChibi)，jsDelivr：`…/chibi/<id>.png`（`#` 换成 `-`）。点选目录是 `src/data/chibis.json`，当前 **913** 张（431 名干员：默认基建 423 + 时装 490）。没有房子模型的皮肤不会进目录。
 
 本机：
 

@@ -18,8 +18,20 @@
     document.body.innerHTML = "";
     document.body.appendChild(app.view);
     const alias = `chibi-${base}-${Date.now()}`;
-    PIXI.Assets.add({ alias, src: `${base}.skel` });
-    const resource = await PIXI.Assets.load(alias);
+    const srcs = [`${base}.skel`, `${base}.json`];
+    let resource;
+    let lastError;
+    for (const src of srcs) {
+      try {
+        PIXI.Assets.add({ alias: `${alias}-${src}`, src });
+        resource = await PIXI.Assets.load(`${alias}-${src}`);
+        lastError = undefined;
+        break;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+    if (!resource) throw lastError || new Error(`Failed to load ${base}`);
     const data = resource.spineData || resource;
     const actor = new PIXI.spine.Spine(data);
     const names = actor.spineData.animations.map((a) => a.name);

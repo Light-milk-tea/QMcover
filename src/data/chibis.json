@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11T09:01:51.068Z",
+  "generatedAt": "2026-09-14T05:48:43.398Z",
   "source": "https://torappu.prts.wiki/assets/char_spine/",
   "repo": "Light-milk-tea/ArknightsChibi@main",
   "files": {
@@ -467,6 +467,11 @@
       "charId": "char_1028_texas2",
       "artId": "char_1028_texas2",
       "file": "chibi/char_1028_texas2.png"
+    },
+    "char_1028_texas2_epoque-36": {
+      "charId": "char_1028_texas2",
+      "artId": "char_1028_texas2_epoque#36",
+      "file": "chibi/char_1028_texas2_epoque-36.png"
     },
     "char_1028_texas2_iteration-1": {
       "charId": "char_1028_texas2",
@@ -1087,6 +1092,16 @@
       "charId": "char_263_skadi",
       "artId": "char_263_skadi_marthe#5",
       "file": "chibi/char_263_skadi_marthe-5.png"
+    },
+    "char_450_necras": {
+      "charId": "char_450_necras",
+      "artId": "char_450_necras",
+      "file": "chibi/char_450_necras.png"
+    },
+    "char_450_necras_summer-20": {
+      "charId": "char_450_necras",
+      "artId": "char_450_necras_summer#20",
+      "file": "chibi/char_450_necras_summer-20.png"
     },
     "char_245_cello": {
       "charId": "char_245_cello",
@@ -2847,6 +2862,1711 @@
       "charId": "char_215_mantic",
       "artId": "char_215_mantic_epoque#19",
       "file": "chibi/char_215_mantic_epoque-19.png"
+    },
+    "char_378_asbest": {
+      "charId": "char_378_asbest",
+      "artId": "char_378_asbest",
+      "file": "chibi/char_378_asbest.png"
+    },
+    "char_378_asbest_whirlwind-3": {
+      "charId": "char_378_asbest",
+      "artId": "char_378_asbest_whirlwind#3",
+      "file": "chibi/char_378_asbest_whirlwind-3.png"
+    },
+    "char_4236_tmslot": {
+      "charId": "char_4236_tmslot",
+      "artId": "char_4236_tmslot",
+      "file": "chibi/char_4236_tmslot.png"
+    },
+    "char_489_serum": {
+      "charId": "char_489_serum",
+      "artId": "char_489_serum",
+      "file": "chibi/char_489_serum.png"
+    },
+    "char_489_serum_epoque-31": {
+      "charId": "char_489_serum",
+      "artId": "char_489_serum_epoque#31",
+      "file": "chibi/char_489_serum_epoque-31.png"
+    },
+    "char_241_panda": {
+      "charId": "char_241_panda",
+      "artId": "char_241_panda",
+      "file": "chibi/char_241_panda.png"
+    },
+    "char_241_panda_nian-7": {
+      "charId": "char_241_panda",
+      "artId": "char_241_panda_nian#7",
+      "file": "chibi/char_241_panda_nian-7.png"
+    },
+    "char_241_panda_marthe-1": {
+      "charId": "char_241_panda",
+      "artId": "char_241_panda_marthe#1",
+      "file": "chibi/char_241_panda_marthe-1.png"
+    },
+    "char_158_milu": {
+      "charId": "char_158_milu",
+      "artId": "char_158_milu",
+      "file": "chibi/char_158_milu.png"
+    },
+    "char_158_milu_snow-2": {
+      "charId": "char_158_milu",
+      "artId": "char_158_milu_snow#2",
+      "file": "chibi/char_158_milu_snow-2.png"
+    },
+    "char_158_milu_wild-2": {
+      "charId": "char_158_milu",
+      "artId": "char_158_milu_wild#2",
+      "file": "chibi/char_158_milu_wild-2.png"
+    },
+    "char_4124_iana": {
+      "charId": "char_4124_iana",
+      "artId": "char_4124_iana",
+      "file": "chibi/char_4124_iana.png"
+    },
+    "char_4124_iana_rainbow6-2": {
+      "charId": "char_4124_iana",
+      "artId": "char_4124_iana_rainbow6#2",
+      "file": "chibi/char_4124_iana_rainbow6-2.png"
+    },
+    "char_458_rfrost": {
+      "charId": "char_458_rfrost",
+      "artId": "char_458_rfrost",
+      "file": "chibi/char_458_rfrost.png"
+    },
+    "char_4177_brigid": {
+      "charId": "char_4177_brigid",
+      "artId": "char_4177_brigid",
+      "file": "chibi/char_4177_brigid.png"
+    },
+    "char_4177_brigid_epoque-53": {
+      "charId": "char_4177_brigid",
+      "artId": "char_4177_brigid_epoque#53",
+      "file": "chibi/char_4177_brigid_epoque-53.png"
+    },
+    "char_365_aprl": {
+      "charId": "char_365_aprl",
+      "artId": "char_365_aprl",
+      "file": "chibi/char_365_aprl.png"
+    },
+    "char_365_aprl_wild-3": {
+      "charId": "char_365_aprl",
+      "artId": "char_365_aprl_wild#3",
+      "file": "chibi/char_365_aprl_wild-3.png"
+    },
+    "char_4199_makiri": {
+      "charId": "char_4199_makiri",
+      "artId": "char_4199_makiri",
+      "file": "chibi/char_4199_makiri.png"
+    },
+    "char_4199_makiri_sale-19": {
+      "charId": "char_4199_makiri",
+      "artId": "char_4199_makiri_sale#19",
+      "file": "chibi/char_4199_makiri_sale-19.png"
+    },
+    "char_279_excu": {
+      "charId": "char_279_excu",
+      "artId": "char_279_excu",
+      "file": "chibi/char_279_excu.png"
+    },
+    "char_279_excu_boc-1": {
+      "charId": "char_279_excu",
+      "artId": "char_279_excu_boc#1",
+      "file": "chibi/char_279_excu_boc-1.png"
+    },
+    "char_415_flint": {
+      "charId": "char_415_flint",
+      "artId": "char_415_flint",
+      "file": "chibi/char_415_flint.png"
+    },
+    "char_4164_tecno": {
+      "charId": "char_4164_tecno",
+      "artId": "char_4164_tecno",
+      "file": "chibi/char_4164_tecno.png"
+    },
+    "char_411_tomimi": {
+      "charId": "char_411_tomimi",
+      "artId": "char_411_tomimi",
+      "file": "chibi/char_411_tomimi.png"
+    },
+    "char_411_tomimi_summer-5": {
+      "charId": "char_411_tomimi",
+      "artId": "char_411_tomimi_summer#5",
+      "file": "chibi/char_411_tomimi_summer-5.png"
+    },
+    "char_166_skfire": {
+      "charId": "char_166_skfire",
+      "artId": "char_166_skfire",
+      "file": "chibi/char_166_skfire.png"
+    },
+    "char_166_skfire_summer-1": {
+      "charId": "char_166_skfire",
+      "artId": "char_166_skfire_summer#1",
+      "file": "chibi/char_166_skfire_summer-1.png"
+    },
+    "char_4213_skybx": {
+      "charId": "char_4213_skybx",
+      "artId": "char_4213_skybx",
+      "file": "chibi/char_4213_skybx.png"
+    },
+    "char_402_tuye": {
+      "charId": "char_402_tuye",
+      "artId": "char_402_tuye",
+      "file": "chibi/char_402_tuye.png"
+    },
+    "char_402_tuye_epoque-14": {
+      "charId": "char_402_tuye",
+      "artId": "char_402_tuye_epoque#14",
+      "file": "chibi/char_402_tuye_epoque-14.png"
+    },
+    "char_4119_wanqin": {
+      "charId": "char_4119_wanqin",
+      "artId": "char_4119_wanqin",
+      "file": "chibi/char_4119_wanqin.png"
+    },
+    "char_4119_wanqin_epoque-41": {
+      "charId": "char_4119_wanqin",
+      "artId": "char_4119_wanqin_epoque#41",
+      "file": "chibi/char_4119_wanqin_epoque-41.png"
+    },
+    "char_275_breeze": {
+      "charId": "char_275_breeze",
+      "artId": "char_275_breeze",
+      "file": "chibi/char_275_breeze.png"
+    },
+    "char_275_breeze_unveiling-4": {
+      "charId": "char_275_breeze",
+      "artId": "char_275_breeze_unveiling#4",
+      "file": "chibi/char_275_breeze_unveiling-4.png"
+    },
+    "char_261_sddrag": {
+      "charId": "char_261_sddrag",
+      "artId": "char_261_sddrag",
+      "file": "chibi/char_261_sddrag.png"
+    },
+    "char_4081_warmy": {
+      "charId": "char_4081_warmy",
+      "artId": "char_4081_warmy",
+      "file": "chibi/char_4081_warmy.png"
+    },
+    "char_4081_warmy_winter-4": {
+      "charId": "char_4081_warmy",
+      "artId": "char_4081_warmy_winter#4",
+      "file": "chibi/char_4081_warmy_winter-4.png"
+    },
+    "char_4224_turdus": {
+      "charId": "char_4224_turdus",
+      "artId": "char_4224_turdus",
+      "file": "chibi/char_4224_turdus.png"
+    },
+    "char_455_nothin": {
+      "charId": "char_455_nothin",
+      "artId": "char_455_nothin",
+      "file": "chibi/char_455_nothin.png"
+    },
+    "char_455_nothin_nian-7": {
+      "charId": "char_455_nothin",
+      "artId": "char_455_nothin_nian#7",
+      "file": "chibi/char_455_nothin_nian-7.png"
+    },
+    "char_254_vodfox": {
+      "charId": "char_254_vodfox",
+      "artId": "char_254_vodfox",
+      "file": "chibi/char_254_vodfox.png"
+    },
+    "char_254_vodfox_witch-2": {
+      "charId": "char_254_vodfox",
+      "artId": "char_254_vodfox_witch#2",
+      "file": "chibi/char_254_vodfox_witch-2.png"
+    },
+    "char_254_vodfox_yun-8": {
+      "charId": "char_254_vodfox",
+      "artId": "char_254_vodfox_yun#8",
+      "file": "chibi/char_254_vodfox_yun-8.png"
+    },
+    "char_336_folivo": {
+      "charId": "char_336_folivo",
+      "artId": "char_336_folivo",
+      "file": "chibi/char_336_folivo.png"
+    },
+    "char_336_folivo_epoque-22": {
+      "charId": "char_336_folivo",
+      "artId": "char_336_folivo_epoque#22",
+      "file": "chibi/char_336_folivo_epoque-22.png"
+    },
+    "char_336_folivo_wild-11": {
+      "charId": "char_336_folivo",
+      "artId": "char_336_folivo_wild#11",
+      "file": "chibi/char_336_folivo_wild-11.png"
+    },
+    "char_348_ceylon": {
+      "charId": "char_348_ceylon",
+      "artId": "char_348_ceylon",
+      "file": "chibi/char_348_ceylon.png"
+    },
+    "char_348_ceylon_summer-13": {
+      "charId": "char_348_ceylon",
+      "artId": "char_348_ceylon_summer#13",
+      "file": "chibi/char_348_ceylon_summer-13.png"
+    },
+    "char_4151_tinman": {
+      "charId": "char_4151_tinman",
+      "artId": "char_4151_tinman",
+      "file": "chibi/char_4151_tinman.png"
+    },
+    "char_4151_tinman_sale-11": {
+      "charId": "char_4151_tinman",
+      "artId": "char_4151_tinman_sale#11",
+      "file": "chibi/char_4151_tinman_sale-11.png"
+    },
+    "char_492_quercu": {
+      "charId": "char_492_quercu",
+      "artId": "char_492_quercu",
+      "file": "chibi/char_492_quercu.png"
+    },
+    "char_492_quercu_epoque-17": {
+      "charId": "char_492_quercu",
+      "artId": "char_492_quercu_epoque#17",
+      "file": "chibi/char_492_quercu_epoque-17.png"
+    },
+    "char_492_quercu_witch-4": {
+      "charId": "char_492_quercu",
+      "artId": "char_492_quercu_witch#4",
+      "file": "chibi/char_492_quercu_witch-4.png"
+    },
+    "char_4214_cairn": {
+      "charId": "char_4214_cairn",
+      "artId": "char_4214_cairn",
+      "file": "chibi/char_4214_cairn.png"
+    },
+    "char_4122_grabds": {
+      "charId": "char_4122_grabds",
+      "artId": "char_4122_grabds",
+      "file": "chibi/char_4122_grabds.png"
+    },
+    "char_4122_grabds_yun-3": {
+      "charId": "char_4122_grabds",
+      "artId": "char_4122_grabds_yun#3",
+      "file": "chibi/char_4122_grabds_yun-3.png"
+    },
+    "char_497_ctable": {
+      "charId": "char_497_ctable",
+      "artId": "char_497_ctable",
+      "file": "chibi/char_497_ctable.png"
+    },
+    "char_497_ctable_epoque-44": {
+      "charId": "char_497_ctable",
+      "artId": "char_497_ctable_epoque#44",
+      "file": "chibi/char_497_ctable_epoque-44.png"
+    },
+    "char_497_ctable_nian-9": {
+      "charId": "char_497_ctable",
+      "artId": "char_497_ctable_nian#9",
+      "file": "chibi/char_497_ctable_nian-9.png"
+    },
+    "char_1022_flwr2": {
+      "charId": "char_1022_flwr2",
+      "artId": "char_1022_flwr2",
+      "file": "chibi/char_1022_flwr2.png"
+    },
+    "char_274_astesi": {
+      "charId": "char_274_astesi",
+      "artId": "char_274_astesi",
+      "file": "chibi/char_274_astesi.png"
+    },
+    "char_274_astesi_epoque-5": {
+      "charId": "char_274_astesi",
+      "artId": "char_274_astesi_epoque#5",
+      "file": "chibi/char_274_astesi_epoque-5.png"
+    },
+    "char_274_astesi_epoque-23": {
+      "charId": "char_274_astesi",
+      "artId": "char_274_astesi_epoque#23",
+      "file": "chibi/char_274_astesi_epoque-23.png"
+    },
+    "char_274_astesi_shining-1": {
+      "charId": "char_274_astesi",
+      "artId": "char_274_astesi_shining#1",
+      "file": "chibi/char_274_astesi_shining-1.png"
+    },
+    "char_135_halo": {
+      "charId": "char_135_halo",
+      "artId": "char_135_halo",
+      "file": "chibi/char_135_halo.png"
+    },
+    "char_135_halo_epoque-25": {
+      "charId": "char_135_halo",
+      "artId": "char_135_halo_epoque#25",
+      "file": "chibi/char_135_halo_epoque-25.png"
+    },
+    "char_4172_xingzh": {
+      "charId": "char_4172_xingzh",
+      "artId": "char_4172_xingzh",
+      "file": "chibi/char_4172_xingzh.png"
+    },
+    "char_4172_xingzh_epoque-51": {
+      "charId": "char_4172_xingzh",
+      "artId": "char_4172_xingzh_epoque#51",
+      "file": "chibi/char_4172_xingzh_epoque-51.png"
+    },
+    "char_4105_almond": {
+      "charId": "char_4105_almond",
+      "artId": "char_4105_almond",
+      "file": "chibi/char_4105_almond.png"
+    },
+    "char_4105_almond_epoque-38": {
+      "charId": "char_4105_almond",
+      "artId": "char_4105_almond_epoque#38",
+      "file": "chibi/char_4105_almond_epoque-38.png"
+    },
+    "char_436_whispr": {
+      "charId": "char_436_whispr",
+      "artId": "char_436_whispr",
+      "file": "chibi/char_436_whispr.png"
+    },
+    "char_436_whispr_nian-4": {
+      "charId": "char_436_whispr",
+      "artId": "char_436_whispr_nian#4",
+      "file": "chibi/char_436_whispr_nian-4.png"
+    },
+    "char_436_whispr_witch-4": {
+      "charId": "char_436_whispr",
+      "artId": "char_436_whispr_witch#4",
+      "file": "chibi/char_436_whispr_witch-4.png"
+    },
+    "char_4211_snhunt": {
+      "charId": "char_4211_snhunt",
+      "artId": "char_4211_snhunt",
+      "file": "chibi/char_4211_snhunt.png"
+    },
+    "char_466_qanik": {
+      "charId": "char_466_qanik",
+      "artId": "char_466_qanik",
+      "file": "chibi/char_466_qanik.png"
+    },
+    "char_466_qanik_snow-6": {
+      "charId": "char_466_qanik",
+      "artId": "char_466_qanik_snow#6",
+      "file": "chibi/char_466_qanik_snow-6.png"
+    },
+    "char_383_snsant": {
+      "charId": "char_383_snsant",
+      "artId": "char_383_snsant",
+      "file": "chibi/char_383_snsant.png"
+    },
+    "char_383_snsant_witch-2": {
+      "charId": "char_383_snsant",
+      "artId": "char_383_snsant_witch#2",
+      "file": "chibi/char_383_snsant_witch-2.png"
+    },
+    "char_4052_surfer": {
+      "charId": "char_4052_surfer",
+      "artId": "char_4052_surfer",
+      "file": "chibi/char_4052_surfer.png"
+    },
+    "char_4052_surfer_nian-12": {
+      "charId": "char_4052_surfer",
+      "artId": "char_4052_surfer_nian#12",
+      "file": "chibi/char_4052_surfer_nian-12.png"
+    },
+    "char_173_slchan": {
+      "charId": "char_173_slchan",
+      "artId": "char_173_slchan",
+      "file": "chibi/char_173_slchan.png"
+    },
+    "char_173_slchan_wild-1": {
+      "charId": "char_173_slchan",
+      "artId": "char_173_slchan_wild#1",
+      "file": "chibi/char_173_slchan_wild-1.png"
+    },
+    "char_173_slchan_wwf-1": {
+      "charId": "char_173_slchan",
+      "artId": "char_173_slchan_wwf#1",
+      "file": "chibi/char_173_slchan_wwf-1.png"
+    },
+    "char_345_folnic": {
+      "charId": "char_345_folnic",
+      "artId": "char_345_folnic",
+      "file": "chibi/char_345_folnic.png"
+    },
+    "char_345_folnic_wild-4": {
+      "charId": "char_345_folnic",
+      "artId": "char_345_folnic_wild#4",
+      "file": "chibi/char_345_folnic_wild-4.png"
+    },
+    "char_131_flameb": {
+      "charId": "char_131_flameb",
+      "artId": "char_131_flameb",
+      "file": "chibi/char_131_flameb.png"
+    },
+    "char_131_flameb_whirlwind-6": {
+      "charId": "char_131_flameb",
+      "artId": "char_131_flameb_whirlwind#6",
+      "file": "chibi/char_131_flameb_whirlwind-6.png"
+    },
+    "char_131_flameb_summer-8": {
+      "charId": "char_131_flameb",
+      "artId": "char_131_flameb_summer#8",
+      "file": "chibi/char_131_flameb_summer-8.png"
+    },
+    "char_1011_lava2": {
+      "charId": "char_1011_lava2",
+      "artId": "char_1011_lava2",
+      "file": "chibi/char_1011_lava2.png"
+    },
+    "char_1011_lava2_nian-6": {
+      "charId": "char_1011_lava2",
+      "artId": "char_1011_lava2_nian#6",
+      "file": "chibi/char_1011_lava2_nian-6.png"
+    },
+    "char_1011_lava2_whirlwind-9": {
+      "charId": "char_1011_lava2",
+      "artId": "char_1011_lava2_whirlwind#9",
+      "file": "chibi/char_1011_lava2_whirlwind-9.png"
+    },
+    "char_464_cement": {
+      "charId": "char_464_cement",
+      "artId": "char_464_cement",
+      "file": "chibi/char_464_cement.png"
+    },
+    "char_464_cement_epoque-31": {
+      "charId": "char_464_cement",
+      "artId": "char_464_cement_epoque#31",
+      "file": "chibi/char_464_cement_epoque-31.png"
+    },
+    "char_4013_kjera": {
+      "charId": "char_4013_kjera",
+      "artId": "char_4013_kjera",
+      "file": "chibi/char_4013_kjera.png"
+    },
+    "char_4013_kjera_epoque-18": {
+      "charId": "char_4013_kjera",
+      "artId": "char_4013_kjera_epoque#18",
+      "file": "chibi/char_4013_kjera_epoque-18.png"
+    },
+    "char_496_wildmn": {
+      "charId": "char_496_wildmn",
+      "artId": "char_496_wildmn",
+      "file": "chibi/char_496_wildmn.png"
+    },
+    "char_496_wildmn_epoque-16": {
+      "charId": "char_496_wildmn",
+      "artId": "char_496_wildmn_epoque#16",
+      "file": "chibi/char_496_wildmn_epoque-16.png"
+    },
+    "char_476_blkngt": {
+      "charId": "char_476_blkngt",
+      "artId": "char_476_blkngt",
+      "file": "chibi/char_476_blkngt.png"
+    },
+    "char_476_blkngt_nian-8": {
+      "charId": "char_476_blkngt",
+      "artId": "char_476_blkngt_nian#8",
+      "file": "chibi/char_476_blkngt_nian-8.png"
+    },
+    "char_476_blkngt_summer-8": {
+      "charId": "char_476_blkngt",
+      "artId": "char_476_blkngt_summer#8",
+      "file": "chibi/char_476_blkngt_summer-8.png"
+    },
+    "char_164_nightm": {
+      "charId": "char_164_nightm",
+      "artId": "char_164_nightm",
+      "file": "chibi/char_164_nightm.png"
+    },
+    "char_164_nightm_epoque-5": {
+      "charId": "char_164_nightm",
+      "artId": "char_164_nightm_epoque#5",
+      "file": "chibi/char_164_nightm_epoque-5.png"
+    },
+    "char_164_nightm_unveiling-2": {
+      "charId": "char_164_nightm",
+      "artId": "char_164_nightm_unveiling#2",
+      "file": "chibi/char_164_nightm_unveiling-2.png"
+    },
+    "char_4125_rdoc": {
+      "charId": "char_4125_rdoc",
+      "artId": "char_4125_rdoc",
+      "file": "chibi/char_4125_rdoc.png"
+    },
+    "char_4125_rdoc_rainbow6-2": {
+      "charId": "char_4125_rdoc",
+      "artId": "char_4125_rdoc_rainbow6#2",
+      "file": "chibi/char_4125_rdoc_rainbow6-2.png"
+    },
+    "char_155_tiger": {
+      "charId": "char_155_tiger",
+      "artId": "char_155_tiger",
+      "file": "chibi/char_155_tiger.png"
+    },
+    "char_155_tiger_striker-2": {
+      "charId": "char_155_tiger",
+      "artId": "char_155_tiger_striker#2",
+      "file": "chibi/char_155_tiger_striker-2.png"
+    },
+    "char_498_inside": {
+      "charId": "char_498_inside",
+      "artId": "char_498_inside",
+      "file": "chibi/char_498_inside.png"
+    },
+    "char_498_inside_summer-22": {
+      "charId": "char_498_inside",
+      "artId": "char_498_inside_summer#22",
+      "file": "chibi/char_498_inside_summer-22.png"
+    },
+    "char_498_inside_kitchen-2": {
+      "charId": "char_498_inside",
+      "artId": "char_498_inside_kitchen#2",
+      "file": "chibi/char_498_inside_kitchen-2.png"
+    },
+    "char_143_ghost": {
+      "charId": "char_143_ghost",
+      "artId": "char_143_ghost",
+      "file": "chibi/char_143_ghost.png"
+    },
+    "char_143_ghost_winter-1": {
+      "charId": "char_143_ghost",
+      "artId": "char_143_ghost_winter#1",
+      "file": "chibi/char_143_ghost_winter-1.png"
+    },
+    "char_4185_amoris": {
+      "charId": "char_4185_amoris",
+      "artId": "char_4185_amoris",
+      "file": "chibi/char_4185_amoris.png"
+    },
+    "char_4185_amoris_avemujica-1": {
+      "charId": "char_4185_amoris",
+      "artId": "char_4185_amoris_avemujica#1",
+      "file": "chibi/char_4185_amoris_avemujica-1.png"
+    },
+    "char_421_crow": {
+      "charId": "char_421_crow",
+      "artId": "char_421_crow",
+      "file": "chibi/char_421_crow.png"
+    },
+    "char_421_crow_summer-9": {
+      "charId": "char_421_crow",
+      "artId": "char_421_crow_summer#9",
+      "file": "chibi/char_421_crow_summer-9.png"
+    },
+    "char_343_tknogi": {
+      "charId": "char_343_tknogi",
+      "artId": "char_343_tknogi",
+      "file": "chibi/char_343_tknogi.png"
+    },
+    "char_343_tknogi_epoque-9": {
+      "charId": "char_343_tknogi",
+      "artId": "char_343_tknogi_epoque#9",
+      "file": "chibi/char_343_tknogi_epoque-9.png"
+    },
+    "char_343_tknogi_snow-6": {
+      "charId": "char_343_tknogi",
+      "artId": "char_343_tknogi_snow#6",
+      "file": "chibi/char_343_tknogi_snow-6.png"
+    },
+    "char_4219_yukari": {
+      "charId": "char_4219_yukari",
+      "artId": "char_4219_yukari",
+      "file": "chibi/char_4219_yukari.png"
+    },
+    "char_4219_yukari_p3r-1": {
+      "charId": "char_4219_yukari",
+      "artId": "char_4219_yukari_p3r#1",
+      "file": "chibi/char_4219_yukari_p3r-1.png"
+    },
+    "char_219_meteo": {
+      "charId": "char_219_meteo",
+      "artId": "char_219_meteo",
+      "file": "chibi/char_219_meteo.png"
+    },
+    "char_219_meteo_summer-22": {
+      "charId": "char_219_meteo",
+      "artId": "char_219_meteo_summer#22",
+      "file": "chibi/char_219_meteo_summer-22.png"
+    },
+    "char_219_meteo_sweep-1": {
+      "charId": "char_219_meteo",
+      "artId": "char_219_meteo_sweep#1",
+      "file": "chibi/char_219_meteo_sweep-1.png"
+    },
+    "char_459_tachak": {
+      "charId": "char_459_tachak",
+      "artId": "char_459_tachak",
+      "file": "chibi/char_459_tachak.png"
+    },
+    "char_459_tachak_rainbow6-1": {
+      "charId": "char_459_tachak",
+      "artId": "char_459_tachak_rainbow6#1",
+      "file": "chibi/char_459_tachak_rainbow6-1.png"
+    },
+    "char_499_kaitou": {
+      "charId": "char_499_kaitou",
+      "artId": "char_499_kaitou",
+      "file": "chibi/char_499_kaitou.png"
+    },
+    "char_499_kaitou_epoque-37": {
+      "charId": "char_499_kaitou",
+      "artId": "char_499_kaitou_epoque#37",
+      "file": "chibi/char_499_kaitou_epoque-37.png"
+    },
+    "char_4207_branch": {
+      "charId": "char_4207_branch",
+      "artId": "char_4207_branch",
+      "file": "chibi/char_4207_branch.png"
+    },
+    "char_4207_branch_yun-10": {
+      "charId": "char_4207_branch",
+      "artId": "char_4207_branch_yun#10",
+      "file": "chibi/char_4207_branch_yun-10.png"
+    },
+    "char_195_glassb": {
+      "charId": "char_195_glassb",
+      "artId": "char_195_glassb",
+      "file": "chibi/char_195_glassb.png"
+    },
+    "char_195_glassb_kitchen-1": {
+      "charId": "char_195_glassb",
+      "artId": "char_195_glassb_kitchen#1",
+      "file": "chibi/char_195_glassb_kitchen-1.png"
+    },
+    "char_4054_malist_summer-14": {
+      "charId": "char_4054_malist",
+      "artId": "char_4054_malist_summer#14",
+      "file": "chibi/char_4054_malist_summer-14.png"
+    },
+    "char_333_sidero": {
+      "charId": "char_333_sidero",
+      "artId": "char_333_sidero",
+      "file": "chibi/char_333_sidero.png"
+    },
+    "char_333_sidero_summer-6": {
+      "charId": "char_333_sidero",
+      "artId": "char_333_sidero_summer#6",
+      "file": "chibi/char_333_sidero_summer-6.png"
+    },
+    "char_1024_hbisc2": {
+      "charId": "char_1024_hbisc2",
+      "artId": "char_1024_hbisc2",
+      "file": "chibi/char_1024_hbisc2.png"
+    },
+    "char_1024_hbisc2_unveiling-2": {
+      "charId": "char_1024_hbisc2",
+      "artId": "char_1024_hbisc2_unveiling#2",
+      "file": "chibi/char_1024_hbisc2_unveiling-2.png"
+    },
+    "char_4014_lunacu_yun-1": {
+      "charId": "char_4014_lunacu",
+      "artId": "char_4014_lunacu_yun#1",
+      "file": "chibi/char_4014_lunacu_yun-1.png"
+    },
+    "char_4198_christ": {
+      "charId": "char_4198_christ",
+      "artId": "char_4198_christ",
+      "file": "chibi/char_4198_christ.png"
+    },
+    "char_4198_christ_epoque-56": {
+      "charId": "char_4198_christ",
+      "artId": "char_4198_christ_epoque#56",
+      "file": "chibi/char_4198_christ_epoque-56.png"
+    },
+    "char_277_sqrrel": {
+      "charId": "char_277_sqrrel",
+      "artId": "char_277_sqrrel",
+      "file": "chibi/char_277_sqrrel.png"
+    },
+    "char_277_sqrrel_ghost-1": {
+      "charId": "char_277_sqrrel",
+      "artId": "char_277_sqrrel_ghost#1",
+      "file": "chibi/char_277_sqrrel_ghost-1.png"
+    },
+    "char_127_estell": {
+      "charId": "char_127_estell",
+      "artId": "char_127_estell",
+      "file": "chibi/char_127_estell.png"
+    },
+    "char_127_estell_epoque-50": {
+      "charId": "char_127_estell",
+      "artId": "char_127_estell_epoque#50",
+      "file": "chibi/char_127_estell_epoque-50.png"
+    },
+    "char_302_glaze": {
+      "charId": "char_302_glaze",
+      "artId": "char_302_glaze",
+      "file": "chibi/char_302_glaze.png"
+    },
+    "char_302_glaze_summer-11": {
+      "charId": "char_302_glaze",
+      "artId": "char_302_glaze_summer#11",
+      "file": "chibi/char_302_glaze_summer-11.png"
+    },
+    "char_236_rope": {
+      "charId": "char_236_rope",
+      "artId": "char_236_rope",
+      "file": "chibi/char_236_rope.png"
+    },
+    "char_236_rope_summer-2": {
+      "charId": "char_236_rope",
+      "artId": "char_236_rope_summer#2",
+      "file": "chibi/char_236_rope_summer-2.png"
+    },
+    "char_236_rope_witch-1": {
+      "charId": "char_236_rope",
+      "artId": "char_236_rope_witch#1",
+      "file": "chibi/char_236_rope_witch-1.png"
+    },
+    "char_118_yuki": {
+      "charId": "char_118_yuki",
+      "artId": "char_118_yuki",
+      "file": "chibi/char_118_yuki.png"
+    },
+    "char_118_yuki_boc-2": {
+      "charId": "char_118_yuki",
+      "artId": "char_118_yuki_boc#2",
+      "file": "chibi/char_118_yuki_boc-2.png"
+    },
+    "char_258_podego": {
+      "charId": "char_258_podego",
+      "artId": "char_258_podego",
+      "file": "chibi/char_258_podego.png"
+    },
+    "char_258_podego_epoque-9": {
+      "charId": "char_258_podego",
+      "artId": "char_258_podego_epoque#9",
+      "file": "chibi/char_258_podego_epoque-9.png"
+    },
+    "char_4004_pudd": {
+      "charId": "char_4004_pudd",
+      "artId": "char_4004_pudd",
+      "file": "chibi/char_4004_pudd.png"
+    },
+    "char_4004_pudd_snow-5": {
+      "charId": "char_4004_pudd",
+      "artId": "char_4004_pudd_snow#5",
+      "file": "chibi/char_4004_pudd_snow-5.png"
+    },
+    "char_289_gyuki": {
+      "charId": "char_289_gyuki",
+      "artId": "char_289_gyuki",
+      "file": "chibi/char_289_gyuki.png"
+    },
+    "char_289_gyuki_epoque-40": {
+      "charId": "char_289_gyuki",
+      "artId": "char_289_gyuki_epoque#40",
+      "file": "chibi/char_289_gyuki_epoque-40.png"
+    },
+    "char_445_wscoot": {
+      "charId": "char_445_wscoot",
+      "artId": "char_445_wscoot",
+      "file": "chibi/char_445_wscoot.png"
+    },
+    "char_445_wscoot_epoque-49": {
+      "charId": "char_445_wscoot",
+      "artId": "char_445_wscoot_epoque#49",
+      "file": "chibi/char_445_wscoot_epoque-49.png"
+    },
+    "char_183_skgoat": {
+      "charId": "char_183_skgoat",
+      "artId": "char_183_skgoat",
+      "file": "chibi/char_183_skgoat.png"
+    },
+    "char_183_skgoat_epoque-30": {
+      "charId": "char_183_skgoat",
+      "artId": "char_183_skgoat_epoque#30",
+      "file": "chibi/char_183_skgoat_epoque-30.png"
+    },
+    "char_181_flower": {
+      "charId": "char_181_flower",
+      "artId": "char_181_flower",
+      "file": "chibi/char_181_flower.png"
+    },
+    "char_181_flower_daily-1": {
+      "charId": "char_181_flower",
+      "artId": "char_181_flower_daily#1",
+      "file": "chibi/char_181_flower_daily-1.png"
+    },
+    "char_181_flower_epoque-9": {
+      "charId": "char_181_flower",
+      "artId": "char_181_flower_epoque#9",
+      "file": "chibi/char_181_flower_epoque-9.png"
+    },
+    "char_4208_wintim": {
+      "charId": "char_4208_wintim",
+      "artId": "char_4208_wintim",
+      "file": "chibi/char_4208_wintim.png"
+    },
+    "char_452_bstalk": {
+      "charId": "char_452_bstalk",
+      "artId": "char_452_bstalk",
+      "file": "chibi/char_452_bstalk.png"
+    },
+    "char_452_bstalk_snow-4": {
+      "charId": "char_452_bstalk",
+      "artId": "char_452_bstalk_snow#4",
+      "file": "chibi/char_452_bstalk_snow-4.png"
+    },
+    "char_452_bstalk_unveiling-4": {
+      "charId": "char_452_bstalk",
+      "artId": "char_452_bstalk_unveiling#4",
+      "file": "chibi/char_452_bstalk_unveiling-4.png"
+    },
+    "char_130_doberm": {
+      "charId": "char_130_doberm",
+      "artId": "char_130_doberm",
+      "file": "chibi/char_130_doberm.png"
+    },
+    "char_130_doberm_epoque-7": {
+      "charId": "char_130_doberm",
+      "artId": "char_130_doberm_epoque#7",
+      "file": "chibi/char_130_doberm_epoque-7.png"
+    },
+    "char_159_peacok": {
+      "charId": "char_159_peacok",
+      "artId": "char_159_peacok",
+      "file": "chibi/char_159_peacok.png"
+    },
+    "char_159_peacok_game-1": {
+      "charId": "char_159_peacok",
+      "artId": "char_159_peacok_game#1",
+      "file": "chibi/char_159_peacok_game-1.png"
+    },
+    "char_271_spikes": {
+      "charId": "char_271_spikes",
+      "artId": "char_271_spikes",
+      "file": "chibi/char_271_spikes.png"
+    },
+    "char_271_spikes_winter-2": {
+      "charId": "char_271_spikes",
+      "artId": "char_271_spikes_winter#2",
+      "file": "chibi/char_271_spikes_winter-2.png"
+    },
+    "char_271_spikes_unveiling-1": {
+      "charId": "char_271_spikes",
+      "artId": "char_271_spikes_unveiling#1",
+      "file": "chibi/char_271_spikes_unveiling-1.png"
+    },
+    "char_253_greyy": {
+      "charId": "char_253_greyy",
+      "artId": "char_253_greyy",
+      "file": "chibi/char_253_greyy.png"
+    },
+    "char_253_greyy_epoque-515": {
+      "charId": "char_253_greyy",
+      "artId": "char_253_greyy_epoque#515",
+      "file": "chibi/char_253_greyy_epoque-515.png"
+    },
+    "char_196_sunbr": {
+      "charId": "char_196_sunbr",
+      "artId": "char_196_sunbr",
+      "file": "chibi/char_196_sunbr.png"
+    },
+    "char_196_sunbr_summer-1": {
+      "charId": "char_196_sunbr",
+      "artId": "char_196_sunbr_summer#1",
+      "file": "chibi/char_196_sunbr_summer-1.png"
+    },
+    "char_4041_chnut": {
+      "charId": "char_4041_chnut",
+      "artId": "char_4041_chnut",
+      "file": "chibi/char_4041_chnut.png"
+    },
+    "char_4041_chnut_summer-12": {
+      "charId": "char_4041_chnut",
+      "artId": "char_4041_chnut_summer#12",
+      "file": "chibi/char_4041_chnut_summer-12.png"
+    },
+    "char_290_vigna": {
+      "charId": "char_290_vigna",
+      "artId": "char_290_vigna",
+      "file": "chibi/char_290_vigna.png"
+    },
+    "char_290_vigna_summer-1": {
+      "charId": "char_290_vigna",
+      "artId": "char_290_vigna_summer#1",
+      "file": "chibi/char_290_vigna_summer-1.png"
+    },
+    "char_290_vigna_as-1": {
+      "charId": "char_290_vigna",
+      "artId": "char_290_vigna_as#1",
+      "file": "chibi/char_290_vigna_as-1.png"
+    },
+    "char_190_clour": {
+      "charId": "char_190_clour",
+      "artId": "char_190_clour",
+      "file": "chibi/char_190_clour.png"
+    },
+    "char_190_clour_epoque-43": {
+      "charId": "char_190_clour",
+      "artId": "char_190_clour_epoque#43",
+      "file": "chibi/char_190_clour_epoque-43.png"
+    },
+    "char_187_ccheal": {
+      "charId": "char_187_ccheal",
+      "artId": "char_187_ccheal",
+      "file": "chibi/char_187_ccheal.png"
+    },
+    "char_187_ccheal_epoque-2": {
+      "charId": "char_187_ccheal",
+      "artId": "char_187_ccheal_epoque#2",
+      "file": "chibi/char_187_ccheal_epoque-2.png"
+    },
+    "char_260_durnar": {
+      "charId": "char_260_durnar",
+      "artId": "char_260_durnar",
+      "file": "chibi/char_260_durnar.png"
+    },
+    "char_260_durnar_epoque-42": {
+      "charId": "char_260_durnar",
+      "artId": "char_260_durnar_epoque#42",
+      "file": "chibi/char_260_durnar_epoque-42.png"
+    },
+    "char_199_yak": {
+      "charId": "char_199_yak",
+      "artId": "char_199_yak",
+      "file": "chibi/char_199_yak.png"
+    },
+    "char_199_yak_summer-1": {
+      "charId": "char_199_yak",
+      "artId": "char_199_yak_summer#1",
+      "file": "chibi/char_199_yak_summer-1.png"
+    },
+    "char_272_strong": {
+      "charId": "char_272_strong",
+      "artId": "char_272_strong",
+      "file": "chibi/char_272_strong.png"
+    },
+    "char_272_strong_summer-6": {
+      "charId": "char_272_strong",
+      "artId": "char_272_strong_summer#6",
+      "file": "chibi/char_272_strong_summer-6.png"
+    },
+    "char_347_jaksel": {
+      "charId": "char_347_jaksel",
+      "artId": "char_347_jaksel",
+      "file": "chibi/char_347_jaksel.png"
+    },
+    "char_347_jaksel_whirlwind-2": {
+      "charId": "char_347_jaksel",
+      "artId": "char_347_jaksel_whirlwind#2",
+      "file": "chibi/char_347_jaksel_whirlwind-2.png"
+    },
+    "char_235_jesica": {
+      "charId": "char_235_jesica",
+      "artId": "char_235_jesica",
+      "file": "chibi/char_235_jesica.png"
+    },
+    "char_235_jesica_nian-2": {
+      "charId": "char_235_jesica",
+      "artId": "char_235_jesica_nian#2",
+      "file": "chibi/char_235_jesica_nian-2.png"
+    },
+    "char_235_jesica_wild-2": {
+      "charId": "char_235_jesica",
+      "artId": "char_235_jesica_wild#2",
+      "file": "chibi/char_235_jesica_wild-2.png"
+    },
+    "char_235_jesica_sweep-1": {
+      "charId": "char_235_jesica",
+      "artId": "char_235_jesica_sweep#1",
+      "file": "chibi/char_235_jesica_sweep-1.png"
+    },
+    "char_328_cammou": {
+      "charId": "char_328_cammou",
+      "artId": "char_328_cammou",
+      "file": "chibi/char_328_cammou.png"
+    },
+    "char_328_cammou_summer-22": {
+      "charId": "char_328_cammou",
+      "artId": "char_328_cammou_summer#22",
+      "file": "chibi/char_328_cammou_summer-22.png"
+    },
+    "char_328_cammou_witch-2": {
+      "charId": "char_328_cammou",
+      "artId": "char_328_cammou_witch#2",
+      "file": "chibi/char_328_cammou_witch-2.png"
+    },
+    "char_301_cutter": {
+      "charId": "char_301_cutter",
+      "artId": "char_301_cutter",
+      "file": "chibi/char_301_cutter.png"
+    },
+    "char_301_cutter_marthe-8": {
+      "charId": "char_301_cutter",
+      "artId": "char_301_cutter_marthe#8",
+      "file": "chibi/char_301_cutter_marthe-8.png"
+    },
+    "char_237_gravel": {
+      "charId": "char_237_gravel",
+      "artId": "char_237_gravel",
+      "file": "chibi/char_237_gravel.png"
+    },
+    "char_237_gravel_winter-2": {
+      "charId": "char_237_gravel",
+      "artId": "char_237_gravel_winter#2",
+      "file": "chibi/char_237_gravel_winter-2.png"
+    },
+    "char_137_brownb": {
+      "charId": "char_137_brownb",
+      "artId": "char_137_brownb",
+      "file": "chibi/char_137_brownb.png"
+    },
+    "char_137_brownb_kitchen-1": {
+      "charId": "char_137_brownb",
+      "artId": "char_137_brownb_kitchen#1",
+      "file": "chibi/char_137_brownb_kitchen-1.png"
+    },
+    "char_126_shotst": {
+      "charId": "char_126_shotst",
+      "artId": "char_126_shotst",
+      "file": "chibi/char_126_shotst.png"
+    },
+    "char_126_shotst_epoque-10": {
+      "charId": "char_126_shotst",
+      "artId": "char_126_shotst_epoque#10",
+      "file": "chibi/char_126_shotst_epoque-10.png"
+    },
+    "char_126_shotst_epoque-28": {
+      "charId": "char_126_shotst",
+      "artId": "char_126_shotst_epoque#28",
+      "file": "chibi/char_126_shotst_epoque-28.png"
+    },
+    "char_4130_luton": {
+      "charId": "char_4130_luton",
+      "artId": "char_4130_luton",
+      "file": "chibi/char_4130_luton.png"
+    },
+    "char_4130_luton_yun-6": {
+      "charId": "char_4130_luton",
+      "artId": "char_4130_luton_yun#6",
+      "file": "chibi/char_4130_luton_yun-6.png"
+    },
+    "char_484_robrta": {
+      "charId": "char_484_robrta",
+      "artId": "char_484_robrta",
+      "file": "chibi/char_484_robrta.png"
+    },
+    "char_484_robrta_summer-10": {
+      "charId": "char_484_robrta",
+      "artId": "char_484_robrta_summer#10",
+      "file": "chibi/char_484_robrta_summer-10.png"
+    },
+    "char_4067_lolxh": {
+      "charId": "char_4067_lolxh",
+      "artId": "char_4067_lolxh",
+      "file": "chibi/char_4067_lolxh.png"
+    },
+    "char_133_mm": {
+      "charId": "char_133_mm",
+      "artId": "char_133_mm",
+      "file": "chibi/char_133_mm.png"
+    },
+    "char_133_mm_summer-20": {
+      "charId": "char_133_mm",
+      "artId": "char_133_mm_summer#20",
+      "file": "chibi/char_133_mm_summer-20.png"
+    },
+    "char_117_myrrh": {
+      "charId": "char_117_myrrh",
+      "artId": "char_117_myrrh",
+      "file": "chibi/char_117_myrrh.png"
+    },
+    "char_117_myrrh_wild-1": {
+      "charId": "char_117_myrrh",
+      "artId": "char_117_myrrh_wild#1",
+      "file": "chibi/char_117_myrrh_wild-1.png"
+    },
+    "char_185_frncat": {
+      "charId": "char_185_frncat",
+      "artId": "char_185_frncat",
+      "file": "chibi/char_185_frncat.png"
+    },
+    "char_185_frncat_marthe-12": {
+      "charId": "char_185_frncat",
+      "artId": "char_185_frncat_marthe#12",
+      "file": "chibi/char_185_frncat_marthe-12.png"
+    },
+    "char_185_frncat_wild-7": {
+      "charId": "char_185_frncat",
+      "artId": "char_185_frncat_wild#7",
+      "file": "chibi/char_185_frncat_wild-7.png"
+    },
+    "char_381_bubble": {
+      "charId": "char_381_bubble",
+      "artId": "char_381_bubble",
+      "file": "chibi/char_381_bubble.png"
+    },
+    "char_381_bubble_marthe-11": {
+      "charId": "char_381_bubble",
+      "artId": "char_381_bubble_marthe#11",
+      "file": "chibi/char_381_bubble_marthe-11.png"
+    },
+    "char_4062_totter": {
+      "charId": "char_4062_totter",
+      "artId": "char_4062_totter",
+      "file": "chibi/char_4062_totter.png"
+    },
+    "char_4062_totter_summer-17": {
+      "charId": "char_4062_totter",
+      "artId": "char_4062_totter_summer#17",
+      "file": "chibi/char_4062_totter_summer-17.png"
+    },
+    "char_149_scave": {
+      "charId": "char_149_scave",
+      "artId": "char_149_scave",
+      "file": "chibi/char_149_scave.png"
+    },
+    "char_149_scave_striker-2": {
+      "charId": "char_149_scave",
+      "artId": "char_149_scave_striker#2",
+      "file": "chibi/char_149_scave_striker-2.png"
+    },
+    "char_385_finlpp": {
+      "charId": "char_385_finlpp",
+      "artId": "char_385_finlpp",
+      "file": "chibi/char_385_finlpp.png"
+    },
+    "char_385_finlpp_nian-11": {
+      "charId": "char_385_finlpp",
+      "artId": "char_385_finlpp_nian#11",
+      "file": "chibi/char_385_finlpp_nian-11.png"
+    },
+    "char_150_snakek": {
+      "charId": "char_150_snakek",
+      "artId": "char_150_snakek",
+      "file": "chibi/char_150_snakek.png"
+    },
+    "char_150_snakek_wild-1": {
+      "charId": "char_150_snakek",
+      "artId": "char_150_snakek_wild#1",
+      "file": "chibi/char_150_snakek_wild-1.png"
+    },
+    "char_150_snakek_yun-7": {
+      "charId": "char_150_snakek",
+      "artId": "char_150_snakek_yun#7",
+      "file": "chibi/char_150_snakek_yun-7.png"
+    },
+    "char_469_indigo": {
+      "charId": "char_469_indigo",
+      "artId": "char_469_indigo",
+      "file": "chibi/char_469_indigo.png"
+    },
+    "char_469_indigo_nian-7": {
+      "charId": "char_469_indigo",
+      "artId": "char_469_indigo_nian#7",
+      "file": "chibi/char_469_indigo_nian-7.png"
+    },
+    "char_110_deepcl": {
+      "charId": "char_110_deepcl",
+      "artId": "char_110_deepcl",
+      "file": "chibi/char_110_deepcl.png"
+    },
+    "char_110_deepcl_winter-3": {
+      "charId": "char_110_deepcl",
+      "artId": "char_110_deepcl_winter#3",
+      "file": "chibi/char_110_deepcl_winter-3.png"
+    },
+    "char_4063_quartz": {
+      "charId": "char_4063_quartz",
+      "artId": "char_4063_quartz",
+      "file": "chibi/char_4063_quartz.png"
+    },
+    "char_4063_quartz_epoque-39": {
+      "charId": "char_4063_quartz",
+      "artId": "char_4063_quartz_epoque#39",
+      "file": "chibi/char_4063_quartz_epoque-39.png"
+    },
+    "char_193_frostl": {
+      "charId": "char_193_frostl",
+      "artId": "char_193_frostl",
+      "file": "chibi/char_193_frostl.png"
+    },
+    "char_193_frostl_boc-4": {
+      "charId": "char_193_frostl",
+      "artId": "char_193_frostl_boc#4",
+      "file": "chibi/char_193_frostl_boc-4.png"
+    },
+    "char_440_pinecn_epoque-31": {
+      "charId": "char_440_pinecn",
+      "artId": "char_440_pinecn_epoque#31",
+      "file": "chibi/char_440_pinecn_epoque-31.png"
+    },
+    "char_440_pinecn_shining-1": {
+      "charId": "char_440_pinecn",
+      "artId": "char_440_pinecn_shining#1",
+      "file": "chibi/char_440_pinecn_shining-1.png"
+    },
+    "char_298_susuro": {
+      "charId": "char_298_susuro",
+      "artId": "char_298_susuro",
+      "file": "chibi/char_298_susuro.png"
+    },
+    "char_298_susuro_summer-6": {
+      "charId": "char_298_susuro",
+      "artId": "char_298_susuro_summer#6",
+      "file": "chibi/char_298_susuro_summer-6.png"
+    },
+    "char_298_susuro_winter-4": {
+      "charId": "char_298_susuro",
+      "artId": "char_298_susuro_winter#4",
+      "file": "chibi/char_298_susuro_winter-4.png"
+    },
+    "char_366_acdrop": {
+      "charId": "char_366_acdrop",
+      "artId": "char_366_acdrop",
+      "file": "chibi/char_366_acdrop.png"
+    },
+    "char_366_acdrop_whirlwind-4": {
+      "charId": "char_366_acdrop",
+      "artId": "char_366_acdrop_whirlwind#4",
+      "file": "chibi/char_366_acdrop_whirlwind-4.png"
+    },
+    "char_366_acdrop_summer-21": {
+      "charId": "char_366_acdrop",
+      "artId": "char_366_acdrop_summer#21",
+      "file": "chibi/char_366_acdrop_summer-21.png"
+    },
+    "char_151_myrtle": {
+      "charId": "char_151_myrtle",
+      "artId": "char_151_myrtle",
+      "file": "chibi/char_151_myrtle.png"
+    },
+    "char_151_myrtle_epoque-12": {
+      "charId": "char_151_myrtle",
+      "artId": "char_151_myrtle_epoque#12",
+      "file": "chibi/char_151_myrtle_epoque-12.png"
+    },
+    "char_151_myrtle_summer-12": {
+      "charId": "char_151_myrtle",
+      "artId": "char_151_myrtle_summer#12",
+      "file": "chibi/char_151_myrtle_summer-12.png"
+    },
+    "char_151_myrtle_taiko-1": {
+      "charId": "char_151_myrtle",
+      "artId": "char_151_myrtle_taiko#1",
+      "file": "chibi/char_151_myrtle_taiko-1.png"
+    },
+    "char_4107_vrdant": {
+      "charId": "char_4107_vrdant",
+      "artId": "char_4107_vrdant",
+      "file": "chibi/char_4107_vrdant.png"
+    },
+    "char_4107_vrdant_unveiling-3": {
+      "charId": "char_4107_vrdant",
+      "artId": "char_4107_vrdant_unveiling#3",
+      "file": "chibi/char_4107_vrdant_unveiling-3.png"
+    },
+    "char_4051_akkord": {
+      "charId": "char_4051_akkord",
+      "artId": "char_4051_akkord",
+      "file": "chibi/char_4051_akkord.png"
+    },
+    "char_4051_akkord_summer-23": {
+      "charId": "char_4051_akkord",
+      "artId": "char_4051_akkord_summer#23",
+      "file": "chibi/char_4051_akkord_summer-23.png"
+    },
+    "char_491_humus": {
+      "charId": "char_491_humus",
+      "artId": "char_491_humus",
+      "file": "chibi/char_491_humus.png"
+    },
+    "char_491_humus_marthe-10": {
+      "charId": "char_491_humus",
+      "artId": "char_491_humus_marthe#10",
+      "file": "chibi/char_491_humus_marthe-10.png"
+    },
+    "char_198_blackd": {
+      "charId": "char_198_blackd",
+      "artId": "char_198_blackd",
+      "file": "chibi/char_198_blackd.png"
+    },
+    "char_198_blackd_winter-1": {
+      "charId": "char_198_blackd",
+      "artId": "char_198_blackd_winter#1",
+      "file": "chibi/char_198_blackd_winter-1.png"
+    },
+    "char_198_blackd_as-1": {
+      "charId": "char_198_blackd",
+      "artId": "char_198_blackd_as#1",
+      "file": "chibi/char_198_blackd_as-1.png"
+    },
+    "char_337_utage": {
+      "charId": "char_337_utage",
+      "artId": "char_337_utage",
+      "file": "chibi/char_337_utage.png"
+    },
+    "char_337_utage_epoque-15": {
+      "charId": "char_337_utage",
+      "artId": "char_337_utage_epoque#15",
+      "file": "chibi/char_337_utage_epoque-15.png"
+    },
+    "char_337_utage_summer-4": {
+      "charId": "char_337_utage",
+      "artId": "char_337_utage_summer#4",
+      "file": "chibi/char_337_utage_summer-4.png"
+    },
+    "char_141_nights": {
+      "charId": "char_141_nights",
+      "artId": "char_141_nights",
+      "file": "chibi/char_141_nights.png"
+    },
+    "char_141_nights_breaker-1": {
+      "charId": "char_141_nights",
+      "artId": "char_141_nights_breaker#1",
+      "file": "chibi/char_141_nights_breaker-1.png"
+    },
+    "char_355_ethan": {
+      "charId": "char_355_ethan",
+      "artId": "char_355_ethan",
+      "file": "chibi/char_355_ethan.png"
+    },
+    "char_355_ethan_epoque-7": {
+      "charId": "char_355_ethan",
+      "artId": "char_355_ethan_epoque#7",
+      "file": "chibi/char_355_ethan_epoque-7.png"
+    },
+    "char_109_fmout": {
+      "charId": "char_109_fmout",
+      "artId": "char_109_fmout",
+      "file": "chibi/char_109_fmout.png"
+    },
+    "char_109_fmout_epoque-2": {
+      "charId": "char_109_fmout",
+      "artId": "char_109_fmout_epoque#2",
+      "file": "chibi/char_109_fmout_epoque-2.png"
+    },
+    "char_4100_caper": {
+      "charId": "char_4100_caper",
+      "artId": "char_4100_caper",
+      "file": "chibi/char_4100_caper.png"
+    },
+    "char_4100_caper_summer-18": {
+      "charId": "char_4100_caper",
+      "artId": "char_4100_caper_summer#18",
+      "file": "chibi/char_4100_caper_summer-18.png"
+    },
+    "char_4165_ctrail": {
+      "charId": "char_4165_ctrail",
+      "artId": "char_4165_ctrail",
+      "file": "chibi/char_4165_ctrail.png"
+    },
+    "char_4165_ctrail_yun-11": {
+      "charId": "char_4165_ctrail",
+      "artId": "char_4165_ctrail_yun#11",
+      "file": "chibi/char_4165_ctrail_yun-11.png"
+    },
+    "char_211_adnach": {
+      "charId": "char_211_adnach",
+      "artId": "char_211_adnach",
+      "file": "chibi/char_211_adnach.png"
+    },
+    "char_211_adnach_sale-5": {
+      "charId": "char_211_adnach",
+      "artId": "char_211_adnach_sale#5",
+      "file": "chibi/char_211_adnach_sale-5.png"
+    },
+    "char_212_ansel": {
+      "charId": "char_212_ansel",
+      "artId": "char_212_ansel",
+      "file": "chibi/char_212_ansel.png"
+    },
+    "char_212_ansel_epoque-29": {
+      "charId": "char_212_ansel",
+      "artId": "char_212_ansel_epoque#29",
+      "file": "chibi/char_212_ansel_epoque-29.png"
+    },
+    "char_212_ansel_summer-1": {
+      "charId": "char_212_ansel",
+      "artId": "char_212_ansel_summer#1",
+      "file": "chibi/char_212_ansel_summer-1.png"
+    },
+    "char_284_spot": {
+      "charId": "char_284_spot",
+      "artId": "char_284_spot",
+      "file": "chibi/char_284_spot.png"
+    },
+    "char_284_spot_boc-3": {
+      "charId": "char_284_spot",
+      "artId": "char_284_spot_boc#3",
+      "file": "chibi/char_284_spot_boc-3.png"
+    },
+    "char_123_fang": {
+      "charId": "char_123_fang",
+      "artId": "char_123_fang",
+      "file": "chibi/char_123_fang.png"
+    },
+    "char_123_fang_winter-1": {
+      "charId": "char_123_fang",
+      "artId": "char_123_fang_winter#1",
+      "file": "chibi/char_123_fang_winter-1.png"
+    },
+    "char_120_hibisc": {
+      "charId": "char_120_hibisc",
+      "artId": "char_120_hibisc",
+      "file": "chibi/char_120_hibisc.png"
+    },
+    "char_120_hibisc_nian-1": {
+      "charId": "char_120_hibisc",
+      "artId": "char_120_hibisc_nian#1",
+      "file": "chibi/char_120_hibisc_nian-1.png"
+    },
+    "char_209_ardign": {
+      "charId": "char_209_ardign",
+      "artId": "char_209_ardign",
+      "file": "chibi/char_209_ardign.png"
+    },
+    "char_209_ardign_epoque-26": {
+      "charId": "char_209_ardign",
+      "artId": "char_209_ardign_epoque#26",
+      "file": "chibi/char_209_ardign_epoque-26.png"
+    },
+    "char_209_ardign_snow-1": {
+      "charId": "char_209_ardign",
+      "artId": "char_209_ardign_snow#1",
+      "file": "chibi/char_209_ardign_snow-1.png"
+    },
+    "char_124_kroos": {
+      "charId": "char_124_kroos",
+      "artId": "char_124_kroos",
+      "file": "chibi/char_124_kroos.png"
+    },
+    "char_124_kroos_sale-14": {
+      "charId": "char_124_kroos",
+      "artId": "char_124_kroos_sale#14",
+      "file": "chibi/char_124_kroos_sale-14.png"
+    },
+    "char_124_kroos_witch-1": {
+      "charId": "char_124_kroos",
+      "artId": "char_124_kroos_witch#1",
+      "file": "chibi/char_124_kroos_witch-1.png"
+    },
+    "char_282_catap": {
+      "charId": "char_282_catap",
+      "artId": "char_282_catap",
+      "file": "chibi/char_282_catap.png"
+    },
+    "char_282_catap_summer-17": {
+      "charId": "char_282_catap",
+      "artId": "char_282_catap_summer#17",
+      "file": "chibi/char_282_catap_summer-17.png"
+    },
+    "char_192_falco": {
+      "charId": "char_192_falco",
+      "artId": "char_192_falco",
+      "file": "chibi/char_192_falco.png"
+    },
+    "char_192_falco_marthe-6": {
+      "charId": "char_192_falco",
+      "artId": "char_192_falco_marthe#6",
+      "file": "chibi/char_192_falco_marthe-6.png"
+    },
+    "char_208_melan": {
+      "charId": "char_208_melan",
+      "artId": "char_208_melan",
+      "file": "chibi/char_208_melan.png"
+    },
+    "char_208_melan_epoque-1": {
+      "charId": "char_208_melan",
+      "artId": "char_208_melan_epoque#1",
+      "file": "chibi/char_208_melan_epoque-1.png"
+    },
+    "char_122_beagle": {
+      "charId": "char_122_beagle",
+      "artId": "char_122_beagle",
+      "file": "chibi/char_122_beagle.png"
+    },
+    "char_122_beagle_boc-1": {
+      "charId": "char_122_beagle",
+      "artId": "char_122_beagle_boc#1",
+      "file": "chibi/char_122_beagle_boc-1.png"
+    },
+    "char_281_popka": {
+      "charId": "char_281_popka",
+      "artId": "char_281_popka",
+      "file": "chibi/char_281_popka.png"
+    },
+    "char_281_popka_sale-18": {
+      "charId": "char_281_popka",
+      "artId": "char_281_popka_sale#18",
+      "file": "chibi/char_281_popka_sale-18.png"
+    },
+    "char_281_popka_witch-5": {
+      "charId": "char_281_popka",
+      "artId": "char_281_popka_witch#5",
+      "file": "chibi/char_281_popka_witch-5.png"
+    },
+    "char_210_stward": {
+      "charId": "char_210_stward",
+      "artId": "char_210_stward",
+      "file": "chibi/char_210_stward.png"
+    },
+    "char_210_stward_sale-6": {
+      "charId": "char_210_stward",
+      "artId": "char_210_stward_sale#6",
+      "file": "chibi/char_210_stward_sale-6.png"
+    },
+    "char_240_wyvern": {
+      "charId": "char_240_wyvern",
+      "artId": "char_240_wyvern",
+      "file": "chibi/char_240_wyvern.png"
+    },
+    "char_240_wyvern_game-4": {
+      "charId": "char_240_wyvern",
+      "artId": "char_240_wyvern_game#4",
+      "file": "chibi/char_240_wyvern_game-4.png"
+    },
+    "char_121_lava": {
+      "charId": "char_121_lava",
+      "artId": "char_121_lava",
+      "file": "chibi/char_121_lava.png"
+    },
+    "char_121_lava_sale-9": {
+      "charId": "char_121_lava",
+      "artId": "char_121_lava_sale#9",
+      "file": "chibi/char_121_lava_sale-9.png"
+    },
+    "char_283_midn_boc-1": {
+      "charId": "char_283_midn",
+      "artId": "char_283_midn_boc#1",
+      "file": "chibi/char_283_midn_boc-1.png"
+    },
+    "char_278_orchid": {
+      "charId": "char_278_orchid",
+      "artId": "char_278_orchid",
+      "file": "chibi/char_278_orchid.png"
+    },
+    "char_278_orchid_boc-6": {
+      "charId": "char_278_orchid",
+      "artId": "char_278_orchid_boc#6",
+      "file": "chibi/char_278_orchid_boc-6.png"
+    },
+    "char_009_12fce": {
+      "charId": "char_009_12fce",
+      "artId": "char_009_12fce",
+      "file": "chibi/char_009_12fce.png"
+    },
+    "char_501_durin": {
+      "charId": "char_501_durin",
+      "artId": "char_501_durin",
+      "file": "chibi/char_501_durin.png"
+    },
+    "char_500_noirc": {
+      "charId": "char_500_noirc",
+      "artId": "char_500_noirc",
+      "file": "chibi/char_500_noirc.png"
+    },
+    "char_503_rang": {
+      "charId": "char_503_rang",
+      "artId": "char_503_rang",
+      "file": "chibi/char_503_rang.png"
+    },
+    "char_502_nblade": {
+      "charId": "char_502_nblade",
+      "artId": "char_502_nblade",
+      "file": "chibi/char_502_nblade.png"
+    },
+    "char_4220_kormr": {
+      "charId": "char_4220_kormr",
+      "artId": "char_4220_kormr",
+      "file": "chibi/char_4220_kormr.png"
+    },
+    "char_4220_kormr_p3r-1": {
+      "charId": "char_4220_kormr",
+      "artId": "char_4220_kormr_p3r#1",
+      "file": "chibi/char_4220_kormr_p3r-1.png"
+    },
+    "char_4215_buddy": {
+      "charId": "char_4215_buddy",
+      "artId": "char_4215_buddy",
+      "file": "chibi/char_4215_buddy.png"
+    },
+    "char_4215_buddy_mh-2": {
+      "charId": "char_4215_buddy",
+      "artId": "char_4215_buddy_mh#2",
+      "file": "chibi/char_4215_buddy_mh-2.png"
+    },
+    "char_4077_palico": {
+      "charId": "char_4077_palico",
+      "artId": "char_4077_palico",
+      "file": "chibi/char_4077_palico.png"
+    },
+    "char_4077_palico_mh-1": {
+      "charId": "char_4077_palico",
+      "artId": "char_4077_palico_mh#1",
+      "file": "chibi/char_4077_palico_mh-1.png"
+    },
+    "char_4000_jnight": {
+      "charId": "char_4000_jnight",
+      "artId": "char_4000_jnight",
+      "file": "chibi/char_4000_jnight.png"
+    },
+    "char_4000_jnight_boc-7": {
+      "charId": "char_4000_jnight",
+      "artId": "char_4000_jnight_boc#7",
+      "file": "chibi/char_4000_jnight_boc-7.png"
+    },
+    "char_286_cast3": {
+      "charId": "char_286_cast3",
+      "artId": "char_286_cast3",
+      "file": "chibi/char_286_cast3.png"
+    },
+    "char_286_cast3_summer-1": {
+      "charId": "char_286_cast3",
+      "artId": "char_286_cast3_summer#1",
+      "file": "chibi/char_286_cast3_summer-1.png"
+    },
+    "char_4188_confes": {
+      "charId": "char_4188_confes",
+      "artId": "char_4188_confes",
+      "file": "chibi/char_4188_confes.png"
+    },
+    "char_4093_frston": {
+      "charId": "char_4093_frston",
+      "artId": "char_4093_frston",
+      "file": "chibi/char_4093_frston.png"
+    },
+    "char_4227_gallus": {
+      "charId": "char_4227_gallus",
+      "artId": "char_4227_gallus",
+      "file": "chibi/char_4227_gallus.png"
+    },
+    "char_285_medic2": {
+      "charId": "char_285_medic2",
+      "artId": "char_285_medic2",
+      "file": "chibi/char_285_medic2.png"
+    },
+    "char_285_medic2_boc-4": {
+      "charId": "char_285_medic2",
+      "artId": "char_285_medic2_boc#4",
+      "file": "chibi/char_285_medic2_boc-4.png"
+    },
+    "char_4136_phonor": {
+      "charId": "char_4136_phonor",
+      "artId": "char_4136_phonor",
+      "file": "chibi/char_4136_phonor.png"
+    },
+    "char_4136_phonor_boc-9": {
+      "charId": "char_4136_phonor",
+      "artId": "char_4136_phonor_boc#9",
+      "file": "chibi/char_4136_phonor_boc-9.png"
+    },
+    "char_376_therex": {
+      "charId": "char_376_therex",
+      "artId": "char_376_therex",
+      "file": "chibi/char_376_therex.png"
+    },
+    "char_376_therex_marthe-7": {
+      "charId": "char_376_therex",
+      "artId": "char_376_therex_marthe#7",
+      "file": "chibi/char_376_therex_marthe-7.png"
+    },
+    "char_4091_ulika": {
+      "charId": "char_4091_ulika",
+      "artId": "char_4091_ulika",
+      "file": "chibi/char_4091_ulika.png"
+    },
+    "char_4091_ulika_sanrio-1": {
+      "charId": "char_4091_ulika",
+      "artId": "char_4091_ulika_sanrio#1",
+      "file": "chibi/char_4091_ulika_sanrio-1.png"
     }
   }
 }

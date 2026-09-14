@@ -167,21 +167,33 @@ for (const job of jobs) {
 const mime = {
   ".html": "text/html",
   ".js": "text/javascript",
+  ".json": "application/json",
   ".png": "image/png",
   ".skel": "application/octet-stream",
   ".atlas": "text/plain",
 };
+
+function resolveWorkFile(pathname) {
+  const file = join(work, decodeURIComponent(pathname));
+  if (existsSync(file)) return file;
+  if (file.endsWith(".json")) {
+    const skel = `${file.slice(0, -5)}.skel`;
+    if (existsSync(skel) && readFileSync(skel).subarray(0, 1).toString() === "{") return skel;
+  }
+  return "";
+}
+
 const server = createServer((req, res) => {
   const url = new URL(req.url, "http://127.0.0.1");
   const file = url.pathname === "/render.html"
     ? join(ROOT, "scripts/chibi-render.html")
-    : join(work, decodeURIComponent(url.pathname));
-  if (!existsSync(file)) {
+    : resolveWorkFile(url.pathname);
+  if (!file || !existsSync(file)) {
     res.writeHead(404);
     res.end();
     return;
   }
-  res.writeHead(200, { "content-type": mime[extname(file)] || "application/octet-stream" });
+  res.writeHead(200, { "content-type": mime[extname(url.pathname)] || mime[extname(file)] || "application/octet-stream" });
   res.end(readFileSync(file));
 });
 await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
