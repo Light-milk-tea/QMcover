@@ -1,3 +1,4 @@
+import tacticalMatrixThumb from "../assets/thumbs/tactical-matrix-shot.webp";
 import endfieldThumb from "../assets/thumbs/endfield-shot.webp";
 import emergencyLessonThumb from "../assets/thumbs/emergency-lesson-shot.webp";
 import firstkillThumb from "../assets/thumbs/firstkill-shot.webp";
@@ -16,6 +17,7 @@ const THUMB_REV: Partial<Record<TemplateId, number>> = {
 };
 
 const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
+  "tactical-matrix": tacticalMatrixThumb,
   "six-vanguard": sixVanguardThumb,
   "strength-review": strengthReviewThumb,
   firstkill: firstkillThumb,

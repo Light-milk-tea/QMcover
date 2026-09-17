@@ -94,6 +94,7 @@ export function emptyDraft(templateId: TemplateId): Draft {
     layers: seedLayers(templateId),
     canvasSkin,
     paper: seed?.paper,
+    colorway: seed?.colorway,
     elementStyles: {},
   };
 }
@@ -869,6 +870,27 @@ function migratePolaroidDecorations(draft: Draft): Draft {
   return { ...draft, layers };
 }
 
+// Add the new material controls to earlier matrix drafts without touching user
+// text, transforms, colors, grading, or the order of existing layers.
+function migrateTacticalMatrixMaterials(draft: Draft): Draft {
+  if (draft.canvasSkin !== "tactical-matrix") return draft;
+  const layers = [...draft.layers];
+  for (const seed of getBuiltinLayers("tactical-matrix")) {
+    if ((seed.id !== "prism" && seed.id !== "film") || layers.some((layer) => layer.id === seed.id)) continue;
+    const before = seed.id === "prism" ? layers.findIndex((layer) => layer.id === "embers") : -1;
+    layers.splice(before < 0 ? layers.length : before, 0, seed);
+  }
+  return {
+    ...draft,
+    layers: layers.map((layer) => {
+      if (layer.id !== "operation" || layer.kind !== "text") return layer;
+      if (draft.elementStyles.operation?.fontSize != null) return layer;
+      if (layer.fontSize !== 48 || layer.x !== 1060 || layer.y !== 934) return layer;
+      return { ...layer, fontSize: 60, y: 926, h: 86 };
+    }),
+  };
+}
+
 export function loadDraft(templateId: TemplateId): Draft {
   const saved = loadState().drafts[templateId];
   if (!saved) return emptyDraft(templateId);
@@ -910,7 +932,9 @@ export function loadDraft(templateId: TemplateId): Draft {
       shaftLightRotate: saved.shaftLightRotate ?? empty.shaftLightRotate,
     }),
   };
-  const laidOut = templateId === "specialist"
+  const laidOut = normalized.canvasSkin === "tactical-matrix"
+    ? migrateTacticalMatrixMaterials(normalized)
+    : templateId === "specialist"
     ? migrateSpecialistLayout(normalized)
     : templateId === "six-vanguard"
       ? migrateSixVanguardLayout(normalized)

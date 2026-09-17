@@ -115,6 +115,21 @@ export function isNativeElement(templateId: string, id: string, canvasSkin?: str
 }
 
 export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
+  "tactical-matrix": [
+    { id: "mineral", label: "矿物底纹", kind: "box", hasOpacity: true },
+    { id: "orbits", label: "战术圆环与网格", kind: "box", hasColor: true, hasOpacity: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "glow", label: "边角光晕", kind: "box", hasColor: true, hasOpacity: true },
+    { id: "prism", label: "局部虹彩反光", kind: "box", hasOpacity: true, defaultOpacity: 95 },
+    { id: "film", label: "胶片颗粒", kind: "box", hasOpacity: true, defaultOpacity: 11 },
+    { id: "embers", label: "微光颗粒", kind: "box", hasColor: true, hasOpacity: true },
+    { id: "side-bar", label: "侧边色条", kind: "box", hasColor: true },
+    { id: "mark", label: "顶部栏目名", kind: "text", defaultFont: "cn", textBind: "mark" },
+    { id: "squad", label: "人数 / 阵容", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "stage", label: "关卡码", kind: "text", defaultFont: "display", textBind: "title" },
+    { id: "operation", label: "底部行动名", kind: "text", defaultFont: "cn", textBind: "signature" },
+    { id: "side-note", label: "侧边小字", kind: "text", defaultFont: "display", textDefault: "OPERATION RECORD" },
+  ],
   "six-vanguard": [
     { id: "echo", label: "灰色人物叠影", kind: "box", hasOpacity: true, defaultOpacity: 100 },
     { id: "geometry", label: "斜框与三角纹", kind: "box", hasOpacity: true, defaultOpacity: 100 },

@@ -1,4 +1,5 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
+import "../index.css";
 import { coverFilename, rasterizeCoverPng, shouldIncludeExportNode } from "./exportCover";
 
 const stubArt =
@@ -36,6 +37,37 @@ test("坏图不会卡住 PNG 导出", { timeout: 45_000 }, async () => {
   try {
     const url = await rasterizeCoverPng(node);
     expect(url.startsWith("data:image/png")).toBe(true);
+  } finally {
+    node.remove();
+  }
+});
+
+test("PNG 中的中文分片字体保留粗字重，不逐字回退到细体", { timeout: 45_000 }, async () => {
+  vi.resetModules();
+  const { rasterizeCoverPng: exportPng } = await import("./exportCover");
+  const text = "四人";
+  await document.fonts.load('900 174px "Noto Sans SC"', text);
+  const node = document.createElement("div");
+  node.style.cssText = 'width:1920px;height:1080px;background:black;color:white;font:900 174px/1 "Noto Sans SC"';
+  node.textContent = text;
+  document.body.appendChild(node);
+  try {
+    const image = new Image(); image.src = await exportPng(node); await image.decode();
+    const canvas = document.createElement("canvas"); canvas.width = 1920; canvas.height = 1080;
+    const ctx = canvas.getContext("2d")!;
+    const ink = () => {
+      const pixels = ctx.getImageData(0, 0, 1920, 1080).data;
+      let coverage = 0;
+      for (let i = 0; i < pixels.length; i += 4) coverage += pixels[i] / 255;
+      return coverage;
+    };
+    ctx.drawImage(image, 0, 0);
+    const exportedInk = ink();
+    ctx.fillStyle = "black"; ctx.fillRect(0, 0, 1920, 1080);
+    ctx.fillStyle = "white"; ctx.font = '900 174px "Noto Sans SC"';
+    ctx.fillText(text, 0, 200);
+    expect(exportedInk / ink()).toBeGreaterThan(.95);
+    expect(exportedInk / ink()).toBeLessThan(1.05);
   } finally {
     node.remove();
   }

@@ -270,3 +270,6 @@ input[type="checkbox"] {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Mirror the picture only: horizontal dragging keeps the editor's usual direction. */
+[data-matrix-operator] img { transform: scaleX(-1); filter: var(--matrix-art-filter, none); }

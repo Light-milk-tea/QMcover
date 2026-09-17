@@ -69,3 +69,10 @@ test("首页列出紧急授课模板并能打开", async () => {
   await screen.getByText("紧急授课", { exact: true }).click();
   expect(opened).toBe("emergency-lesson");
 });
+
+test("首页列出全息作战矩阵并打开可调色模板", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+  await screen.getByRole("button", { name: "全息作战矩阵 可自选主题色的圆环战术模板" }).click();
+  expect(opened).toBe("tactical-matrix");
+});

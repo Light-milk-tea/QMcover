@@ -231,6 +231,7 @@ export function draftToDocument(draft: Draft): CoverDocument {
     effects: cloneCoverEffects(draft.effects),
     ornamentId: draft.ornamentId,
     paper: draft.paper,
+    colorway: draft.colorway,
     elementStyles: Object.fromEntries(
       Object.entries(draft.elementStyles ?? {}).map(([id, style]) => [id, { ...style }]),
     ),

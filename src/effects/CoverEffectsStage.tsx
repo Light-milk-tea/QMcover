@@ -242,6 +242,7 @@ function SlashesOverlay({ amount }: { amount: number }) {
 }
 
 const VIGNETTE_AT: Record<CanvasSkin, string> = {
+  "tactical-matrix": "78% 48%",
   "six-vanguard": "15% 75%",
   "strength-review": "50% 78%",
   plain: "40% 46%",

@@ -31,12 +31,13 @@ function canEyeDrop(): boolean {
 
 type Props = {
   elementId: string;
+  label?: string;
   color?: string;
   displayColor?: string;
   onChange: (color: string | undefined) => void;
 };
 
-export function ColorField({ elementId, color, displayColor, onChange }: Props) {
+export function ColorField({ elementId, label = "颜色", color, displayColor, onChange }: Props) {
   const shown = color ?? displayColor ?? "";
   const [hex, setHex] = useState(shown);
   const [open, setOpen] = useState(false);
@@ -69,7 +70,7 @@ export function ColorField({ elementId, color, displayColor, onChange }: Props) 
 
   return (
     <div className="mt-3" ref={box}>
-      <span className="mb-1.5 block text-[13px] text-sub">颜色</span>
+      <span className="mb-1.5 block text-[13px] text-sub">{label}</span>
       <div className="flex items-center gap-2">
         <button
           type="button"
@@ -84,6 +85,7 @@ export function ColorField({ elementId, color, displayColor, onChange }: Props) 
         <input
           className={fieldClass}
           value={hex}
+          aria-label={label}
           spellCheck={false}
           onChange={(e) => {
             const next = e.target.value;

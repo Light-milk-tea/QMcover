@@ -10,7 +10,9 @@ let fontEmbedCSS: Promise<string> | null = null;
 export function warmupCoverExport(node: HTMLElement | null): void {
   if (!node || fontEmbedCSS) return;
   fontEmbedCSS = document.fonts.ready
-    .then(() => getFontEmbedCSS(node, { preferredFontFormat: "woff2" }))
+    // html-to-image 1.11.x keeps a global regex cursor when filtering formats;
+    // adjacent subset rules can lose their src and fall back to another weight.
+    .then(() => getFontEmbedCSS(node))
     .catch(() => {
       fontEmbedCSS = null;
       return "";
@@ -62,7 +64,6 @@ export async function rasterizeCoverPng(node: HTMLElement): Promise<string> {
       height: BILI_COVER.height,
       pixelRatio: 1,
       cacheBust: false,
-      preferredFontFormat: "woff2",
       imagePlaceholder: "",
       fontEmbedCSS: css,
       fetchRequestInit: { signal: AbortSignal.timeout(FETCH_ABORT_MS) },

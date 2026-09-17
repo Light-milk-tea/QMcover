@@ -52,6 +52,7 @@ export function draftToRenderProps(
     layers: draft.layers,
     canvasSkin: draft.canvasSkin,
     paper: draft.paper,
+    colorway: draft.colorway,
     previewScale: extra.previewScale,
     onImageDrag: extra.onImageDrag,
     showPlaceholder: extra.showPlaceholder,

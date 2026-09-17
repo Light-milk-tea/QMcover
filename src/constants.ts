@@ -24,6 +24,7 @@ export const CUSTOM_TEMPLATE_PREFIX = "c-";
 
 export const BUILTIN_TEMPLATE_IDS = [
   "six-vanguard",
+  "tactical-matrix",
   "strength-review",
   "firstkill",
   "lowspec",

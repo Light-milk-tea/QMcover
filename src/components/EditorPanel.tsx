@@ -9,11 +9,14 @@ import { isBuiltinId, isChibiLayer } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { useCover } from "../store/CoverContext";
 import type { CanvasSkin, ImageLayer } from "../types";
+import { resolveMatrixAccent, storeMatrixColorway } from "../lib/matrixPalette";
 import { BackgroundPicker } from "./BackgroundPicker";
+import { ColorField } from "./ColorField";
 import { Field, fieldClass } from "./Field";
 import { IllustLibrary } from "./IllustLibrary";
 
 const SKINS: { id: CanvasSkin; label: string }[] = [
+  { id: "tactical-matrix", label: "作战矩阵底" },
   { id: "plain", label: "素底" },
   { id: "firstkill", label: "合约底" },
   { id: "lowspec", label: "低配三栏" },
@@ -99,6 +102,17 @@ export function EditorPanel() {
           </div>
         ) : null}
       </div>
+
+      {draft.canvasSkin === "tactical-matrix" ? (
+        <div className="border-b border-line px-4 py-3">
+          <ColorField
+            elementId="matrix-colorway"
+            label="模板配色"
+            color={resolveMatrixAccent(draft.colorway)}
+            onChange={(color) => patchDraft({ colorway: storeMatrixColorway(color) })}
+          />
+        </div>
+      ) : null}
 
       {isBuiltinId(templateId) ? null : (
         <div className="border-b border-line px-4 py-3">

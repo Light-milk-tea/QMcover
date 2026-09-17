@@ -67,6 +67,7 @@ export type LayerChrome =
 export type CanvasSkin =
   | "plain"
   | "six-vanguard"
+  | "tactical-matrix"
   | "strength-review"
   | "firstkill"
   | "lowspec"
@@ -257,6 +258,7 @@ export type CoverDocument = {
   effects?: CoverEffectsInput;
   ornamentId?: string;
   paper?: string;
+  colorway?: string;
   elementStyles?: Record<string, ElementOverride>;
 };
 
@@ -281,6 +283,7 @@ export type ResolvedElement = {
 
 export type BuiltinTemplateId =
   | "six-vanguard"
+  | "tactical-matrix"
   | "strength-review"
   | "firstkill"
   | "lowspec"
@@ -373,6 +376,7 @@ export type Draft = {
   layers: Layer[];
   canvasSkin: CanvasSkin;
   paper?: string;
+  colorway?: string;
   elementStyles: Record<string, ElementOverride>;
 };
 
@@ -410,5 +414,6 @@ export type CoverRenderProps = {
   layers?: Layer[];
   canvasSkin?: CanvasSkin;
   paper?: string;
+  colorway?: string;
   templateId?: TemplateId;
 };

@@ -23,6 +23,7 @@
 - [干员前瞻构图参考](references/operator-preview/INDEX.md)
 - [四星无核首杀构图参考](references/fourstar-nocore/INDEX.md)
 - [仅需一人构图参考](references/solo-clear/INDEX.md)
+- [三特种突袭构图参考](references/three-specialist/INDEX.md)
 
 ## 本地运行
 
@@ -76,6 +77,7 @@ npm run dev
 | `solo` | 仅需一人 | 暗红氛围：左上关卡码 + 宋体「××单人」+ 白线英文标，右半身立绘。 |
 | `six-vanguard` | 先锋六人 | 左侧多萝西近景，右侧阵容标题与超大斜体关卡码；灰金网点、人物叠影和红色职业条。 |
 | `strength-review` | 强度测评 | 左主立绘（默认皮肤近景）、中间叠精0基建小人、右侧三技能金框、底部两行叠金标题；换干员时小人跟着走，也可在小人库另选或上传。 |
+| `tactical-matrix` | 全息作战矩阵 | 左侧人物近景、右侧战术圆环与超大窄体关卡码；主题色用调色盘自选，人数、上下栏目和独立纹理图层可编辑。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
@@ -237,6 +239,7 @@ references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提
 references/operator-preview/   干员前瞻构图参考，jpg 不提交
 references/fourstar-nocore/    四星无核首杀构图参考，jpg 不提交
 references/solo-clear/         仅需一人构图参考，jpg 不提交
+references/three-specialist/   三特种突袭构图参考，jpg 不提交
 ```
 
 路由是 hash：`#/` 首页，`#/t/firstkill` 打开对应模板。
