@@ -196,7 +196,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "bracket-l",
     name: "左括号",
-    description: "终末地模板的粗线左括号",
+    description: "明日方舟角色测评的粗线左括号",
     layer: {
       label: "左括号",
       x: 240,
@@ -210,7 +210,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "bracket-r",
     name: "右括号",
-    description: "终末地模板的粗线右括号",
+    description: "明日方舟角色测评的粗线右括号",
     layer: {
       label: "右括号",
       x: 420,
@@ -224,7 +224,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "ef-triangle",
     name: "地形三角",
-    description: "终末地模板的等高线黄三角",
+    description: "明日方舟角色测评的等高线黄三角",
     layer: {
       label: "地形三角",
       x: 520,
@@ -238,7 +238,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "bar-accent",
     name: "色码条",
-    description: "终末地模板的四色栏目边条",
+    description: "明日方舟角色测评的四色栏目边条",
     layer: {
       label: "色码条",
       x: 240,
@@ -283,7 +283,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "yellow-dashes",
     name: "黄短线组",
-    description: "终末地模板的错落黄色短线",
+    description: "明日方舟角色测评的错落黄色短线",
     layer: {
       label: "黄短线组",
       x: 1120,
@@ -325,7 +325,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "halftone-fade",
     name: "渐隐网点",
-    description: "终末地模板的渐隐半调网点",
+    description: "明日方舟角色测评的渐隐半调网点",
     layer: {
       label: "渐隐网点",
       x: 1040,
@@ -434,7 +434,7 @@ export const DECORATIONS: DecorationPreset[] = [
   {
     id: "title-bar",
     name: "栏目底条",
-    description: "终末地模板的深色栏目底条",
+    description: "明日方舟角色测评的深色栏目底条",
     layer: {
       label: "栏目底条",
       x: 480,

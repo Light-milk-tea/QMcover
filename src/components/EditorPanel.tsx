@@ -5,6 +5,7 @@ import { chibiIdFor, chibiUrl, followingChibiPatch, hasChibi } from "../data/chi
 import { isNativeElement } from "../data/elements";
 import { ORNAMENTS } from "../data/ornaments";
 import { getBuiltinLayers } from "../data/seeds";
+import { getTemplate } from "../data/templates";
 import { isBuiltinId, isChibiLayer } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { useCover } from "../store/CoverContext";
@@ -23,7 +24,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "rogue", label: "肉鸽底" },
   { id: "madness", label: "杂谈底" },
   { id: "nocore", label: "无核底" },
-  { id: "endfield", label: "终末地底" },
+  { id: "endfield", label: "明日方舟底" },
   { id: "specialist", label: "职业队底" },
   { id: "operator-preview", label: "前瞻分析底" },
   { id: "fourstar-nocore", label: "四星无核底" },
@@ -109,7 +110,13 @@ export function EditorPanel() {
             elementId="matrix-colorway"
             label="模板配色"
             color={resolveMatrixAccent(draft.colorway)}
-            onChange={(color) => patchDraft({ colorway: storeMatrixColorway(color) })}
+            onChange={(color) =>
+              patchDraft({
+                colorway: color
+                  ? storeMatrixColorway(color)
+                  : (getTemplate(templateId)?.defaultColorway ?? "violet"),
+              })
+            }
           />
         </div>
       ) : null}

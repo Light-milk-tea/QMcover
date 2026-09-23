@@ -61,7 +61,7 @@ function EditorPreview() {
 
 test("编辑器可用调色盘改主题色，保存与配置导出保留配色", async () => {
   const screen = await render(<CoverProvider templateId="tactical-matrix"><EditorPreview /></CoverProvider>);
-  await expect.element(screen.getByRole("textbox", { name: "模板配色" })).toHaveValue("#a468d6");
+  await expect.element(screen.getByRole("textbox", { name: "模板配色" })).toHaveValue("#12165f");
   await screen.getByRole("textbox", { name: "模板配色" }).fill("#d9735b");
   const canvas = screen.container.querySelector('[data-tactical-matrix-canvas]')!;
   expect(canvas.getAttribute("data-colorway")).toBe("ember");
@@ -74,14 +74,54 @@ test("编辑器可用调色盘改主题色，保存与配置导出保留配色",
   const stored = loadDraft("tactical-matrix");
   const parsed = parseDocumentFile(buildDocumentFile(stored));
   expect(parsed?.document.colorway).toBe("ember");
-  expect(stored.artId).toBe("char_450_necras_1");
+  expect(stored.artId).toBe("char_1050_chen3_2");
+  expect(stored.imageX).toBe(0);
+  expect(stored.imageY).toBe(0);
   await screen.getByRole("textbox", { name: "模板配色" }).fill("#1d4ed8");
   await expect.poll(() => loadDraft("tactical-matrix").colorway).toBe("#1d4ed8");
   expect(canvas.getAttribute("data-colorway")).toBe("#1d4ed8");
   expect(getComputedStyle(canvas.querySelector('[data-cover-el="orbits"]')!).color).toBe("rgb(29, 78, 216)");
   await screen.getByRole("button", { name: "还原" }).click();
-  expect(canvas.getAttribute("data-colorway")).toBe("violet");
-  expect(getComputedStyle(canvas.querySelector('[data-cover-el="orbits"]')!).color).toBe("rgb(164, 104, 214)");
+  expect(canvas.getAttribute("data-colorway")).toBe("#12165f");
+  expect(getComputedStyle(canvas.querySelector('[data-cover-el="orbits"]')!).color).toBe("rgb(18, 22, 95)");
+});
+
+test("旧默认死芒草稿换成赤刃明霄陈，自定义立绘和配色保留", () => {
+  const draft = emptyDraft("tactical-matrix");
+  draft.operatorName = "死芒";
+  draft.operatorId = "char_450_necras";
+  draft.artId = "char_450_necras_1";
+  draft.imageUrl = "https://example.invalid/necras.png";
+  draft.imageScale = 310;
+  draft.imageX = 130;
+  draft.imageY = 530;
+  draft.colorway = undefined;
+  draft.layers = draft.layers.map((layer) =>
+    layer.id === "operator" && layer.kind === "image"
+      ? { ...layer, operatorId: "char_450_necras", artId: "char_450_necras_1", imageX: 130, imageY: 530 }
+      : layer,
+  );
+  saveDraft("tactical-matrix", draft);
+  const restored = loadDraft("tactical-matrix");
+  expect(restored.artId).toBe("char_1050_chen3_2");
+  expect(restored.operatorId).toBe("char_1050_chen3");
+  expect(restored.imageX).toBe(0);
+  expect(restored.imageY).toBe(0);
+  expect(restored.colorway).toBe("#12165f");
+  const operator = restored.layers.find((layer) => layer.id === "operator");
+  expect(operator?.kind === "image" ? operator.imageX : undefined).toBe(0);
+
+  const custom = emptyDraft("tactical-matrix");
+  custom.operatorId = "char_4048_doroth";
+  custom.artId = "char_4048_doroth_1";
+  custom.imageUrl = "https://example.invalid/doroth.png";
+  custom.imageX = 40;
+  custom.colorway = "ember";
+  saveDraft("tactical-matrix", custom);
+  const kept = loadDraft("tactical-matrix");
+  expect(kept.artId).toBe("char_4048_doroth_1");
+  expect(kept.imageX).toBe(40);
+  expect(kept.colorway).toBe("ember");
 });
 
 test("重新加载草稿保留自定义图层颜色与赤焰配色", () => {

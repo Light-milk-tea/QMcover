@@ -6,9 +6,9 @@
 
 技术栈：React 19 + Vite + TypeScript + Tailwind CSS 4。
 
-| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 终末地角色测评 | 职业队 | 干员前瞻分析 | 四星无核 | 仅需一人 |
+| 危机合约 | 低配攻略 | 肉鸽 | 决战五星之癫 | 无核论文 | 明日方舟角色测评 | 职业队 | 干员前瞻分析 | 四星无核 | 仅需一人 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![终末地角色测评](public/thumbs/endfield.webp) | ![职业队](public/thumbs/specialist.webp) | ![干员前瞻分析](public/thumbs/operator-preview.webp) | ![四星无核](public/thumbs/fourstar-nocore.webp) | ![仅需一人](public/thumbs/solo.webp) |
+| ![危机合约](public/thumbs/firstkill.webp) | ![低配攻略](public/thumbs/lowspec.webp) | ![肉鸽](public/thumbs/rogue.webp) | ![决战五星之癫](public/thumbs/madness.webp) | ![无核论文](public/thumbs/nocore.webp) | ![明日方舟角色测评](public/thumbs/endfield.webp) | ![职业队](public/thumbs/specialist.webp) | ![干员前瞻分析](public/thumbs/operator-preview.webp) | ![四星无核](public/thumbs/fourstar-nocore.webp) | ![仅需一人](public/thumbs/solo.webp) |
 
 相关文档：
 
@@ -70,7 +70,7 @@ npm run dev
 | `emergency-lesson` | 紧急授课 | 参考黑蓑影卫攻略组五人无藏封面：暗紫场景、中央立绘、粉色条件、右侧超大人数和底部青紫错位白色主标题。 |
 | `madness` | 决战五星之癫 | 参考五星测评类封面：左暗底栏目名 + 期数 + 干员篇，右拍立得立绘。栏目名固定为「决战五星之癫」。 |
 | `nocore` | 无核论文 | 参考小鬼卡比 SN-EX-8：暗底，左两行金白大字，一条紫线，右立绘。 |
-| `endfield` | 终末地角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
+| `endfield` | 明日方舟角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
 | `specialist` | 职业队 | 参考日常关卡封面：左超大号阵容+关卡码，红花体斜叠，双立绘近景，工业底加光柱和后期。 |
 | `operator-preview` | 干员前瞻分析 | 冷蓝战术底：左立绘，右「干员 + 前瞻分析 + 期数」，白色宋体主标题和蓝色解析条。 |
 | `fourstar-nocore` | 四星无核 | 暗底拼贴：左斜抬黑体主标题 + 米色关卡条，右立绘，身后几何金框。 |
@@ -130,7 +130,7 @@ npm run dev
 - 背景默认伊比利亚夜海岸，压一层暗纱
 - 默认立绘：缄默德克萨斯精二
 
-### 终末地角色测评
+### 明日方舟角色测评
 
 - 角色名（默认肥鸭梅塔；点立绘不覆盖，方便写终末地干员名）
 - 栏目名（默认「数据与实战测评」）
@@ -143,8 +143,8 @@ npm run dev
 
 ### 职业队
 
-- 阵容（默认「五特种」）
-- 关卡（默认 H15-4，Oswald 超粗挤字）
+- 阵容（默认「三特种」）
+- 关卡（默认 H2-5，Oswald 超粗挤字）
 - 花体标（默认 Special type，Great Vibes 斜叠在阵容上）
 - 小标（默认 SPECIAL TYPE，留空则不显示）
 - 背景预设（默认军械厂）；默认开光柱、暗角和底图调色
@@ -212,7 +212,7 @@ src/
     EmergencyLesson.tsx   紧急授课
     Madness.tsx           决战五星之癫
     Nocore.tsx            无核论文
-    Endfield.tsx          终末地角色测评
+    Endfield.tsx          明日方舟角色测评
     Specialist.tsx        职业队
     OperatorPreview.tsx   干员前瞻分析
     FourstarNocore.tsx    四星无核
@@ -305,7 +305,7 @@ npm run chibis
 | 低配攻略 | `src/templates/LowSpec.tsx` | 复刻左立绘 + 白底条，不要整图搬参考封面。 |
 | 肉鸽 | `src/templates/Rogue.tsx` | 复刻左立绘 + 右宋体主题 + 空心 ISW-NO，不要整图搬参考封面。 |
 | 决战五星之癫 | `src/templates/Madness.tsx` | 复刻左文右拍立得，不要整图搬参考封面。 |
-| 终末地角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
+| 明日方舟角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
 | 职业队 | `src/templates/Specialist.tsx` | 复刻左两行粗字 + 红花体 + 右立绘，不要搬组标和封面署名。 |
 | 干员前瞻分析 | `src/templates/OperatorPreview.tsx` | 复刻左立绘 + 右宋体大字 + 蓝色栏目条，不要搬原作者系列标识。 |
 | 四星无核 | `src/templates/FourstarNocore.tsx` | 复刻左斜抬标题 + 米色关卡条 + 右立绘金框，不要搬整图和实机截图。 |

@@ -1,10 +1,28 @@
+import { artUrl } from "../arts";
 import { boxLayer, imageLayer, textLayer } from "../../lib/document";
 import type { Layer } from "../../types";
 
 export const tacticalMatrixLayers: Layer[] = [
   boxLayer({ id: "mineral", label: "矿物底纹", x: 0, y: 0, w: 1920, h: 1080, fill: "transparent" }),
   boxLayer({ id: "orbits", label: "战术圆环与网格", x: 0, y: 0, w: 1920, h: 1080, color: "#a468d6", fill: "transparent" }),
-  imageLayer({ id: "operator", label: "立绘", x: -400, y: 0, w: 2240, h: 1080, scale: 310, imageX: 130, imageY: 530, objectFit: "contain", objectPosition: "center center", fadeRight: true, fadeRightSolid: 78 }),
+  imageLayer({
+    id: "operator",
+    label: "立绘",
+    x: -400,
+    y: 0,
+    w: 2240,
+    h: 1080,
+    scale: 310,
+    imageX: 0,
+    imageY: 0,
+    objectFit: "contain",
+    objectPosition: "center center",
+    fadeRight: true,
+    fadeRightSolid: 78,
+    operatorId: "char_1050_chen3",
+    artId: "char_1050_chen3_2",
+    imageUrl: artUrl("char_1050_chen3_2"),
+  }),
   boxLayer({ id: "glow", label: "边角光晕", x: 0, y: 0, w: 1920, h: 1080, color: "#9730f2", fill: "transparent" }),
   boxLayer({ id: "prism", label: "局部虹彩反光", x: 0, y: 0, w: 1920, h: 1080, fill: "transparent", opacity: 95 }),
   boxLayer({ id: "embers", label: "微光颗粒", x: 0, y: 0, w: 1920, h: 1080, color: "#a468d6", fill: "transparent" }),

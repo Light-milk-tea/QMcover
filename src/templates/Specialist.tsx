@@ -123,8 +123,8 @@ function layerImage(layer: ImageLayer | undefined, fallbackArt: string) {
 export function Specialist(props: CoverRenderProps) {
   const cover = useCoverOptional();
   const styles = props.elementStyles;
-  const squad = elementText(styles, "squad", props.title.trim() || "五特种");
-  const stage = elementText(styles, "stage", props.subtitle.trim() || "H15-4");
+  const squad = elementText(styles, "squad", props.title.trim() || "三特种");
+  const stage = elementText(styles, "stage", props.subtitle.trim() || "H2-5");
   const script = elementText(styles, "script", props.signature.trim());
   const mark = elementText(styles, "mark", props.mark.trim());
   const scriptColor = styles?.script?.color || RED;

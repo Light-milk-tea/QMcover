@@ -75,9 +75,11 @@ export function emptyDraft(templateId: TemplateId): Draft {
     imageScale: seed?.imageScale ?? meta?.defaultImageScale ?? 100,
     imageX: seed?.imageX ?? meta?.defaultImageX ?? 0,
     imageY: seed?.imageY ?? meta?.defaultImageY ?? 0,
-    imageEdgeFade: seed?.imageEdgeFade ?? false,
-    imageEdgeFadeAmount: seed?.imageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
-    imageEdgeFadeMode: normalizeEdgeFadeMode(seed?.imageEdgeFadeMode ?? IMAGE_EDGE_FADE_MODE_DEFAULT),
+    imageEdgeFade: seed?.imageEdgeFade ?? meta?.defaultImageEdgeFade ?? false,
+    imageEdgeFadeAmount: seed?.imageEdgeFadeAmount ?? meta?.defaultImageEdgeFadeAmount ?? IMAGE_EDGE_FADE_DEFAULT,
+    imageEdgeFadeMode: normalizeEdgeFadeMode(
+      seed?.imageEdgeFadeMode ?? meta?.defaultImageEdgeFadeMode ?? IMAGE_EDGE_FADE_MODE_DEFAULT,
+    ),
     showSafeArea: true,
     bgPreset: seed?.bgPreset ?? meta?.defaultBgPreset ?? DEFAULT_BG_PRESET,
     textBgPreset: seed?.textBgPreset ?? meta?.defaultTextBgPreset ?? meta?.defaultBgPreset ?? DEFAULT_BG_PRESET,
@@ -94,7 +96,7 @@ export function emptyDraft(templateId: TemplateId): Draft {
     layers: seedLayers(templateId),
     canvasSkin,
     paper: seed?.paper,
-    colorway: seed?.colorway,
+    colorway: seed?.colorway ?? meta?.defaultColorway,
     elementStyles: {},
   };
 }
@@ -870,6 +872,42 @@ function migratePolaroidDecorations(draft: Draft): Draft {
   return { ...draft, layers };
 }
 
+function migrateTacticalMatrixDefaults(draft: Draft): Draft {
+  const current = emptyDraft("tactical-matrix");
+  const oldArt =
+    !draft.imageDataUrl &&
+    (draft.artId === "char_450_necras_1" || draft.operatorId === "char_450_necras");
+  const oldPan = draft.imageScale === 310 && draft.imageX === 130 && draft.imageY === 530;
+  let next = draft;
+  if (oldArt && oldPan) {
+    next = {
+      ...next,
+      operatorName: current.operatorName,
+      operatorId: current.operatorId,
+      artId: current.artId,
+      imageUrl: current.imageUrl,
+      imageScale: current.imageScale,
+      imageX: current.imageX,
+      imageY: current.imageY,
+      layers: next.layers.map((layer) =>
+        layer.id === "operator" && layer.kind === "image"
+          ? {
+              ...layer,
+              operatorId: current.operatorId,
+              artId: current.artId,
+              imageUrl: current.imageUrl,
+              scale: current.imageScale,
+              imageX: current.imageX,
+              imageY: current.imageY,
+            }
+          : layer,
+      ),
+    };
+  }
+  if (!next.colorway) next = { ...next, colorway: current.colorway };
+  return next;
+}
+
 // Add the new material controls to earlier matrix drafts without touching user
 // text, transforms, colors, grading, or the order of existing layers.
 function migrateTacticalMatrixMaterials(draft: Draft): Draft {
@@ -933,7 +971,7 @@ export function loadDraft(templateId: TemplateId): Draft {
     }),
   };
   const laidOut = normalized.canvasSkin === "tactical-matrix"
-    ? migrateTacticalMatrixMaterials(normalized)
+    ? migrateTacticalMatrixDefaults(migrateTacticalMatrixMaterials(normalized))
     : templateId === "specialist"
     ? migrateSpecialistLayout(normalized)
     : templateId === "six-vanguard"

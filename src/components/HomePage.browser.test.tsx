@@ -40,7 +40,7 @@ test("首页列出四星无核模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
 
-  await expect.element(screen.getByRole("button", { name: "四星无核 精一四星首杀拼贴模板" })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "四星无核 四星拼贴模板" })).toBeVisible();
   await screen.getByText("四星无核", { exact: true }).click();
   expect(opened).toBe("fourstar-nocore");
 });
@@ -49,7 +49,7 @@ test("首页列出仅需一人模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
 
-  await expect.element(screen.getByRole("button", { name: "仅需一人 单人通关暗红氛围模板" })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "仅需一人 单人通关模板" })).toBeVisible();
   await screen.getByText("仅需一人", { exact: true }).click();
   expect(opened).toBe("solo");
 });
@@ -73,6 +73,6 @@ test("首页列出紧急授课模板并能打开", async () => {
 test("首页列出全息作战矩阵并打开可调色模板", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
-  await screen.getByRole("button", { name: "全息作战矩阵 可自选主题色的圆环战术模板" }).click();
+  await screen.getByRole("button", { name: "全息作战矩阵 可自选主题色" }).click();
   expect(opened).toBe("tactical-matrix");
 });

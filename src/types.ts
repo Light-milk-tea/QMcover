@@ -337,6 +337,7 @@ export type TemplateMeta = {
   defaultShaftLightRotate?: number;
   defaultOperatorId?: string;
   defaultArtId?: string;
+  defaultColorway?: string;
   showOrnament?: boolean;
   defaultOrnamentId?: string;
   canvasSkin?: CanvasSkin;
