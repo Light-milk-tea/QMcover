@@ -79,7 +79,8 @@ export type CanvasSkin =
   | "specialist"
   | "operator-preview"
   | "fourstar-nocore"
-  | "solo";
+  | "solo"
+  | "highspec-nocore";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -295,7 +296,8 @@ export type BuiltinTemplateId =
   | "specialist"
   | "operator-preview"
   | "fourstar-nocore"
-  | "solo";
+  | "solo"
+  | "highspec-nocore";
 
 export type TemplateId = string;
 
@@ -321,6 +323,9 @@ export type TemplateMeta = {
   defaultImageScale?: number;
   defaultImageX?: number;
   defaultImageY?: number;
+  defaultImageEdgeFade?: boolean;
+  defaultImageEdgeFadeAmount?: number;
+  defaultImageEdgeFadeMode?: EdgeFadeMode;
   showBackground?: boolean;
   defaultBgPreset?: string;
   showTextBackground?: boolean;

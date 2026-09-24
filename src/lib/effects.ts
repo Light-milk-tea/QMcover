@@ -63,6 +63,7 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
   const operatorPreview = skin === "operator-preview";
   const fourstar = skin === "fourstar-nocore";
   const solo = skin === "solo";
+  const arrowStage = skin === "highspec-nocore";
   const emergencyLesson = skin === "emergency-lesson";
   const sixVanguard = skin === "six-vanguard";
   const strengthReview = skin === "strength-review";
@@ -87,7 +88,9 @@ export function defaultCoverEffects(skin: CanvasSkin, legacy: LegacyEffects = {}
         ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 42, contrast: 16, brightness: 72 }
         : solo
           ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 18, contrast: 22, brightness: 100 }
-          : { ...BG_GRADE, enabled: specialist },
+          : arrowStage
+            ? { ...BG_GRADE, enabled: true, blur: 0, grayscale: 14, contrast: 8, brightness: 100 }
+            : { ...BG_GRADE, enabled: specialist },
     scanlines: amount(false, specialist ? 11 : 24),
     grain: amount(
       specialist || operatorPreview || fourstar || solo || emergencyLesson || strengthReview,

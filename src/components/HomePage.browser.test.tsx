@@ -61,6 +61,15 @@ test("首页列出强度测评模板并能打开", async () => {
   expect(opened).toBe("strength-review");
 });
 
+test("首页列出 V我50 模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "V我50 简约关卡模板" })).toBeVisible();
+  await screen.getByText("V我50", { exact: true }).click();
+  expect(opened).toBe("highspec-nocore");
+});
+
 test("首页列出紧急授课模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);

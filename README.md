@@ -60,7 +60,7 @@ npm run dev
 
 ## 模板
 
-首页列出 `src/data/templates.ts`。当前十三套：
+首页列出 `src/data/templates.ts`。当前十五套：
 
 | id | 名称 | 构图 |
 | --- | --- | --- |
@@ -78,10 +78,11 @@ npm run dev
 | `six-vanguard` | 先锋六人 | 左侧多萝西近景，右侧阵容标题与超大斜体关卡码；灰金网点、人物叠影和红色职业条。 |
 | `strength-review` | 强度测评 | 左主立绘（默认皮肤近景）、中间叠精0基建小人、右侧三技能金框、底部两行叠金标题；换干员时小人跟着走，也可在小人库另选或上传。 |
 | `tactical-matrix` | 全息作战矩阵 | 左侧人物近景、右侧战术圆环与超大窄体关卡码；主题色用调色盘自选，人数、上下栏目和独立纹理图层可编辑。 |
+| `highspec-nocore` | V我50 | 浅底：左上宋体活动名，通栏黑箭头关卡码，棕色块短词加大字，右侧立绘。 |
 
 首页卡片用 `public/thumbs/<id>.webp`，不现场渲染 1920 封面、不拉全尺寸立绘。改完构图后打开 `#/__thumb/<id>` 重新导出预览。
 
-`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview`、`fourstar-nocore`、`solo`、`six-vanguard`、`strength-review` 这些 id 不要改：路由和已存草稿都靠它。
+`firstkill`、`lowspec`、`rogue`、`madness`、`nocore`、`endfield`、`specialist`、`operator-preview`、`fourstar-nocore`、`solo`、`six-vanguard`、`strength-review`、`highspec-nocore` 这些 id 不要改：路由和已存草稿都靠它。
 
 ### 危机合约
 
@@ -187,6 +188,18 @@ npm run dev
 
 构图主参考：`references/solo-clear/01_BV1awbAzSERP.jpg`。不搬整张封面和署名。
 
+### V我50
+
+- 大字（默认「首杀」，两字最大，更长会缩小）
+- 关卡码（默认 QM-EX-8，白字坐在朝左的黑箭头里）
+- 色块词（默认「好吃」，白字，色块可改色）
+- 活动名（默认「众生行记」，宋体）
+- 英文小标默认 NEW SIDESTORY，在图层里改
+- 默认背景：拉特兰教堂前，罩一层浅色
+- 默认立绘：能天使城市骑手，垫在全部文字下面
+
+构图主参考：`references/highspec-nocore/01_BV1QyVSzkEJ3.jpg`。不搬官方活动标、右侧载具贴图和封面署名。
+
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
 ## 目录
@@ -217,6 +230,7 @@ src/
     OperatorPreview.tsx   干员前瞻分析
     FourstarNocore.tsx    四星无核
     Solo.tsx              仅需一人
+    HighspecNocore.tsx    V我50
     OperatorLayer.tsx     可拖动立绘
   components/             首页、顶栏、画布、图层面板、编辑栏、立绘库
   store/CoverContext.tsx  当前草稿
@@ -239,6 +253,7 @@ references/secret-plan/        莱茵实验组特种队构图参考，jpg 不提
 references/operator-preview/   干员前瞻构图参考，jpg 不提交
 references/fourstar-nocore/    四星无核首杀构图参考，jpg 不提交
 references/solo-clear/         仅需一人构图参考，jpg 不提交
+references/highspec-nocore/    V我50 构图参考，jpg 不提交
 references/three-specialist/   三特种突袭构图参考，jpg 不提交
 ```
 
@@ -310,6 +325,7 @@ npm run chibis
 | 干员前瞻分析 | `src/templates/OperatorPreview.tsx` | 复刻左立绘 + 右宋体大字 + 蓝色栏目条，不要搬原作者系列标识。 |
 | 四星无核 | `src/templates/FourstarNocore.tsx` | 复刻左斜抬标题 + 米色关卡条 + 右立绘金框，不要搬整图和实机截图。 |
 | 仅需一人 | `src/templates/Solo.tsx` | 复刻左字组 + 暗红氛围 + 右立绘，不要搬整图和署名。 |
+| V我50 | `src/templates/HighspecNocore.tsx` | 复刻浅底、通栏黑箭头、色块短词和大字，不要搬官方活动标和封面署名。 |
 | 强度测评 | `src/templates/StrengthReview.tsx` | 复刻单立绘 + 三技能框 + 叠金标题，不要搬罗德岛底纹、官方标和技能外框贴图。 |
 
 ## 约定

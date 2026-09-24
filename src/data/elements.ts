@@ -286,4 +286,15 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "rule-red", label: "红线", kind: "box", hasColor: true, hasWidth: true },
     { id: "slogan", label: "英文标", kind: "text", defaultFont: "display", textBind: "signature" },
   ],
+  "highspec-nocore": [
+    { id: "wash", label: "浅罩", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "arrow", label: "关卡箭头", kind: "box", hasColor: true },
+    { id: "chip", label: "色块", kind: "box", hasColor: true, hasWidth: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "event", label: "活动名", kind: "text", defaultFont: "serif", textBind: "signature" },
+    { id: "kicker", label: "英文小标", kind: "text", defaultFont: "cn", textDefault: "NEW SIDESTORY" },
+    { id: "stage", label: "关卡码", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "tag", label: "色块词", kind: "text", defaultFont: "cn", textBind: "mark" },
+    { id: "verb", label: "大字", kind: "text", defaultFont: "cn", textBind: "title" },
+  ],
 };

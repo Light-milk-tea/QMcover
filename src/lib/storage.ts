@@ -27,7 +27,7 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 36;
+const DEFAULTS_VERSION = 39;
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
@@ -273,12 +273,127 @@ function migrateSoloUserLayout(draft: Draft): Draft {
   };
 }
 
+function migrateHighspecOperator(draft: Draft): Draft {
+  const eliteDefault =
+    draft.imageScale === 196 &&
+    draft.imageX === 120 &&
+    draft.imageY === 24 &&
+    (draft.artId === "char_103_angel_1" || draft.artId === "char_103_angel_2");
+  const standingDefault =
+    draft.imageScale === 188 &&
+    draft.imageX === 72 &&
+    draft.imageY === 310 &&
+    draft.artId === "char_103_angel_2";
+  if (!eliteDefault && !standingDefault) return draft;
+  const current = emptyDraft("highspec-nocore");
+  const operator = current.layers.find(
+    (layer): layer is ImageLayer => layer.id === "operator" && layer.kind === "image",
+  );
+  return {
+    ...draft,
+    artId: current.artId,
+    imageUrl: current.imageUrl,
+    operatorId: current.operatorId,
+    operatorName: current.operatorName,
+    imageScale: current.imageScale,
+    imageX: current.imageX,
+    imageY: current.imageY,
+    imageEdgeFade: current.imageEdgeFade,
+    imageEdgeFadeAmount: current.imageEdgeFadeAmount,
+    imageEdgeFadeMode: current.imageEdgeFadeMode,
+    layers: draft.layers.map((layer) =>
+      layer.id === "operator" && layer.kind === "image" && operator
+        ? {
+            ...layer,
+            artId: current.artId,
+            imageUrl: current.imageUrl,
+            operatorId: current.operatorId,
+            x: operator.x,
+            y: operator.y,
+            w: operator.w,
+            h: operator.h,
+            scale: current.imageScale,
+            imageX: current.imageX,
+            imageY: current.imageY,
+            fadeLeft: operator.fadeLeft ?? false,
+            fadeLeftSolid: operator.fadeLeftSolid,
+            objectFit: operator.objectFit,
+            objectPosition: operator.objectPosition,
+            transformOrigin: operator.transformOrigin,
+            edgeFade: operator.edgeFade,
+            edgeFadeAmount: operator.edgeFadeAmount,
+            edgeFadeMode: operator.edgeFadeMode,
+          }
+        : layer,
+    ),
+  };
+}
+
+const HIGHSPEC_BAKED_NUDGES = [
+  ["stage", 2.6779059884937237, -13.389039618200837],
+  ["verb", -10.711256210774058, -8.03347280334728],
+] as const;
+
+function bakeHighspecLayout(draft: Draft): Draft {
+  const elementStyles = { ...draft.elementStyles };
+  for (const [id, x, y] of HIGHSPEC_BAKED_NUDGES) {
+    const value = elementStyles[id];
+    if (!value) continue;
+    const next = { ...value };
+    if (next.x != null && Math.abs(next.x - x) < 0.02) delete next.x;
+    if (next.y != null && Math.abs(next.y - y) < 0.02) delete next.y;
+    if (Object.keys(next).length) elementStyles[id] = next;
+    else delete elementStyles[id];
+  }
+  const previousImage =
+    draft.imageScale === 100 &&
+    draft.imageX === 0 &&
+    draft.imageY === 0 &&
+    draft.artId === "char_103_angel_kfc#1";
+  if (!previousImage) return { ...draft, elementStyles };
+  const current = emptyDraft("highspec-nocore");
+  const operator = current.layers.find(
+    (layer): layer is ImageLayer => layer.id === "operator" && layer.kind === "image",
+  );
+  return {
+    ...draft,
+    elementStyles,
+    imageScale: current.imageScale,
+    imageX: current.imageX,
+    imageY: current.imageY,
+    imageEdgeFade: current.imageEdgeFade,
+    imageEdgeFadeAmount: current.imageEdgeFadeAmount,
+    imageEdgeFadeMode: current.imageEdgeFadeMode,
+    layers: draft.layers.map((layer) =>
+      layer.id === "operator" && layer.kind === "image" && operator && (layer.scale ?? 100) === 100 && !layer.imageX && !layer.imageY
+        ? {
+            ...layer,
+            scale: current.imageScale,
+            imageX: current.imageX,
+            imageY: current.imageY,
+            edgeFade: operator.edgeFade,
+            edgeFadeAmount: operator.edgeFadeAmount,
+            edgeFadeMode: operator.edgeFadeMode,
+          }
+        : layer,
+    ),
+  };
+}
+
 function migrateDraftDefaults(state: PersistedState): PersistedState {
   if ((state.defaultsVersion ?? 0) >= DEFAULTS_VERSION) return state;
   if ((state.defaultsVersion ?? 0) >= 35) {
     const solo = state.drafts.solo;
-    const next = { ...state, defaultsVersion: DEFAULTS_VERSION,
-      drafts: { ...state.drafts, ...(solo ? { solo: migrateSoloUserLayout(solo) } : {}) } };
+    const highspec = state.drafts["highspec-nocore"];
+    const next = {
+      ...state,
+      defaultsVersion: DEFAULTS_VERSION,
+      drafts: {
+        ...state.drafts,
+        ...(solo ? { solo: migrateSoloUserLayout(solo) } : {}),
+        ...(highspec ? { "highspec-nocore": bakeHighspecLayout(migrateHighspecOperator(highspec)) } : {}),
+      },
+    };
     saveState(next);
     return next;
   }
@@ -287,6 +402,10 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
     if (!draft) continue;
     if (id === "operator-preview") {
       drafts[id] = migrateOperatorPreviewLayout(draft);
+      continue;
+    }
+    if (id === "highspec-nocore") {
+      drafts[id] = bakeHighspecLayout(migrateHighspecOperator(draft));
       continue;
     }
     if (id === "solo") {

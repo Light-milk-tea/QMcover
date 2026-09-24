@@ -5,6 +5,7 @@ import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { useCoverOptional } from "../store/CoverContext";
 import type { BuiltinTemplateId, CoverRenderProps } from "../types";
 import { Endfield } from "./Endfield";
+import { HighspecNocore } from "./HighspecNocore";
 import { EmergencyLesson } from "./EmergencyLesson";
 import { FirstKill } from "./FirstKill";
 import { FourstarNocore } from "./FourstarNocore";
@@ -35,6 +36,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   "operator-preview": OperatorPreview,
   "fourstar-nocore": FourstarNocore,
   solo: Solo,
+  "highspec-nocore": HighspecNocore,
 };
 
 export function CoverView(props: CoverRenderProps) {

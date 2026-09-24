@@ -1,5 +1,6 @@
 import type { BuiltinTemplateId, Layer } from "../../types";
 import { endfieldLayers } from "./endfield";
+import { highspecNocoreLayers } from "./highspecNocore";
 import { emergencyLessonLayers } from "./emergencyLesson";
 import { firstkillLayers } from "./firstkill";
 import { fourstarNocoreLayers } from "./fourstarNocore";
@@ -30,6 +31,7 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   "operator-preview": operatorPreviewLayers,
   "fourstar-nocore": fourstarNocoreLayers,
   solo: soloLayers,
+  "highspec-nocore": highspecNocoreLayers,
 };
 
 export function getBuiltinLayers(id: BuiltinTemplateId): Layer[] {

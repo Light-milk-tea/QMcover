@@ -37,6 +37,7 @@ export const BUILTIN_TEMPLATE_IDS = [
   "operator-preview",
   "fourstar-nocore",
   "solo",
+  "highspec-nocore",
 ] as const;
 
 /** 立绘缩放滑条范围。上限要能罩住全身立绘，以及皮肤全景里的脸部近景。 */
