@@ -704,6 +704,9 @@ function migrateSixVanguardLayout(draft: Draft): Draft {
     elementStyles,
     layers: draft.layers.filter((layer) => layer.id !== "count-mark"),
   };
+  if (draft.title === "H9-5" && draft.subtitle === "先锋六人") {
+    draft = { ...draft, title: "H2-5", subtitle: "特种三人" };
+  }
   const oldArt = draft.artId === "char_4026_vulpis_1" || draft.operatorId === "char_4026_vulpis";
   const oldGuessedDorothy =
     draft.artId === "char_4048_doroth_1" &&

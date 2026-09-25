@@ -6,10 +6,10 @@ beforeEach(() => {
   localStorage.clear();
 });
 
-test("首页列出先锋六人模板并能打开", async () => {
+test("首页列出特种三人模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
-  await screen.getByRole("button", { name: "先锋六人 灰金网点职业队模板" }).click();
+  await screen.getByRole("button", { name: "特种三人 职业队模板" }).click();
   expect(opened).toBe("six-vanguard");
 });
 
@@ -57,7 +57,7 @@ test("首页列出仅需一人模板并能打开", async () => {
 test("首页列出强度测评模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
-  await screen.getByRole("button", { name: "强度测评 单立绘技能测评模板" }).click();
+  await screen.getByRole("button", { name: "强度测评 仿血狼干员测评模板" }).click();
   expect(opened).toBe("strength-review");
 });
 
@@ -70,11 +70,20 @@ test("首页列出 V我50 模板并能打开", async () => {
   expect(opened).toBe("highspec-nocore");
 });
 
+test("首页列出肉鸽模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "肉鸽模板 仿鸡组肉鸽模板" })).toBeVisible();
+  await screen.getByText("肉鸽模板", { exact: true }).click();
+  expect(opened).toBe("rogue");
+});
+
 test("首页列出紧急授课模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
 
-  await expect.element(screen.getByRole("button", { name: "紧急授课 五人无藏肉鸽模板" })).toBeVisible();
+  await expect.element(screen.getByRole("button", { name: "紧急授课 仿黑蓑肉鸽模板" })).toBeVisible();
   await screen.getByText("紧急授课", { exact: true }).click();
   expect(opened).toBe("emergency-lesson");
 });

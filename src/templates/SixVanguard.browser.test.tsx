@@ -43,7 +43,7 @@ function separated(a: ReturnType<typeof textCorners>, b: ReturnType<typeof textC
 }
 
 test.each([
-  ["H9-5", "先锋六人", "Vanguard"],
+  ["H2-5", "特种三人", "Vanguard"],
   ["H12-4突袭", "先锋六人无支援", "Vanguard Operations"],
   ["1-7", "双人", "Duo"],
 ])("关卡 %s 与阵容 %s 在安全区内保持主次字级", async (title, subtitle, signature) => {
@@ -67,7 +67,7 @@ test.each([
   const imageSlot = screen.container.querySelector('[data-operator-slot]')!;
   const stageLayer = screen.container.querySelector('[data-cover-el="stage"]')!;
   expect(Number(getComputedStyle(imageSlot).zIndex)).toBeLessThan(Number(getComputedStyle(stageLayer).zIndex));
-  const operator = screen.container.querySelector('[data-cover-el="operator"]') as HTMLElement;
+  const operator = screen.container.querySelector('[data-cover-el="operator"] [data-art-pan]') as HTMLElement;
   expect(operator.getBoundingClientRect().left).toBeCloseTo(canvas.left - 215.5387931034468, 0);
 });
 
@@ -142,10 +142,23 @@ test("旧默认忍冬稿换成多萝西精零并重排", () => {
   expect(loaded.layers.find(l => l.id === "operator" && l.kind === "image")).toMatchObject({ imageX: -215.5387931034468, scale: 177, artId: "char_4048_doroth_1" });
 });
 
+test("旧默认文案换成 H2-5 与特种三人，自定义文案保留", () => {
+  const draft = emptyDraft("six-vanguard");
+  saveDraft("six-vanguard", { ...draft, title: "H9-5", subtitle: "先锋六人" });
+  const loaded = loadDraft("six-vanguard");
+  expect(loaded.title).toBe("H2-5");
+  expect(loaded.subtitle).toBe("特种三人");
+
+  saveDraft("six-vanguard", { ...emptyDraft("six-vanguard"), title: "H10-3", subtitle: "先锋四人" });
+  const kept = loadDraft("six-vanguard");
+  expect(kept.title).toBe("H10-3");
+  expect(kept.subtitle).toBe("先锋四人");
+});
+
 test("新建稿使用多萝西精英零且原生图层完整接入", () => {
   const draft = emptyDraft("six-vanguard");
-  expect(draft.title).toBe("H9-5");
-  expect(draft.subtitle).toBe("先锋六人");
+  expect(draft.title).toBe("H2-5");
+  expect(draft.subtitle).toBe("特种三人");
   expect(draft.operatorName).toBe("多萝西");
   expect(draft.operatorId).toBe("char_4048_doroth");
   expect(draft.artId).toBe("char_4048_doroth_1");
