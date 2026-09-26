@@ -27,7 +27,68 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 39;
+const DEFAULTS_VERSION = 41;
+
+const BLUE_CUT_BAKED_NUDGES: Array<[string, number | null, number | null]> = [
+  ["squad", -2.3573463397790055, 40.073592886740336],
+  ["en", 16.50077693370166, 23.572708045580114],
+  ["en", -80, -15],
+  ["slash", 155.58011049723746, -77.79000129488952],
+  ["wedge", 43.19042369631901, -498.6504265720862],
+  ["stage", -4.714476864640884, 14.143646408839778],
+  ["stage", -63, null],
+];
+
+function bakeBlueCutLayout(draft: Draft): Draft {
+  const elementStyles = { ...draft.elementStyles };
+  for (const [id, x, y] of BLUE_CUT_BAKED_NUDGES) {
+    const value = elementStyles[id];
+    if (!value) continue;
+    const next = { ...value };
+    if (x != null && next.x != null && Math.abs(next.x - x) < 0.5) delete next.x;
+    if (y != null && next.y != null && Math.abs(next.y - y) < 0.5) delete next.y;
+    if (Object.keys(next).length) elementStyles[id] = next;
+    else delete elementStyles[id];
+  }
+  const current = emptyDraft("blue-cut");
+  const previousPan =
+    (Math.abs(draft.imageX - -12) < 0.05 && Math.abs(draft.imageY - 64) < 0.05) ||
+    (Math.abs(draft.imageX - -9.6) < 0.5 && Math.abs(draft.imageY - 52.2) < 0.5) ||
+    (Math.abs(draft.imageX - -116.2943863759617) < 0.05 && Math.abs(draft.imageY - -55.77916235478211) < 0.05);
+  const previousColor = !draft.colorway || draft.colorway === "#0e3ff1" || draft.colorway === "#0c884a";
+  const previousOperator = draft.artId === "char_4123_ela_1" || draft.operatorId === "char_4123_ela";
+  return {
+    ...draft,
+    elementStyles,
+    ...(previousPan || previousOperator ? { imageScale: current.imageScale, imageX: current.imageX, imageY: current.imageY } : {}),
+    ...(previousOperator
+      ? {
+          operatorId: current.operatorId,
+          operatorName: current.operatorName,
+          artId: current.artId,
+          imageUrl: current.imageUrl,
+        }
+      : {}),
+    ...(previousColor ? { colorway: current.colorway } : {}),
+    layers: draft.layers.map((layer) =>
+      layer.id === "operator" && layer.kind === "image" && (previousPan || previousOperator)
+        ? {
+            ...layer,
+            ...(previousOperator
+              ? {
+                  operatorId: current.operatorId,
+                  artId: current.artId,
+                  imageUrl: current.imageUrl,
+                }
+              : {}),
+            imageX: current.imageX,
+            imageY: current.imageY,
+            scale: current.imageScale,
+          }
+        : layer,
+    ),
+  };
+}
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
@@ -385,6 +446,7 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
   if ((state.defaultsVersion ?? 0) >= 35) {
     const solo = state.drafts.solo;
     const highspec = state.drafts["highspec-nocore"];
+    const blueCut = state.drafts["blue-cut"];
     const next = {
       ...state,
       defaultsVersion: DEFAULTS_VERSION,
@@ -392,6 +454,7 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
         ...state.drafts,
         ...(solo ? { solo: migrateSoloUserLayout(solo) } : {}),
         ...(highspec ? { "highspec-nocore": bakeHighspecLayout(migrateHighspecOperator(highspec)) } : {}),
+        ...(blueCut ? { "blue-cut": bakeBlueCutLayout(blueCut) } : {}),
       },
     };
     saveState(next);
@@ -447,6 +510,10 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
     }
     if (id === "specialist" || draft.canvasSkin === "specialist") {
       drafts[id] = id === "specialist" ? applySpecialistDocumentEffects(draft) : draft;
+      continue;
+    }
+    if (id === "blue-cut") {
+      drafts[id] = bakeBlueCutLayout(draft);
       continue;
     }
     const effects = normalizeCoverEffects(draft.canvasSkin ?? "plain", draft.effects, {

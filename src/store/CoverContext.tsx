@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { loadDraft, saveDraft, emptyDraft } from "../lib/storage";
+import { CLASS_ICON_SRC } from "../data/decorations";
 import {
   createBoxLayer,
   createDecorationLayer,
@@ -322,6 +323,16 @@ export function CoverProvider({
         });
         if (!layer) return prev;
         createdId = layer.id;
+        if (presetId in CLASS_ICON_SRC && layer.kind === "box") {
+          const plate = createBoxLayer({ x: layer.x, y: layer.y });
+          plate.label = `${layer.label}底`;
+          plate.w = layer.w;
+          plate.h = layer.h;
+          plate.fill = "#000000";
+          plate.color = "#000000";
+          layer.color = "#ffffff";
+          return { ...prev, layers: [...prev.layers, plate, layer] };
+        }
         return { ...prev, layers: [...prev.layers, layer] };
       });
       if (createdId) setSelectedId(createdId);

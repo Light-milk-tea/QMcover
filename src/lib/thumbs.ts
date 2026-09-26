@@ -1,3 +1,4 @@
+import blueCutThumb from "../assets/thumbs/blue-cut-shot.webp";
 import highspecNocoreThumb from "../assets/thumbs/highspec-nocore-shot.webp";
 import tacticalMatrixThumb from "../assets/thumbs/tactical-matrix-shot.webp";
 import endfieldThumb from "../assets/thumbs/endfield-shot.webp";
@@ -31,6 +32,7 @@ const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   "fourstar-nocore": fourstarNocoreThumb,
   solo: soloThumb,
   "highspec-nocore": highspecNocoreThumb,
+  "blue-cut": blueCutThumb,
 };
 
 export function templateThumbSrc(id: TemplateId): string {

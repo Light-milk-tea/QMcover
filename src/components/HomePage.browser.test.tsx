@@ -70,6 +70,15 @@ test("首页列出 V我50 模板并能打开", async () => {
   expect(opened).toBe("highspec-nocore");
 });
 
+test("首页列出斜切关卡模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "斜切关卡 白底蓝条关卡封面" })).toBeVisible();
+  await screen.getByText("斜切关卡", { exact: true }).click();
+  expect(opened).toBe("blue-cut");
+});
+
 test("首页列出肉鸽模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);

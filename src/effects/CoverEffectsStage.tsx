@@ -258,6 +258,7 @@ const VIGNETTE_AT: Record<CanvasSkin, string> = {
   "fourstar-nocore": "30% 48%",
   solo: "26% 48%",
   "highspec-nocore": "24% 42%",
+  "blue-cut": "18% 72%",
 };
 
 function VignetteOverlay({ skin, amount }: { skin: CanvasSkin; amount: number }) {

@@ -1,4 +1,5 @@
 import { BILI_COVER } from "../constants";
+import { CLASS_ICON_SRC } from "../data/decorations";
 import { findOperatorByName } from "../data/arts";
 import type { BoxLayer, Draft, LayerEffect, TextLayer } from "../types";
 import { autoFontSize, displayBoundText } from "../lib/document";
@@ -496,6 +497,27 @@ export function renderBoxChrome(layer: BoxLayer) {
         <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="1.2" opacity="0.45" />
         {ticks}
       </svg>
+    );
+  }
+  if (chrome && chrome in CLASS_ICON_SRC) {
+    const src = CLASS_ICON_SRC[chrome];
+    return (
+      <span
+        data-class-icon={chrome}
+        className="block h-full w-full bg-current"
+        style={{
+          WebkitMaskImage: `url("${src}")`,
+          maskImage: `url("${src}")`,
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
+          WebkitMaskPosition: "center",
+          maskPosition: "center",
+          WebkitMaskSize: "contain",
+          maskSize: "contain",
+          WebkitMaskMode: "luminance",
+          maskMode: "luminance",
+        }}
+      />
     );
   }
   if (chrome === "chain-rule") {

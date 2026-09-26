@@ -11,6 +11,42 @@ export type DecorationPreset = {
   layer: Omit<BoxLayer, "id" | "kind">;
 };
 
+export const CLASS_ICON_SRC: Record<string, string> = {
+  "class-vanguard": "https://media.prts.wiki/8/82/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E5%85%88%E9%94%8B_%E5%A4%A7%E5%9B%BE.png",
+  "class-guard": "https://media.prts.wiki/a/a9/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E8%BF%91%E5%8D%AB_%E5%A4%A7%E5%9B%BE.png",
+  "class-defender": "https://media.prts.wiki/6/6f/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E9%87%8D%E8%A3%85_%E5%A4%A7%E5%9B%BE.png",
+  "class-sniper": "https://media.prts.wiki/d/d1/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E7%8B%99%E5%87%BB_%E5%A4%A7%E5%9B%BE.png",
+  "class-caster": "https://media.prts.wiki/4/4d/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E6%9C%AF%E5%B8%88_%E5%A4%A7%E5%9B%BE.png",
+  "class-medic": "https://media.prts.wiki/b/b8/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E5%8C%BB%E7%96%97_%E5%A4%A7%E5%9B%BE.png",
+  "class-supporter": "https://media.prts.wiki/f/f0/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E8%BE%85%E5%8A%A9_%E5%A4%A7%E5%9B%BE.png",
+  "class-specialist": "https://media.prts.wiki/2/2a/%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E7%89%B9%E7%A7%8D_%E5%A4%A7%E5%9B%BE.png",
+};
+
+const CLASS_MARKS: DecorationPreset[] = [
+  ["class-vanguard", "先锋"],
+  ["class-guard", "近卫"],
+  ["class-defender", "重装"],
+  ["class-sniper", "狙击"],
+  ["class-caster", "术师"],
+  ["class-medic", "医疗"],
+  ["class-supporter", "辅助"],
+  ["class-specialist", "特种"],
+].map(([chrome, name]) => ({
+  id: chrome,
+  name,
+  description: "PRTS 职业大图",
+  group: "ark" as const,
+  layer: {
+    label: name,
+    x: 80,
+    y: 64,
+    w: 160,
+    h: 160,
+    chrome: chrome as BoxLayer["chrome"],
+    color: "#ffffff",
+  },
+}));
+
 const ARK_DECORATIONS: DecorationPreset[] = [
   {
     id: "ak-mark",
@@ -147,6 +183,7 @@ const ARK_DECORATIONS: DecorationPreset[] = [
       color: "#c6e84a",
     },
   },
+  ...CLASS_MARKS,
 ];
 
 export const DECORATIONS: DecorationPreset[] = [

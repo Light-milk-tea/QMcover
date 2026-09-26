@@ -61,6 +61,9 @@ test("添加菜单用装饰图库替代单一色块", async () => {
   await expect.element(screen.getByText("添加装饰", { exact: true })).toBeVisible();
   await expect.element(screen.getByText("方舟饰件", { exact: true })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: "方舟标", exact: true })).toBeVisible();
+  for (const name of ["先锋", "近卫", "重装", "狙击", "术师", "医疗", "辅助", "特种"]) {
+    await expect.element(screen.getByRole("button", { name, exact: true })).toBeVisible();
+  }
   await expect.element(screen.getByRole("button", { name: "四角星", exact: true })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: "雷达弧", exact: true })).toBeVisible();
   await expect.element(screen.getByRole("button", { name: "源石棱", exact: true })).toBeVisible();
@@ -103,6 +106,35 @@ test("选择模板装饰后加入画布、自动选中并可拖动", async () =>
 
   drag(overlay.element() as HTMLElement, 30, 15);
   await expect.element(status).not.toHaveTextContent("|520,250");
+});
+
+test("职业角标可以加入画布并改色", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <DecorationFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByText("添加", { exact: true }).click();
+  await screen.getByRole("button", { name: "装饰", exact: true }).click();
+  await screen.getByRole("button", { name: "特种", exact: true }).click();
+
+  const status = screen.getByTestId("selected-decoration");
+  await expect.element(status).toHaveTextContent("|特种|class-specialist|80,64");
+  const selectedId = status.element().textContent?.split("|")[0];
+  const frame = document.querySelector<HTMLElement>(`[data-cover-el="${selectedId}"]`);
+  const icon = frame?.querySelector("[data-class-icon='class-specialist']") as HTMLElement | null;
+  expect(icon).not.toBeNull();
+  expect(getComputedStyle(icon!).maskImage).toContain("prts.wiki");
+  expect(getComputedStyle(frame!).color).toBe("rgb(255, 255, 255)");
+
+  const layers = loadDraft("blank").layers;
+  const plate = layers.find((layer) => layer.label === "特种底");
+  const mark = layers.find((layer) => layer.label === "特种");
+  expect(plate?.kind).toBe("box");
+  expect(plate && plate.kind === "box" ? plate.fill : "").toBe("#000000");
+  expect(mark?.color).toBe("#ffffff");
+  expect(layers.findIndex((layer) => layer.id === plate?.id)).toBeLessThan(layers.findIndex((layer) => layer.id === mark?.id));
 });
 
 test("明日方舟四角星可以加入画布", async () => {

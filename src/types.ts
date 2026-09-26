@@ -62,7 +62,15 @@ export type LayerChrome =
   | "hex-cell"
   | "ring-ticks"
   | "chain-rule"
-  | "ak-mark";
+  | "ak-mark"
+  | "class-vanguard"
+  | "class-guard"
+  | "class-defender"
+  | "class-sniper"
+  | "class-caster"
+  | "class-medic"
+  | "class-supporter"
+  | "class-specialist";
 
 export type CanvasSkin =
   | "plain"
@@ -80,7 +88,8 @@ export type CanvasSkin =
   | "operator-preview"
   | "fourstar-nocore"
   | "solo"
-  | "highspec-nocore";
+  | "highspec-nocore"
+  | "blue-cut";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -297,7 +306,8 @@ export type BuiltinTemplateId =
   | "operator-preview"
   | "fourstar-nocore"
   | "solo"
-  | "highspec-nocore";
+  | "highspec-nocore"
+  | "blue-cut";
 
 export type TemplateId = string;
 

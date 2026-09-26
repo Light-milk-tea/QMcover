@@ -10,6 +10,7 @@ import { isBuiltinId, isChibiLayer } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { useCover } from "../store/CoverContext";
 import type { CanvasSkin, ImageLayer } from "../types";
+import { BLUE_CUT_ACCENT, blueCutAccent } from "../lib/blueCutPalette";
 import { resolveMatrixAccent, storeMatrixColorway } from "../lib/matrixPalette";
 import { BackgroundPicker } from "./BackgroundPicker";
 import { ColorField } from "./ColorField";
@@ -30,6 +31,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "fourstar-nocore", label: "四星无核底" },
   { id: "solo", label: "仅需一人底" },
   { id: "highspec-nocore", label: "V我50底" },
+  { id: "blue-cut", label: "斜切关卡底" },
   { id: "strength-review", label: "强度测评底" },
 ];
 
@@ -104,6 +106,17 @@ export function EditorPanel() {
           </div>
         ) : null}
       </div>
+
+      {templateId === "blue-cut" || draft.canvasSkin === "blue-cut" ? (
+        <div className="border-b border-line px-4 py-3">
+          <ColorField
+            elementId="blue-cut-colorway"
+            label="主题色"
+            color={blueCutAccent(draft.colorway)}
+            onChange={(color) => patchDraft({ colorway: color ?? BLUE_CUT_ACCENT })}
+          />
+        </div>
+      ) : null}
 
       {draft.canvasSkin === "tactical-matrix" ? (
         <div className="border-b border-line px-4 py-3">

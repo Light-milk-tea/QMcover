@@ -297,4 +297,12 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "tag", label: "色块词", kind: "text", defaultFont: "cn", textBind: "mark" },
     { id: "verb", label: "大字", kind: "text", defaultFont: "cn", textBind: "title" },
   ],
+  "blue-cut": [
+    { id: "slash", label: "蓝斜切", kind: "box", hasColor: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "wedge", label: "黑斜切", kind: "box", hasColor: true },
+    { id: "squad", label: "阵容", kind: "text", defaultFont: "cn", textBind: "title" },
+    { id: "stage", label: "关卡码", kind: "text", defaultFont: "cn", textBind: "subtitle" },
+    { id: "en", label: "英文标", kind: "text", defaultFont: "cn", textBind: "signature", hasColor: true },
+  ],
 };
