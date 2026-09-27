@@ -1,4 +1,5 @@
-import { useId } from "react";
+import { RedSmoke } from "../canvas/DecorArt";
+import { GlowWord } from "../canvas/TextFaces";
 import { CoverElement } from "../components/CoverElement";
 import { renderBoxChrome } from "../canvas/LayerChrome";
 import { BILI_COVER, STAGE_BAR_WIDTH_MAX, STAGE_BAR_WIDTH_MIN } from "../constants";
@@ -36,30 +37,6 @@ function stageSize(length: number) {
   return 148;
 }
 
-function GlowWord({ text, stroke = "0.01em #101014" }: { text: string; stroke?: string }) {
-  return (
-    <span data-solo-title-face="" className="relative inline-block whitespace-nowrap leading-none">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 text-black/65"
-        style={{ filter: "blur(4px)" }}
-      >
-        {text}
-      </span>
-      <span
-        className="relative"
-        style={{
-          color: WHITE,
-          WebkitTextStroke: stroke,
-          paintOrder: "stroke fill",
-        }}
-      >
-        {text}
-      </span>
-    </span>
-  );
-}
-
 function TitleBarFace() {
   return (
     <span aria-hidden className="absolute inset-0" style={{ background: "currentColor" }} />
@@ -74,7 +51,6 @@ function barWidth(props: CoverRenderProps, id: string, fallback: number) {
 }
 
 export function Solo(props: CoverRenderProps) {
-  const smokeId = useId().replace(/:/g, "");
   const cover = useCoverOptional();
   const styles = props.elementStyles;
   const title = elementText(styles, "title", props.title.trim() || "酒神单人");
@@ -134,28 +110,7 @@ export function Solo(props: CoverRenderProps) {
           className="absolute inset-0"
           style={{ background: bg.url ? "rgb(52 6 10 / 0.58)" : "rgb(12 4 6 / 0.78)" }}
         />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 88% 78% at 34% 50%, rgb(118 10 16 / 0.88) 0%, rgb(58 6 10 / 0.52) 48%, transparent 76%), radial-gradient(ellipse 56% 46% at 82% 8%, rgb(200 40 34 / 0.34) 0%, transparent 64%), radial-gradient(ellipse 40% 36% at 18% 78%, rgb(40 4 8 / 0.55) 0%, transparent 70%)",
-          }}
-        />
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" fill="none" aria-hidden>
-          <defs>
-            <filter id={smokeId} x="-20%" y="-50%" width="140%" height="200%">
-              <feTurbulence type="fractalNoise" baseFrequency=".005 .014" numOctaves="3" seed="17" result="noise" />
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="100" />
-              <feGaussianBlur stdDeviation="24" />
-            </filter>
-          </defs>
-          <g filter={`url(#${smokeId})`}>
-            <path d="M-120 200 Q380 -60 960 210 T2000 160" stroke="#d90829" strokeWidth="110" opacity=".65" />
-            <path d="M-100 365 Q460 90 970 340 T2030 280" stroke="#65051c" strokeWidth="95" opacity=".75" />
-            <path d="M-100 488 Q280 225 920 454" stroke="#ed1233" strokeWidth="48" opacity=".5" />
-            <path d="M-120 1000 Q320 680 760 876 T1900 860" stroke="#a91a28" strokeWidth="150" opacity=".65" />
-          </g>
-        </svg>
+        <RedSmoke />
       </CoverElement>
 
       <div data-solo-light="" className="pointer-events-none absolute inset-0" style={{ zIndex: zLight }}>

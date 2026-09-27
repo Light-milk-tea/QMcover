@@ -1,3 +1,4 @@
+import { LightWash, StageArrow } from "../canvas/DecorArt";
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
@@ -118,21 +119,7 @@ export function HighspecNocore(props: CoverRenderProps) {
         className="pointer-events-none absolute inset-0"
         style={{ zIndex: zWash, opacity: Math.min(1, Math.max(0, washAmount / 100)) }}
       >
-        <div
-          data-highspec-wash=""
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(90deg, rgb(248 245 240 / 0.94) 0%, rgb(247 244 239 / 0.78) 22%, rgb(246 243 238 / 0.46) 48%, rgb(245 242 237 / 0.24) 74%, rgb(245 242 237 / 0.14) 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgb(248 245 240 / 0.72) 0%, rgb(248 245 240 / 0.28) 22%, transparent 48%)",
-          }}
-        />
+        <LightWash />
       </CoverElement>
       {props.bgDim ? <BgDimLayer on amount={props.bgDimAmount ?? 18} at="22% 42%" className="z-[2]" /> : null}
 
@@ -142,12 +129,7 @@ export function HighspecNocore(props: CoverRenderProps) {
         className="absolute left-0"
         style={{ top: BAR_TOP, width: 1920, height: BAR_H, color: styles?.arrow?.color ?? BAR, zIndex: zArrow }}
       >
-        <svg data-stage-arrow="" className="block h-full w-full" viewBox={`0 0 1920 ${BAR_H}`} aria-hidden>
-          <polygon
-            points={`${TIP_X},${BAR_H / 2} ${SHOULDER_X},0 1920,0 1920,${BAR_H} ${SHOULDER_X},${BAR_H}`}
-            fill="currentColor"
-          />
-        </svg>
+        <StageArrow height={BAR_H} tip={TIP_X} shoulder={SHOULDER_X} />
       </CoverElement>
 
       <CoverElement

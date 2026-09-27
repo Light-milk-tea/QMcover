@@ -31,7 +31,3 @@
     color-mix(in srgb, currentColor 66%, #69758a) 72%,
     #f0e5d1 88%);
 }
-
-.sr-skill-icon {
-  filter: saturate(0.86) contrast(1.05);
-}

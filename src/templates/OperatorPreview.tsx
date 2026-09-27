@@ -1,3 +1,5 @@
+import { AnalysisBadge, TechnicalFrame } from "../canvas/DecorArt";
+import { LayeredTitle } from "../canvas/TextFaces";
 import { CoverElement } from "../components/CoverElement";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
@@ -7,7 +9,6 @@ import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
 
 const INK = "#101923";
-const PAPER = "#e9e4e1";
 const BLUE = "#125d9f";
 
 function titleSize(length: number) {
@@ -21,86 +22,6 @@ function badgeSize(length: number) {
   if (length <= 4) return 56;
   if (length <= 6) return 48;
   return 40;
-}
-
-function TechnicalFrame() {
-  return (
-    <div className="relative h-full w-full opacity-90">
-      <span className="absolute top-[58px] left-[72px] h-[930px] w-[1776px] border border-[#9eb3be]/20" />
-      <span className="absolute top-[94px] left-[116px] h-[850px] w-[1688px] border border-[#9eb3be]/12" />
-      <span className="absolute top-[-246px] left-[-180px] h-[570px] w-[1010px] rounded-br-[420px] border-r border-b border-[#9eb3be]/28" />
-      <span className="absolute top-[-208px] left-[-122px] h-[566px] w-[982px] rounded-br-[390px] border-r border-b border-[#9eb3be]/18" />
-      <span className="absolute right-[-178px] bottom-[-278px] h-[660px] w-[1150px] rounded-tl-[480px] border-t border-l border-[#9eb3be]/25" />
-      <span className="absolute right-[-116px] bottom-[-220px] h-[620px] w-[1080px] rounded-tl-[430px] border-t border-l border-[#9eb3be]/15" />
-      <span className="absolute top-[70px] left-[690px] h-[42px] w-px bg-[#a83841]/60" />
-      <span className="absolute top-[70px] left-[688px] h-[5px] w-[5px] rotate-45 bg-[#a83841]" />
-      <span className="absolute top-[110px] right-[286px] h-[5px] w-[5px] rotate-45 border border-[#b9c6cc]/70" />
-      <span className="absolute right-[162px] bottom-[150px] h-[5px] w-[5px] rotate-45 border border-[#b9c6cc]/60" />
-      <span className="absolute right-[92px] bottom-[194px] h-[108px] w-px bg-[#a83841]/50" />
-      <span className="absolute right-[90px] bottom-[190px] h-[5px] w-[5px] rotate-45 bg-[#a83841]" />
-    </div>
-  );
-}
-
-function LayeredTitle({ text }: { text: string }) {
-  return (
-    <span className="relative inline-block whitespace-nowrap leading-[0.92]">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute top-[0.058em] left-[0.042em] text-[#5a3038]"
-        style={{
-          WebkitTextStroke: "0.026em #111920",
-          paintOrder: "stroke fill",
-        }}
-      >
-        {text}
-      </span>
-      <span
-        className="relative"
-        style={{
-          color: PAPER,
-          WebkitTextStroke: "0.011em #252b30",
-          paintOrder: "stroke fill",
-          textShadow: "0 9px 16px rgba(3,8,12,0.32)",
-        }}
-      >
-        {text}
-      </span>
-    </span>
-  );
-}
-
-function AnalysisBadge() {
-  return (
-    <span className="relative block h-full w-full">
-      <span
-        aria-hidden
-        className="absolute inset-0 bg-[#082b49]/90"
-        style={{
-          clipPath: "polygon(6% 0, 94% 0, 100% 50%, 94% 100%, 6% 100%, 0 50%)",
-          transform: "translate(8px, 7px)",
-        }}
-      />
-      <span
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          background: "currentColor",
-          clipPath: "polygon(6% 0, 94% 0, 100% 50%, 94% 100%, 6% 100%, 0 50%)",
-        }}
-      />
-      <span
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          background: "linear-gradient(180deg, rgba(59,161,224,0.48), transparent 58%)",
-          clipPath: "polygon(6% 0, 94% 0, 100% 50%, 94% 100%, 6% 100%, 0 50%)",
-        }}
-      />
-      <span className="absolute top-1/2 left-[34px] h-[21px] w-[21px] -translate-y-1/2 rotate-45 border-b-[3px] border-l-[3px] border-white/85" />
-      <span className="absolute top-1/2 right-[34px] h-[21px] w-[21px] -translate-y-1/2 rotate-45 border-t-[3px] border-r-[3px] border-white/85" />
-    </span>
-  );
 }
 
 export function OperatorPreview(props: CoverRenderProps) {

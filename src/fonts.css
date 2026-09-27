@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Vanguard Hand";
+  src: url("./assets/fonts/windsong-latin-400.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+}
+
 /* Explicit font presets must reach the real glyph layers, including nested
    stroke/shadow spans that otherwise force font-black or a template family. */
 .cover-font-preset,

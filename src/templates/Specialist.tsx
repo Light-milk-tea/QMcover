@@ -1,3 +1,5 @@
+import { CoolWash } from "../canvas/DecorArt";
+import { BlockWord } from "../canvas/TextFaces";
 import { CoverElement } from "../components/CoverElement";
 import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MODE_DEFAULT } from "../constants";
 import { artUrl } from "../data/arts";
@@ -15,38 +17,10 @@ const RED = "#e10600";
 const WHITE = "#ffffff";
 const ANGEL_ART = "char_1041_angel2_1";
 
-function BlockWord({ text }: { text: string }) {
-  return (
-    <span className="relative inline-block whitespace-nowrap">
-      <span aria-hidden className="pointer-events-none absolute top-[0.055em] left-[0.04em] text-black/70">
-        {text}
-      </span>
-      <span className="sp-type relative" style={{ color: WHITE }}>
-        {text}
-      </span>
-    </span>
-  );
-}
-
 function AtmosphereWash() {
   return (
     <CoverElement id="atmosphere" kind="box" className="pointer-events-none absolute inset-0">
-      <div
-        className="absolute inset-y-0 left-0 w-[38%]"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 0 16%, rgb(12 16 20 / 0.16) 36%, rgb(12 16 20 / 0.4) 100%)",
-          maskImage: "linear-gradient(90deg, #000 0%, #000 42%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(90deg, #000 0%, #000 42%, transparent 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgb(248 250 252 / 0.08) 0%, transparent 24%, rgb(3 7 11 / 0.2) 54%, rgb(3 7 11 / 0.76) 100%), radial-gradient(ellipse 46% 34% at 40% -4%, rgb(255 255 255 / 0.24) 0%, rgb(250 252 252 / 0.08) 42%, transparent 72%)",
-        }}
-      />
+      <CoolWash />
     </CoverElement>
   );
 }

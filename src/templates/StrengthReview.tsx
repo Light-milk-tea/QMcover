@@ -1,14 +1,8 @@
-import { useId } from "react";
+import { SkillFrame } from "../canvas/DecorArt";
+import { MetalType } from "../canvas/TextFaces";
 import { CoverElement } from "../components/CoverElement";
 import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MODE_DEFAULT } from "../constants";
-import {
-  artUrl,
-  findOperator,
-  findOperatorByName,
-  operatorSkills,
-  skillUrl,
-  type OperatorSkill,
-} from "../data/arts";
+import { artUrl, findOperator, findOperatorByName, operatorSkills } from "../data/arts";
 import { resolveChibiUrl } from "../data/chibis";
 import { getBgPreset } from "../data/backgrounds";
 import { elementText } from "../data/elements";
@@ -19,9 +13,7 @@ import { useCoverOptional } from "../store/CoverContext";
 import type { CoverRenderProps, ImageLayer } from "../types";
 import { BgDimLayer } from "./BgDimLayer";
 import { OperatorLayer } from "./OperatorLayer";
-import "./StrengthReview.css";
 
-const GOLD_INK = "#322313";
 const MAIN_ART = "char_4182_oblvns_avemujica#1";
 const DEFAULT_OP = "char_4182_oblvns";
 const SKILL_SIZE = 236;
@@ -30,17 +22,6 @@ const SKILL_BOXES = [
   { left: 1288, top: 380 },
   { left: 1554, top: 378 },
 ] as const;
-const STROKE = [
-  [-1, 0],
-  [1, 0],
-  [0, -1],
-  [0, 1],
-  [-1, -1],
-  [1, -1],
-  [-1, 1],
-  [1, 1],
-] as const;
-
 function fitSize(text: string, base: number, maxWidth: number) {
   const units = [...text].reduce((sum, c) => sum + (c.codePointAt(0)! > 255 ? 1.08 : 0.68), 0);
   return Math.min(base, maxWidth / Math.max(1, units));
@@ -51,73 +32,6 @@ function layerImage(layer: ImageLayer | undefined, fallbackArt: string) {
   if (layer?.imageUrl) return layer.imageUrl;
   if (layer?.artId) return artUrl(layer.artId);
   return artUrl(fallbackArt);
-}
-
-function GoldType({ text }: { text: string }) {
-  return (
-    <span className="sr-gold-type relative inline-block whitespace-nowrap" data-type-face>
-      <span aria-hidden className="sr-gold-depth pointer-events-none absolute" style={{ color: GOLD_INK }}>{text}</span>
-      {STROKE.map(([x, y]) => (
-        <span
-          key={`${x},${y}`}
-          aria-hidden
-          className="sr-gold-rim pointer-events-none absolute"
-          style={{ left: `${x * 0.008}em`, top: `${y * 0.008}em` }}
-        >
-          {text}
-        </span>
-      ))}
-      <span className="sr-gold-fill relative">{text}</span>
-    </span>
-  );
-}
-
-function SkillFrame({ skill, index }: { skill: OperatorSkill; index: number }) {
-  const frameId = useId();
-  const remote = useCdnSrc(skillUrl(skill.iconId));
-  return (
-    <span className="relative block h-full w-full" data-skill-slot={skill.id}>
-      <svg viewBox="0 0 188 188" className="absolute inset-0 h-full w-full" aria-hidden>
-        <rect x="3" y="3" width="182" height="182" fill="#0b1826" fillOpacity="0.68" />
-      </svg>
-      <img
-        data-skill-icon
-        data-skill-id={skill.iconId}
-        alt=""
-        src={remote.src}
-        crossOrigin="anonymous"
-        referrerPolicy="no-referrer"
-        decoding="async"
-        onLoad={remote.onLoad}
-        onError={remote.onError}
-        className="sr-skill-icon pointer-events-none absolute inset-[4%] h-[92%] w-[92%] object-contain"
-      />
-      <svg viewBox="0 0 188 188" className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden>
-        <defs>
-          <linearGradient id={`${frameId}-gold`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#fff0c1" />
-            <stop offset="0.3" stopColor="#cc9a48" />
-            <stop offset="0.56" stopColor="#785429" />
-            <stop offset="0.76" stopColor="#f2d393" />
-            <stop offset="1" stopColor="#b38441" />
-          </linearGradient>
-          <radialGradient id={`${frameId}-glow`}>
-            <stop stopColor="#e9f6ff" stopOpacity="0.8" />
-            <stop offset="1" stopColor="#cadfff" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        <rect x="5" y="5" width="180" height="180" fill="none" stroke="#08101b" strokeWidth="4" />
-        <rect x="3" y="3" width="180" height="180" fill="none" stroke={`url(#${frameId}-gold)`} strokeWidth="2.4" />
-        <path d="M3 40 V3 H40 M146 183 H183 V146" fill="none" stroke="#f4dfab" strokeWidth="1" />
-        {index !== 1 && (
-          <g transform={index === 0 ? "translate(4 4)" : "translate(183 183)"}>
-            <circle r="26" fill={`url(#${frameId}-glow)`} />
-            <path d="M0 -21 L1.5 -2 L17 0 L1.5 2 L0 21 L-1.5 2 L-17 0 L-1.5 -2 Z" fill="#eff9ff" opacity="0.88" />
-          </g>
-        )}
-      </svg>
-    </span>
-  );
 }
 
 function resolveOperator(props: CoverRenderProps, layers: CoverRenderProps["layers"]) {
@@ -302,7 +216,7 @@ export function StrengthReview(props: CoverRenderProps) {
         className="absolute top-[630px] left-[820px] z-[8] font-bold whitespace-nowrap"
         style={{ lineHeight: 1, letterSpacing: "0.04em", color: "#d5dce4" }}
       >
-        <GoldType text={name} />
+        <MetalType text={name} />
       </CoverElement>
 
       <CoverElement
@@ -312,7 +226,7 @@ export function StrengthReview(props: CoverRenderProps) {
         className="absolute top-[856px] left-[880px] z-[8] font-black whitespace-nowrap"
         style={{ lineHeight: 0.9, letterSpacing: "0.035em", color: "#d5dce4" }}
       >
-        <GoldType text={series} />
+        <MetalType text={series} />
       </CoverElement>
     </div>
   );
