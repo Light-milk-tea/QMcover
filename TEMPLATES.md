@@ -16,3 +16,12 @@
 6. 构图定了之后，打开 `#/__thumb/<id>` 导出 960×540 WebP，同时更新 `public/thumbs/`、`src/assets/thumbs/` 和 `src/lib/thumbs.ts`。
 
 复刻的是构图（字在哪、条在哪），不是别人的整张封面。编辑器里的立绘和基建小人运行时加载，不进仓库。小人图层 `source: "chibi"`，地址走 `chibiUrl`，不要 fallback 成全身立绘。
+
+## 让空白画布也能用上新模板的效果
+
+模板的招牌字效和装饰放在共享模块里，模板和空白画布用同一份实现，不要在模板文件里另写一份：
+
+1. 字效组件写进 `src/canvas/TextFaces.tsx`，装饰写进 `src/canvas/DecorArt.tsx`，模板从这里引用。
+2. 字效在 `src/types.ts` 的 `LayerEffect` 登记，在 `src/canvas/LayerChrome.tsx` 的 `renderTextContent` 接上，再加进 `src/data/textStyles.ts`（添加 → 文字）和检查器的字效下拉。
+3. 装饰在 `LayerChrome` 类型登记，在 `renderBoxChrome` 接上，再加进 `src/data/decorations.ts`，写明分类和出处。原模板里铺在立绘后面的标 `behindArt`；整幅装饰缩小后看不清的，给 `preview` 取景框。
+4. 模板用到新字体时，同时加进 `src/data/elements.ts` 的 `COVER_FONTS`。
