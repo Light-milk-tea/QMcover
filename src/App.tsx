@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { BLANK_TEMPLATE_ID } from "./constants";
 import { CoverStage } from "./components/CoverStage";
 import { EditorPanel } from "./components/EditorPanel";
 import { EffectsPanel } from "./components/EffectsPanel";
@@ -21,7 +22,7 @@ type Route =
 function parseHash(): Route {
   const hash = window.location.hash.replace(/^#/, "");
   const thumb = hash.match(/^\/__thumb\/([\w-]+)/)?.[1];
-  if (thumb && isBuiltinId(thumb)) return { kind: "thumb", templateId: thumb };
+  if (thumb && (isBuiltinId(thumb) || thumb === BLANK_TEMPLATE_ID)) return { kind: "thumb", templateId: thumb };
   const id = hash.match(/^\/t\/([\w-]+)/)?.[1];
   if (id && isTemplateId(id)) return { kind: "edit", templateId: id };
   return { kind: "home" };

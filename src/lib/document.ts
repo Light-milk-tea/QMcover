@@ -179,6 +179,28 @@ export function autoFontSize(kind: AutoSize | undefined, len: number, fallback: 
   return fallback;
 }
 
+function glyphUnits(line: string): number {
+  return [...line].reduce((sum, ch) => {
+    const code = ch.codePointAt(0) ?? 0;
+    if (code >= 0x2e80) return sum + 1;
+    if (ch === " ") return sum + 0.3;
+    if (/[A-Z0-9]/.test(ch)) return sum + 0.64;
+    return sum + 0.54;
+  }, 0);
+}
+
+/** Largest font size whose widest line fits the box, from per-glyph width estimates. */
+export function fitFontSize(raw: string, width: number, letterSpacing = 0): number {
+  let best = Infinity;
+  for (const line of raw.split("\n")) {
+    const units = glyphUnits(line);
+    if (units <= 0) continue;
+    const room = width * 0.96 - letterSpacing * [...line].length;
+    best = Math.min(best, Math.max(12, room / units));
+  }
+  return best;
+}
+
 export function bindText(layer: TextLayer, draft: Draft): string {
   if (layer.bind === "title") return draft.title;
   if (layer.bind === "subtitle") return draft.subtitle;

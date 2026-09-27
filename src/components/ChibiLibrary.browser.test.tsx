@@ -99,7 +99,7 @@ test("开发环境小人地址走本地 /chibi，旧 CDN 稿也会改写", () =>
 });
 
 test("添加菜单可以加入小人层", async () => {
-  saveDraft("blank", emptyDraft("blank"));
+  saveDraft("blank", { ...emptyDraft("blank"), layers: [] });
   const screen = await render(
     <CoverProvider templateId="blank">
       <ChibiFixture />
@@ -114,7 +114,7 @@ test("添加菜单可以加入小人层", async () => {
 });
 
 test("点选 stub 小人后画布出现图片，不走真实 CDN", async () => {
-  saveDraft("blank", emptyDraft("blank"));
+  saveDraft("blank", { ...emptyDraft("blank"), layers: [] });
   const screen = await render(
     <CoverProvider templateId="blank">
       <ChibiFixture />

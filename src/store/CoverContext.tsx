@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { loadDraft, saveDraft, emptyDraft } from "../lib/storage";
-import { CLASS_ICON_SRC } from "../data/decorations";
+import { CLASS_ICON_SRC, getDecoration } from "../data/decorations";
 import {
   createBoxLayer,
   createDecorationLayer,
@@ -11,10 +11,11 @@ import {
   reorderLayer,
   replaceSubsetOrder,
 } from "../lib/document";
-import { isNativeElement } from "../data/elements";
+import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { getTemplate } from "../data/templates";
 import { cloneCoverEffects } from "../lib/effects";
 import type {
+  CanvasSkin,
   CoverEffects,
   Draft,
   ElementOverride,
@@ -22,6 +23,7 @@ import type {
   Layer,
   ResolvedElement,
   TemplateId,
+  TextLayer,
   TitleKind,
 } from "../types";
 
@@ -70,7 +72,11 @@ type CoverContextValue = {
   patchElement: (id: string, patch: Partial<ElementOverride>) => void;
   patchLayer: (id: string, patch: Partial<Layer>) => void;
   addLayer: (kind: "text" | "box" | "image" | "upload" | "chibi", init?: Partial<ImageLayer>) => void;
+  addText: (init?: Partial<TextLayer>) => void;
   addDecoration: (presetId: string) => void;
+  clearLayers: () => void;
+  restoreLayers: () => void;
+  switchCanvasSkin: (skin: CanvasSkin) => void;
   removeLayer: (id: string) => void;
   duplicateSelected: () => void;
   reorderSelected: (dir: 1 | -1) => void;
@@ -310,6 +316,57 @@ export function CoverProvider({
     [apply],
   );
 
+  const addText = useCallback(
+    (init?: Partial<TextLayer>) => {
+      let createdId = "";
+      apply((prev) => {
+        const base = createTextLayer({ x: 240, y: 240 });
+        const layer: TextLayer = { ...base, ...init, id: base.id, kind: "text" };
+        createdId = layer.id;
+        return { ...prev, layers: [...prev.layers, layer] };
+      });
+      if (createdId) setSelectedId(createdId);
+    },
+    [apply],
+  );
+
+  const clearLayers = useCallback(() => {
+    apply((prev) => ({
+      ...prev,
+      layers: prev.layers.filter((layer) => isNativeElement(templateId, layer.id, prev.canvasSkin)),
+    }));
+    setSelectedId(null);
+  }, [apply, templateId]);
+
+  const restoreLayers = useCallback(() => {
+    apply((prev) => ({ ...prev, layers: emptyDraft(templateId).layers }));
+    setSelectedId(null);
+  }, [apply, templateId]);
+
+  // A template skin draws its own full composition from the same fields, so the
+  // free layout is set aside while it is on and restored on the plain canvas.
+  // Ids the template draws itself (e.g. "operator") are never hidden: hiding
+  // them would hide the template's own element.
+  const switchCanvasSkin = useCallback(
+    (skin: CanvasSkin) => {
+      apply((prev) => {
+        const templated = Boolean(nativeTemplateId(templateId, skin));
+        const layers = prev.layers.map((layer): Layer => {
+          if (templated) {
+            if (layer.hidden || layer.removed || isNativeElement(templateId, layer.id, skin)) return layer;
+            return { ...layer, hidden: true, skinHidden: true };
+          }
+          if (!layer.skinHidden) return layer;
+          const { skinHidden: _restored, ...rest } = layer;
+          return { ...rest, hidden: false } as Layer;
+        });
+        return { ...prev, canvasSkin: skin, layers };
+      });
+      setSelectedId(null);
+    },
+    [apply, templateId],
+  );
+
   const addDecoration = useCallback(
     (presetId: string) => {
       let createdId = "";
@@ -332,6 +389,24 @@ export function CoverProvider({
           plate.color = "#000000";
           layer.color = "#ffffff";
           return { ...prev, layers: [...prev.layers, plate, layer] };
+        }
+        // Back-layer pieces go under the art, other washes and full-canvas pieces
+        // under the text, so a new decoration never covers the title; small
+        // accents stay on top.
+        const preset = getDecoration(presetId);
+        const backdrop =
+          preset?.category === "atmosphere" || preset?.category === "texture" || (layer.w >= 1600 && layer.h >= 900);
+        const firstText = prev.layers.findIndex((item) => item.kind === "text" && !item.removed);
+        const firstArt = prev.layers.findIndex((item) => item.kind === "image" && !item.removed);
+        const lowest = (indexes: number[]) => {
+          const hits = indexes.filter((index) => index >= 0);
+          return hits.length ? Math.min(...hits) : -1;
+        };
+        const at = preset?.behindArt ? lowest([firstArt, firstText]) : backdrop ? lowest([firstText]) : -1;
+        if (at >= 0) {
+          const layers = prev.layers.slice();
+          layers.splice(at, 0, layer);
+          return { ...prev, layers };
         }
         return { ...prev, layers: [...prev.layers, layer] };
       });
@@ -481,7 +556,10 @@ export function CoverProvider({
       markLabel: meta?.markLabel ?? "角标",
       defaultImageScale: meta?.defaultImageScale ?? 100,
       showBackground: true,
-      showTextBackground: meta?.showTextBackground ?? draft.canvasSkin === "rogue",
+      showTextBackground:
+        meta?.showTextBackground ??
+        (draft.canvasSkin === "rogue" ||
+          draft.layers.some((layer) => layer.kind === "text" && !layer.removed && (layer.effect === "glass" || layer.effect === "scratch"))),
       showBgDim: true,
       showShaftLight: meta?.showShaftLight ?? draft.canvasSkin === "specialist",
       showOrnament: meta?.showOrnament ?? draft.canvasSkin === "lowspec",
@@ -498,7 +576,11 @@ export function CoverProvider({
       patchElement,
       patchLayer,
       addLayer,
+      addText,
       addDecoration,
+      clearLayers,
+      restoreLayers,
+      switchCanvasSkin,
       removeLayer,
       duplicateSelected,
       reorderSelected,
@@ -512,7 +594,11 @@ export function CoverProvider({
     }),
     [
       addLayer,
+      addText,
       addDecoration,
+      clearLayers,
+      restoreLayers,
+      switchCanvasSkin,
       canUndo,
       draft,
       duplicateSelected,

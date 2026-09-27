@@ -69,6 +69,11 @@ export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[
   { id: "wenkai", label: "霞鹜文楷", className: "cover-font-preset cover-font-wenkai" },
   { id: "xiaowei", label: "站酷小薇体", className: "cover-font-preset cover-font-xiaowei" },
   { id: "mashan", label: "马善政楷书", className: "cover-font-preset cover-font-mashan" },
+  { id: "outfit", label: "Outfit 几何无衬线", className: "font-outfit" },
+  { id: "hand", label: "WindSong 手写", className: "cover-font-preset cover-font-hand" },
+  { id: "alex", label: "Alex Brush 花体", className: "cover-font-preset cover-font-alex" },
+  { id: "vibes", label: "Great Vibes 花体", className: "cover-font-preset cover-font-vibes" },
+  { id: "times", label: "Times 西文衬线", className: "cover-font-preset cover-font-times" },
 ];
 
 export function fontClass(id?: CoverFontId): string {

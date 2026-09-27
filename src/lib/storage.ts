@@ -15,6 +15,7 @@ import { defaultChibiPick } from "../data/chibis";
 import { DEFAULT_BG_PRESET } from "../data/backgrounds";
 import { DEFAULT_ORNAMENT, ORNAMENTS } from "../data/ornaments";
 import { getBuiltinLayers } from "../data/seeds";
+import { BLANK_BG_PRESET, blankLayers } from "../data/seeds/blank";
 import { getTemplate } from "../data/templates";
 import type { Draft, ImageLayer, Layer, TemplateId } from "../types";
 import { todayISO } from "./dates";
@@ -27,7 +28,7 @@ export type PersistedState = {
   defaultsVersion?: number;
 };
 
-const DEFAULTS_VERSION = 41;
+const DEFAULTS_VERSION = 42;
 
 const BLUE_CUT_BAKED_NUDGES: Array<[string, number | null, number | null]> = [
   ["squad", -2.3573463397790055, 40.073592886740336],
@@ -92,7 +93,7 @@ function bakeBlueCutLayout(draft: Draft): Draft {
 
 function seedLayers(templateId: TemplateId): Layer[] {
   if (isBuiltinId(templateId)) return getBuiltinLayers(templateId);
-  if (templateId === BLANK_TEMPLATE_ID) return [];
+  if (templateId === BLANK_TEMPLATE_ID) return cloneLayers(blankLayers);
   const saved = getSavedTemplate(templateId);
   return saved ? cloneLayers(saved.seed.layers) : [];
 }
@@ -441,12 +442,29 @@ function bakeHighspecLayout(draft: Draft): Draft {
   };
 }
 
+// Blank drafts saved before the demo layout had no layers at all. Only that old
+// empty default gets the demo; any draft with its own layers is left alone.
+function migrateBlankScaffold(draft: Draft): Draft {
+  if (draft.layers.some((layer) => !layer.removed)) return draft;
+  const current = emptyDraft(BLANK_TEMPLATE_ID);
+  return {
+    ...draft,
+    layers: current.layers,
+    title: draft.title || current.title,
+    subtitle: draft.subtitle || current.subtitle,
+    signature: draft.signature || current.signature,
+    mark: draft.mark || current.mark,
+    bgPreset: !draft.bgPreset || draft.bgPreset === "ink" ? BLANK_BG_PRESET : draft.bgPreset,
+  };
+}
+
 function migrateDraftDefaults(state: PersistedState): PersistedState {
   if ((state.defaultsVersion ?? 0) >= DEFAULTS_VERSION) return state;
   if ((state.defaultsVersion ?? 0) >= 35) {
     const solo = state.drafts.solo;
     const highspec = state.drafts["highspec-nocore"];
     const blueCut = state.drafts["blue-cut"];
+    const blank = state.drafts[BLANK_TEMPLATE_ID];
     const next = {
       ...state,
       defaultsVersion: DEFAULTS_VERSION,
@@ -455,6 +473,7 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
         ...(solo ? { solo: migrateSoloUserLayout(solo) } : {}),
         ...(highspec ? { "highspec-nocore": bakeHighspecLayout(migrateHighspecOperator(highspec)) } : {}),
         ...(blueCut ? { "blue-cut": bakeBlueCutLayout(blueCut) } : {}),
+        ...(blank ? { [BLANK_TEMPLATE_ID]: migrateBlankScaffold(blank) } : {}),
       },
     };
     saveState(next);
@@ -526,7 +545,7 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
       shaftLightY: draft.shaftLightY,
       shaftLightRotate: draft.shaftLightRotate,
     });
-    drafts[id] = {
+    const normalized = {
       ...draft,
       bgDim: false,
       effects: {
@@ -534,6 +553,7 @@ function migrateDraftDefaults(state: PersistedState): PersistedState {
         vignette: { ...effects.vignette, enabled: false },
       },
     };
+    drafts[id] = id === BLANK_TEMPLATE_ID ? migrateBlankScaffold(normalized) : normalized;
   }
   const next = { drafts, defaultsVersion: DEFAULTS_VERSION };
   saveState(next);

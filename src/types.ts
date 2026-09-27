@@ -1,7 +1,8 @@
 export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
 export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script"
-  | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan";
+  | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan"
+  | "outfit" | "hand" | "alex" | "vibes" | "times";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -32,7 +33,21 @@ export type LayerEffect =
   | "en-name"
   | "face-word"
   | "guide"
-  | "sign-dots";
+  | "sign-dots"
+  | "plain"
+  | "outline"
+  | "raised"
+  | "defocus"
+  | "chromatic"
+  | "glow"
+  | "layered"
+  | "block"
+  | "metal"
+  | "gold-grain"
+  | "matrix"
+  | "grain-stage"
+  | "pink"
+  | "magenta-shadow";
 
 export type LayerChrome =
   | "cc-triangle"
@@ -70,7 +85,42 @@ export type LayerChrome =
   | "class-caster"
   | "class-medic"
   | "class-supporter"
-  | "class-specialist";
+  | "class-specialist"
+  | "violet-streaks"
+  | "violet-mist"
+  | "glitch-haze"
+  | "red-smoke"
+  | "top-glow"
+  | "corner-glow"
+  | "embers"
+  | "side-shade"
+  | "bottom-fade"
+  | "light-wash"
+  | "mineral"
+  | "film-grain"
+  | "print-dots"
+  | "paper-flecks"
+  | "night-grid"
+  | "checker-floor"
+  | "tactical-orbits"
+  | "print-geometry"
+  | "teal-hud"
+  | "tech-frame"
+  | "gold-rules"
+  | "gold-frame"
+  | "stage-arrow"
+  | "glossy-slash"
+  | "wedge"
+  | "hex-badge"
+  | "stage-bar"
+  | "skew-tag"
+  | "torn-paper"
+  | "skill-icons"
+  | "art-echo"
+  | "violet-atmosphere"
+  | "art-veil"
+  | "cool-wash"
+  | "violet-bloom";
 
 export type CanvasSkin =
   | "plain"
@@ -172,6 +222,8 @@ export type LayerBase = {
   removed?: boolean;
   rotation?: number;
   color?: string;
+  /** 套用模板构图时被暂时隐藏，切回自由排版后恢复。 */
+  skinHidden?: boolean;
 };
 
 export type TextLayer = LayerBase & {
@@ -183,6 +235,8 @@ export type TextLayer = LayerBase & {
   effect?: LayerEffect;
   autoSize?: AutoSize;
   letterSpacing?: number;
+  /** 文字比图层框宽时自动缩小字号。 */
+  fit?: boolean;
 };
 
 export type ImageLayer = LayerBase & {

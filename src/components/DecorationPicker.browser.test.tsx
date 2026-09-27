@@ -175,6 +175,7 @@ test("职业队模板的工业碎片可以作为独立装饰加入", async () =>
 });
 
 test("拍立得包含可独立调整的背景槽和立绘槽", async () => {
+  saveDraft("blank", { ...emptyDraft("blank"), bgPreset: "ink" });
   const screen = await render(
     <CoverProvider templateId="blank">
       <DecorationFixture />

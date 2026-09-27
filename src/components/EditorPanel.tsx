@@ -2,9 +2,10 @@ import { UploadSimple } from "@phosphor-icons/react";
 import { IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
 import { artUrl } from "../data/arts";
 import { chibiIdFor, chibiUrl, followingChibiPatch, hasChibi } from "../data/chibis";
-import { isNativeElement } from "../data/elements";
+import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { ORNAMENTS } from "../data/ornaments";
 import { getBuiltinLayers } from "../data/seeds";
+import { BLANK_ART_LAYER, FIELD_TEXT_LAYERS, type FieldBind } from "../data/seeds/blank";
 import { getTemplate } from "../data/templates";
 import { isBuiltinId, isChibiLayer } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
@@ -35,6 +36,25 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "strength-review", label: "强度测评底" },
 ];
 
+/** Offers to place a right-panel field on the canvas when no layer shows it yet. */
+function PlaceOnCanvas({ bind, label }: { bind: FieldBind; label: string }) {
+  const { templateId, draft, addText } = useCover();
+  if (nativeTemplateId(templateId, draft.canvasSkin)) return null;
+  const placed = draft.layers.some((layer) => layer.kind === "text" && !layer.removed && layer.bind === bind);
+  if (placed) return null;
+  return (
+    <button
+      type="button"
+      aria-label={`把${label}放到画布`}
+      title="这一栏还没有图层显示，点一下放到画布上"
+      className="absolute top-0 right-0 text-[12px] text-accent hover:underline"
+      onClick={() => addText({ ...FIELD_TEXT_LAYERS[bind], bind })}
+    >
+      放到画布
+    </button>
+  );
+}
+
 export function EditorPanel() {
   const {
     templateId,
@@ -42,6 +62,8 @@ export function EditorPanel() {
     patchDraft,
     patchLayer,
     patchElement,
+    switchCanvasSkin,
+    addLayer,
     selectedLayer,
     titleKind,
     titleLabel,
@@ -78,31 +100,38 @@ export function EditorPanel() {
   return (
     <aside className="flex min-h-0 w-[300px] shrink-0 flex-col self-stretch overflow-x-hidden overflow-y-auto rounded-[8px] bg-panel">
       <div className="border-b border-line px-4 py-3">
-        <Field label={titleLabel}>
-          <input className={fieldClass} value={draft.title} onChange={(e) => patchDraft({ title: e.target.value })} placeholder={resolvedPlaceholder} />
-        </Field>
-        <div className="mt-3">
+        <div className="relative">
+          <Field label={titleLabel}>
+            <input className={fieldClass} value={draft.title} onChange={(e) => patchDraft({ title: e.target.value })} placeholder={resolvedPlaceholder} />
+          </Field>
+          <PlaceOnCanvas bind="title" label={titleLabel} />
+        </div>
+        <div className="relative mt-3">
           <Field label={subtitleLabel}>
             <input className={fieldClass} value={draft.subtitle} onChange={(e) => patchDraft({ subtitle: e.target.value })} />
           </Field>
+          <PlaceOnCanvas bind="subtitle" label={subtitleLabel} />
         </div>
         {showEpisode ? (
-          <div className="mt-3">
+          <div className="relative mt-3">
             <Field label={episodeLabel}>
               <input className={fieldClass} type="number" min={1} value={draft.episode} onChange={(e) => patchDraft({ episode: Number(e.target.value) || 1 })} />
             </Field>
+            <PlaceOnCanvas bind="episode" label={episodeLabel} />
           </div>
         ) : null}
-        <div className="mt-3">
+        <div className="relative mt-3">
           <Field label={signatureLabel}>
             <input className={fieldClass} value={draft.signature} onChange={(e) => patchDraft({ signature: e.target.value })} />
           </Field>
+          <PlaceOnCanvas bind="signature" label={signatureLabel} />
         </div>
         {showMark ? (
-          <div className="mt-3">
+          <div className="relative mt-3">
             <Field label={markLabel}>
               <input className={fieldClass} value={draft.mark ?? ""} onChange={(e) => patchDraft({ mark: e.target.value })} />
             </Field>
+            <PlaceOnCanvas bind="mark" label={markLabel} />
           </div>
         ) : null}
       </div>
@@ -137,15 +166,23 @@ export function EditorPanel() {
 
       {isBuiltinId(templateId) ? null : (
         <div className="border-b border-line px-4 py-3">
-          <Field label="画布底">
-            <select className={fieldClass} value={draft.canvasSkin} onChange={(e) => patchDraft({ canvasSkin: e.target.value as CanvasSkin })}>
-              {SKINS.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.label}
-                </option>
-              ))}
+          <Field label="套用模板构图">
+            <select className={fieldClass} value={draft.canvasSkin} onChange={(e) => switchCanvasSkin(e.target.value as CanvasSkin)}>
+              <option value="plain">不套用（自由排版）</option>
+              <optgroup label="套用某个模板的整套构图">
+                {SKINS.filter((item) => item.id !== "plain").map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.label}
+                  </option>
+                ))}
+              </optgroup>
             </select>
           </Field>
+          <p className="mt-1.5 text-[12px] leading-relaxed text-mute">
+            {draft.canvasSkin === "plain"
+              ? "只画背景和你自己加的图层。"
+              : "画布换成该模板的整套构图，文案和立绘照用右侧的。你自己排的图层已暂时隐藏，可在左侧单独显示；切回「不套用」会恢复。"}
+          </p>
         </div>
       )}
 
@@ -270,6 +307,33 @@ export function EditorPanel() {
             });
           }}
         />
+      ) : null}
+
+      {!imageLayer && !uploadLayer && !chibiLayer && !nativeTemplateId(templateId, draft.canvasSkin) ? (
+        <div className="border-b border-line px-4 py-3">
+          <div className="flex items-center justify-between">
+            <p className="text-[13px] text-sub">立绘</p>
+            <button
+              type="button"
+              aria-label="把立绘放到画布"
+              className="text-[12px] text-accent hover:underline"
+              onClick={() => {
+                const { id: _slotId, ...slot } = BLANK_ART_LAYER;
+                addLayer("image", {
+                  ...slot,
+                  ...(draft.layers.some((layer) => layer.id === "operator") ? {} : { id: "operator" }),
+                  operatorId: draft.operatorId,
+                  artId: draft.artId,
+                  imageUrl: draft.imageUrl,
+                  imageDataUrl: draft.imageDataUrl,
+                });
+              }}
+            >
+              放到画布
+            </button>
+          </div>
+          <p className="mt-1 text-[12px] text-mute">画布上还没有立绘，放上去后可在这里换干员。</p>
+        </div>
       ) : null}
 
       {imageLayer ? (

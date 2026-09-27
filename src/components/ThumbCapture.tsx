@@ -27,10 +27,14 @@ export function ThumbCapture({ templateId }: Props) {
   const meta = TEMPLATES.find((t) => t.id === templateId);
   const draft = {
     ...emptyDraft(templateId),
-    title: meta?.sampleTitle ?? "标题",
-    subtitle: meta?.defaultSubtitle ?? "",
-    episode: meta?.sampleEpisode ?? 12,
-    signature: meta?.sampleSignature ?? "",
+    ...(meta
+      ? {
+          title: meta.sampleTitle ?? "标题",
+          subtitle: meta.defaultSubtitle ?? "",
+          episode: meta.sampleEpisode ?? 12,
+          signature: meta.sampleSignature ?? "",
+        }
+      : {}),
     showSafeArea: false,
   };
 

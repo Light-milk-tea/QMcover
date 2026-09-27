@@ -52,7 +52,7 @@ export function LayerStackList() {
   return (
     <>
       {canMove ? <p className="mt-2 text-[11px] text-mute">上为前 · 拖动手柄或点箭头调层</p> : null}
-      <ul className="mt-1.5 flex flex-col gap-0.5">
+      <ul aria-label="图层列表" className="mt-1.5 flex flex-col gap-0.5">
         {stack.map((el, index) => (
           <StackRow
             key={el.id}

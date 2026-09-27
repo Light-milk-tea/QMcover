@@ -148,7 +148,7 @@ function BeamSurfaceLight({ effect }: { effect: LightEffectConfig }) {
 }
 
 export function usesLayeredLight(skin?: CanvasSkin) {
-  return skin === "specialist" || skin === "solo";
+  return skin === "specialist" || skin === "solo" || skin === "plain";
 }
 
 export function LightUnderlay({ effect }: { effect?: LightEffectConfig }) {

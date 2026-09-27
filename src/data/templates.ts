@@ -2,30 +2,40 @@ import { BLANK_TEMPLATE_ID } from "../constants";
 import { isBuiltinId, isCustomTemplateId, isOpenableId, savedTemplateToMeta } from "../lib/document";
 import { loadSavedTemplates } from "../lib/templateStore";
 import type { TemplateMeta } from "../types";
+import { BLANK_ART_ID, BLANK_BG_PRESET, BLANK_OPERATOR_ID } from "./seeds/blank";
 
 export const BLANK_TEMPLATE: TemplateMeta = {
   id: BLANK_TEMPLATE_ID,
   name: "空白画布",
-  blurb: "从零开始排版",
-  defaultSubtitle: "",
+  blurb: "示范框架 · 自由排版",
+  defaultSubtitle: "副标题写在这里",
   showEpisode: true,
-  sampleTitle: "",
+  sampleTitle: "封面标题",
   titleKind: "theme",
   titleLabel: "标题",
   titlePlaceholder: "标题",
   subtitleLabel: "副标题",
-  episodeLabel: "数字",
+  episodeLabel: "期数",
   signatureLabel: "署名",
   showMark: true,
   markLabel: "角标",
+  sampleMark: "栏目名",
   defaultEpisode: 1,
-  sampleSignature: "",
+  sampleSignature: "UP 主署名",
   defaultImageScale: 100,
+  defaultOperatorId: BLANK_OPERATOR_ID,
+  defaultArtId: BLANK_ART_ID,
   showBackground: true,
   showBgDim: true,
   defaultBgDim: false,
   defaultBgDimAmount: 48,
-  defaultBgPreset: "ink",
+  defaultBgPreset: BLANK_BG_PRESET,
+  defaultShaftLight: true,
+  defaultShaftLightAmount: 34,
+  defaultShaftLightKind: "bloom",
+  defaultShaftLightX: 76,
+  defaultShaftLightY: 8,
+  defaultShaftLightRotate: 0,
   canvasSkin: "plain",
 };
 

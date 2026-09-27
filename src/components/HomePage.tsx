@@ -124,10 +124,15 @@ export function HomePage({ onOpen }: Props) {
 
       <main className="mx-auto max-w-[1280px] px-6 py-8">
         <h1 className="text-[22px] font-medium text-text">选择模板</h1>
-        <p className="mt-1 text-[14px] text-mute">点一张开始做封面，或从空白画布自己排</p>
+        <p className="mt-1 text-[14px] text-mute">点一张开始做封面，或从空白画布的示范框架自己排</p>
 
         <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <Card title={BLANK_TEMPLATE.name} blurb={BLANK_TEMPLATE.blurb} onClick={() => onOpen(BLANK_TEMPLATE.id)} />
+          <Card
+            title={BLANK_TEMPLATE.name}
+            blurb={BLANK_TEMPLATE.blurb}
+            thumb={templateThumbSrc(BLANK_TEMPLATE.id)}
+            onClick={() => onOpen(BLANK_TEMPLATE.id)}
+          />
           {TEMPLATES.map((item) => (
             <Card
               key={item.id}

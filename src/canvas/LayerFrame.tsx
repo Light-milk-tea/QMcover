@@ -23,6 +23,9 @@ export function LayerFrame({ layer, previewScale, zIndex, children }: Props) {
   const selected = cover?.selectedId === layer.id;
   const interactive = Boolean(cover) && !layer.locked;
   const hidden = Boolean(layer.hidden);
+  // The vignette chrome maps opacity to its own darkness.
+  const ownOpacity = layer.kind === "box" && layer.chrome === "vignette";
+  const opacity = hidden ? 0.28 : layer.opacity != null && !ownOpacity ? layer.opacity / 100 : 1;
 
   const applyBox = (next: { x: number; y: number; w: number; h: number }) => {
     box.current = next;
@@ -69,7 +72,7 @@ export function LayerFrame({ layer, previewScale, zIndex, children }: Props) {
           letterSpacing: layer.letterSpacing,
           "--cover-letter-spacing": `${layer.letterSpacing}px`,
         } : {}),
-        opacity: hidden ? 0.28 : (layer.opacity != null && layer.kind !== "box" ? layer.opacity / 100 : 1),
+        opacity,
         transform: [layer.id === "watermark-flip" ? "scaleY(-1)" : "", layer.rotation ? `rotate(${layer.rotation}deg)` : ""]
           .filter(Boolean)
           .join(" ") || undefined,

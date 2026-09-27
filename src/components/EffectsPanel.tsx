@@ -161,7 +161,7 @@ export function EffectsPanel() {
                     </button>
                   ))}
                 </div>
-                {templateId === "solo" || draft.canvasSkin === "solo" ? (
+                {templateId === "solo" || draft.canvasSkin === "solo" || draft.canvasSkin === "plain" ? (
                   <div className="flex gap-1" role="group" aria-label="打光位置">
                     {(
                       [
@@ -185,7 +185,7 @@ export function EffectsPanel() {
                   </div>
                 ) : null}
               </div>
-              <p className="mt-0.5 pl-6 text-[11px] text-mute">柔光或竖光；仅需一人可选择打在立绘上方或下方</p>
+              <p className="mt-0.5 pl-6 text-[11px] text-mute">柔光或竖光；仅需一人和自由排版的画布可选择打在立绘上方或下方</p>
             </div>
             <div className="mt-3 grid grid-cols-5 gap-3">
               <Range label="强度" value={light.amount} disabled={!light.enabled} onChange={(amount) => patchEffect("light", { amount })} />

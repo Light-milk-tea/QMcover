@@ -6,6 +6,18 @@ beforeEach(() => {
   localStorage.clear();
 });
 
+test("首页空白画布卡片显示示范框架缩略图并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+  const card = screen.getByRole("button", { name: "空白画布 示范框架 · 自由排版" });
+  await expect.element(card).toBeVisible();
+  const thumb = card.element().querySelector("img");
+  expect(thumb?.getAttribute("src")).toContain("blank");
+  await expect.poll(() => thumb?.naturalWidth).toBe(960);
+  await card.click();
+  expect(opened).toBe("blank");
+});
+
 test("首页列出特种三人模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);

@@ -45,6 +45,27 @@
   --cover-preset-weight: 400;
 }
 
+/* Single-weight Latin scripts: fixed weight avoids synthesized bold. */
+.cover-font-hand {
+  --cover-preset-family: "Vanguard Hand", "Alex Brush", cursive;
+  --cover-preset-weight: 400;
+}
+
+.cover-font-alex {
+  --cover-preset-family: "Alex Brush", "The Nautigal", cursive;
+  --cover-preset-weight: 400;
+}
+
+.cover-font-vibes {
+  --cover-preset-family: "Great Vibes", "Alex Brush", cursive;
+  --cover-preset-weight: 400;
+}
+
+.cover-font-times {
+  --cover-preset-family: "Times New Roman", "Noto Serif SC", serif;
+  --cover-preset-weight: 400;
+}
+
 /* Apply explicit spacing consistently to fill, outline, and shadow glyphs. */
 .cover-tracking-override,
 .cover-tracking-override :where(span) {

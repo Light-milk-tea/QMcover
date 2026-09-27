@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowCounterClockwise,
+  Broom,
   CaretDown,
   CaretUp,
   Copy,
@@ -24,7 +25,9 @@ import {
   STAGE_BAR_WIDTH_MAX,
   STAGE_BAR_WIDTH_MIN,
 } from "../constants";
+import { BLANK_TEMPLATE_ID } from "../constants";
 import { TEMPLATE_ELEMENTS, isNativeElement, nativeTemplateId, nativeTextValue } from "../data/elements";
+import { TEXT_STYLES, getTextStyle } from "../data/textStyles";
 import { displayBoundText, imageLayerPan, isBuiltinId } from "../lib/document";
 import { resolveArtGrade } from "../lib/effects";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
@@ -38,6 +41,7 @@ import { EdgeFadeFields } from "./EdgeFadeFields";
 import { Field, fieldClass } from "./Field";
 import { FontPicker } from "./FontPicker";
 import { LayerStackList } from "./LayerStackList";
+import { TextStylePicker } from "./TextStylePicker";
 
 const BINDS: { id: TextBind; label: string }[] = [
   { id: "custom", label: "自定义" },
@@ -125,27 +129,56 @@ function RotationField({ value, onChange }: { value: number; onChange: (deg: num
   );
 }
 
-const EFFECTS: { id: LayerEffect | ""; label: string }[] = [
-  { id: "", label: "无" },
-  { id: "slant", label: "斜切" },
-  { id: "stroke", label: "描边" },
-  { id: "hollow", label: "空心" },
-  { id: "scratch", label: "划痕" },
-  { id: "glass", label: "玻璃字" },
-  { id: "split-de", label: "拆「的」" },
-  { id: "split-stage", label: "关卡拆色" },
-  { id: "split-limit", label: "限制拆色" },
-  { id: "sign-stripe", label: "署名条纹" },
-  { id: "sign-dots", label: "署名加点" },
-  { id: "guide", label: "攻略字" },
-  { id: "face-word", label: "描边标题" },
-  { id: "chapter", label: "某某篇" },
-  { id: "episode-zh", label: "第N期" },
-  { id: "node", label: "N节点" },
-  { id: "series-wrap", label: "[栏目]" },
-  { id: "tag-prefix", label: "▼ //" },
-  { id: "en-name", label: "英文名" },
-  { id: "polaroid", label: "拍立得" },
+const EFFECT_GROUPS: { label: string; items: { id: LayerEffect | ""; label: string }[] }[] = [
+  {
+    label: "基础",
+    items: [
+      { id: "", label: "默认阴影" },
+      { id: "plain", label: "纯色无投影" },
+      { id: "outline", label: "外描边" },
+      { id: "raised", label: "轻投影（斜切关卡）" },
+      { id: "slant", label: "斜切" },
+      { id: "defocus", label: "虚焦（特种三人）" },
+    ],
+  },
+  {
+    label: "模板字效",
+    items: [
+      { id: "gold-title", label: "描边金字（低配攻略）" },
+      { id: "chromatic", label: "色散（紧急授课）" },
+      { id: "pink", label: "粉色条件字（紧急授课）" },
+      { id: "magenta-shadow", label: "品红投影（紧急授课）" },
+      { id: "metal", label: "金属（强度测评）" },
+      { id: "gold-grain", label: "金纹（特种三人）" },
+      { id: "matrix", label: "全息（作战矩阵，颜色即主题色）" },
+      { id: "grain-stage", label: "颗粒关卡码（斜切关卡，颜色即主题色）" },
+      { id: "layered", label: "叠影（干员前瞻分析）" },
+      { id: "glow", label: "柔影（仅需一人）" },
+      { id: "block", label: "硬投影（职业队）" },
+      { id: "stroke", label: "斜体描边（危机合约）" },
+      { id: "face-word", label: "粗描边（决战五星）" },
+      { id: "hollow", label: "空心（肉鸽）" },
+      { id: "glass", label: "玻璃字（肉鸽，透出字背景）" },
+      { id: "scratch", label: "划痕玻璃字（肉鸽）" },
+      { id: "guide", label: "攻略字（低配攻略）" },
+      { id: "sign-stripe", label: "署名条纹（低配攻略）" },
+      { id: "sign-dots", label: "署名加点（无核论文）" },
+    ],
+  },
+  {
+    label: "拆分与格式",
+    items: [
+      { id: "split-de", label: "拆「的」金白" },
+      { id: "split-stage", label: "关卡码拆色" },
+      { id: "split-limit", label: "限制拆色" },
+      { id: "episode-zh", label: "第N期" },
+      { id: "chapter", label: "某某篇" },
+      { id: "node", label: "N节点" },
+      { id: "series-wrap", label: "[栏目]" },
+      { id: "tag-prefix", label: "▼ //" },
+      { id: "en-name", label: "干员英文名" },
+    ],
+  },
 ];
 
 export function InspectorPanel() {
@@ -159,7 +192,10 @@ export function InspectorPanel() {
     patchLayer,
     patchDraft,
     addLayer,
+    addText,
     addDecoration,
+    clearLayers,
+    restoreLayers,
     removeLayer,
     duplicateSelected,
     reorderSelected,
@@ -167,11 +203,17 @@ export function InspectorPanel() {
     resolvedElements,
   } = useCover();
   const addRef = useRef<HTMLDetailsElement>(null);
-  const [showDecorations, setShowDecorations] = useState(false);
+  const [addPanel, setAddPanel] = useState<"menu" | "decor" | "text">("menu");
   const builtin = isBuiltinId(templateId);
   const skinId = nativeTemplateId(templateId, draft.canvasSkin);
   const natives = skinId ? TEMPLATE_ELEMENTS[skinId] : [];
   const extras = draft.layers.filter((layer) => !isNativeElement(templateId, layer.id, draft.canvasSkin));
+  const liveExtras = extras.filter((layer) => !layer.removed);
+  const canRestore = !builtin && liveExtras.length === 0 && emptyDraft(templateId).layers.length > 0;
+  const closeAdd = () => {
+    setAddPanel("menu");
+    if (addRef.current) addRef.current.open = false;
+  };
   const nativeMeta = selectedId ? natives.find((el) => el.id === selectedId) : undefined;
   const native = Boolean(nativeMeta);
   const layer = selectedLayer;
@@ -198,27 +240,49 @@ export function InspectorPanel() {
   return (
     <aside className="flex min-h-0 w-[260px] shrink-0 flex-col self-stretch overflow-x-hidden overflow-y-auto rounded-[8px] bg-panel">
       <div className="border-b border-line px-4 py-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-1">
           <p className="text-[13px] text-sub">图层</p>
+          {!builtin && liveExtras.length > 0 ? (
+            <button
+              type="button"
+              title="删除全部图层，只留背景"
+              className="ml-auto flex h-7 items-center gap-1 rounded-[6px] px-2 text-[12px] text-sub hover:bg-raised hover:text-accent"
+              onClick={() => {
+                if (!window.confirm("删除全部图层，只保留背景？可以撤回。")) return;
+                clearLayers();
+              }}
+            >
+              <Broom size={12} />
+              清空
+            </button>
+          ) : null}
           <details
             ref={addRef}
             className="relative"
             onToggle={(event) => {
-              if (!event.currentTarget.open) setShowDecorations(false);
+              if (!event.currentTarget.open) setAddPanel("menu");
             }}
           >
             <summary className="flex h-7 cursor-pointer list-none items-center gap-1 rounded-[6px] px-2 text-[12px] text-sub hover:bg-raised hover:text-accent">
               <Plus size={12} />
               添加
             </summary>
-            <div className={`absolute top-8 right-0 z-20 rounded-[8px] border border-line bg-panel shadow-lg ${showDecorations ? "w-[228px]" : "w-36 py-1"}`}>
-              {showDecorations ? (
+            <div className={`absolute top-8 right-0 z-20 rounded-[8px] border border-line bg-panel shadow-lg ${addPanel === "menu" ? "w-36 py-1" : "w-[228px]"}`}>
+              {addPanel === "decor" ? (
                 <DecorationPicker
-                  onBack={() => setShowDecorations(false)}
+                  onBack={() => setAddPanel("menu")}
                   onSelect={(presetId) => {
                     addDecoration(presetId);
-                    setShowDecorations(false);
-                    if (addRef.current) addRef.current.open = false;
+                    closeAdd();
+                  }}
+                />
+              ) : addPanel === "text" ? (
+                <TextStylePicker
+                  onBack={() => setAddPanel("menu")}
+                  onSelect={(presetId) => {
+                    const preset = getTextStyle(presetId);
+                    addText(preset ? { ...preset.layer, bind: "custom" } : undefined);
+                    closeAdd();
                   }}
                 />
               ) : (
@@ -226,10 +290,7 @@ export function InspectorPanel() {
                   <button
                     type="button"
                     className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
-                    onClick={() => {
-                      addLayer("text");
-                      if (addRef.current) addRef.current.open = false;
-                    }}
+                    onClick={() => setAddPanel("text")}
                   >
                     <TextT size={14} />
                     文字
@@ -237,7 +298,7 @@ export function InspectorPanel() {
                   <button
                     type="button"
                     className="flex h-8 w-full items-center gap-2 px-3 text-left text-[13px] text-text hover:bg-raised"
-                    onClick={() => setShowDecorations(true)}
+                    onClick={() => setAddPanel("decor")}
                   >
                     <Square size={14} />
                     装饰
@@ -298,8 +359,15 @@ export function InspectorPanel() {
           </details>
         </div>
         <LayerStackList />
-        {!skinId && extras.filter((layer) => !layer.removed).length === 0 ? (
-          <p className="mt-2 text-[12px] text-mute">还没有图层，点添加开始排版。</p>
+        {!skinId && liveExtras.length === 0 ? (
+          <div className="mt-2 text-[12px] text-mute">
+            <p>还没有图层，点添加开始排版。</p>
+            {canRestore ? (
+              <button type="button" className="mt-1.5 text-accent hover:underline" onClick={restoreLayers}>
+                {templateId === BLANK_TEMPLATE_ID ? "恢复示范框架" : "恢复模板图层"}
+              </button>
+            ) : null}
+          </div>
         ) : null}
       </div>
 
@@ -646,10 +714,67 @@ export function InspectorPanel() {
               <div className="col-span-2">
                 <RotationField value={currentRotation} onChange={(rotation) => patchLayer(layer.id, { rotation })} />
               </div>
+              <div className="col-span-2">
+                <Field label={`不透明度 ${layer.opacity ?? 100}%`}>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={layer.opacity ?? 100}
+                    onChange={(e) => patchLayer(layer.id, { opacity: Number(e.target.value) })}
+                    className="w-full"
+                  />
+                </Field>
+              </div>
             </div>
 
             {text ? (
               <>
+                <div className="mt-3">
+                  <Field label="套用字效预设">
+                    <select
+                      className={fieldClass}
+                      value=""
+                      onChange={(e) => {
+                        const preset = getTextStyle(e.target.value);
+                        if (!preset) return;
+                        patchLayer(layer.id, {
+                          font: preset.layer.font,
+                          effect: preset.layer.effect,
+                          color: preset.layer.color ?? text.color,
+                          letterSpacing: preset.layer.letterSpacing,
+                          opacity: preset.layer.opacity,
+                        });
+                      }}
+                    >
+                      <option value="">选一套，同时换字体、字效和颜色</option>
+                      {TEXT_STYLES.map((preset) => (
+                        <option key={preset.id} value={preset.id}>
+                          {preset.source ? `${preset.name} · ${preset.source}` : preset.name}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
+                <div className="mt-3">
+                  <Field label="字效">
+                    <select
+                      className={fieldClass}
+                      value={text.effect ?? ""}
+                      onChange={(e) => patchLayer(layer.id, { effect: (e.target.value || undefined) as LayerEffect | undefined })}
+                    >
+                      {EFFECT_GROUPS.map((group) => (
+                        <optgroup key={group.label} label={group.label}>
+                          {group.items.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.label}
+                            </option>
+                          ))}
+                        </optgroup>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
                 <div className="mt-3">
                   <Field label="绑定">
                     <select className={fieldClass} value={text.bind} onChange={(e) => patchLayer(layer.id, { bind: e.target.value as TextBind })}>
@@ -679,6 +804,10 @@ export function InspectorPanel() {
                       onChange={(e) => patchLayer(layer.id, { fontSize: Number(e.target.value) || text.fontSize })}
                     />
                   </Field>
+                  <label className="mt-2 flex cursor-pointer items-center gap-1.5 text-[12px] text-sub">
+                    <input type="checkbox" checked={Boolean(text.fit)} onChange={(e) => patchLayer(layer.id, { fit: e.target.checked })} />
+                    字多时自动缩小，不超出图层框
+                  </label>
                 </div>
                 <div className="mt-3">
                   <FontPicker value={text.font} text={displayBoundText(text, draft)}
@@ -694,22 +823,6 @@ export function InspectorPanel() {
                     </Field>
                   </div>
                 </div>
-                <details className="mt-3">
-                  <summary className="cursor-pointer text-[12px] text-mute">高级效果</summary>
-                  <div className="mt-2">
-                    <select
-                      className={fieldClass}
-                      value={text.effect ?? ""}
-                      onChange={(e) => patchLayer(layer.id, { effect: (e.target.value || undefined) as LayerEffect | undefined })}
-                    >
-                      {EFFECTS.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </details>
               </>
             ) : null}
 

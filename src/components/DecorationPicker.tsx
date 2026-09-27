@@ -1,6 +1,8 @@
 import { ArrowLeft } from "@phosphor-icons/react";
-import { renderBoxChrome } from "../canvas/LayerChrome";
-import { DECORATIONS, type DecorationPreset } from "../data/decorations";
+import { renderBoxChrome, type ChromeArt } from "../canvas/LayerChrome";
+import { coverImage } from "../data/arts";
+import { DECORATION_CATEGORIES, DECORATIONS, type DecorationPreset } from "../data/decorations";
+import { useCoverOptional } from "../store/CoverContext";
 import type { BoxLayer } from "../types";
 
 function previewLayer(preset: DecorationPreset): BoxLayer {
@@ -13,19 +15,25 @@ function previewLayer(preset: DecorationPreset): BoxLayer {
   };
 }
 
-function DecorationPreview({ preset }: { preset: DecorationPreset }) {
+function DecorationPreview({ preset, art }: { preset: DecorationPreset; art?: ChromeArt }) {
   const layer = previewLayer(preset);
-  const scale = Math.min(88 / layer.w, 48 / layer.h, 1.5);
+  const crop = preset.preview ?? { x: 0, y: 0, w: layer.w, h: layer.h };
+  const scale = Math.min(88 / crop.w, 48 / crop.h, 1.5);
+  const shiftX = layer.w / 2 - (crop.x + crop.w / 2);
+  const shiftY = layer.h / 2 - (crop.y + crop.h / 2);
+  // Very faint layers (film grain at 11%) would vanish in a 56px swatch.
+  const opacity = layer.opacity != null && layer.chrome !== "vignette" ? Math.max(layer.opacity, 55) / 100 : undefined;
 
   return (
-    <span className="relative block h-14 overflow-hidden rounded-[5px] bg-[#202226]">
+    <span className="relative block h-14 overflow-hidden rounded-[5px] bg-[linear-gradient(135deg,#4a5563_0%,#23272e_100%)]">
       <span
         className="absolute top-1/2 left-1/2 block"
         style={{
           width: layer.w,
           height: layer.h,
           color: layer.color,
-          transform: `translate(-50%, -50%) scale(${scale})`,
+          opacity,
+          transform: `translate(-50%, -50%) scale(${scale}) translate(${shiftX}px, ${shiftY}px)`,
         }}
       >
         {preset.kind === "polaroid" ? (
@@ -35,7 +43,7 @@ function DecorationPreview({ preset }: { preset: DecorationPreset }) {
             </span>
           </span>
         ) : (
-          renderBoxChrome(layer)
+          renderBoxChrome(layer, art)
         )}
       </span>
     </span>
@@ -44,9 +52,11 @@ function DecorationPreview({ preset }: { preset: DecorationPreset }) {
 
 function PresetButton({
   preset,
+  art,
   onSelect,
 }: {
   preset: DecorationPreset;
+  art?: ChromeArt;
   onSelect: (presetId: string) => void;
 }) {
   return (
@@ -56,7 +66,7 @@ function PresetButton({
       className="rounded-[7px] border border-line p-1.5 text-left hover:border-accent hover:bg-accent/5"
       onClick={() => onSelect(preset.id)}
     >
-      <DecorationPreview preset={preset} />
+      <DecorationPreview preset={preset} art={art} />
       <span className="mt-1.5 block truncate text-[11px] text-text">{preset.name}</span>
     </button>
   );
@@ -69,6 +79,8 @@ export function DecorationPicker({
   onSelect: (presetId: string) => void;
   onBack: () => void;
 }) {
+  const cover = useCoverOptional();
+  const art = cover ? { operatorId: cover.draft.operatorId, imageUrl: coverImage(cover.draft) } : undefined;
   return (
     <div data-testid="decoration-picker" className="w-[228px] p-2">
       <div className="mb-2 flex items-center gap-2 px-1">
@@ -82,17 +94,17 @@ export function DecorationPicker({
         </button>
         <div>
           <p className="text-[13px] font-medium text-text">添加装饰</p>
-          <p className="text-[11px] text-mute">方舟几何饰件和模板构件</p>
+          <p className="text-[11px] text-mute">各模板的氛围、纹理、线框和饰件</p>
         </div>
       </div>
       <div className="grid max-h-[460px] grid-cols-2 gap-1.5 overflow-y-auto pr-1">
-        <p className="col-span-2 px-0.5 pt-0.5 text-[11px] text-mute">方舟饰件</p>
-        {DECORATIONS.filter((preset) => preset.group === "ark").map((preset) => (
-          <PresetButton key={preset.id} preset={preset} onSelect={onSelect} />
-        ))}
-        <p className="col-span-2 px-0.5 pt-1.5 text-[11px] text-mute">模板构件</p>
-        {DECORATIONS.filter((preset) => preset.group !== "ark").map((preset) => (
-          <PresetButton key={preset.id} preset={preset} onSelect={onSelect} />
+        {DECORATION_CATEGORIES.map((category) => (
+          <div key={category.id} role="group" aria-label={category.name} className="col-span-2 grid grid-cols-2 gap-1.5">
+            <p className="col-span-2 px-0.5 pt-1.5 text-[11px] text-mute">{category.name}</p>
+            {DECORATIONS.filter((preset) => preset.category === category.id).map((preset) => (
+              <PresetButton key={preset.id} preset={preset} art={art} onSelect={onSelect} />
+            ))}
+          </div>
         ))}
       </div>
     </div>

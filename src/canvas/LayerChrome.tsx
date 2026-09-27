@@ -1,8 +1,60 @@
+import type { CSSProperties } from "react";
 import { BILI_COVER } from "../constants";
 import { CLASS_ICON_SRC } from "../data/decorations";
 import { findOperatorByName } from "../data/arts";
 import type { BoxLayer, Draft, LayerEffect, TextLayer } from "../types";
-import { autoFontSize, displayBoundText } from "../lib/document";
+import { autoFontSize, displayBoundText, fitFontSize } from "../lib/document";
+import { blueCutPalette } from "../lib/blueCutPalette";
+import { matrixPalette } from "../lib/matrixPalette";
+import { FilmGrain, MineralSurface, VioletBloom } from "../templates/TacticalMatrixAtmosphere";
+import {
+  AnalysisBadge,
+  ArtEcho,
+  ArtVeil,
+  BottomFade,
+  CheckerFloor,
+  Compass,
+  CoolWash,
+  CornerGlow,
+  Embers,
+  GlitchHaze,
+  GlossySlash,
+  GoldFrame,
+  GoldRules,
+  LightWash,
+  PaperFlecks,
+  PrintDots,
+  PrintGeometry,
+  RedSmoke,
+  SideShade,
+  SkewTag,
+  SkillRow,
+  StageArrow,
+  StageBar,
+  TacticalOrbits,
+  TealHud,
+  TechnicalFrame,
+  TopGlow,
+  TornPaper,
+  VioletAtmosphere,
+  VioletMist,
+  VioletStreaks,
+  Wedge,
+} from "./DecorArt";
+import {
+  BlockWord,
+  ChromaticTitle,
+  DefocusWord,
+  GlowWord,
+  GrainGoldType,
+  LayeredTitle,
+  MagentaShadowWord,
+  MatrixText,
+  MetalType,
+  OutlineWord,
+  PinkCondition,
+  RaisedType,
+} from "./TextFaces";
 
 const GOLD = "#f4d06f";
 const IVORY = "#fff6ea";
@@ -128,7 +180,8 @@ function SignDots({ text }: { text: string }) {
 export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: string | null) {
   const raw = displayBoundText(layer, draft);
   const effect: LayerEffect | undefined = layer.effect;
-  const size = autoFontSize(layer.autoSize, raw.replace(/\s/g, "").length || raw.length, layer.fontSize);
+  const auto = autoFontSize(layer.autoSize, raw.replace(/\s/g, "").length || raw.length, layer.fontSize);
+  const size = layer.fit ? Math.min(auto, fitFontSize(raw, layer.w, layer.letterSpacing)) : auto;
 
   if (effect === "split-de") {
     const { gold, white } = splitDe(raw);
@@ -136,7 +189,7 @@ export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: stri
       <span className="inline-flex items-end" style={{ fontSize: size }}>
         <GoldWord text={gold} />
         {white ? (
-          <span className="font-black tracking-[0.02em] whitespace-nowrap text-white" style={{ fontSize: 156, textShadow: "0 3px 0 #0a1820, 0 8px 16px rgba(0,0,0,0.4)" }}>
+          <span className="font-black tracking-[0.02em] whitespace-nowrap text-white" style={{ fontSize: "0.86em", textShadow: "0 3px 0 #0a1820, 0 8px 16px rgba(0,0,0,0.4)" }}>
             {white}
           </span>
         ) : null}
@@ -217,10 +270,39 @@ export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: stri
       </span>
     );
   }
+  if (effect === "outline") return <span className="font-black" style={{ fontSize: size }}><OutlineWord text={raw} /></span>;
+  if (effect === "raised") return <span className="font-black" style={{ fontSize: size }}><RaisedType>{raw}</RaisedType></span>;
+  if (effect === "pink") return <span style={{ fontSize: size }}><PinkCondition text={raw} color="currentColor" /></span>;
+  if (effect === "magenta-shadow") return <span style={{ fontSize: size }}><MagentaShadowWord text={raw} /></span>;
+  if (effect === "grain-stage") {
+    // The layer colour is the theme accent, like the blue-cut template's colorway.
+    const theme = blueCutPalette(layer.color);
+    return (
+      <span className="font-black tracking-[-0.055em]" style={{ fontSize: size, color: "#4a4a4a" }}>
+        <RaisedType fringe={theme.fringe} tint={theme.accent}>{raw}</RaisedType>
+      </span>
+    );
+  }
+  if (effect === "defocus") return <span className="font-black" style={{ fontSize: size }}><DefocusWord text={raw} /></span>;
+  if (effect === "chromatic") return <span className="font-black" style={{ fontSize: size }}><ChromaticTitle text={raw} /></span>;
+  if (effect === "glow") return <span className="font-black" style={{ fontSize: size }}><GlowWord text={raw} color="currentColor" /></span>;
+  if (effect === "layered") return <span className="font-black" style={{ fontSize: size }}><LayeredTitle text={raw} color="currentColor" /></span>;
+  if (effect === "block") return <span className="font-black" style={{ fontSize: size }}><BlockWord text={raw} color="currentColor" /></span>;
+  if (effect === "metal") return <span className="font-black" style={{ fontSize: size, lineHeight: 1 }}><MetalType text={raw} /></span>;
+  if (effect === "gold-grain") return <span className="font-black" style={{ fontSize: size, lineHeight: 0.9 }}><GrainGoldType text={raw} stage /></span>;
+  if (effect === "matrix") {
+    // The layer colour is the theme accent, like the matrix template's colorway.
+    const palette = matrixPalette(layer.color);
+    return (
+      <span className="font-black" style={{ fontSize: size, color: palette.paper }}>
+        <MatrixText text={raw} tint={palette.ink} depth={palette.depth} />
+      </span>
+    );
+  }
 
   const lines = raw.split("\n");
   return (
-    <span className="cover-type-shadow inline-block whitespace-pre font-black" style={{ fontSize: size, letterSpacing: layer.letterSpacing }}>
+    <span className={`${effect === "plain" ? "" : "cover-type-shadow "}inline-block whitespace-pre font-black`} style={{ fontSize: size, letterSpacing: layer.letterSpacing }}>
       {lines.map((line, i) => (
         <span key={i} className="block">
           {line || "\u00a0"}
@@ -250,8 +332,46 @@ const TRI_TOPO = [
   "M80 610 C280 590, 480 650, 660 760 C760 820, 840 850, 920 860",
 ];
 
-export function renderBoxChrome(layer: BoxLayer) {
+/** The cover's current operator, for decorations built from its skills or art. */
+export type ChromeArt = { operatorId?: string; imageUrl?: string };
+
+export function renderBoxChrome(layer: BoxLayer, art?: ChromeArt) {
   const chrome = layer.chrome;
+  if (chrome === "skill-icons") return <SkillRow operatorId={art?.operatorId} />;
+  if (chrome === "art-echo") return <ArtEcho src={art?.imageUrl ?? ""} />;
+  if (chrome === "violet-streaks") return <VioletStreaks />;
+  if (chrome === "violet-mist") return <VioletMist />;
+  if (chrome === "violet-atmosphere") return <><VioletAtmosphere /><VioletMist /></>;
+  if (chrome === "art-veil") return <ArtVeil />;
+  if (chrome === "cool-wash") return <CoolWash />;
+  if (chrome === "violet-bloom") return <VioletBloom />;
+  if (chrome === "glitch-haze") return <GlitchHaze />;
+  if (chrome === "red-smoke") return <RedSmoke />;
+  if (chrome === "top-glow") return <TopGlow />;
+  if (chrome === "corner-glow") return <CornerGlow />;
+  if (chrome === "embers") return <Embers />;
+  if (chrome === "side-shade") return <SideShade />;
+  if (chrome === "bottom-fade") return <BottomFade />;
+  if (chrome === "light-wash") return <LightWash />;
+  if (chrome === "mineral") return <MineralSurface violet />;
+  if (chrome === "film-grain") return <FilmGrain />;
+  if (chrome === "print-dots") return <PrintDots />;
+  if (chrome === "paper-flecks") return <PaperFlecks />;
+  if (chrome === "night-grid") return <div className="nc-night absolute inset-0" />;
+  if (chrome === "checker-floor") return <CheckerFloor />;
+  if (chrome === "tactical-orbits") return <TacticalOrbits />;
+  if (chrome === "print-geometry") return <PrintGeometry />;
+  if (chrome === "teal-hud") return <><TealHud /><Compass /></>;
+  if (chrome === "tech-frame") return <TechnicalFrame />;
+  if (chrome === "gold-rules") return <GoldRules />;
+  if (chrome === "gold-frame") return <GoldFrame />;
+  if (chrome === "stage-arrow") return <StageArrow stretch />;
+  if (chrome === "glossy-slash") return <GlossySlash theme={blueCutPalette(layer.color)} />;
+  if (chrome === "wedge") return <Wedge />;
+  if (chrome === "hex-badge") return <AnalysisBadge />;
+  if (chrome === "stage-bar") return <StageBar />;
+  if (chrome === "skew-tag") return <SkewTag />;
+  if (chrome === "torn-paper") return <TornPaper />;
   if (chrome === "cc-triangle") {
     return (
       <svg width="68" height="68" viewBox="0 0 58 58" fill="none" aria-hidden>
@@ -516,7 +636,7 @@ export function renderBoxChrome(layer: BoxLayer) {
           maskSize: "contain",
           WebkitMaskMode: "luminance",
           maskMode: "luminance",
-        }}
+        } as CSSProperties}
       />
     );
   }

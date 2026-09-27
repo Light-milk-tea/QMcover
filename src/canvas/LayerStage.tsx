@@ -1,7 +1,9 @@
-import { artUrl } from "../data/arts";
+import { Fragment } from "react";
+import { artUrl, findOperatorByName } from "../data/arts";
 import { resolveChibiUrl } from "../data/chibis";
 import { fontClass } from "../data/elements";
 import { IMAGE_EDGE_FADE_DEFAULT, IMAGE_EDGE_FADE_MODE_DEFAULT } from "../constants";
+import { LightUnderlay } from "../effects/CoverEffectsStage";
 import { isChibiLayer, layerZIndex } from "../lib/document";
 import type { CoverRenderProps, Draft, ImageLayer, Layer } from "../types";
 import { OperatorLayer } from "../templates/OperatorLayer";
@@ -20,6 +22,14 @@ function imageSrc(layer: ImageLayer, props: CoverRenderProps): string {
   if (layer.source === "upload") return "";
   if (layer.id === "operator") return props.imageUrl;
   return "";
+}
+
+/** The art the light is layered against: the main operator, else the lowest plain art layer. */
+function lightAnchor(layers: Layer[]): Layer | undefined {
+  const art = layers.filter(
+    (layer): layer is ImageLayer => layer.kind === "image" && !layer.removed && !layer.hidden && !layer.frame && !isChibiLayer(layer),
+  );
+  return art.find((layer) => layer.id === "operator") ?? art[0];
 }
 
 function ImageView({ layer, props }: { layer: ImageLayer; props: CoverRenderProps }) {
@@ -71,6 +81,7 @@ export function LayerStage(
 ) {
   const cover = useCoverOptional();
   const layers = (props.extraLayers ?? cover?.draft.layers ?? props.layers ?? []) as Layer[];
+  const stack = cover?.draft.layers ?? layers;
   const skin = cover?.draft.canvasSkin ?? props.canvasSkin ?? "plain";
   const glassUrl = skinGlassUrl(props.textBgPreset, props.bgPreset);
   const draft = (cover?.draft ?? {
@@ -83,6 +94,24 @@ export function LayerStage(
     layers,
     canvasSkin: skin,
   }) as Draft;
+  const art = {
+    operatorId: cover?.draft.operatorId || findOperatorByName(props.operatorName)?.id,
+    imageUrl: props.imageUrl,
+  };
+  // On the plain canvas the light sits right under (or over) the art layer, so
+  // text stacked above the art is never washed out.
+  const light = skin === "plain" && !props.overlay && props.effects?.light.enabled ? props.effects.light : undefined;
+  const anchor = light ? lightAnchor(layers) : undefined;
+  const lightLayer = (zIndex: number) =>
+    light ? (
+      <div
+        data-light-depth={anchor ? (light.depth ?? "behind") : "top"}
+        className="pointer-events-none absolute inset-0"
+        style={{ zIndex }}
+      >
+        <LightUnderlay effect={light} />
+      </div>
+    ) : null;
 
   return (
     <ElementEditProvider styles={props.elementStyles ?? {}} previewScale={props.previewScale} interactive={props.showPlaceholder !== false}>
@@ -108,23 +137,28 @@ export function LayerStage(
         {[...layers]
           .filter((layer) => !layer.removed && typeof layer.id === "string")
           .sort((a, b) => a.id.localeCompare(b.id))
-          .map((layer) => (
-            <LayerFrame
-              key={layer.id}
-              layer={layer}
-              previewScale={props.previewScale}
-              zIndex={layerZIndex(cover?.draft.layers ?? layers, layer.id)}
-            >
-              {layer.kind === "text" && draft ? renderTextContent(layer, draft, glassUrl) : null}
-              {layer.kind === "text" && !draft ? (
-                <span className={`${fontClass(layer.font)} font-black`} style={{ fontSize: layer.fontSize, color: layer.color }}>
-                  {layer.text}
-                </span>
-              ) : null}
-              {layer.kind === "box" ? renderBoxChrome(layer) : null}
-              {layer.kind === "image" ? <ImageView layer={layer} props={props} /> : null}
-            </LayerFrame>
-          ))}
+          .map((layer) => {
+            const zIndex = layerZIndex(stack, layer.id);
+            const lit = light && anchor?.id === layer.id;
+            // Equal z-index: DOM order decides whether the light paints under or over the art.
+            return (
+              <Fragment key={layer.id}>
+                {lit && light.depth !== "front" ? lightLayer(zIndex) : null}
+                <LayerFrame layer={layer} previewScale={props.previewScale} zIndex={zIndex}>
+                  {layer.kind === "text" && draft ? renderTextContent(layer, draft, glassUrl) : null}
+                  {layer.kind === "text" && !draft ? (
+                    <span className={`${fontClass(layer.font)} font-black`} style={{ fontSize: layer.fontSize, color: layer.color }}>
+                      {layer.text}
+                    </span>
+                  ) : null}
+                  {layer.kind === "box" ? renderBoxChrome(layer, art) : null}
+                  {layer.kind === "image" ? <ImageView layer={layer} props={props} /> : null}
+                </LayerFrame>
+                {lit && light.depth === "front" ? lightLayer(zIndex) : null}
+              </Fragment>
+            );
+          })}
+        {light && !anchor ? lightLayer(stack.length + 1) : null}
       </div>
     </ElementEditProvider>
   );
