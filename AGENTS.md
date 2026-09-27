@@ -13,7 +13,7 @@ QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + T
 - [README.md](README.md) 运行与模板说明
 - [TEMPLATES.md](TEMPLATES.md) 如何加模板
 - [doc/模仿参考图生成模板.md](doc/模仿参考图生成模板.md) 按参考图复刻构图
-- [SKILL.md](SKILL.md) Commit-as-Prompt（用户要求提交时用）
+- [github提交skill.md](github提交skill.md) Commit-as-Prompt（用户要求提交时用）
 
 ## 新建、复刻或美化模板时先读
 
@@ -22,7 +22,7 @@ QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + T
 - 把主参考图和当前画布缩到同一尺寸，先指出最大的视觉差距，再改对应层；每轮重新截图检查，不以代码改动量或测试通过代替视觉质量。
 - 同时检查默认稿、整页编辑器和 `html-to-image` 实际导出。截图前等待字体和图片解码，不能只检查图片下载完成。
 - 材质做法按参考图选，不把某张图的紫色光痕、宋体或晕染变成所有模板的默认风格。
-- 根目录 `SKILL.md` 是提交规范；`.cursor/skills/vitest-browser-playwright/SKILL.md` 是测试技能；设计依据是上面的文档和主参考图。
+- 根目录 `github提交skill.md` 是提交规范；`.cursor/skills/vitest-browser-playwright/SKILL.md` 是测试技能；设计依据是上面的文档和主参考图。
 
 ## Git：直接在 main 上干活
 
@@ -31,7 +31,7 @@ QMcover：明日方舟 B 站横版封面工坊，纯前端（React 19 + Vite + T
 | 动作 | 何时可以 |
 | --- | --- |
 | 改文件、跑起来验证 | 用户给了任务就可以 |
-| `git commit` | 用户要提交，或任务告一段落需要落盘；按 [SKILL.md](SKILL.md) 写 WHAT/WHY/HOW |
+| `git commit` | 用户要提交，或任务告一段落需要落盘；按 [github提交skill.md](github提交skill.md) 写 WHAT/WHY/HOW |
 | `git push` | **用户明确说「推」**：`git push origin main` |
 | 开 / 更新 PR | **用户明确说开 PR 或更新 PR** |
 | 合并 PR、force push、amend | 用户点名要求 |
@@ -56,7 +56,7 @@ EOF
 )"
 ```
 
-提交后用 `git log -1 --format='%an <%ae> | %cn <%ce>'` 核对。看到 `Cursor Agent` 或 `cursoragent@` 就立刻改掉再交（未推可以 `--amend`；已推必须用户同意才重写）。写法细节见 [SKILL.md](SKILL.md)。
+提交后用 `git log -1 --format='%an <%ae> | %cn <%ce>'` 核对。看到 `Cursor Agent` 或 `cursoragent@` 就立刻改掉再交（未推可以 `--amend`；已推必须用户同意才重写）。写法细节见 [github提交skill.md](github提交skill.md)。
 
 ## 内容红线
 
