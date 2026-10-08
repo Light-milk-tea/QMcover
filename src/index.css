@@ -3,6 +3,7 @@
 @import "@fontsource/oswald/500.css";
 @import "@fontsource/oswald/600.css";
 @import "@fontsource/oswald/700.css";
+@import "@fontsource/anton/400.css";
 @import "@fontsource/noto-sans-sc/400.css";
 @import "@fontsource/noto-sans-sc/700.css";
 @import "@fontsource/noto-sans-sc/900.css";
@@ -25,6 +26,7 @@
   --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
   --font-script: "The Nautigal", "Alex Brush", "Great Vibes", "Segoe Script", cursive;
   --font-outfit: "Outfit Variable", "Noto Sans SC", sans-serif;
+  --font-anton: "Anton", "Noto Sans SC", sans-serif;
   --color-ink: #f1f2f3;
   --color-panel: #ffffff;
   --color-raised: #f6f7f8;
