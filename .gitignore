@@ -33,6 +33,7 @@ references/**/*.jpg
 references/**/*.jpeg
 references/**/*.png
 references/**/*.webp
+references/**/*.mp4
 
 # capture leftovers
 public/thumbs/*.dataurl
