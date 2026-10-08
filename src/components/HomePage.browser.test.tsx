@@ -18,6 +18,26 @@ test("首页空白画布卡片显示示范框架缩略图并能打开", async ()
   expect(opened).toBe("blank");
 });
 
+test("首页前五张是特种三人、总攻击、斜切关卡、V我50、明日方舟角色测评", async () => {
+  const screen = await render(<HomePage onOpen={() => undefined} />);
+  const titles = [...screen.container.querySelectorAll("main ul li button p:first-child")].map((node) => node.textContent);
+  expect(titles.slice(0, 6)).toEqual(["空白画布", "特种三人", "总攻击", "斜切关卡", "V我50", "明日方舟角色测评"]);
+  expect(titles.slice(6)).toEqual([
+    "全息作战矩阵",
+    "强度测评",
+    "危机合约模板",
+    "低配攻略",
+    "肉鸽模板",
+    "紧急授课",
+    "决战五星之癫",
+    "无核论文",
+    "职业队",
+    "干员前瞻分析",
+    "四星无核",
+    "仅需一人",
+  ]);
+});
+
 test("首页列出特种三人模板并能打开", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
