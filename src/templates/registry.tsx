@@ -4,6 +4,7 @@ import { ElementEditProvider } from "../components/CoverElement";
 import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { useCoverOptional } from "../store/CoverContext";
 import type { BuiltinTemplateId, CoverRenderProps } from "../types";
+import { AllOut } from "./AllOut";
 import { BlueCut } from "./BlueCut";
 import { Endfield } from "./Endfield";
 import { HighspecNocore } from "./HighspecNocore";
@@ -39,6 +40,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   solo: Solo,
   "highspec-nocore": HighspecNocore,
   "blue-cut": BlueCut,
+  "all-out": AllOut,
 };
 
 export function CoverView(props: CoverRenderProps) {

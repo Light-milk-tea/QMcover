@@ -109,6 +109,15 @@ test("首页列出紧急授课模板并能打开", async () => {
   expect(opened).toBe("emergency-lesson");
 });
 
+test("首页列出总攻击模板并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+
+  await expect.element(screen.getByRole("button", { name: "总攻击 P3R 总攻击结算构图" })).toBeVisible();
+  await screen.getByText("总攻击", { exact: true }).click();
+  expect(opened).toBe("all-out");
+});
+
 test("首页列出全息作战矩阵并打开可调色模板", async () => {
   let opened = "";
   const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);

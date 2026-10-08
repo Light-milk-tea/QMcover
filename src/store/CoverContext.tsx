@@ -21,6 +21,7 @@ import type {
   ElementOverride,
   ImageLayer,
   Layer,
+  MultilineField,
   ResolvedElement,
   TemplateId,
   TextLayer,
@@ -48,6 +49,7 @@ type CoverContextValue = {
   titleKind: TitleKind;
   titleLabel: string;
   titlePlaceholder: string;
+  multilineFields: MultilineField[];
   subtitleLabel: string;
   episodeLabel: string;
   signatureLabel: string;
@@ -549,6 +551,7 @@ export function CoverProvider({
         meta?.titleLabel ??
         (meta?.titleKind === "stage" ? "地图" : meta?.titleKind === "operation" ? "行动" : meta?.titleKind === "theme" ? "主题" : "标题"),
       titlePlaceholder: meta?.titlePlaceholder ?? "",
+      multilineFields: meta?.multilineFields ?? [],
       subtitleLabel: meta?.subtitleLabel ?? "副标题",
       episodeLabel: meta?.episodeLabel ?? "期数",
       signatureLabel: meta?.signatureLabel ?? "署名",

@@ -18,6 +18,7 @@ import {
   CornerGlow,
   Embers,
   GlitchHaze,
+  FocusRing,
   GlossySlash,
   GoldFrame,
   GoldRules,
@@ -54,6 +55,7 @@ import {
   OutlineWord,
   PinkCondition,
   RaisedType,
+  SpeedType,
 } from "./TextFaces";
 
 const GOLD = "#f4d06f";
@@ -270,6 +272,7 @@ export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: stri
       </span>
     );
   }
+  if (effect === "speed") return <span className="font-black" style={{ fontSize: size, lineHeight: 0.74 }}><SpeedType>{raw}</SpeedType></span>;
   if (effect === "outline") return <span className="font-black" style={{ fontSize: size }}><OutlineWord text={raw} /></span>;
   if (effect === "raised") return <span className="font-black" style={{ fontSize: size }}><RaisedType>{raw}</RaisedType></span>;
   if (effect === "pink") return <span style={{ fontSize: size }}><PinkCondition text={raw} color="currentColor" /></span>;
@@ -367,6 +370,7 @@ export function renderBoxChrome(layer: BoxLayer, art?: ChromeArt) {
   if (chrome === "gold-frame") return <GoldFrame />;
   if (chrome === "stage-arrow") return <StageArrow stretch />;
   if (chrome === "glossy-slash") return <GlossySlash theme={blueCutPalette(layer.color)} />;
+  if (chrome === "focus-ring") return <FocusRing color={layer.color || "#000000"} />;
   if (chrome === "wedge") return <Wedge />;
   if (chrome === "hex-badge") return <AnalysisBadge />;
   if (chrome === "stage-bar") return <StageBar />;

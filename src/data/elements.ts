@@ -10,6 +10,8 @@ export type CoverElMeta = {
   defaultOpacity?: number;
   hasColor?: boolean;
   hasWidth?: boolean;
+  /** 圆环：检查器里给出大小和粗细。 */
+  hasRing?: boolean;
   textBind?: Exclude<TextBind, "custom">;
   textDefault?: string;
 };
@@ -70,6 +72,7 @@ export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[
   { id: "xiaowei", label: "站酷小薇体", className: "cover-font-preset cover-font-xiaowei" },
   { id: "mashan", label: "马善政楷书", className: "cover-font-preset cover-font-mashan" },
   { id: "outfit", label: "Outfit 几何无衬线", className: "font-outfit" },
+  { id: "anton", label: "Anton 窄粗黑", className: "font-anton" },
   { id: "hand", label: "WindSong 手写", className: "cover-font-preset cover-font-hand" },
   { id: "alex", label: "Alex Brush 花体", className: "cover-font-preset cover-font-alex" },
   { id: "vibes", label: "Great Vibes 花体", className: "cover-font-preset cover-font-vibes" },
@@ -309,5 +312,14 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "squad", label: "阵容", kind: "text", defaultFont: "cn", textBind: "title" },
     { id: "stage", label: "关卡码", kind: "text", defaultFont: "cn", textBind: "subtitle" },
     { id: "en", label: "英文标", kind: "text", defaultFont: "cn", textBind: "signature", hasColor: true },
+  ],
+  "all-out": [
+    { id: "ground", label: "背景大字", kind: "text", defaultFont: "anton", textBind: "mark", hasColor: true },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "ring", label: "聚焦圆环", kind: "box", hasColor: true, hasRing: true },
+    { id: "tint", label: "环内调色", kind: "box" },
+    { id: "quote", label: "台词", kind: "text", defaultFont: "outfit", textBind: "title", hasColor: true },
+    { id: "kicker", label: "细字眉题", kind: "text", defaultFont: "outfit", textBind: "subtitle" },
+    { id: "credit", label: "角落署名", kind: "text", defaultFont: "cn", textBind: "signature" },
   ],
 };

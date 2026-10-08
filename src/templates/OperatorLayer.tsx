@@ -60,6 +60,8 @@ type Props = {
   imageEdgeFadeMode?: EdgeFadeMode;
   framed?: boolean;
   emptyHint?: string;
+  /** 同一张立绘的叠加副本：跟随原图层位置，但不接收拖动、不显示载入提示。 */
+  echo?: boolean;
 };
 
 export function OperatorLayer({
@@ -88,6 +90,7 @@ export function OperatorLayer({
   emptyHint = "从立绘库点选",
   artGrade,
   fringeRole,
+  echo = false,
 }: Props) {
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
@@ -119,7 +122,7 @@ export function OperatorLayer({
   if (hidden) return null;
 
   if (!imageUrl) {
-    if (!showPlaceholder) return <div className={className} />;
+    if (!showPlaceholder || echo) return <div className={className} />;
     return (
       <div className={`grid place-items-center text-[#efe8de]/35 ${className}`}>
         <p className="font-cn text-[42px] tracking-wide">{emptyHint}</p>
@@ -185,7 +188,7 @@ export function OperatorLayer({
       draggable={false}
       onLoad={remote.onLoad}
       onError={remote.onError}
-      onPointerDown={onPointerDown}
+      onPointerDown={echo ? undefined : onPointerDown}
       onPointerMove={(e) => {
         if (!dragging.current) return;
         const scale = previewScale || 1;
@@ -199,7 +202,7 @@ export function OperatorLayer({
       style={{
         objectFit,
         objectPosition,
-        pointerEvents: insideFrame ? "none" : "auto",
+        pointerEvents: insideFrame || echo ? "none" : "auto",
         cursor: dragging.current ? "grabbing" : "grab",
       }}
     />
@@ -253,7 +256,8 @@ export function OperatorLayer({
 
   return (
     <div
-      data-cover-el={layerId}
+      data-cover-el={echo ? undefined : layerId}
+      data-art-echo={echo ? "" : undefined}
       data-edge-fade={imageEdgeFade ? String(edge) : undefined}
       data-edge-fade-mode={imageEdgeFade ? fadeMode : undefined}
       className={`relative ${className}`}
@@ -263,7 +267,7 @@ export function OperatorLayer({
       }}
     >
       {movedArt}
-      {remote.loading || remote.failed ? (
+      {!echo && (remote.loading || remote.failed) ? (
         <span
           data-ignore-export="true"
           className="pointer-events-none absolute inset-0 grid place-items-center"

@@ -2,7 +2,7 @@ export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
 export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script"
   | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan"
-  | "outfit" | "hand" | "alex" | "vibes" | "times";
+  | "outfit" | "anton" | "hand" | "alex" | "vibes" | "times";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -47,7 +47,8 @@ export type LayerEffect =
   | "matrix"
   | "grain-stage"
   | "pink"
-  | "magenta-shadow";
+  | "magenta-shadow"
+  | "speed";
 
 export type LayerChrome =
   | "cc-triangle"
@@ -111,6 +112,7 @@ export type LayerChrome =
   | "stage-arrow"
   | "glossy-slash"
   | "wedge"
+  | "focus-ring"
   | "hex-badge"
   | "stage-bar"
   | "skew-tag"
@@ -139,7 +141,8 @@ export type CanvasSkin =
   | "fourstar-nocore"
   | "solo"
   | "highspec-nocore"
-  | "blue-cut";
+  | "blue-cut"
+  | "all-out";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -289,6 +292,10 @@ export type ElementOverride = {
   opacity?: number;
   text?: string;
   rotation?: number;
+  /** 圆环类元素：圆洞半径（px，1920 画布）。 */
+  radius?: number;
+  /** 圆环类元素：环带宽度（px，1920 画布）。 */
+  thickness?: number;
 };
 
 export type CoverDocument = {
@@ -361,9 +368,12 @@ export type BuiltinTemplateId =
   | "fourstar-nocore"
   | "solo"
   | "highspec-nocore"
-  | "blue-cut";
+  | "blue-cut"
+  | "all-out";
 
 export type TemplateId = string;
+
+export type MultilineField = "title" | "signature" | "mark";
 
 export type TemplateMeta = {
   id: TemplateId;
@@ -375,6 +385,8 @@ export type TemplateMeta = {
   titleKind?: TitleKind;
   titleLabel?: string;
   titlePlaceholder?: string;
+  /** 编辑栏里用多行框、回车即换行的文字字段。 */
+  multilineFields?: MultilineField[];
   subtitleLabel?: string;
   episodeLabel?: string;
   signatureLabel?: string;

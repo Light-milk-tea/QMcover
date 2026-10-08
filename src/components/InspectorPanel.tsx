@@ -28,6 +28,7 @@ import {
 import { BLANK_TEMPLATE_ID } from "../constants";
 import { TEMPLATE_ELEMENTS, isNativeElement, nativeTemplateId, nativeTextValue } from "../data/elements";
 import { TEXT_STYLES, getTextStyle } from "../data/textStyles";
+import { RING_RADIUS, RING_THICKNESS } from "../lib/allOutLayout";
 import { displayBoundText, imageLayerPan, isBuiltinId } from "../lib/document";
 import { resolveArtGrade } from "../lib/effects";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
@@ -574,6 +575,36 @@ export function InspectorPanel() {
                 <div className="mt-3">
                   <RotationField value={currentRotation} onChange={(rotation) => patchElement(nativeMeta.id, { rotation })} />
                 </div>
+                {nativeMeta.hasRing ? (
+                  <>
+                    <div className="mt-3">
+                      <Field label={`圆环大小 ${style.radius ?? RING_RADIUS.default}`}>
+                        <input
+                          type="range"
+                          min={RING_RADIUS.min}
+                          max={RING_RADIUS.max}
+                          step={10}
+                          value={style.radius ?? RING_RADIUS.default}
+                          onChange={(e) => patchElement(nativeMeta.id, { radius: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                    </div>
+                    <div className="mt-3">
+                      <Field label={`圆环粗细 ${style.thickness ?? RING_THICKNESS.default}`}>
+                        <input
+                          type="range"
+                          min={RING_THICKNESS.min}
+                          max={RING_THICKNESS.max}
+                          step={10}
+                          value={style.thickness ?? RING_THICKNESS.default}
+                          onChange={(e) => patchElement(nativeMeta.id, { thickness: Number(e.target.value) })}
+                          className="w-full"
+                        />
+                      </Field>
+                    </div>
+                  </>
+                ) : null}
                 {nativeMeta.hasOpacity ? (
                   <div className="mt-3">
                     <Field label={`${nativeMeta.id === "wash" ? "透明度" : "暗度"} ${style.opacity ?? nativeMeta.defaultOpacity ?? 100}`}>

@@ -171,6 +171,12 @@ export const TEXT_STYLES: TextStylePreset[] = [
     layer: { label: "虚焦大字", text: "PIONEER", font: "outfit", fontSize: 180, color: "#d6c18e", effect: "defocus", opacity: 48, rotation: -12, w: 1040, h: 200 },
   },
   {
+    id: "speed",
+    name: "斜切速度字",
+    source: "总攻击",
+    layer: { label: "速度字", text: "通关", font: "cn", fontSize: 160, color: "#ffffff", effect: "speed", w: 520, h: 180 },
+  },
+  {
     id: "kicker",
     name: "英文小标",
     layer: { label: "英文小标", text: "OPERATION RECORD", font: "display", fontSize: 28, color: "#e8e8e8", effect: "plain", letterSpacing: 8, w: 700, h: 40 },

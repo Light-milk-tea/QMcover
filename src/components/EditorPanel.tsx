@@ -11,6 +11,7 @@ import { isBuiltinId, isChibiLayer } from "../lib/document";
 import { IMAGE_FILE_ACCEPT, imageFileLabel, readImageAsDataUrl } from "../lib/readImage";
 import { useCover } from "../store/CoverContext";
 import type { CanvasSkin, ImageLayer } from "../types";
+import { ALL_OUT_ACCENT, allOutAccent } from "../lib/allOutPalette";
 import { BLUE_CUT_ACCENT, blueCutAccent } from "../lib/blueCutPalette";
 import { resolveMatrixAccent, storeMatrixColorway } from "../lib/matrixPalette";
 import { BackgroundPicker } from "./BackgroundPicker";
@@ -33,8 +34,39 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "solo", label: "仅需一人底" },
   { id: "highspec-nocore", label: "V我50底" },
   { id: "blue-cut", label: "斜切关卡底" },
+  { id: "all-out", label: "总攻击底" },
   { id: "strength-review", label: "强度测评底" },
 ];
+
+/** 模板声明为多行的字段用 textarea，回车即换行；手动换行优先于模板的自动折行。 */
+function TextBox({
+  multiline,
+  value,
+  onChange,
+  placeholder,
+}: {
+  multiline: boolean;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) {
+  if (!multiline) {
+    return <input className={fieldClass} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />;
+  }
+  return (
+    <textarea
+      className={`${fieldClass} resize-y leading-snug`}
+      rows={Math.min(6, Math.max(2, value.split("\n").length))}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+    />
+  );
+}
+
+function MultilineHint({ show }: { show: boolean }) {
+  return show ? <span className="pointer-events-none absolute top-0 right-0 text-[12px] text-mute">回车换行</span> : null;
+}
 
 /** Offers to place a right-panel field on the canvas when no layer shows it yet. */
 function PlaceOnCanvas({ bind, label }: { bind: FieldBind; label: string }) {
@@ -68,6 +100,7 @@ export function EditorPanel() {
     titleKind,
     titleLabel,
     titlePlaceholder,
+    multilineFields,
     subtitleLabel,
     episodeLabel,
     signatureLabel,
@@ -102,8 +135,14 @@ export function EditorPanel() {
       <div className="border-b border-line px-4 py-3">
         <div className="relative">
           <Field label={titleLabel}>
-            <input className={fieldClass} value={draft.title} onChange={(e) => patchDraft({ title: e.target.value })} placeholder={resolvedPlaceholder} />
+            <TextBox
+              multiline={multilineFields.includes("title")}
+              value={draft.title}
+              onChange={(title) => patchDraft({ title })}
+              placeholder={resolvedPlaceholder}
+            />
           </Field>
+          <MultilineHint show={multilineFields.includes("title")} />
           <PlaceOnCanvas bind="title" label={titleLabel} />
         </div>
         <div className="relative mt-3">
@@ -122,15 +161,25 @@ export function EditorPanel() {
         ) : null}
         <div className="relative mt-3">
           <Field label={signatureLabel}>
-            <input className={fieldClass} value={draft.signature} onChange={(e) => patchDraft({ signature: e.target.value })} />
+            <TextBox
+              multiline={multilineFields.includes("signature")}
+              value={draft.signature}
+              onChange={(signature) => patchDraft({ signature })}
+            />
           </Field>
+          <MultilineHint show={multilineFields.includes("signature")} />
           <PlaceOnCanvas bind="signature" label={signatureLabel} />
         </div>
         {showMark ? (
           <div className="relative mt-3">
             <Field label={markLabel}>
-              <input className={fieldClass} value={draft.mark ?? ""} onChange={(e) => patchDraft({ mark: e.target.value })} />
+              <TextBox
+                multiline={multilineFields.includes("mark")}
+                value={draft.mark ?? ""}
+                onChange={(mark) => patchDraft({ mark })}
+              />
             </Field>
+            <MultilineHint show={multilineFields.includes("mark")} />
             <PlaceOnCanvas bind="mark" label={markLabel} />
           </div>
         ) : null}
@@ -143,6 +192,17 @@ export function EditorPanel() {
             label="主题色"
             color={blueCutAccent(draft.colorway)}
             onChange={(color) => patchDraft({ colorway: color ?? BLUE_CUT_ACCENT })}
+          />
+        </div>
+      ) : null}
+
+      {templateId === "all-out" || draft.canvasSkin === "all-out" ? (
+        <div className="border-b border-line px-4 py-3">
+          <ColorField
+            elementId="all-out-colorway"
+            label="主题色"
+            color={allOutAccent(draft.colorway)}
+            onChange={(color) => patchDraft({ colorway: color ?? ALL_OUT_ACCENT })}
           />
         </div>
       ) : null}

@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { findOperator, operatorSkills, skillUrl, type OperatorSkill } from "../data/arts";
+import { ALL_OUT_RINGS, ringBands, type AllOutRings } from "../lib/allOutLayout";
 import type { BlueCutPalette } from "../lib/blueCutPalette";
 import { useCdnSrc } from "../lib/cdn";
 import "./DecorArt.css";
@@ -733,5 +734,33 @@ export function SideShade() {
           "linear-gradient(90deg, rgb(6 9 13 / 0.86) 0%, rgb(6 9 13 / 0.7) 34%, rgb(6 9 13 / 0.34) 66%, transparent 100%)",
       }}
     />
+  );
+}
+
+/** 总攻击的双层聚焦圆环：两道同心黑环，30% 压暗底色，中间夹一道亮缝。 */
+export function FocusRing({
+  color = "#000000",
+  opacity = 0.3,
+  rings = ALL_OUT_RINGS,
+}: {
+  color?: string;
+  opacity?: number;
+  rings?: AllOutRings;
+}) {
+  return (
+    <svg
+      data-focus-ring=""
+      className="absolute inset-0 h-full w-full overflow-visible"
+      viewBox="0 0 1920 1080"
+      fill="none"
+      overflow="visible"
+      aria-hidden
+    >
+      <g opacity={opacity}>
+        {ringBands(rings).map(({ r, width }) => (
+          <circle key={r} cx={rings.cx} cy={rings.cy} r={r} stroke={color} strokeWidth={width} />
+        ))}
+      </g>
+    </svg>
   );
 }

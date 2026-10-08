@@ -450,6 +450,14 @@ const BANDS: DecorationPreset[] = [
     preview: { x: 1350, y: 0, w: 570, h: 1080 },
   },
   {
+    id: "focus-ring",
+    name: "聚焦圆环",
+    description: "总攻击：两道同心黑环压暗三成，中间夹一道亮缝",
+    category: "geometry",
+    layer: { label: "聚焦圆环", ...FULL, chrome: "focus-ring", color: "#000000" },
+    preview: { x: 0, y: 0, w: 1920, h: 1080 },
+  },
+  {
     id: "wedge",
     name: "黑斜切",
     description: "斜切关卡：左下的斜切色块，可改色",

@@ -347,3 +347,12 @@ export function OutlineWord({ text }: { text: string }) {
 export function DefocusWord({ text }: { text: string }) {
   return <span className="inline-block whitespace-nowrap" style={{ filter: "blur(0.028em)" }}>{text}</span>;
 }
+
+/** 总攻击背景字的斜切：PS 自由变换斜切 H −11、V −18，字身前倾、整行向右上扬。 */
+export function SpeedType({ children }: { children: ReactNode }) {
+  return (
+    <span data-speed-type="" className="inline-block whitespace-pre" style={{ transform: "skew(-11deg, -18deg)", transformOrigin: "0 100%" }}>
+      {children}
+    </span>
+  );
+}
