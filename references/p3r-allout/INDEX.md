@@ -1,6 +1,6 @@
 # P3R 总攻击结算
 
-制作流程见 [doc/P3R总攻击结算制作流程.md](../../doc/P3R总攻击结算制作流程.md)。
+制作流程笔记留在本地，不进仓库。
 
 - 来源：[如何学习 P3R 的设计风格并制作一张同人设计图](https://www.bilibili.com/video/BV1TCqrBREsh/)（BV1TCqrBREsh）
 - `BV1TCqrBREsh.mp4`：原视频 1080p，本地留存

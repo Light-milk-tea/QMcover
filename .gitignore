@@ -28,6 +28,9 @@ src/**/__screenshots__/
 *.sln
 *.sw?
 
+# local notes, not for the public repo
+doc/P3R总攻击结算制作流程.md
+
 # Bilibili cover references (other UP artwork, do not commit)
 references/**/*.jpg
 references/**/*.jpeg
