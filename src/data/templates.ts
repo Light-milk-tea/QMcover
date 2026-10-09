@@ -1,5 +1,6 @@
 import { BLANK_TEMPLATE_ID } from "../constants";
 import { isBuiltinId, isCustomTemplateId, isOpenableId, savedTemplateToMeta } from "../lib/document";
+import { MODULE_FRONT_SCALE } from "../lib/moduleReviewLayout";
 import { loadSavedTemplates } from "../lib/templateStore";
 import type { TemplateMeta } from "../types";
 import { BLANK_ART_ID, BLANK_BG_PRESET, BLANK_OPERATOR_ID } from "./seeds/blank";
@@ -96,6 +97,36 @@ export const TEMPLATES: TemplateMeta[] = [
     defaultOperatorId: "char_336_folivo",
     defaultArtId: "char_336_folivo_1",
     canvasSkin: "all-out",
+  },
+  {
+    id: "module-review",
+    name: "模组测评",
+    blurb: "四栏干员 · 精一叠精二",
+    defaultSubtitle: "THIS IS A MOD REVIEW VIDEO",
+    showEpisode: true,
+    sampleTitle: "模组测评",
+    titleKind: "theme",
+    titleLabel: "主标题",
+    titlePlaceholder: "模组测评",
+    subtitleLabel: "英文小字",
+    episodeLabel: "期号",
+    defaultEpisode: 3,
+    sampleEpisode: 3,
+    signatureLabel: "角标文字",
+    sampleSignature: "2nd",
+    showMark: true,
+    markLabel: "栏内大字",
+    sampleMark: "UNIT",
+    defaultImageScale: MODULE_FRONT_SCALE,
+    defaultImageX: 140.3429602888087,
+    defaultImageY: -104.31043405911552,
+    showBackground: false,
+    showBgDim: true,
+    defaultBgDim: false,
+    defaultBgDimAmount: 24,
+    defaultOperatorId: "char_350_surtr",
+    defaultArtId: "char_350_surtr_1",
+    canvasSkin: "module-review",
   },
   {
     id: "blue-cut",

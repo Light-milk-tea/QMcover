@@ -164,6 +164,8 @@ const EFFECT_GROUPS: { label: string; items: { id: LayerEffect | ""; label: stri
       { id: "guide", label: "攻略字（低配攻略）" },
       { id: "sign-stripe", label: "署名条纹（低配攻略）" },
       { id: "sign-dots", label: "署名加点（无核论文）" },
+      { id: "fade-down", label: "上实下虚（模组测评）" },
+      { id: "streak", label: "光痕暗边（模组测评）" },
     ],
   },
   {

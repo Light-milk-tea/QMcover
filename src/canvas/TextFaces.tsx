@@ -356,3 +356,60 @@ export function SpeedType({ children }: { children: ReactNode }) {
     </span>
   );
 }
+
+/** 模组测评栏内大字：上实下虚，下半淡进暗区。`solid` 是保持不透明的上段比例；`thicken` 用同色描边把超窄体加粗。 */
+export function FadeDownWord({ text, solid = 0.34, thicken = 0.03 }: { text: string; solid?: number; thicken?: number }) {
+  const mask = `linear-gradient(180deg, #000 ${Math.round(solid * 100)}%, rgb(0 0 0 / 0.35) ${Math.round((solid + 0.3) * 100)}%, transparent 100%)`;
+  return (
+    <span
+      data-fade-down=""
+      className="inline-block whitespace-nowrap"
+      style={{ WebkitMaskImage: mask, maskImage: mask, WebkitTextStroke: `${thicken}em currentColor`, paintOrder: "stroke fill" }}
+    >
+      {text}
+    </span>
+  );
+}
+
+/** 模组测评标题：距离 0、大小 25px、85% 黑的贴字暗边，双层 DOM。 */
+export function HaloWord({ children, color = "currentColor" }: { children: ReactNode; color?: string }) {
+  return (
+    <span data-halo-word="" className="relative inline-block whitespace-nowrap">
+      <span aria-hidden className="pointer-events-none absolute inset-0 text-black" style={{ filter: "blur(0.05em)", opacity: 0.85 }}>
+        {children}
+      </span>
+      <span className="relative" style={{ color }}>
+        {children}
+      </span>
+    </span>
+  );
+}
+
+/** 横向动感模糊的光痕：只在水平方向拉开，按字号缩放。 */
+export function MotionStreak({ children, size, color, opacity = 0.7 }: { children: ReactNode; size: number; color: string; opacity?: number }) {
+  const id = `motion-streak-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  return (
+    <span data-motion-streak="" aria-hidden className="pointer-events-none relative inline-block whitespace-nowrap" style={{ color, opacity }}>
+      <svg width="0" height="0" className="absolute">
+        <filter id={id} x="-60%" y="-20%" width="220%" height="140%" colorInterpolationFilters="sRGB">
+          <feGaussianBlur stdDeviation={`${Math.round(size * 0.3)} ${Math.max(1, Math.round(size * 0.012))}`} />
+        </filter>
+      </svg>
+      <span className="inline-block" style={{ filter: `url(#${id})` }}>
+        {children}
+      </span>
+    </span>
+  );
+}
+
+/** 光痕垫底 + 贴字暗边的白字，空白画布用的整套模组测评标题字效。 */
+export function StreakWord({ text, size, streak = "#fedd00" }: { text: string; size: number; streak?: string }) {
+  return (
+    <span className="relative inline-block whitespace-nowrap leading-none">
+      <span className="absolute inset-0">
+        <MotionStreak size={size} color={streak}>{text}</MotionStreak>
+      </span>
+      <HaloWord>{text}</HaloWord>
+    </span>
+  );
+}

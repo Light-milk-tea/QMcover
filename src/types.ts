@@ -2,7 +2,7 @@ export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
 export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script"
   | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan"
-  | "outfit" | "anton" | "hand" | "alex" | "vibes" | "times";
+  | "outfit" | "anton" | "caps" | "hand" | "alex" | "vibes" | "times";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -48,7 +48,9 @@ export type LayerEffect =
   | "grain-stage"
   | "pink"
   | "magenta-shadow"
-  | "speed";
+  | "speed"
+  | "fade-down"
+  | "streak";
 
 export type LayerChrome =
   | "cc-triangle"
@@ -122,7 +124,13 @@ export type LayerChrome =
   | "violet-atmosphere"
   | "art-veil"
   | "cool-wash"
-  | "violet-bloom";
+  | "violet-bloom"
+  | "rank-badge"
+  | "yellow-ramp"
+  | "dot-band"
+  | "inset-frame"
+  | "thin-bracket-l"
+  | "thin-bracket-r";
 
 export type CanvasSkin =
   | "plain"
@@ -142,7 +150,8 @@ export type CanvasSkin =
   | "solo"
   | "highspec-nocore"
   | "blue-cut"
-  | "all-out";
+  | "all-out"
+  | "module-review";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -369,7 +378,8 @@ export type BuiltinTemplateId =
   | "solo"
   | "highspec-nocore"
   | "blue-cut"
-  | "all-out";
+  | "all-out"
+  | "module-review";
 
 export type TemplateId = string;
 

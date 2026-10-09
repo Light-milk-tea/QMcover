@@ -8,6 +8,7 @@ import { firstkillLayers } from "./firstkill";
 import { fourstarNocoreLayers } from "./fourstarNocore";
 import { lowspecLayers } from "./lowspec";
 import { madnessLayers } from "./madness";
+import { moduleReviewLayers } from "./moduleReview";
 import { nocoreLayers } from "./nocore";
 import { operatorPreviewLayers } from "./operatorPreview";
 import { rogueLayers } from "./rogue";
@@ -36,6 +37,7 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   "highspec-nocore": highspecNocoreLayers,
   "blue-cut": blueCutLayers,
   "all-out": allOutLayers,
+  "module-review": moduleReviewLayers,
 };
 
 export function getBuiltinLayers(id: BuiltinTemplateId): Layer[] {

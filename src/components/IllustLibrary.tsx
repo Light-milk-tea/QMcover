@@ -49,6 +49,8 @@ type Props = {
   onEdgeFadeModeChange?: (mode: EdgeFadeMode) => void;
   onPick: (operator: Operator, art: OperatorArt) => void;
   onUpload?: (imageDataUrl: string, fileName: string) => void;
+  /** 点干员头像时默认用哪张立绘；点立绘名仍按点的那张。 */
+  defaultArt?: (operator: Operator) => OperatorArt | undefined;
 };
 
 export function IllustLibrary({
@@ -64,6 +66,7 @@ export function IllustLibrary({
   onEdgeFadeModeChange,
   onPick,
   onUpload,
+  defaultArt,
 }: Props) {
   const [query, setQuery] = useState("");
   const [rarity, setRarity] = useState(0);
@@ -115,7 +118,7 @@ export function IllustLibrary({
     setPage(1);
   }, [profession, query, rarity]);
 
-  const pick = (op: Operator, art = kind === "chibi" ? firstChibiArt(op) : preferredArt(op)) => {
+  const pick = (op: Operator, art = kind === "chibi" ? firstChibiArt(op) : (defaultArt?.(op) ?? preferredArt(op))) => {
     if (!art) {
       setBrowseId(op.id);
       return;

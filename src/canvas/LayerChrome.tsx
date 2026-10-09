@@ -16,16 +16,19 @@ import {
   Compass,
   CoolWash,
   CornerGlow,
+  DotBand,
   Embers,
   GlitchHaze,
   FocusRing,
   GlossySlash,
   GoldFrame,
   GoldRules,
+  InsetFrame,
   LightWash,
   PaperFlecks,
   PrintDots,
   PrintGeometry,
+  RankBadge,
   RedSmoke,
   SideShade,
   SkewTag,
@@ -35,17 +38,20 @@ import {
   TacticalOrbits,
   TealHud,
   TechnicalFrame,
+  ThinBracket,
   TopGlow,
   TornPaper,
   VioletAtmosphere,
   VioletMist,
   VioletStreaks,
   Wedge,
+  YellowRamp,
 } from "./DecorArt";
 import {
   BlockWord,
   ChromaticTitle,
   DefocusWord,
+  FadeDownWord,
   GlowWord,
   GrainGoldType,
   LayeredTitle,
@@ -56,6 +62,7 @@ import {
   PinkCondition,
   RaisedType,
   SpeedType,
+  StreakWord,
 } from "./TextFaces";
 
 const GOLD = "#f4d06f";
@@ -273,6 +280,8 @@ export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: stri
     );
   }
   if (effect === "speed") return <span className="font-black" style={{ fontSize: size, lineHeight: 0.74 }}><SpeedType>{raw}</SpeedType></span>;
+  if (effect === "fade-down") return <span style={{ fontSize: size, lineHeight: 0.86, letterSpacing: layer.letterSpacing }}><FadeDownWord text={raw} /></span>;
+  if (effect === "streak") return <span className="font-bold" style={{ fontSize: size }}><StreakWord text={raw} size={size} /></span>;
   if (effect === "outline") return <span className="font-black" style={{ fontSize: size }}><OutlineWord text={raw} /></span>;
   if (effect === "raised") return <span className="font-black" style={{ fontSize: size }}><RaisedType>{raw}</RaisedType></span>;
   if (effect === "pink") return <span style={{ fontSize: size }}><PinkCondition text={raw} color="currentColor" /></span>;
@@ -376,6 +385,13 @@ export function renderBoxChrome(layer: BoxLayer, art?: ChromeArt) {
   if (chrome === "stage-bar") return <StageBar />;
   if (chrome === "skew-tag") return <SkewTag />;
   if (chrome === "torn-paper") return <TornPaper />;
+  if (chrome === "rank-badge") return <RankBadge height={layer.h} />;
+  if (chrome === "yellow-ramp") return <YellowRamp />;
+  if (chrome === "dot-band") return <DotBand />;
+  if (chrome === "inset-frame") return <InsetFrame />;
+  if (chrome === "thin-bracket-l" || chrome === "thin-bracket-r") {
+    return <ThinBracket side={chrome === "thin-bracket-l" ? "l" : "r"} thickness={Math.max(4, Math.round(layer.h * 0.05))} />;
+  }
   if (chrome === "cc-triangle") {
     return (
       <svg width="68" height="68" viewBox="0 0 58 58" fill="none" aria-hidden>

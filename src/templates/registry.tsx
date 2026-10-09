@@ -13,6 +13,7 @@ import { FirstKill } from "./FirstKill";
 import { FourstarNocore } from "./FourstarNocore";
 import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
+import { ModuleReview } from "./ModuleReview";
 import { Nocore } from "./Nocore";
 import { OperatorPreview } from "./OperatorPreview";
 import { Rogue } from "./Rogue";
@@ -41,6 +42,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   "highspec-nocore": HighspecNocore,
   "blue-cut": BlueCut,
   "all-out": AllOut,
+  "module-review": ModuleReview,
 };
 
 export function CoverView(props: CoverRenderProps) {

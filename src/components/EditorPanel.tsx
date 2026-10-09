@@ -1,6 +1,6 @@
 import { UploadSimple } from "@phosphor-icons/react";
 import { IMAGE_SCALE_MAX, IMAGE_SCALE_MIN } from "../constants";
-import { artUrl } from "../data/arts";
+import { artUrl, elite0Art } from "../data/arts";
 import { chibiIdFor, chibiUrl, followingChibiPatch, hasChibi } from "../data/chibis";
 import { isNativeElement, nativeTemplateId } from "../data/elements";
 import { ORNAMENTS } from "../data/ornaments";
@@ -14,6 +14,15 @@ import type { CanvasSkin, ImageLayer } from "../types";
 import { ALL_OUT_ACCENT, allOutAccent } from "../lib/allOutPalette";
 import { BLUE_CUT_ACCENT, blueCutAccent } from "../lib/blueCutPalette";
 import { resolveMatrixAccent, storeMatrixColorway } from "../lib/matrixPalette";
+import {
+  MODULE_BACK_SCALE,
+  MODULE_COLUMNS,
+  MODULE_FRONT_SCALE,
+  moduleBackColumn,
+  moduleBackFollow,
+  moduleFrontColumn,
+  moduleTone,
+} from "../lib/moduleReviewLayout";
 import { BackgroundPicker } from "./BackgroundPicker";
 import { ColorField } from "./ColorField";
 import { Field, fieldClass } from "./Field";
@@ -35,6 +44,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "highspec-nocore", label: "V我50底" },
   { id: "blue-cut", label: "斜切关卡底" },
   { id: "all-out", label: "总攻击底" },
+  { id: "module-review", label: "模组测评底" },
   { id: "strength-review", label: "强度测评底" },
 ];
 
@@ -204,6 +214,25 @@ export function EditorPanel() {
             color={allOutAccent(draft.colorway)}
             onChange={(color) => patchDraft({ colorway: color ?? ALL_OUT_ACCENT })}
           />
+        </div>
+      ) : null}
+
+      {templateId === "module-review" || draft.canvasSkin === "module-review" ? (
+        <div className="border-b border-line px-4 py-3">
+          <p className="text-[13px] text-sub">四栏代表色</p>
+          <p className="mt-1 text-[12px] leading-relaxed text-mute">精二按这个颜色上色，栏内大字自动提亮一档。</p>
+          <div className="grid grid-cols-2 gap-x-3">
+            {MODULE_COLUMNS.map((ids, index) => (
+              <ColorField
+                key={ids.tone}
+                elementId={ids.tone}
+                label={`第${index + 1}栏`}
+                color={draft.elementStyles[ids.tone]?.color}
+                displayColor={moduleTone(index, draft.layers.find((layer) => layer.id === ids.tone)?.color)}
+                onChange={(color) => patchElement(ids.tone, { color })}
+              />
+            ))}
+          </div>
         </div>
       ) : null}
 
@@ -398,6 +427,11 @@ export function EditorPanel() {
 
       {imageLayer ? (
         <IllustLibrary
+          defaultArt={
+            (templateId === "module-review" || draft.canvasSkin === "module-review") && moduleFrontColumn(imageLayer.id) >= 0
+              ? elite0Art
+              : undefined
+          }
           operatorId={imageLayer.operatorId || draft.operatorId}
           artId={imageLayer.artId || draft.artId}
           uploaded={Boolean(imageLayer.imageDataUrl || (imageLayer.id === "operator" && draft.imageDataUrl))}
@@ -420,6 +454,9 @@ export function EditorPanel() {
             const keepTitle = draft.title.trim() && draft.title.trim() !== draft.operatorName;
             const primary = imageLayer.id === "operator";
             const previousOperatorId = imageLayer.operatorId || draft.operatorId;
+            const moduleSkin = templateId === "module-review" || draft.canvasSkin === "module-review";
+            const frontColumn = moduleSkin ? moduleFrontColumn(imageLayer.id) : -1;
+            const backColumn = moduleSkin ? moduleBackColumn(imageLayer.id) : -1;
             patchLayer(imageLayer.id, {
               source: "operator",
               operatorId: op.id,
@@ -428,8 +465,17 @@ export function EditorPanel() {
               imageDataUrl: "",
               ...(primary
                 ? { imageX: 0, imageY: 0, scale: defaultImageScale }
-                : {}),
+                : frontColumn >= 0
+                  ? { imageX: 0, imageY: 0, scale: MODULE_FRONT_SCALE }
+                  : backColumn >= 0
+                    ? { imageX: 0, imageY: 0, scale: MODULE_BACK_SCALE }
+                    : {}),
             });
+            if (frontColumn >= 0) {
+              const backId = MODULE_COLUMNS[frontColumn].back;
+              const back = draft.layers.find((layer): layer is ImageLayer => layer.id === backId && layer.kind === "image");
+              if (back && !back.imageDataUrl) patchLayer(backId, moduleBackFollow(op));
+            }
             if (!primary) return;
             patchDraft({
               operatorId: op.id,

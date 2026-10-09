@@ -764,3 +764,81 @@ export function FocusRing({
     </svg>
   );
 }
+
+/** 模组测评的「2nd」角标：屋顶形黄牌，SVG 多边形，导出不会变成整块方板。 */
+export function RankBadge({ text = "2nd", height, color = "currentColor" }: { text?: string; height: number; color?: string }) {
+  const match = text.trim().match(/^(\d+)(\D*)$/);
+  const lead = match ? match[1] : text.trim();
+  const tail = match ? match[2] : "";
+  return (
+    <span data-rank-badge="" className="relative block h-full w-full">
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 80 90" preserveAspectRatio="none" aria-hidden>
+        <polygon points="0,36 40,0 80,36 80,90 0,90" fill={color} />
+      </svg>
+      <span
+        className="absolute inset-x-0 flex items-start justify-center font-cn leading-none font-bold whitespace-nowrap text-[#0b0b0b]"
+        style={{ bottom: height * 0.1, fontSize: height * 0.5, letterSpacing: "-0.03em" }}
+      >
+        <span>{lead}</span>
+        {tail ? <span style={{ fontSize: "0.52em", marginTop: "0.1em" }}>{tail}</span> : null}
+      </span>
+    </span>
+  );
+}
+
+/** 模组测评底边的黄渐变：底边最实，向上淡出，不拉进人物脸部。 */
+export function YellowRamp({ color = "currentColor" }: { color?: string }) {
+  return (
+    <span aria-hidden className="absolute inset-0 block overflow-hidden">
+      <span
+        className="absolute inset-0 block"
+        style={{
+          background: color,
+          WebkitMaskImage: "linear-gradient(0deg, rgb(0 0 0 / 0.3) 0%, rgb(0 0 0 / 0.14) 30%, rgb(0 0 0 / 0.04) 66%, transparent 100%)",
+          maskImage: "linear-gradient(0deg, rgb(0 0 0 / 0.3) 0%, rgb(0 0 0 / 0.14) 30%, rgb(0 0 0 / 0.04) 66%, transparent 100%)",
+        }}
+      />
+    </span>
+  );
+}
+
+/** 模组测评标题暗带里的细点阵：只铺在底部，顶端淡出。 */
+export function DotBand() {
+  return (
+    <span
+      aria-hidden
+      className="absolute inset-0 block"
+      style={{
+        backgroundImage: "radial-gradient(circle, currentColor 1.3px, transparent 1.7px)",
+        backgroundSize: "15px 15px",
+        WebkitMaskImage: "linear-gradient(180deg, transparent 0%, #000 45%, #000 100%)",
+        maskImage: "linear-gradient(180deg, transparent 0%, #000 45%, #000 100%)",
+      }}
+    />
+  );
+}
+
+/** 贴着画布四边的细框，用四条实心 DOM，不用 border。 */
+export function InsetFrame({ inset = 10, thickness = 3 }: { inset?: number; thickness?: number }) {
+  const bar = { background: "currentColor", position: "absolute" } as const;
+  return (
+    <span aria-hidden className="absolute block" style={{ inset }}>
+      <i style={{ ...bar, top: 0, left: 0, right: 0, height: thickness }} />
+      <i style={{ ...bar, bottom: 0, left: 0, right: 0, height: thickness }} />
+      <i style={{ ...bar, top: 0, bottom: 0, left: 0, width: thickness }} />
+      <i style={{ ...bar, top: 0, bottom: 0, right: 0, width: thickness }} />
+    </span>
+  );
+}
+
+/** 细方括号：三块实心 DOM 拼成，不用 border。 */
+export function ThinBracket({ side, thickness }: { side: "l" | "r"; thickness: number }) {
+  const bar = { background: "currentColor", position: "absolute" } as const;
+  return (
+    <span aria-hidden data-thin-bracket={side} className="relative block h-full w-full">
+      <i style={{ ...bar, top: 0, left: 0, right: 0, height: thickness }} />
+      <i style={{ ...bar, bottom: 0, left: 0, right: 0, height: thickness }} />
+      <i style={{ ...bar, top: 0, bottom: 0, width: thickness, ...(side === "l" ? { left: 0 } : { right: 0 }) }} />
+    </span>
+  );
+}

@@ -18,11 +18,12 @@ test("首页空白画布卡片显示示范框架缩略图并能打开", async ()
   expect(opened).toBe("blank");
 });
 
-test("首页前五张是特种三人、总攻击、斜切关卡、V我50、明日方舟角色测评", async () => {
+test("首页第三张模板是模组测评，排在总攻击后面", async () => {
   const screen = await render(<HomePage onOpen={() => undefined} />);
   const titles = [...screen.container.querySelectorAll("main ul li button p:first-child")].map((node) => node.textContent);
-  expect(titles.slice(0, 6)).toEqual(["空白画布", "特种三人", "总攻击", "斜切关卡", "V我50", "明日方舟角色测评"]);
+  expect(titles.slice(0, 6)).toEqual(["空白画布", "特种三人", "总攻击", "模组测评", "斜切关卡", "V我50"]);
   expect(titles.slice(6)).toEqual([
+    "明日方舟角色测评",
     "全息作战矩阵",
     "强度测评",
     "危机合约模板",
@@ -136,6 +137,18 @@ test("首页列出总攻击模板并能打开", async () => {
   await expect.element(screen.getByRole("button", { name: "总攻击 P3R 总攻击结算构图" })).toBeVisible();
   await screen.getByText("总攻击", { exact: true }).click();
   expect(opened).toBe("all-out");
+});
+
+test("首页列出模组测评模板，缩略图是自己的构图并能打开", async () => {
+  let opened = "";
+  const screen = await render(<HomePage onOpen={(id) => { opened = id; }} />);
+  const card = screen.getByRole("button", { name: "模组测评 四栏干员 · 精一叠精二" });
+  await expect.element(card).toBeVisible();
+  const thumb = card.element().querySelector("img");
+  expect(thumb?.getAttribute("src")).toContain("module-review");
+  await expect.poll(() => thumb?.naturalWidth).toBe(960);
+  await card.click();
+  expect(opened).toBe("module-review");
 });
 
 test("首页列出全息作战矩阵并打开可调色模板", async () => {

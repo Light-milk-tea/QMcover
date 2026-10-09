@@ -217,6 +217,13 @@ const ATMOSPHERE: DecorationPreset[] = [
     category: "atmosphere",
     layer: { label: "浅色罩", ...FULL, chrome: "light-wash" },
   },
+  {
+    id: "yellow-ramp",
+    name: "底边黄渐变",
+    description: "模组测评：底边最实、向上淡出的黄色带，可改色",
+    category: "atmosphere",
+    layer: { label: "底边黄渐变", x: 0, y: 700, w: 1920, h: 380, chrome: "yellow-ramp", color: "#fedd00" },
+  },
 ];
 
 const TEMPLATE_WASHES: DecorationPreset[] = [
@@ -344,6 +351,14 @@ const TEXTURES: DecorationPreset[] = [
     category: "texture",
     layer: { label: "白色点阵", x: 240, y: 240, w: 160, h: 80, chrome: "dot-grid", color: "#ffffff" },
   },
+  {
+    id: "dot-band",
+    name: "底部细点阵",
+    description: "模组测评：标题暗带里的细点阵，顶端淡出，可改色",
+    category: "texture",
+    layer: { label: "底部细点阵", x: 0, y: 720, w: 1920, h: 360, chrome: "dot-band", color: "#8f7d22", opacity: 70 },
+    preview: { x: 0, y: 180, w: 320, h: 180 },
+  },
 ];
 
 const GEOMETRY: DecorationPreset[] = [
@@ -428,6 +443,14 @@ const GEOMETRY: DecorationPreset[] = [
     description: "明日方舟角色测评的等高线黄三角",
     category: "geometry",
     layer: { label: "地形三角", x: 520, y: 250, w: 880, h: 640, chrome: "ef-triangle", color: "#fdfe3e" },
+  },
+  {
+    id: "inset-frame",
+    name: "细外框",
+    description: "模组测评：贴着画布四边的细框，可改色",
+    category: "geometry",
+    layer: { label: "细外框", ...FULL, chrome: "inset-frame", color: "#fedd00" },
+    preview: { x: 0, y: 0, w: 480, h: 270 },
   },
 ];
 
@@ -567,6 +590,20 @@ const BANDS: DecorationPreset[] = [
     layer: { label: "右括号", x: 420, y: 240, w: 100, h: 320, chrome: "bracket-r", color: "#fdfe3e" },
   },
   {
+    id: "thin-bracket-l",
+    name: "细左括号",
+    description: "模组测评：标题外的细线左括号",
+    category: "band",
+    layer: { label: "细左括号", x: 240, y: 240, w: 40, h: 230, chrome: "thin-bracket-l", color: "#fedd00" },
+  },
+  {
+    id: "thin-bracket-r",
+    name: "细右括号",
+    description: "模组测评：标题外的细线右括号",
+    category: "band",
+    layer: { label: "细右括号", x: 400, y: 240, w: 40, h: 230, chrome: "thin-bracket-r", color: "#fedd00" },
+  },
+  {
     id: "yellow-dashes",
     name: "黄短线组",
     description: "明日方舟角色测评的错落黄色短线",
@@ -596,6 +633,13 @@ const MARKS: DecorationPreset[] = [
     description: "五星测评模板的星级标记",
     category: "mark",
     layer: { label: "五星标", x: 240, y: 240, w: 168, h: 20, chrome: "five-star", color: "#f4f0e8" },
+  },
+  {
+    id: "rank-badge",
+    name: "2nd 角标",
+    description: "模组测评：屋顶形黄牌，标第二模组",
+    category: "mark",
+    layer: { label: "2nd 角标", x: 240, y: 240, w: 80, h: 90, chrome: "rank-badge", color: "#fedd00" },
   },
   {
     id: "sign-dots",

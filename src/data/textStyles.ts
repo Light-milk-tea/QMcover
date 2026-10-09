@@ -177,6 +177,18 @@ export const TEXT_STYLES: TextStylePreset[] = [
     layer: { label: "速度字", text: "通关", font: "cn", fontSize: 160, color: "#ffffff", effect: "speed", w: 520, h: 180 },
   },
   {
+    id: "fade-caps",
+    name: "渐隐窄体大字",
+    source: "模组测评",
+    layer: { label: "窄体大字", text: "UNIT", font: "caps", fontSize: 540, color: "#d23447", effect: "fade-down", w: 460, h: 520 },
+  },
+  {
+    id: "streak",
+    name: "光痕标题",
+    source: "模组测评",
+    layer: { label: "光痕标题", text: "模组测评", font: "cn", fontSize: 200, color: "#ffffff", effect: "streak", w: 900, h: 240 },
+  },
+  {
     id: "kicker",
     name: "英文小标",
     layer: { label: "英文小标", text: "OPERATION RECORD", font: "display", fontSize: 28, color: "#e8e8e8", effect: "plain", letterSpacing: 8, w: 700, h: 40 },

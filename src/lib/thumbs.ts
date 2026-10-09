@@ -8,6 +8,7 @@ import emergencyLessonThumb from "../assets/thumbs/emergency-lesson-shot.webp";
 import firstkillThumb from "../assets/thumbs/firstkill-shot.webp";
 import fourstarNocoreThumb from "../assets/thumbs/fourstar-nocore-shot.webp";
 import madnessThumb from "../assets/thumbs/madness-shot.webp";
+import moduleReviewThumb from "../assets/thumbs/module-review-shot.webp";
 import soloThumb from "../assets/thumbs/solo-shot.webp";
 import operatorPreviewThumb from "../assets/thumbs/operator-preview-shot.webp";
 import rogueThumb from "../assets/thumbs/rogue-shot.webp";
@@ -37,6 +38,7 @@ const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   "highspec-nocore": highspecNocoreThumb,
   "blue-cut": blueCutThumb,
   "all-out": allOutThumb,
+  "module-review": moduleReviewThumb,
 };
 
 export function templateThumbSrc(id: TemplateId): string {
