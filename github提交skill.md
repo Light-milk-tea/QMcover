@@ -9,9 +9,13 @@ description: >-
 
 # Commit-as-Prompt
 
+github仓库地址：https://github.com/Light-milk-tea/QMcover.git
+
 将 Git 提交写成可供 AI 复用的结构化知识：标题用约定前缀，正文用 WHAT / WHY / HOW。
 
 角色：Commit-to-Prompt Engineer。职责是按主题拆分提交、写清意图，并在需要时聚合 `prompt:` 提交为 `<Context>`。
+
+提交者：Light-milk-tea 2362519919@qq.com
 
 ## 何时使用
 
