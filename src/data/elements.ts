@@ -1,4 +1,5 @@
 import { findOperatorByName } from "./arts";
+import { bandBottomText, nameRows, splitTitleWords } from "../lib/idolLayout";
 import type { BuiltinTemplateId, CoverFontId, Draft, ElementKind, ElementOverride, TextBind } from "../types";
 
 export type CoverElMeta = {
@@ -55,6 +56,20 @@ export function nativeTextValue(
     const title = draft.title.trim() || "行动";
     const i = title.indexOf("的");
     return i > 0 && i < title.length - 1 ? title.slice(i) : "";
+  }
+  if (templateId === "idol" && (meta.id === "head-l" || meta.id === "head-r")) {
+    const [left, right] = splitTitleWords(draft.title);
+    return meta.id === "head-l" ? left : right;
+  }
+  if (templateId === "idol" && meta.id.startsWith("name-")) {
+    const en = findOperatorByName(draft.operatorName)?.nameEn ?? "";
+    const rows = nameRows(en);
+    const key = meta.id.slice("name-".length) as keyof typeof rows;
+    return rows[key] ?? "";
+  }
+  if (templateId === "idol" && meta.id === "band-bottom") {
+    if (draft.bandMode === "name") return findOperatorByName(draft.operatorName)?.nameEn?.trim().toUpperCase() ?? "";
+    return bandBottomText(draft.episode);
   }
   return meta.textDefault ?? "";
 }
@@ -341,5 +356,22 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "episode", label: "期号", kind: "text", defaultFont: "cn", textBind: "episode" },
     { id: "bracket-r", label: "右括号", kind: "box", hasColor: true },
     { id: "frame", label: "细外框", kind: "box", hasColor: true },
+  ],
+  idol: [
+    { id: "hand-bg", label: "背景手写底纹", kind: "text", defaultFont: "hand", hasColor: true, hasOpacity: true, defaultOpacity: 0.14 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "name-t1", label: "上排大字左", kind: "text", defaultFont: "anton", hasColor: true },
+    { id: "name-t2", label: "上排大字右", kind: "text", defaultFont: "anton", hasColor: true },
+    { id: "band-top", label: "上排黑字", kind: "text", defaultFont: "sans", hasColor: true },
+    { id: "name-b1", label: "下排大字左", kind: "text", defaultFont: "anton", hasColor: true },
+    { id: "name-b2", label: "下排大字右", kind: "text", defaultFont: "anton", hasColor: true },
+    { id: "band-bottom", label: "下排黑字", kind: "text", defaultFont: "sans", hasColor: true },
+    { id: "hand-note", label: "手写小字", kind: "text", defaultFont: "hand", hasColor: true },
+    { id: "head-l", label: "主标题左", kind: "text", defaultFont: "cn", hasColor: true },
+    { id: "head-r", label: "主标题右", kind: "text", defaultFont: "cn", hasColor: true },
+    { id: "chibi-tl", label: "左外小人", kind: "image" },
+    { id: "chibi-bl", label: "左内小人", kind: "image" },
+    { id: "chibi-tr", label: "右内小人", kind: "image" },
+    { id: "chibi-br", label: "右外小人", kind: "image" },
   ],
 };

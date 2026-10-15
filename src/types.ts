@@ -151,7 +151,8 @@ export type CanvasSkin =
   | "highspec-nocore"
   | "blue-cut"
   | "all-out"
-  | "module-review";
+  | "module-review"
+  | "idol";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -379,7 +380,8 @@ export type BuiltinTemplateId =
   | "highspec-nocore"
   | "blue-cut"
   | "all-out"
-  | "module-review";
+  | "module-review"
+  | "idol";
 
 export type TemplateId = string;
 
@@ -469,6 +471,10 @@ export type Draft = {
   canvasSkin: CanvasSkin;
   paper?: string;
   colorway?: string;
+  /** idol：下装饰带文案模式（期号 / 干员英文名）。 */
+  bandMode?: "vol" | "name";
+  /** idol：条纹背景底。 */
+  bgPattern?: "stripes";
   elementStyles: Record<string, ElementOverride>;
 };
 
@@ -507,5 +513,9 @@ export type CoverRenderProps = {
   canvasSkin?: CanvasSkin;
   paper?: string;
   colorway?: string;
+  /** idol：下装饰带文案模式（期号 / 干员英文名）。 */
+  bandMode?: "vol" | "name";
+  /** idol：条纹背景底。 */
+  bgPattern?: "stripes";
   templateId?: TemplateId;
 };
