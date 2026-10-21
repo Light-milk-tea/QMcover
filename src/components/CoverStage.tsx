@@ -53,6 +53,8 @@ export function draftToRenderProps(
     canvasSkin: draft.canvasSkin,
     paper: draft.paper,
     colorway: draft.colorway,
+    bandMode: draft.bandMode ?? "vol",
+    bgPattern: draft.bgPattern,
     previewScale: extra.previewScale,
     onImageDrag: extra.onImageDrag,
     showPlaceholder: extra.showPlaceholder,

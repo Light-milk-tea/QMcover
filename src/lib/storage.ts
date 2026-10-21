@@ -1138,6 +1138,46 @@ function migrateTacticalMatrixMaterials(draft: Draft): Draft {
   };
 }
 
+/** 偶像大字第一版默认：黑底装饰带、四角小人、立绘 138。未改过立绘位置时换成现在的构图。 */
+function migrateIdolLayout(draft: Draft): Draft {
+  if (draft.canvasSkin !== "idol") return draft;
+  const previousDefault =
+    (draft.imageScale === 138 && !draft.imageX && !draft.imageY) ||
+    (draft.imageScale === 210 && !draft.imageX && draft.imageY === 36) ||
+    (draft.imageScale === 230 && !draft.imageX && draft.imageY === 18) ||
+    (draft.imageScale === 320 && !draft.imageX && draft.imageY === -70);
+  if (!previousDefault) return draft;
+  const seed = getBuiltinLayers("idol");
+  const previous = new Map(draft.layers.map((layer) => [layer.id, layer]));
+  const seedIds = new Set(seed.map((layer) => layer.id));
+  const layers = seed.map((item) => {
+    const prev = previous.get(item.id);
+    if (!prev || prev.kind !== item.kind) return item;
+    if (prev.kind === "text" && item.kind === "text") {
+      return { ...item, text: prev.text, hidden: prev.hidden, removed: prev.removed };
+    }
+    if (prev.kind === "image" && item.kind === "image") {
+      return {
+        ...item,
+        operatorId: prev.operatorId,
+        artId: prev.artId,
+        imageUrl: prev.imageUrl,
+        imageDataUrl: prev.imageDataUrl,
+        hidden: prev.hidden,
+        removed: prev.removed,
+        source: prev.source,
+      };
+    }
+    return item;
+  });
+  return {
+    ...draft,
+    imageScale: 290,
+    imageY: 8,
+    layers: [...layers, ...draft.layers.filter((layer) => !seedIds.has(layer.id))],
+  };
+}
+
 export function loadDraft(templateId: TemplateId): Draft {
   const saved = loadState().drafts[templateId];
   if (!saved) return emptyDraft(templateId);
@@ -1187,7 +1227,9 @@ export function loadDraft(templateId: TemplateId): Draft {
       ? migrateSixVanguardLayout(normalized)
       : templateId === "strength-review"
         ? migrateStrengthReviewLayout(normalized)
-        : normalized;
+        : templateId === "idol"
+          ? migrateIdolLayout(normalized)
+          : normalized;
   return {
     ...laidOut,
     layers: hydrateImageArtGrade(laidOut.layers, laidOut.effects.artGrade, laidOut.canvasSkin === "specialist"),

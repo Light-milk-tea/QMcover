@@ -13,6 +13,7 @@ import { useCover } from "../store/CoverContext";
 import type { CanvasSkin, ImageLayer } from "../types";
 import { ALL_OUT_ACCENT, allOutAccent } from "../lib/allOutPalette";
 import { BLUE_CUT_ACCENT, blueCutAccent } from "../lib/blueCutPalette";
+import { IDOL_BASE, idolBase } from "../lib/idolPalette";
 import { resolveMatrixAccent, storeMatrixColorway } from "../lib/matrixPalette";
 import {
   MODULE_BACK_SCALE,
@@ -46,6 +47,7 @@ const SKINS: { id: CanvasSkin; label: string }[] = [
   { id: "all-out", label: "总攻击底" },
   { id: "module-review", label: "模组测评底" },
   { id: "strength-review", label: "强度测评底" },
+  { id: "idol", label: "偶像大字底" },
 ];
 
 /** 模板声明为多行的字段用 textarea，回车即换行；手动换行优先于模板的自动折行。 */
@@ -214,6 +216,45 @@ export function EditorPanel() {
             color={allOutAccent(draft.colorway)}
             onChange={(color) => patchDraft({ colorway: color ?? ALL_OUT_ACCENT })}
           />
+        </div>
+      ) : null}
+
+      {templateId === "idol" || draft.canvasSkin === "idol" ? (
+        <div className="border-b border-line px-4 py-3">
+          <ColorField
+            elementId="idol-colorway"
+            label="背景色"
+            color={idolBase(draft.colorway)}
+            onChange={(color) => patchDraft({ colorway: color ?? IDOL_BASE })}
+          />
+          <p className="mt-3 text-[13px] text-sub">下装饰带文案</p>
+          <div className="mt-1 flex gap-2">
+            {(["vol", "name"] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                className={`rounded-[6px] border px-2 py-1 text-[12px] ${
+                  (draft.bandMode ?? "vol") === mode
+                    ? "border-accent text-accent"
+                    : "border-line text-sub hover:border-[#c9ccd0]"
+                }`}
+                onClick={() => {
+                  patchDraft({ bandMode: mode });
+                  patchElement("band-bottom", { text: undefined });
+                }}
+              >
+                {mode === "vol" ? "期号 VOL" : "干员英文名"}
+              </button>
+            ))}
+          </div>
+          <label className="mt-2 flex items-center gap-2 text-[13px] text-sub">
+            <input
+              type="checkbox"
+              checked={draft.bgPattern === "stripes"}
+              onChange={(e) => patchDraft({ bgPattern: e.target.checked ? "stripes" : undefined })}
+            />
+            条纹背景底
+          </label>
         </div>
       ) : null}
 
