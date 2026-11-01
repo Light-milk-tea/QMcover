@@ -1,11 +1,12 @@
 import { TEMPLATES_STORAGE_KEY } from "../constants";
 import type { SavedTemplate } from "../types";
+import { parsePersisted, writePersisted } from "./persist";
 
 export function loadSavedTemplates(): SavedTemplate[] {
   try {
     const raw = localStorage.getItem(TEMPLATES_STORAGE_KEY);
     if (!raw) return [];
-    const parsed = JSON.parse(raw) as SavedTemplate[];
+    const parsed = parsePersisted<SavedTemplate[]>(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
@@ -13,7 +14,7 @@ export function loadSavedTemplates(): SavedTemplate[] {
 }
 
 export function saveSavedTemplates(items: SavedTemplate[]): void {
-  localStorage.setItem(TEMPLATES_STORAGE_KEY, JSON.stringify(items));
+  if (!writePersisted(TEMPLATES_STORAGE_KEY, items)) throw new Error("save-failed");
 }
 
 export function upsertSavedTemplate(item: SavedTemplate): void {

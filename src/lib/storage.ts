@@ -21,6 +21,7 @@ import type { Draft, ImageLayer, Layer, TemplateId } from "../types";
 import { todayISO } from "./dates";
 import { applyElementStyles, cloneLayers, defaultCanvasSkin, isBuiltinId } from "./document";
 import { hydrateImageArtGrade, normalizeCoverEffects, referenceCoverEffects } from "./effects";
+import { parsePersisted, writePersisted } from "./persist";
 import { getSavedTemplate } from "./templateStore";
 
 export type PersistedState = {
@@ -565,7 +566,7 @@ export function loadState(): PersistedState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as PersistedState;
+      const parsed = parsePersisted<PersistedState>(raw);
       current = { drafts: parsed.drafts ?? {}, defaultsVersion: parsed.defaultsVersion };
     }
   } catch {
@@ -585,7 +586,7 @@ export function loadState(): PersistedState {
 }
 
 export function saveState(state: PersistedState): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  writePersisted(STORAGE_KEY, state);
 }
 
 function mergeNativeLayers(templateId: TemplateId, draft: Draft): Draft {
