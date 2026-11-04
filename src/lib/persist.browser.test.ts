@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { hydratePersistedImages, parsePersisted, SAVE_STATUS_EVENT, writePersisted } from "./persist";
+import { readImageAsDataUrl } from "./readImage";
+
 const KEY = "qmcover-persist-test";
 
 function withStore<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> {
@@ -25,6 +27,20 @@ async function storedImage(token: string): Promise<string | undefined> {
     await new Promise((resolve) => setTimeout(resolve, 50));
   }
   return undefined;
+}
+
+async function pngFile(width: number, height: number): Promise<File> {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d")!;
+  const gradient = ctx.createLinearGradient(0, 0, width, height);
+  gradient.addColorStop(0, "#c33");
+  gradient.addColorStop(1, "#33c");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, width, height);
+  const blob = await new Promise<Blob>((resolve) => canvas.toBlob((b) => resolve(b!), "image/png"));
+  return new File([blob], "art.png", { type: "image/png" });
 }
 
 beforeEach(() => localStorage.removeItem(KEY));
@@ -75,4 +91,19 @@ test("localStorage 写不进去时报告失败，恢复后报告成功", () => {
   } finally {
     window.removeEventListener(SAVE_STATUS_EVENT, onStatus);
   }
+});
+
+test("上传超大图会缩到长边 2560 并转成 WebP", async () => {
+  const url = await readImageAsDataUrl(await pngFile(4000, 1000));
+  expect(url.startsWith("data:image/webp")).toBe(true);
+  const image = new Image();
+  image.src = url;
+  await image.decode();
+  expect(image.naturalWidth).toBe(2560);
+  expect(image.naturalHeight).toBe(640);
+});
+
+test("尺寸和体积都不大的图原样保留", async () => {
+  const url = await readImageAsDataUrl(await pngFile(400, 300));
+  expect(url.startsWith("data:image/png")).toBe(true);
 });
