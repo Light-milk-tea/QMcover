@@ -1,6 +1,7 @@
 import { ArrowUUpLeft, BracketsCurly, CaretLeft, DownloadSimple, FloppyDisk, Plus } from "@phosphor-icons/react";
-import { useState, type RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 import { downloadCoverDocument, saveDraftAsTemplate } from "../lib/exportConfig";
+import { isSaveFailing, SAVE_STATUS_EVENT } from "../lib/persist";
 import { useCover } from "../store/CoverContext";
 import { BrandMark } from "./BrandMark";
 
@@ -17,6 +18,13 @@ export function TopBar({ onExport, onBack, stageRef, onSavedTemplate }: Props) {
   const [msg, setMsg] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveName, setSaveName] = useState(templateName);
+  const [saveFailed, setSaveFailed] = useState(isSaveFailing);
+
+  useEffect(() => {
+    const onStatus = (event: Event) => setSaveFailed(!(event as CustomEvent<boolean>).detail);
+    window.addEventListener(SAVE_STATUS_EVENT, onStatus);
+    return () => window.removeEventListener(SAVE_STATUS_EVENT, onStatus);
+  }, []);
 
   return (
     <header className="z-10 flex h-16 shrink-0 items-center gap-4 border-b border-line bg-panel px-6">
@@ -36,7 +44,13 @@ export function TopBar({ onExport, onBack, stageRef, onSavedTemplate }: Props) {
       <span className="text-[14px] text-text">{templateName}</span>
 
       <div className="ml-auto flex items-center gap-2">
-        {msg ? <span className="text-[13px] text-mute">{msg}</span> : null}
+        {saveFailed ? (
+          <span role="alert" className="text-[13px] text-[#e5484d]">
+            草稿没存上：浏览器存储已满，请先导出封面，或删掉不用的上传图
+          </span>
+        ) : msg ? (
+          <span className="text-[13px] text-mute">{msg}</span>
+        ) : null}
         <button
           type="button"
           disabled={!canUndo}
