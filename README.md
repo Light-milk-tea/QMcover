@@ -391,6 +391,8 @@ npm run chibis
 - 草稿存储键：`qmcover-v4`（`src/constants.ts` 的 `STORAGE_KEY`）。首次打开会从旧键 `qmcover-v3` 迁移。
 - 结构：`{ drafts: { [templateId]: Draft } }`。图层的位置 / 字体 / 字号 / 颜色存在 `draft.layers` 和 `draft.elementStyles`。
 - 「我的模板」存在 `qmcover-templates-v1`，id 以自定义前缀区分，不会和内置模板冲突。
+- 上传的图片不放进 `localStorage`：大于 4 KB 的 `data:image` 存进 IndexedDB（库 `qmcover-images`），草稿里只留 `qmimg:` 标记，启动时先读回图片再渲染，没人引用的旧图顺手清掉。见 `src/lib/persist.ts`。
+- 上传时长边超过 2560 或文件大于 1.5 MB 的图会转成 WebP（质量 0.92）。草稿写不进浏览器时顶栏会提示。
 - JSON 导出 / 导入格式：`{ kind: "qmcover-document", version: 2, ... }`，见 `src/lib/document.ts`。
 - PNG 导出：`html-to-image` 的 `toPng`，固定 1920×1080。带 `data-ignore-export="true"` 的节点（安全区）会被滤掉。导出前等字体和图片解码，超过 30 秒提示超时。
 - 文件名：`日期_模板名_干员.png`。
