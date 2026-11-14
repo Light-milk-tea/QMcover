@@ -538,7 +538,7 @@ export function EditorPanel() {
         ) : null}
         <div className={`flex items-center justify-between gap-3 ${uploadLayer || imageLayer || chibiLayer ? "mt-3" : ""}`}>
           {chibiLayer ? (
-            <label className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
+            <label className="relative inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
               <UploadSimple size={16} />
               上传小人
               <input
@@ -556,7 +556,7 @@ export function EditorPanel() {
               />
             </label>
           ) : imageLayer ? (
-            <label className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
+            <label className="relative inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-[8px] px-2 text-[13px] text-sub hover:bg-raised hover:text-accent">
               <UploadSimple size={16} />
               上传立绘
               <input

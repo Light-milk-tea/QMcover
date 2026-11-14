@@ -148,7 +148,7 @@ export function IllustLibrary({
           </div>
           <div className="flex min-w-0 items-center gap-2">
             {kind === "chibi" && onUpload ? (
-              <label className="inline-flex h-7 cursor-pointer items-center gap-1 rounded-[6px] px-1.5 text-[12px] text-sub hover:bg-raised hover:text-accent">
+              <label className="relative inline-flex h-7 cursor-pointer items-center gap-1 rounded-[6px] px-1.5 text-[12px] text-sub hover:bg-raised hover:text-accent">
                 <UploadSimple size={12} />
                 上传小人
                 <input

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BLANK_TEMPLATE_ID } from "./constants";
 import { CoverStage } from "./components/CoverStage";
 import { EditorPanel } from "./components/EditorPanel";
@@ -30,12 +30,22 @@ function parseHash(): Route {
 
 function useTemplateRoute() {
   const [route, setRoute] = useState<Route>(parseHash);
+  const routeRef = useRef(route);
+  const homeScrollRef = useRef(0);
 
   useEffect(() => {
-    const sync = () => setRoute(parseHash());
+    const sync = () => {
+      if (routeRef.current.kind === "home") homeScrollRef.current = window.scrollY;
+      setRoute(parseHash());
+    };
     window.addEventListener("hashchange", sync);
     return () => window.removeEventListener("hashchange", sync);
   }, []);
+
+  useLayoutEffect(() => {
+    routeRef.current = route;
+    window.scrollTo(0, route.kind === "home" ? homeScrollRef.current : 0);
+  }, [route]);
 
   return {
     route,
