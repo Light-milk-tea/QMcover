@@ -8,7 +8,6 @@ import { AllOut } from "./AllOut";
 import { BlueCut } from "./BlueCut";
 import { Endfield } from "./Endfield";
 import { HighspecNocore } from "./HighspecNocore";
-import { Idol } from "./Idol";
 import { EmergencyLesson } from "./EmergencyLesson";
 import { FirstKill } from "./FirstKill";
 import { FourstarNocore } from "./FourstarNocore";
@@ -44,7 +43,6 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   "blue-cut": BlueCut,
   "all-out": AllOut,
   "module-review": ModuleReview,
-  idol: Idol,
 };
 
 export function CoverView(props: CoverRenderProps) {

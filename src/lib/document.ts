@@ -254,8 +254,6 @@ export function draftToDocument(draft: Draft): CoverDocument {
     ornamentId: draft.ornamentId,
     paper: draft.paper,
     colorway: draft.colorway,
-    bandMode: draft.bandMode,
-    bgPattern: draft.bgPattern,
     elementStyles: Object.fromEntries(
       Object.entries(draft.elementStyles ?? {}).map(([id, style]) => [id, { ...style }]),
     ),

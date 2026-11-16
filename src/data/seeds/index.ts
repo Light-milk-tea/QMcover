@@ -3,7 +3,6 @@ import { allOutLayers } from "./allOut";
 import { blueCutLayers } from "./blueCut";
 import { endfieldLayers } from "./endfield";
 import { highspecNocoreLayers } from "./highspecNocore";
-import { idolLayers } from "./idol";
 import { emergencyLessonLayers } from "./emergencyLesson";
 import { firstkillLayers } from "./firstkill";
 import { fourstarNocoreLayers } from "./fourstarNocore";
@@ -39,7 +38,6 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   "blue-cut": blueCutLayers,
   "all-out": allOutLayers,
   "module-review": moduleReviewLayers,
-  idol: idolLayers,
 };
 
 export function getBuiltinLayers(id: BuiltinTemplateId): Layer[] {
