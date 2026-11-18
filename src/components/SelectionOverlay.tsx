@@ -155,6 +155,9 @@ export function SelectionOverlay({
   };
 
   const rotation = draft.elementStyles[selectedId]?.rotation ?? selectedLayer.rotation ?? 0;
+  /** The overlay lives in stage pixels, so screen-sized strokes and handles are divided by the preview scale. */
+  const px = 1 / (previewScale || 1);
+  const handleSize = 10 * px;
 
   return (
     <div
@@ -177,10 +180,19 @@ export function SelectionOverlay({
         resizing.current = null;
       }}
     >
-      <span className="pointer-events-none absolute inset-[-3px] border-2 border-accent bg-accent/[0.03]" />
+      <span
+        data-selection-outline=""
+        className="pointer-events-none absolute border-solid border-accent bg-accent/[0.08]"
+        style={{
+          inset: -2 * px,
+          borderWidth: 2 * px,
+          boxShadow: `0 0 0 ${1.5 * px}px rgba(255,255,255,0.9), inset 0 0 0 ${1 * px}px rgba(255,255,255,0.55)`,
+        }}
+      />
       {!locked ? (
         <RotateHandle
           rotation={rotation}
+          scale={previewScale}
           onChange={(next) => {
             if (native) patchElement(selectedId, { rotation: next });
             else patchLayer(selectedId, { rotation: next });
@@ -192,13 +204,17 @@ export function SelectionOverlay({
             <span
               key={handle}
               data-resize-handle={handle}
-              className="absolute z-10 size-3 bg-accent"
+              className="absolute z-10 border-solid border-white bg-accent"
               style={{
+                width: handleSize,
+                height: handleSize,
+                borderWidth: 1.5 * px,
+                boxShadow: `0 0 0 ${1 * px}px rgba(20,22,24,0.25)`,
                 cursor: resizeCursor(handle),
-                left: handle.includes("w") ? -6 : undefined,
-                right: handle.includes("e") ? -6 : undefined,
-                top: handle.includes("n") ? -6 : undefined,
-                bottom: handle.includes("s") ? -6 : undefined,
+                left: handle.includes("w") ? -handleSize / 2 : undefined,
+                right: handle.includes("e") ? -handleSize / 2 : undefined,
+                top: handle.includes("n") ? -handleSize / 2 : undefined,
+                bottom: handle.includes("s") ? -handleSize / 2 : undefined,
               }}
               onPointerDown={onResizeDown(handle)}
               onPointerMove={onPointerMove}

@@ -4,9 +4,14 @@ import { normalizeDeg, pointerDegrees, snapDeg } from "../lib/rotate";
 type Props = {
   rotation: number;
   onChange: (deg: number) => void;
+  /** Preview scale of the stage the handle sits in; keeps the knob a constant size on screen. */
+  scale?: number;
 };
 
-export function RotateHandle({ rotation, onChange }: Props) {
+export function RotateHandle({ rotation, onChange, scale = 1 }: Props) {
+  const px = 1 / (scale || 1);
+  const knob = 12 * px;
+  const gap = 14 * px;
   const rotating = useRef(false);
   const origin = useRef({ x: 0, y: 0, start: 0, base: 0 });
 
@@ -40,8 +45,16 @@ export function RotateHandle({ rotation, onChange }: Props) {
       data-ignore-export="true"
       data-rotate-handle=""
       title="拖转旋转，按住 Shift 吸附 15°，双击归零"
-      className="absolute left-1/2 z-20 size-3 -translate-x-1/2 rounded-full border-2 border-white bg-accent shadow-[0_0_0_1px_rgba(20,22,24,0.2)]"
-      style={{ top: -26, pointerEvents: "auto", cursor: rotating.current ? "grabbing" : "grab" }}
+      className="absolute left-1/2 z-20 -translate-x-1/2 rounded-full border-solid border-white bg-accent"
+      style={{
+        top: -(knob + gap),
+        width: knob,
+        height: knob,
+        borderWidth: 2 * px,
+        boxShadow: `0 0 0 ${1 * px}px rgba(20,22,24,0.2)`,
+        pointerEvents: "auto",
+        cursor: rotating.current ? "grabbing" : "grab",
+      }}
       onPointerDown={onDown}
       onPointerMove={onMove}
       onPointerUp={() => {
@@ -52,7 +65,10 @@ export function RotateHandle({ rotation, onChange }: Props) {
         onChange(0);
       }}
     >
-      <span className="pointer-events-none absolute top-full left-1/2 h-3.5 w-px -translate-x-1/2 bg-accent" />
+      <span
+        className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 bg-accent"
+        style={{ height: gap, width: 1.5 * px }}
+      />
     </span>
   );
 }

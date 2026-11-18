@@ -6,6 +6,7 @@ import { CoverProvider, useCover } from "../store/CoverContext";
 import { CoverStage } from "./CoverStage";
 import { LayerStackList } from "./LayerStackList";
 import { useRef } from "react";
+import "../index.css";
 
 function WorkbenchFixture() {
   const stageRef = useRef<HTMLDivElement>(null);
@@ -20,6 +21,7 @@ function WorkbenchFixture() {
       </div>
       <LayerStackList />
       <output data-testid="bottom-position">{bottom ? `${bottom.x},${bottom.y}` : ""}</output>
+      <output data-testid="bottom-size">{bottom ? `${bottom.w},${bottom.h}` : ""}</output>
       <output data-testid="locked-position">{locked ? `${locked.x},${locked.y}` : ""}</output>
     </>
   );
@@ -102,6 +104,33 @@ test("锁定图层显示置顶选框，但不能拖动或旋转", async () => {
 
   drag(overlay.element() as HTMLElement, 60, 30);
   await expect.element(screen.getByTestId("locked-position")).toHaveTextContent("820,160");
+});
+
+test("选中框描边和手柄按屏幕尺寸绘制，缩小预览里也看得清，手柄仍可缩放", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <WorkbenchFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByRole("button", { name: "底层", exact: true }).click();
+  const overlay = screen.getByTestId("selection-overlay").element() as HTMLElement;
+  await expect.element(screen.getByTestId("selection-overlay")).toBeVisible();
+
+  const stage = overlay.parentElement as HTMLElement;
+  const scale = stage.getBoundingClientRect().width / stage.offsetWidth;
+  expect(scale).toBeLessThan(0.6);
+  const outline = overlay.querySelector<HTMLElement>("[data-selection-outline]");
+  expect(parseFloat(getComputedStyle(outline!).borderTopWidth) * scale).toBeGreaterThanOrEqual(1.9);
+
+  const handle = overlay.querySelector<HTMLElement>('[data-resize-handle="se"]')!;
+  expect(handle.getBoundingClientRect().width).toBeGreaterThanOrEqual(9.5);
+  const knob = overlay.querySelector<HTMLElement>("[data-rotate-handle]")!;
+  expect(knob.getBoundingClientRect().width).toBeGreaterThanOrEqual(11.5);
+
+  drag(handle, 30, 15);
+  await expect.element(screen.getByTestId("bottom-size")).toHaveTextContent("580,330");
+  await expect.element(screen.getByTestId("bottom-position")).toHaveTextContent("200,160");
 });
 
 test("内置模板元素也能通过置顶交互框移动", async () => {
