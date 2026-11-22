@@ -276,5 +276,11 @@ input[type="checkbox"] {
   }
 }
 
+/* A selected layer can be dragged from any other layer, so those show the move cursor; blank canvas deselects. */
+[data-drag-selected] [data-cover-el],
+[data-drag-selected] [data-cover-el] *:not([data-resize-handle], [data-rotate-handle]) {
+  cursor: move !important;
+}
+
 /* Mirror the picture only: horizontal dragging keeps the editor's usual direction. */
 [data-matrix-operator] img { transform: scaleX(-1); filter: var(--matrix-art-filter, none); }

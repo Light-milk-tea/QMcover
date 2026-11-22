@@ -98,7 +98,7 @@ function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string
               <p className="shrink-0 text-[12px] text-mute">1920 × 1080</p>
             </div>
           </article>
-          <p className="mt-2 shrink-0 px-1 text-[13px] text-mute">点选图层可拖移、四角缩放；右侧改文案和立绘</p>
+          <p className="mt-2 shrink-0 px-1 text-[13px] text-mute">选中图层后按住画布上任意图层都拖它、四角缩放；点空白处或按 Esc 取消选择；右侧改文案和立绘</p>
         </main>
         <EditorPanel />
       </div>

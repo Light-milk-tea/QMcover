@@ -5,7 +5,7 @@ import { isBuiltinId } from "../lib/document";
 import { useCover } from "../store/CoverContext";
 import type { Layer } from "../types";
 
-function layerLabel(templateId: string, layer: Layer, canvasSkin?: string): string {
+export function layerLabel(templateId: string, layer: Layer, canvasSkin?: string): string {
   const skin = isBuiltinId(templateId) ? templateId : canvasSkin && isBuiltinId(canvasSkin) ? canvasSkin : undefined;
   if (skin) {
     const meta = TEMPLATE_ELEMENTS[skin].find((item) => item.id === layer.id);

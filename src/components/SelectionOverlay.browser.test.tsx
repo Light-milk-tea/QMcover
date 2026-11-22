@@ -13,6 +13,7 @@ function WorkbenchFixture() {
   const { draft } = useCover();
   const bottom = draft.layers.find((layer) => layer.id === "bottom");
   const locked = draft.layers.find((layer) => layer.id === "locked");
+  const side = draft.layers.find((layer) => layer.id === "side");
 
   return (
     <>
@@ -23,8 +24,15 @@ function WorkbenchFixture() {
       <output data-testid="bottom-position">{bottom ? `${bottom.x},${bottom.y}` : ""}</output>
       <output data-testid="bottom-size">{bottom ? `${bottom.w},${bottom.h}` : ""}</output>
       <output data-testid="locked-position">{locked ? `${locked.x},${locked.y}` : ""}</output>
+      <output data-testid="side-position">{side ? `${side.x},${side.y}` : ""}</output>
     </>
   );
+}
+
+function stageLayer(id: string): HTMLElement {
+  const element = document.querySelector<HTMLElement>(`[data-cover-el="${id}"]`);
+  if (!element) throw new Error(`missing layer ${id}`);
+  return element;
 }
 
 function NativeFixture() {
@@ -51,6 +59,7 @@ function seedLayers() {
       boxLayer({ id: "bottom", label: "底层", x: 200, y: 160, w: 520, h: 300, fill: "#c41c1c" }),
       boxLayer({ id: "top", label: "上层", x: 200, y: 160, w: 520, h: 300, fill: "#141618" }),
       boxLayer({ id: "locked", label: "锁定层", x: 820, y: 160, w: 320, h: 240, fill: "#1d4ed8", locked: true }),
+      boxLayer({ id: "side", label: "侧边层", x: 1300, y: 600, w: 360, h: 240, fill: "#15803d" }),
     ],
   });
 }
@@ -103,6 +112,97 @@ test("锁定图层显示置顶选框，但不能拖动或旋转", async () => {
   expect(overlay.element().querySelector("[data-rotate-handle]")).toBeNull();
 
   drag(overlay.element() as HTMLElement, 60, 30);
+  await expect.element(screen.getByTestId("locked-position")).toHaveTextContent("820,160");
+});
+
+test("选中图层后在画布别处拖动，移动的仍是选中图层", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <WorkbenchFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByRole("button", { name: "底层", exact: true }).click();
+  await expect.element(screen.getByTestId("selection-overlay")).toHaveAttribute("data-selection-overlay", "bottom");
+
+  drag(stageLayer("side"), 40, 20);
+  await expect.element(screen.getByTestId("bottom-position")).toHaveTextContent("280,200");
+  await expect.element(screen.getByTestId("side-position")).toHaveTextContent("1300,600");
+  await expect.element(screen.getByTestId("selection-overlay")).toHaveAttribute("data-selection-overlay", "bottom");
+});
+
+test("点「取消选择」后，按到哪个图层就拖哪个", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <WorkbenchFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByRole("button", { name: "底层", exact: true }).click();
+  await screen.getByRole("button", { name: /取消选择/ }).click();
+  await expect.element(screen.getByTestId("selection-overlay")).not.toBeInTheDocument();
+  await expect.element(screen.getByRole("button", { name: /取消选择/ })).not.toBeInTheDocument();
+
+  drag(stageLayer("side"), 40, 20);
+  await expect.element(screen.getByTestId("side-position")).toHaveTextContent("1380,640");
+  await expect.element(screen.getByTestId("bottom-position")).toHaveTextContent("200,160");
+  await expect.element(screen.getByTestId("selection-overlay")).toHaveAttribute("data-selection-overlay", "side");
+});
+
+test("选中图层后点画布空白处或画布外即取消选择，提示只写已选哪层", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <WorkbenchFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByRole("button", { name: "底层", exact: true }).click();
+  const chip = screen.getByRole("button", { name: /取消选择/ });
+  await expect.element(chip).toBeVisible();
+  expect(chip.element().querySelector("span:not(.sr-only)")?.textContent).toBe("已选 底层");
+
+  const stage = (screen.getByTestId("selection-overlay").element() as HTMLElement).parentElement as HTMLElement;
+  const rect = stage.getBoundingClientRect();
+  const scale = rect.width / stage.offsetWidth;
+  const blank = document.elementFromPoint(rect.left + 100 * scale, rect.top + 900 * scale) as HTMLElement;
+  expect(stage.contains(blank)).toBe(true);
+  expect(blank.closest("[data-cover-el]")).toBeNull();
+  drag(blank, 40, 20);
+  await expect.element(screen.getByTestId("selection-overlay")).not.toBeInTheDocument();
+  await expect.element(screen.getByTestId("bottom-position")).toHaveTextContent("200,160");
+
+  await screen.getByRole("button", { name: "底层", exact: true }).click();
+  await expect.element(screen.getByTestId("selection-overlay")).toBeVisible();
+  const shell = stage.parentElement!.parentElement!.parentElement as HTMLElement;
+  expect(stage.contains(shell)).toBe(false);
+  shell.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, pointerId: 1 }));
+  await expect.element(screen.getByTestId("selection-overlay")).not.toBeInTheDocument();
+});
+
+test("图层栏再点一次已选中的行即取消选择", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <WorkbenchFixture />
+    </CoverProvider>,
+  );
+
+  const row = screen.getByRole("button", { name: "底层", exact: true });
+  await row.click();
+  await expect.element(screen.getByTestId("selection-overlay")).toBeVisible();
+  await row.click();
+  await expect.element(screen.getByTestId("selection-overlay")).not.toBeInTheDocument();
+});
+
+test("锁定图层选中时不抢拖动，按到别的图层照常拖那一层", async () => {
+  const screen = await render(
+    <CoverProvider templateId="blank">
+      <WorkbenchFixture />
+    </CoverProvider>,
+  );
+
+  await screen.getByRole("button", { name: "锁定层", exact: true }).click();
+  drag(stageLayer("side"), 40, 20);
+  await expect.element(screen.getByTestId("side-position")).toHaveTextContent("1380,640");
   await expect.element(screen.getByTestId("locked-position")).toHaveTextContent("820,160");
 });
 

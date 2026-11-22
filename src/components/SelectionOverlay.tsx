@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type PointerEvent, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, type PointerEvent, type RefObject } from "react";
 import { isNativeElement } from "../data/elements";
 import { imageLayerPan } from "../lib/document";
 import { toLocalDelta } from "../lib/rotate";
@@ -33,19 +33,74 @@ export function SelectionOverlay({
     selectedId,
     selectedLayer,
     moveElement,
+    selectElement,
     patchElement,
     patchLayer,
     patchDraft,
   } = useCover();
   const overlayRef = useRef<HTMLDivElement>(null);
-  const dragging = useRef(false);
   const resizing = useRef<Handle | null>(null);
   const last = useRef({ x: 0, y: 0 });
   const box = useRef<Geometry | null>(null);
+  const moveRef = useRef(moveElement);
+  const selectRef = useRef(selectElement);
+  const scaleRef = useRef(previewScale);
+  moveRef.current = moveElement;
+  selectRef.current = selectElement;
+  scaleRef.current = previewScale;
 
   const hidden = Boolean(selectedLayer?.hidden || selectedLayer?.removed);
   const locked = Boolean(selectedLayer?.locked);
   const native = selectedId ? isNativeElement(templateId, selectedId, draft.canvasSkin) : false;
+  const dragAnywhere = Boolean(selectedId && selectedLayer && !hidden && !locked);
+
+  /** While a layer is selected, pressing any other layer drags the selected one; pressing blank canvas deselects. */
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || !dragAnywhere || !selectedId) return;
+    let release: (() => void) | null = null;
+
+    const onDown = (event: globalThis.PointerEvent) => {
+      if (event.button !== 0) return;
+      const target = event.target as HTMLElement;
+      if (target.closest("[data-resize-handle],[data-rotate-handle]")) return;
+      event.stopPropagation();
+      event.preventDefault();
+      if (!target.closest("[data-cover-el],[data-selection-overlay]")) {
+        selectRef.current(null);
+        return;
+      }
+      let lastX = event.clientX;
+      let lastY = event.clientY;
+      const onMove = (move: globalThis.PointerEvent) => {
+        const scale = scaleRef.current || 1;
+        const dx = (move.clientX - lastX) / scale;
+        const dy = (move.clientY - lastY) / scale;
+        if (dx === 0 && dy === 0) return;
+        lastX = move.clientX;
+        lastY = move.clientY;
+        moveRef.current(selectedId, dx, dy);
+      };
+      const onUp = () => release?.();
+      release = () => {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        window.removeEventListener("pointercancel", onUp);
+        release = null;
+      };
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", onUp);
+    };
+
+    stage.addEventListener("pointerdown", onDown, true);
+    stage.dataset.dragSelected = "";
+    return () => {
+      stage.removeEventListener("pointerdown", onDown, true);
+      delete stage.dataset.dragSelected;
+      release?.();
+    };
+  }, [dragAnywhere, selectedId, stageRef]);
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
@@ -98,52 +153,39 @@ export function SelectionOverlay({
 
   if (!selectedId || !selectedLayer || hidden) return null;
 
-  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    if (locked || (event.target as HTMLElement).closest("[data-resize-handle],[data-rotate-handle]")) return;
-    dragging.current = true;
-    last.current = { x: event.clientX, y: event.clientY };
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const onPointerMove = (event: PointerEvent<HTMLElement>) => {
-    if (locked) return;
+  const onResizeMove = (event: PointerEvent<HTMLElement>) => {
+    if (locked || native || !resizing.current) return;
     const scale = previewScale || 1;
     const screenDx = (event.clientX - last.current.x) / scale;
     const screenDy = (event.clientY - last.current.y) / scale;
     if (screenDx === 0 && screenDy === 0) return;
     last.current = { x: event.clientX, y: event.clientY };
 
-    if (resizing.current && !native) {
-      const current = box.current;
-      if (!current) return;
-      const handle = resizing.current;
-      const { dx, dy } = toLocalDelta(screenDx, screenDy, selectedLayer.rotation ?? 0);
-      let { x, y, w, h } = current;
-      if (handle.includes("w")) {
-        x += dx;
-        w -= dx;
-      }
-      if (handle.includes("e")) w += dx;
-      if (handle.includes("n")) {
-        y += dy;
-        h -= dy;
-      }
-      if (handle.includes("s")) h += dy;
-      const next = { x, y, w: Math.max(24, w), h: Math.max(24, h) };
-      box.current = next;
-
-      const pan = selectedLayer.kind === "image" ? imageLayerPan(selectedLayer, draft) : { x: 0, y: 0 };
-      if (selectedLayer.kind === "image" && (pan.x || pan.y)) {
-        patchLayer(selectedId, { ...next, imageX: 0, imageY: 0 });
-        if (selectedId === "operator") patchDraft({ imageX: 0, imageY: 0 });
-      } else {
-        patchLayer(selectedId, next);
-      }
-      return;
+    const current = box.current;
+    if (!current) return;
+    const handle = resizing.current;
+    const { dx, dy } = toLocalDelta(screenDx, screenDy, selectedLayer.rotation ?? 0);
+    let { x, y, w, h } = current;
+    if (handle.includes("w")) {
+      x += dx;
+      w -= dx;
     }
+    if (handle.includes("e")) w += dx;
+    if (handle.includes("n")) {
+      y += dy;
+      h -= dy;
+    }
+    if (handle.includes("s")) h += dy;
+    const next = { x, y, w: Math.max(24, w), h: Math.max(24, h) };
+    box.current = next;
 
-    if (dragging.current) moveElement(selectedId, screenDx, screenDy);
+    const pan = selectedLayer.kind === "image" ? imageLayerPan(selectedLayer, draft) : { x: 0, y: 0 };
+    if (selectedLayer.kind === "image" && (pan.x || pan.y)) {
+      patchLayer(selectedId, { ...next, imageX: 0, imageY: 0 });
+      if (selectedId === "operator") patchDraft({ imageX: 0, imageY: 0 });
+    } else {
+      patchLayer(selectedId, next);
+    }
   };
 
   const onResizeDown = (handle: Handle) => (event: PointerEvent<HTMLSpanElement>) => {
@@ -171,12 +213,10 @@ export function SelectionOverlay({
         visibility: "hidden",
         transform: !native && selectedLayer.rotation ? `rotate(${selectedLayer.rotation}deg)` : undefined,
         transformOrigin: "center center",
-        cursor: locked ? "not-allowed" : "grab",
+        cursor: locked ? "not-allowed" : "move",
       }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
+      onPointerDown={(event) => event.stopPropagation()}
       onPointerUp={() => {
-        dragging.current = false;
         resizing.current = null;
       }}
     >
@@ -217,7 +257,7 @@ export function SelectionOverlay({
                 bottom: handle.includes("s") ? -handleSize / 2 : undefined,
               }}
               onPointerDown={onResizeDown(handle)}
-              onPointerMove={onPointerMove}
+              onPointerMove={onResizeMove}
               onPointerUp={() => {
                 resizing.current = null;
               }}
