@@ -141,7 +141,7 @@ export function EditorPanel() {
   const keepTitleOnPick = titleKind === "stage" || titleKind === "operation" || titleKind === "theme";
 
   return (
-    <aside className="flex min-h-0 w-[300px] shrink-0 flex-col self-stretch overflow-x-hidden overflow-y-auto rounded-[8px] bg-panel">
+    <aside data-keep-selection="" className="flex min-h-0 w-[300px] shrink-0 flex-col self-stretch overflow-x-hidden overflow-y-auto rounded-[8px] bg-panel">
       <div className="border-b border-line px-4 py-3">
         <div className="relative">
           <Field label={titleLabel}>

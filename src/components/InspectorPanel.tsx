@@ -241,7 +241,7 @@ export function InspectorPanel() {
   }, [selectElement]);
 
   return (
-    <aside className="flex min-h-0 w-[260px] shrink-0 flex-col self-stretch overflow-x-hidden overflow-y-auto rounded-[8px] bg-panel">
+    <aside data-keep-selection="" className="flex min-h-0 w-[260px] shrink-0 flex-col self-stretch overflow-x-hidden overflow-y-auto rounded-[8px] bg-panel">
       <div className="border-b border-line px-4 py-3">
         <div className="flex items-center justify-between gap-1">
           <p className="text-[13px] text-sub">图层</p>

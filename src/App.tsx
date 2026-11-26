@@ -60,7 +60,7 @@ function useTemplateRoute() {
 
 function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string) => void }) {
   const stageRef = useRef<HTMLDivElement>(null);
-  const { templateName, draft, titleKind } = useCover();
+  const { templateName, draft, titleKind, selectElement } = useCover();
   const title = displayTitle(draft, titleKind);
   const subtitle = displaySubtitle(draft);
 
@@ -68,6 +68,16 @@ function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string
     const timer = window.setTimeout(() => warmupCoverExport(stageRef.current), 500);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      const target = e.target as Element | null;
+      if (!target || stageRef.current?.contains(target) || target.closest("[data-keep-selection]")) return;
+      selectElement(null);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [selectElement]);
 
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-ink">
@@ -98,7 +108,7 @@ function Workbench({ onBack, onOpen }: { onBack: () => void; onOpen: (id: string
               <p className="shrink-0 text-[12px] text-mute">1920 × 1080</p>
             </div>
           </article>
-          <p className="mt-2 shrink-0 px-1 text-[13px] text-mute">选中图层后按住画布上任意图层都拖它、四角缩放；点空白处或按 Esc 取消选择；右侧改文案和立绘</p>
+          <p className="mt-2 shrink-0 px-1 text-[13px] text-mute">选中图层后按住画布上任意图层都拖它、四角缩放；点画布空白处、两侧面板以外的地方或按 Esc 取消选择；右侧改文案和立绘</p>
         </main>
         <EditorPanel />
       </div>
