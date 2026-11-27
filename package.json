@@ -17,6 +17,7 @@
     "backgrounds": "node scripts/build-backgrounds.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/outfit": "^5.3.0",
     "@fontsource/alex-brush": "^5.3.0",
     "@fontsource/anton": "^5.3.0",
@@ -28,6 +29,7 @@
     "@fontsource/oswald": "^5.3.0",
     "@fontsource/six-caps": "^5.3.0",
     "@fontsource/the-nautigal": "^5.3.0",
+    "@fontsource/zcool-qingke-huangyou": "^5.3.0",
     "@fontsource/zcool-xiaowei": "^5.3.0",
     "@phosphor-icons/react": "^2.1.10",
     "html-to-image": "^1.11.13",

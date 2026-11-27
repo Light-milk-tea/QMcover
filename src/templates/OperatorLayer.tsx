@@ -62,6 +62,8 @@ type Props = {
   emptyHint?: string;
   /** 同一张立绘的叠加副本：跟随原图层位置，但不接收拖动、不显示载入提示。 */
   echo?: boolean;
+  /** 直接加在 `<img>` 上的蒙版，坐标是图片元素框，用来按原图轮廓抠掉自带场景。 */
+  pictureMask?: CSSProperties;
 };
 
 export function OperatorLayer({
@@ -91,6 +93,7 @@ export function OperatorLayer({
   artGrade,
   fringeRole,
   echo = false,
+  pictureMask,
 }: Props) {
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
@@ -200,6 +203,7 @@ export function OperatorLayer({
       }}
       className="h-full w-full select-none"
       style={{
+        ...pictureMask,
         objectFit,
         objectPosition,
         pointerEvents: insideFrame || echo ? "none" : "auto",

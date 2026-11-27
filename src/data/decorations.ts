@@ -664,9 +664,78 @@ const MARKS: DecorationPreset[] = [
   },
 ];
 
+const RETRO_FUTURE: DecorationPreset[] = [
+  {
+    id: "retro-sky",
+    behindArt: true,
+    name: "复古天空",
+    description: "让大地变成一片酸橙：天蓝渐变、左上光束和右下团云",
+    category: "atmosphere",
+    layer: { label: "复古天空", ...FULL, chrome: "retro-sky" },
+  },
+  {
+    id: "retro-brush",
+    behindArt: true,
+    name: "橙色喷笔带",
+    description: "让大地变成一片酸橙：左侧夕阳晕光和干笔触橙色横带",
+    category: "band",
+    layer: { label: "橙色喷笔带", ...FULL, chrome: "retro-brush" },
+    preview: { x: 0, y: 300, w: 1100, h: 620 },
+  },
+  {
+    id: "retro-halo",
+    behindArt: true,
+    name: "光圈与小星球",
+    description: "让大地变成一片酸橙：头后半透明大光圈和藕色小星球",
+    category: "geometry",
+    layer: { label: "光圈与小星球", ...FULL, chrome: "retro-halo" },
+    preview: { x: 160, y: 0, w: 1100, h: 900 },
+  },
+  {
+    id: "retro-haze",
+    name: "暖色晕染",
+    description: "让大地变成一片酸橙：压在立绘左侧的夕阳暖光",
+    category: "atmosphere",
+    layer: { label: "暖色晕染", ...FULL, chrome: "retro-haze" },
+    preview: { x: 0, y: 380, w: 620, h: 700 },
+  },
+  {
+    id: "retro-pennant",
+    name: "三角与五角星",
+    description: "让大地变成一片酸橙：标题背后的橄榄绿长三角、红星和深红三角",
+    category: "geometry",
+    layer: { label: "三角与五角星", ...FULL, chrome: "retro-pennant" },
+    preview: { x: 680, y: 200, w: 1240, h: 700 },
+  },
+  {
+    id: "retro-orbits",
+    name: "轨道与红球",
+    description: "让大地变成一片酸橙：白色椭圆轨道、发散细线和两颗红球",
+    category: "geometry",
+    layer: { label: "轨道与红球", ...FULL, chrome: "retro-orbits" },
+  },
+  {
+    id: "retro-sparkles",
+    name: "闪星与圆点",
+    description: "让大地变成一片酸橙：白色四角星和奶油三连圆点",
+    category: "mark",
+    layer: { label: "闪星与圆点", ...FULL, chrome: "retro-sparkles" },
+    preview: { x: 960, y: 0, w: 700, h: 300 },
+  },
+  {
+    id: "retro-grain",
+    name: "印刷颗粒",
+    description: "让大地变成一片酸橙：全画面明暗双色细颗粒",
+    category: "texture",
+    layer: { label: "印刷颗粒", ...FULL, chrome: "retro-grain" },
+    preview: { x: 0, y: 0, w: 320, h: 180 },
+  },
+];
+
 export const DECORATIONS: DecorationPreset[] = [
   ...ATMOSPHERE,
   ...TEMPLATE_WASHES,
+  ...RETRO_FUTURE,
   ...OPERATOR_PIECES,
   ...TEXTURES,
   ...GEOMETRY,

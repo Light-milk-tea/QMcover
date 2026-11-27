@@ -23,6 +23,7 @@ test("首页第三张模板是模组测评，排在总攻击后面", async () =>
   const titles = [...screen.container.querySelectorAll("main ul li button p:first-child")].map((node) => node.textContent);
   expect(titles.slice(0, 6)).toEqual(["空白画布", "特种三人", "总攻击", "模组测评", "斜切关卡", "V我50"]);
   expect(titles.slice(6)).toEqual([
+    "让大地变成一片酸橙",
     "明日方舟角色测评",
     "全息作战矩阵",
     "强度测评",

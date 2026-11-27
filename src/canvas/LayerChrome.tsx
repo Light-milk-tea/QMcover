@@ -6,6 +6,8 @@ import type { BoxLayer, Draft, LayerEffect, TextLayer } from "../types";
 import { autoFontSize, displayBoundText, fitFontSize } from "../lib/document";
 import { blueCutPalette } from "../lib/blueCutPalette";
 import { matrixPalette } from "../lib/matrixPalette";
+import { RETRO_TITLE_INDENT, RETRO_TITLE_LEADING, retroTitleMetrics } from "../lib/retroFutureLayout";
+import { retroPalette } from "../lib/retroPalette";
 import { FilmGrain, MineralSurface, VioletBloom } from "../templates/TacticalMatrixAtmosphere";
 import {
   AnalysisBadge,
@@ -30,6 +32,14 @@ import {
   PrintGeometry,
   RankBadge,
   RedSmoke,
+  RetroBrush,
+  RetroGrain,
+  RetroHalo,
+  RetroHaze,
+  RetroOrbits,
+  RetroPennant,
+  RetroSky,
+  RetroSparkles,
   SideShade,
   SkewTag,
   SkillRow,
@@ -61,6 +71,8 @@ import {
   OutlineWord,
   PinkCondition,
   RaisedType,
+  RetroBlockTitle,
+  RetroSerifTag,
   SpeedType,
   StreakWord,
 } from "./TextFaces";
@@ -282,6 +294,25 @@ export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: stri
   if (effect === "speed") return <span className="font-black" style={{ fontSize: size, lineHeight: 0.74 }}><SpeedType>{raw}</SpeedType></span>;
   if (effect === "fade-down") return <span style={{ fontSize: size, lineHeight: 0.86, letterSpacing: layer.letterSpacing }}><FadeDownWord text={raw} /></span>;
   if (effect === "streak") return <span className="font-bold" style={{ fontSize: size }}><StreakWord text={raw} size={size} /></span>;
+  if (effect === "retro-block") {
+    return (
+      <span style={{ fontSize: size, fontWeight: layer.font === "qingke" ? undefined : 900 }}>
+        <RetroBlockTitle
+          lines={raw.split("\n")}
+          stretch={retroTitleMetrics(layer.font).stretch}
+          leading={RETRO_TITLE_LEADING}
+          indent={RETRO_TITLE_INDENT}
+        />
+      </span>
+    );
+  }
+  if (effect === "retro-serif") {
+    return (
+      <span style={{ fontSize: size, fontVariationSettings: '"SOFT" 100, "WONK" 1, "opsz" 72', fontWeight: 900 }}>
+        <RetroSerifTag text={raw} fill="currentColor" />
+      </span>
+    );
+  }
   if (effect === "outline") return <span className="font-black" style={{ fontSize: size }}><OutlineWord text={raw} /></span>;
   if (effect === "raised") return <span className="font-black" style={{ fontSize: size }}><RaisedType>{raw}</RaisedType></span>;
   if (effect === "pink") return <span style={{ fontSize: size }}><PinkCondition text={raw} color="currentColor" /></span>;
@@ -389,6 +420,14 @@ export function renderBoxChrome(layer: BoxLayer, art?: ChromeArt) {
   if (chrome === "yellow-ramp") return <YellowRamp />;
   if (chrome === "dot-band") return <DotBand />;
   if (chrome === "inset-frame") return <InsetFrame />;
+  if (chrome === "retro-sky") return <RetroSky palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-brush") return <RetroBrush palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-halo") return <RetroHalo palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-haze") return <RetroHaze palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-orbits") return <RetroOrbits palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-pennant") return <RetroPennant palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-sparkles") return <RetroSparkles palette={retroPalette(layer.color)} />;
+  if (chrome === "retro-grain") return <RetroGrain palette={retroPalette(layer.color)} />;
   if (chrome === "thin-bracket-l" || chrome === "thin-bracket-r") {
     return <ThinBracket side={chrome === "thin-bracket-l" ? "l" : "r"} thickness={Math.max(4, Math.round(layer.h * 0.05))} />;
   }

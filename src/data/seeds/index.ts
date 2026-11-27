@@ -11,6 +11,7 @@ import { madnessLayers } from "./madness";
 import { moduleReviewLayers } from "./moduleReview";
 import { nocoreLayers } from "./nocore";
 import { operatorPreviewLayers } from "./operatorPreview";
+import { retroFutureLayers } from "./retroFuture";
 import { rogueLayers } from "./rogue";
 import { soloLayers } from "./solo";
 import { specialistLayers } from "./specialist";
@@ -38,6 +39,7 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   "blue-cut": blueCutLayers,
   "all-out": allOutLayers,
   "module-review": moduleReviewLayers,
+  "retro-future": retroFutureLayers,
 };
 
 export function getBuiltinLayers(id: BuiltinTemplateId): Layer[] {

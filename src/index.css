@@ -18,6 +18,9 @@
 @import "@fontsource/great-vibes/400.css";
 @import "@fontsource/the-nautigal/400.css";
 @import "@fontsource/alex-brush/400.css";
+@import "@fontsource/zcool-qingke-huangyou/400.css";
+@import "@fontsource-variable/fraunces/full.css";
+@import "@fontsource-variable/fraunces/full-italic.css";
 @import "./fonts.css";
 
 @theme {
@@ -29,6 +32,8 @@
   --font-outfit: "Outfit Variable", "Noto Sans SC", sans-serif;
   --font-anton: "Anton", "Noto Sans SC", sans-serif;
   --font-caps: "Six Caps", "Anton", "Noto Sans SC", sans-serif;
+  --font-qingke: "ZCOOL QingKe HuangYou", "Noto Sans SC", sans-serif;
+  --font-fraunces: "Fraunces Variable", "Noto Serif SC", serif;
   --color-ink: #f1f2f3;
   --color-panel: #ffffff;
   --color-raised: #f6f7f8;

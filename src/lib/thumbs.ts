@@ -11,6 +11,7 @@ import madnessThumb from "../assets/thumbs/madness-shot.webp";
 import moduleReviewThumb from "../assets/thumbs/module-review-shot.webp";
 import soloThumb from "../assets/thumbs/solo-shot.webp";
 import operatorPreviewThumb from "../assets/thumbs/operator-preview-shot.webp";
+import retroFutureThumb from "../assets/thumbs/retro-future-shot.webp";
 import rogueThumb from "../assets/thumbs/rogue-shot.webp";
 import specialistThumb from "../assets/thumbs/specialist-shot.webp";
 import type { TemplateId } from "../types";
@@ -39,6 +40,7 @@ const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   "blue-cut": blueCutThumb,
   "all-out": allOutThumb,
   "module-review": moduleReviewThumb,
+  "retro-future": retroFutureThumb,
 };
 
 export function templateThumbSrc(id: TemplateId): string {

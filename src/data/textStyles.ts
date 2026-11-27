@@ -189,6 +189,18 @@ export const TEXT_STYLES: TextStylePreset[] = [
     layer: { label: "光痕标题", text: "模组测评", font: "cn", fontSize: 200, color: "#ffffff", effect: "streak", w: 900, h: 240 },
   },
   {
+    id: "retro-block",
+    name: "立体奶油字",
+    source: "让大地变成一片酸橙",
+    layer: { label: "立体标题", text: "学方舟\n做设计", font: "cn", fontSize: 220, color: "#fff6dc", effect: "retro-block", w: 900, h: 500 },
+  },
+  {
+    id: "retro-serif",
+    name: "复古衬线贴纸",
+    source: "让大地变成一片酸橙",
+    layer: { label: "衬线贴纸", text: "New Series", font: "fraunces", fontSize: 84, color: "#ea5a4b", effect: "retro-serif", w: 480, h: 110 },
+  },
+  {
     id: "kicker",
     name: "英文小标",
     layer: { label: "英文小标", text: "OPERATION RECORD", font: "display", fontSize: 28, color: "#e8e8e8", effect: "plain", letterSpacing: 8, w: 700, h: 40 },

@@ -2,7 +2,7 @@ export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
 export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script"
   | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan"
-  | "outfit" | "anton" | "caps" | "hand" | "alex" | "vibes" | "times";
+  | "outfit" | "anton" | "caps" | "hand" | "alex" | "vibes" | "times" | "qingke" | "fraunces";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -50,7 +50,9 @@ export type LayerEffect =
   | "magenta-shadow"
   | "speed"
   | "fade-down"
-  | "streak";
+  | "streak"
+  | "retro-block"
+  | "retro-serif";
 
 export type LayerChrome =
   | "cc-triangle"
@@ -130,7 +132,15 @@ export type LayerChrome =
   | "dot-band"
   | "inset-frame"
   | "thin-bracket-l"
-  | "thin-bracket-r";
+  | "thin-bracket-r"
+  | "retro-sky"
+  | "retro-brush"
+  | "retro-halo"
+  | "retro-haze"
+  | "retro-orbits"
+  | "retro-pennant"
+  | "retro-sparkles"
+  | "retro-grain";
 
 export type CanvasSkin =
   | "plain"
@@ -151,7 +161,8 @@ export type CanvasSkin =
   | "highspec-nocore"
   | "blue-cut"
   | "all-out"
-  | "module-review";
+  | "module-review"
+  | "retro-future";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -379,7 +390,8 @@ export type BuiltinTemplateId =
   | "highspec-nocore"
   | "blue-cut"
   | "all-out"
-  | "module-review";
+  | "module-review"
+  | "retro-future";
 
 export type TemplateId = string;
 

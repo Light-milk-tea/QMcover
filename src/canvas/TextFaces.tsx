@@ -413,3 +413,129 @@ export function StreakWord({ text, size, streak = "#fedd00" }: { text: string; s
     </span>
   );
 }
+
+const RETRO_DEPTH_STEPS = 7;
+
+/**
+ * 复古未来立体字，四层真实 DOM，由外到内：奶油外边包住整块厚度；橄榄侧面沿左下错位叠出厚度；
+ * 字面外一圈细深橄榄线；最上面是上浅下黄的字面。侧面不比细线宽，字的上沿和右沿只露出
+ * 「细线 + 奶油边」，字内空隙才不会被糊满。尺寸全用 em，跟字号一起缩放。
+ */
+export function RetroBlockWord({
+  text,
+  face = "#fff6dc",
+  lower = "#f6dc94",
+  line = "#4f5c25",
+  side = "#738240",
+  rim = "#f5dfa8",
+  depth = [-0.03, 0.036],
+  weight = 0.04,
+}: {
+  text: string;
+  face?: string;
+  lower?: string;
+  /** 紧贴字面的细描边。 */
+  line?: string;
+  side?: string;
+  rim?: string;
+  depth?: [number, number];
+  /** 细描边的线宽（em），侧面同宽，奶油外边再各宽出半个线宽。 */
+  weight?: number;
+}) {
+  const steps = Array.from({ length: RETRO_DEPTH_STEPS + 1 }, (_, i) => i / RETRO_DEPTH_STEPS);
+  const at = (t: number) => `translate(${(depth[0] * t).toFixed(4)}em, ${(depth[1] * t).toFixed(4)}em)`;
+  const layer = (kind: "rim" | "side", color: string, width: number) =>
+    steps.map((t) => (
+      <span
+        key={`${kind}-${t}`}
+        aria-hidden
+        {...{ [`data-retro-${kind}`]: "" }}
+        className="pointer-events-none absolute top-0 left-0"
+        style={{ color, WebkitTextStroke: `${width}em ${color}`, transform: at(t) }}
+      >
+        {text}
+      </span>
+    ));
+  return (
+    <span data-retro-block="" className="relative inline-block whitespace-nowrap leading-none">
+      {layer("rim", rim, weight * 2)}
+      {layer("side", side, weight)}
+      <span
+        aria-hidden
+        data-retro-line-stroke=""
+        className="pointer-events-none absolute top-0 left-0"
+        style={{ color: line, WebkitTextStroke: `${weight}em ${line}` }}
+      >
+        {text}
+      </span>
+      <span
+        data-retro-face=""
+        className="relative"
+        style={{
+          background: `linear-gradient(180deg, ${face} 0%, ${face} 68%, ${lower} 71%, ${lower} 100%)`,
+          backgroundClip: "text",
+          WebkitBackgroundClip: "text",
+          color: "transparent",
+        }}
+      >
+        {text}
+      </span>
+    </span>
+  );
+}
+
+/**
+ * 复古未来两行立体标题：整体右倾，第二行右移约一个字。`indent` 以画布上的字号为单位，
+ * 横向拉宽不会把缩进一起放大。
+ */
+export function RetroBlockTitle({
+  lines,
+  stretch = 1,
+  skew = -7,
+  leading = 1.08,
+  indent = 1,
+  colors,
+}: {
+  lines: string[];
+  stretch?: number;
+  skew?: number;
+  leading?: number;
+  indent?: number;
+  colors?: { face?: string; lower?: string; line?: string; side?: string; rim?: string };
+}) {
+  return (
+    <span
+      data-retro-title=""
+      className="block"
+      style={{ width: "max-content", transform: `skewX(${skew}deg) scaleX(${stretch})`, transformOrigin: "0 50%" }}
+    >
+      {lines.map((line, index) => (
+        <span
+          key={`${line}-${index}`}
+          data-retro-line=""
+          className="block whitespace-pre"
+          style={{ lineHeight: leading, paddingLeft: index > 0 ? `${indent / stretch}em` : 0 }}
+        >
+          <RetroBlockWord text={line || "\u00a0"} {...colors} />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+/** 复古未来的英文小字：珊瑚红字面，奶油内描边，外面再包一圈橄榄深边。 */
+export function RetroSerifTag({ text, fill = "#ea5a4b", rim = "#fbedc9", edge = "#5f6a2c" }: { text: string; fill?: string; rim?: string; edge?: string }) {
+  return (
+    <span data-retro-serif="" className="relative inline-block whitespace-nowrap leading-none">
+      <span aria-hidden className="pointer-events-none absolute top-0 left-0" style={{ color: edge, WebkitTextStroke: `0.2em ${edge}`, transform: "translate(0.02em, 0.03em)" }}>
+        {text}
+      </span>
+      <span aria-hidden className="pointer-events-none absolute top-0 left-0" style={{ color: rim, WebkitTextStroke: `0.11em ${rim}` }}>
+        {text}
+      </span>
+      <span className="relative" style={{ color: fill }}>
+        {text}
+      </span>
+    </span>
+  );
+}

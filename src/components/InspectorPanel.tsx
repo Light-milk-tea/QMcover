@@ -166,6 +166,8 @@ const EFFECT_GROUPS: { label: string; items: { id: LayerEffect | ""; label: stri
       { id: "sign-dots", label: "署名加点（无核论文）" },
       { id: "fade-down", label: "上实下虚（模组测评）" },
       { id: "streak", label: "光痕暗边（模组测评）" },
+      { id: "retro-block", label: "立体奶油字（让大地变成一片酸橙）" },
+      { id: "retro-serif", label: "复古衬线贴纸（让大地变成一片酸橙，颜色即字面）" },
     ],
   },
   {

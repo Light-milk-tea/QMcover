@@ -14,6 +14,7 @@ import type { CanvasSkin, ImageLayer } from "../types";
 import { ALL_OUT_ACCENT, allOutAccent } from "../lib/allOutPalette";
 import { BLUE_CUT_ACCENT, blueCutAccent } from "../lib/blueCutPalette";
 import { resolveMatrixAccent, storeMatrixColorway } from "../lib/matrixPalette";
+import { RETRO_THEME, RETRO_THEME_PRESETS, retroTheme } from "../lib/retroPalette";
 import {
   MODULE_BACK_SCALE,
   MODULE_COLUMNS,
@@ -214,6 +215,35 @@ export function EditorPanel() {
             color={allOutAccent(draft.colorway)}
             onChange={(color) => patchDraft({ colorway: color ?? ALL_OUT_ACCENT })}
           />
+        </div>
+      ) : null}
+
+      {templateId === "retro-future" || draft.canvasSkin === "retro-future" ? (
+        <div className="border-b border-line px-4 py-3" data-retro-theme-field="">
+          <ColorField
+            elementId="retro-future-colorway"
+            label="主题色"
+            color={retroTheme(draft.colorway)}
+            onChange={(color) => patchDraft({ colorway: color ?? RETRO_THEME })}
+          />
+          <p className="mt-2 text-[12px] leading-relaxed text-mute">天空跟主题色走，三角、红球和描边一起换色相，标题奶油字面不变。</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {RETRO_THEME_PRESETS.map((preset) => {
+              const selected = retroTheme(draft.colorway) === preset.value;
+              return (
+                <button
+                  key={preset.id}
+                  type="button"
+                  title={preset.label}
+                  aria-label={`主题色：${preset.label}`}
+                  aria-pressed={selected}
+                  onClick={() => patchDraft({ colorway: preset.value })}
+                  className={`size-6 rounded-full border ${selected ? "border-accent ring-1 ring-accent" : "border-line"}`}
+                  style={{ background: preset.value }}
+                />
+              );
+            })}
+          </div>
         </div>
       ) : null}
 

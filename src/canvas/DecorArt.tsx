@@ -3,6 +3,7 @@ import { findOperator, operatorSkills, skillUrl, type OperatorSkill } from "../d
 import { ALL_OUT_RINGS, ringBands, type AllOutRings } from "../lib/allOutLayout";
 import type { BlueCutPalette } from "../lib/blueCutPalette";
 import { useCdnSrc } from "../lib/cdn";
+import { RETRO_DEFAULT_PALETTE, type RetroPalette } from "../lib/retroPalette";
 import "./DecorArt.css";
 
 // Deterministic vector textures stay editable and survive html-to-image export.
@@ -840,5 +841,270 @@ export function ThinBracket({ side, thickness }: { side: "l" | "r"; thickness: n
       <i style={{ ...bar, bottom: 0, left: 0, right: 0, height: thickness }} />
       <i style={{ ...bar, top: 0, bottom: 0, width: thickness, ...(side === "l" ? { left: 0 } : { right: 0 }) }} />
     </span>
+  );
+}
+
+function svgId(prefix: string, raw: string) {
+  return `${prefix}-${raw.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+}
+
+/** 四角闪星：四条内凹弧边，`size` 是中心到尖的距离。 */
+function sparklePath(cx: number, cy: number, size: number) {
+  const c = size * 0.16;
+  return [
+    `M${cx} ${cy - size}`,
+    `Q${cx + c} ${cy - c} ${cx + size} ${cy}`,
+    `Q${cx + c} ${cy + c} ${cx} ${cy + size}`,
+    `Q${cx - c} ${cy + c} ${cx - size} ${cy}`,
+    `Q${cx - c} ${cy - c} ${cx} ${cy - size}`,
+    "Z",
+  ].join(" ");
+}
+
+function starPoints(cx: number, cy: number, outer: number, inner: number, startDeg: number) {
+  return Array.from({ length: 10 }, (_, i) => {
+    const r = i % 2 ? inner : outer;
+    const a = ((startDeg + i * 36) * Math.PI) / 180;
+    return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`;
+  }).join(" ");
+}
+
+/** 复古未来：青蓝天空、右下云团、左上几道淡光。 */
+export function RetroSky({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-sky", useId());
+  return (
+    <svg data-retro-sky="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" aria-hidden>
+      <defs>
+        <linearGradient id={`${id}-sky`} x1="0" y1="0" x2="1" y2="0.55">
+          <stop offset="0" stopColor={p.skyTop} />
+          <stop offset="0.42" stopColor={p.skyMid} />
+          <stop offset="1" stopColor={p.skyLow} />
+        </linearGradient>
+        <radialGradient id={`${id}-glow`} cx="0.3" cy="0.62" r="0.55">
+          <stop offset="0" stopColor={p.glow} stopOpacity="0.55" />
+          <stop offset="1" stopColor={p.glow} stopOpacity="0" />
+        </radialGradient>
+        <filter id={`${id}-cloud`} x="-20%" y="-40%" width="140%" height="180%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="3" seed="11" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="70" xChannelSelector="R" yChannelSelector="G" />
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+      </defs>
+      <rect width="1920" height="1080" fill={`url(#${id}-sky)`} />
+      <rect width="1920" height="1080" fill={`url(#${id}-glow)`} />
+      <g fill="#ffffff" opacity="0.6">
+        <polygon points="500,-40 548,-40 400,190 386,190" />
+        <polygon points="560,-40 590,-40 450,150 440,150" />
+        <polygon points="640,-40 700,-40 520,240 500,240" opacity="0.6" />
+      </g>
+      <g filter={`url(#${id}-cloud)`} fill={p.cloud}>
+        <ellipse cx="1560" cy="1040" rx="260" ry="90" />
+        <ellipse cx="1760" cy="990" rx="170" ry="80" />
+        <ellipse cx="1880" cy="1060" rx="200" ry="70" />
+        <ellipse cx="1420" cy="1090" rx="200" ry="60" />
+        <ellipse cx="20" cy="510" rx="90" ry="40" opacity="0.7" />
+      </g>
+    </svg>
+  );
+}
+
+/** 复古未来：从人物身后横穿画面的橙色喷枪带，边缘是干刷颗粒。 */
+export function RetroBrush({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-brush", useId());
+  return (
+    <svg data-retro-brush="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" aria-hidden>
+      <defs>
+        <filter id={id} x="-10%" y="-60%" width="120%" height="220%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.004 0.03" numOctaves="3" seed="5" result="warp" />
+          <feDisplacementMap in="SourceGraphic" in2="warp" scale="80" xChannelSelector="R" yChannelSelector="G" result="shape" />
+          <feGaussianBlur in="shape" stdDeviation="9" result="soft" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="1" seed="9" result="grit" />
+          <feColorMatrix in="grit" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 2.4 -0.9" result="speck" />
+          <feComposite in="soft" in2="speck" operator="arithmetic" k1="0.35" k2="0.85" k3="0" k4="0" />
+        </filter>
+        <radialGradient id={`${id}-sunset`} cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor={p.sunset} />
+          <stop offset="0.45" stopColor={p.sunsetMid} stopOpacity="0.95" />
+          <stop offset="0.75" stopColor={p.sunsetEdge} stopOpacity="0.55" />
+          <stop offset="1" stopColor={p.sunsetEdge} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <ellipse cx="230" cy="720" rx="420" ry="260" fill={`url(#${id}-sunset)`} />
+      <g filter={`url(#${id})`}>
+        <path d="M-80 320 L700 345 L1050 372 L700 410 L-80 420 Z" fill={p.band} />
+        <path d="M-80 650 L620 680 L980 740 L620 820 L-80 880 Z" fill={p.bandLow} />
+        <path d="M-80 730 L560 735 L860 750 L560 780 L-80 800 Z" fill={p.bandLight} opacity="0.75" />
+        <path d="M1650 448 L2000 438 L2000 470 L1650 462 Z" fill={p.streak} opacity="0.85" />
+        <path d="M1700 712 L2000 690 L2000 770 L1700 742 Z" fill={p.streakLow} />
+      </g>
+    </svg>
+  );
+}
+
+/** 复古未来：压在立绘左侧的夕阳暖光，把原画的冷色场景和手臂染成橙调。 */
+export function RetroHaze({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-haze", useId());
+  return (
+    <svg data-retro-haze="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" aria-hidden>
+      <defs>
+        <radialGradient id={`${id}-warm`} cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor={p.haze} stopOpacity="0.55" />
+          <stop offset="0.6" stopColor={p.hazeEdge} stopOpacity="0.3" />
+          <stop offset="1" stopColor={p.hazeEdge} stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id={`${id}-edge`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor={p.hazeRect} stopOpacity="0.4" />
+          <stop offset="1" stopColor={p.hazeRect} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <ellipse cx="120" cy="700" rx="380" ry="300" fill={`url(#${id}-warm)`} />
+      <rect x="0" y="420" width="260" height="660" fill={`url(#${id}-edge)`} />
+    </svg>
+  );
+}
+
+/** 复古未来：人物头后的半透明大光圈，和左上一颗藕色小星球。 */
+export function RetroHalo({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-halo", useId());
+  return (
+    <svg data-retro-halo="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" aria-hidden>
+      <defs>
+        <radialGradient id={`${id}-disc`} cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor={p.halo} stopOpacity="0.34" />
+          <stop offset="0.86" stopColor={p.haloMid} stopOpacity="0.42" />
+          <stop offset="1" stopColor={p.haloRim} stopOpacity="0.6" />
+        </radialGradient>
+        <filter id={`${id}-soft`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="14" />
+        </filter>
+      </defs>
+      <circle cx="620" cy="460" r="430" fill={`url(#${id}-disc)`} />
+      <circle cx="1030" cy="268" r="58" fill={p.flare} opacity="0.75" filter={`url(#${id}-soft)`} />
+      <circle cx="1062" cy="200" r="94" fill={p.planet} opacity="0.8" />
+      <circle cx="1112" cy="206" r="28" fill={p.moon} opacity="0.9" />
+    </svg>
+  );
+}
+
+/** 复古未来：绕着人物和标题的两道细轨道，各挂一颗红球，再加几根放射细线。 */
+export function RetroOrbits({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-orbit", useId());
+  const ball = (cx: number, cy: number, r: number) => (
+    <g key={`${cx}-${cy}`}>
+      <circle cx={cx} cy={cy} r={r} fill={`url(#${id}-ball)`} filter={`url(#${id}-rough)`} />
+      <circle cx={cx - r * 0.32} cy={cy + r * 0.3} r={r * 0.24} fill={p.ballSpot} />
+    </g>
+  );
+  return (
+    <svg data-retro-orbits="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" fill="none" aria-hidden>
+      <defs>
+        <radialGradient id={`${id}-ball`} cx="0.6" cy="0.35" r="0.75">
+          <stop offset="0" stopColor={p.ballHi} />
+          <stop offset="0.55" stopColor={p.ball} />
+          <stop offset="1" stopColor={p.ballLow} />
+        </radialGradient>
+        <filter id={`${id}-rough`} x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="21" result="noise" />
+          <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.05  0 0 0 0 0.03  3 0 0 0 -1.5" result="speck" />
+          <feComposite in="speck" in2="SourceAlpha" operator="in" result="grit" />
+          <feMerge>
+            <feMergeNode in="SourceGraphic" />
+            <feMergeNode in="grit" />
+          </feMerge>
+        </filter>
+        <linearGradient id={`${id}-ring`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={p.cloud} />
+          <stop offset="1" stopColor={p.ringLow} />
+        </linearGradient>
+      </defs>
+      <g stroke={p.rays} strokeWidth="1.6" opacity="0.7">
+        <line x1="640" y1="570" x2="1460" y2="90" />
+        <line x1="640" y1="570" x2="1920" y2="330" />
+        <line x1="640" y1="570" x2="1380" y2="1080" />
+        <line x1="640" y1="570" x2="0" y2="640" />
+        <line x1="640" y1="570" x2="160" y2="1080" />
+      </g>
+      <ellipse cx="1330" cy="500" rx="440" ry="340" transform="rotate(-12 1330 500)" stroke={`url(#${id}-ring)`} strokeWidth="7" />
+      <path d="M300 1100 C110 990 80 760 237 662 S360 562 390 548" stroke={`url(#${id}-ring)`} strokeWidth="7" strokeLinecap="round" />
+      {ball(1662, 231, 36)}
+      {ball(237, 662, 35)}
+    </svg>
+  );
+}
+
+/** 复古未来：标题背后的橄榄绿长三角和斜放的红五角星，三角尖朝左上顺着人物动线。 */
+export function RetroPennant({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-pennant", useId());
+  return (
+    <svg data-retro-pennant="" className="absolute inset-0 h-full w-full overflow-visible" viewBox="0 0 1920 1080" aria-hidden>
+      <defs>
+        <linearGradient id={`${id}-green`} x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0" stopColor={p.pennant} />
+          <stop offset="1" stopColor={p.pennantLow} />
+        </linearGradient>
+        <linearGradient id={`${id}-red`} x1="0" y1="0" x2="1" y2="0.2">
+          <stop offset="0" stopColor={p.star} />
+          <stop offset="0.6" stopColor={p.starMid} />
+          <stop offset="1" stopColor={p.starTail} />
+        </linearGradient>
+        <linearGradient id={`${id}-wedge`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={p.wedge} />
+          <stop offset="1" stopColor={p.wedgeHi} />
+        </linearGradient>
+      </defs>
+      <polygon points="706,376 1745,276 1068,870" fill={p.pennantShade} opacity="0.55" transform="translate(8 10)" />
+      <polygon points="700,369 1737,262 1062,862" fill={`url(#${id}-green)`} stroke={p.pennantRim} strokeWidth="6" strokeLinejoin="round" />
+      <polygon points="1560,700 1700,590 1870,795" fill={`url(#${id}-wedge)`} />
+      <polygon points={starPoints(1670, 420, 200, 85, -90)} fill={`url(#${id}-red)`} />
+    </svg>
+  );
+}
+
+/** 复古未来：白色四角星和奶油色三连圆点。 */
+export function RetroSparkles({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const stars: [number, number, number][] = [
+    [1275, 81, 30], [1131, 119, 24], [1412, 94, 28], [1550, 156, 22], [1012, 194, 20], [1419, 956, 25], [1550, 862, 18],
+  ];
+  const dots: [number, number, number][] = [
+    [175, 106, 21], [231, 106, 21], [175, 162, 21], [1750, 919, 14], [1712, 956, 14], [1750, 956, 14],
+  ];
+  return (
+    <svg data-retro-sparkles="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" aria-hidden>
+      <g fill={p.sparkle} opacity="0.92">
+        {stars.map(([x, y, s]) => (
+          <path key={`${x}-${y}`} d={sparklePath(x, y, s)} />
+        ))}
+      </g>
+      <g fill={p.dot} stroke={p.dotEdge} strokeWidth="2.5">
+        {dots.map(([x, y, r]) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r={r} />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+/** 复古未来：整幅印刷颗粒，亮暗两层噪点，固定 seed，预览和导出一致。 */
+export function RetroGrain({ palette: p = RETRO_DEFAULT_PALETTE }: { palette?: RetroPalette }) {
+  const id = svgId("retro-grain", useId());
+  return (
+    <svg data-retro-grain="" className="absolute inset-0 h-full w-full" viewBox="0 0 1920 1080" aria-hidden>
+      <defs>
+        <filter id={`${id}-dark`} x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="3" />
+          <feColorMatrix type="matrix" values="0 0 0 0 0.12  0 0 0 0 0.1  0 0 0 0 0.08  -2.2 0 0 0 1.05" />
+        </filter>
+        <filter id={`${id}-light`} x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.62" numOctaves="2" seed="17" />
+          <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 0.98  0 0 0 0 0.92  2.2 0 0 0 -1.15" />
+        </filter>
+        <pattern id={`${id}-scan`} width="8" height="5" patternUnits="userSpaceOnUse">
+          <rect width="8" height="1.6" fill={p.scan} opacity="0.07" />
+        </pattern>
+      </defs>
+      <rect width="1920" height="1080" fill={`url(#${id}-scan)`} />
+      <rect width="1920" height="1080" filter={`url(#${id}-dark)`} opacity="0.3" />
+      <rect width="1920" height="1080" filter={`url(#${id}-light)`} opacity="0.28" />
+    </svg>
   );
 }

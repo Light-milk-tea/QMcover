@@ -78,6 +78,8 @@ export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[
   { id: "alex", label: "Alex Brush 花体", className: "cover-font-preset cover-font-alex" },
   { id: "vibes", label: "Great Vibes 花体", className: "cover-font-preset cover-font-vibes" },
   { id: "times", label: "Times 西文衬线", className: "cover-font-preset cover-font-times" },
+  { id: "qingke", label: "站酷庆科黄油体", className: "font-qingke" },
+  { id: "fraunces", label: "Fraunces 复古衬线", className: "font-fraunces" },
 ];
 
 export function fontClass(id?: CoverFontId): string {
@@ -341,5 +343,19 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "episode", label: "期号", kind: "text", defaultFont: "cn", textBind: "episode" },
     { id: "bracket-r", label: "右括号", kind: "box", hasColor: true },
     { id: "frame", label: "细外框", kind: "box", hasColor: true },
+  ],
+  "retro-future": [
+    { id: "sky", label: "天空与云", kind: "box" },
+    { id: "brush", label: "橙色喷笔带", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "halo", label: "光圈与小星球", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "haze", label: "暖色晕染", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "pennant", label: "三角与五角星", kind: "box" },
+    { id: "orbits", label: "轨道与红球", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "title", label: "主标题", kind: "text", defaultFont: "cn", textBind: "title" },
+    { id: "kicker", label: "英文眉题", kind: "text", defaultFont: "fraunces", textBind: "subtitle" },
+    { id: "episode", label: "期号", kind: "text", defaultFont: "fraunces", textBind: "episode" },
+    { id: "sparkles", label: "闪星与圆点", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "grain", label: "印刷颗粒", kind: "box", hasOpacity: true, defaultOpacity: 100 },
   ],
 };

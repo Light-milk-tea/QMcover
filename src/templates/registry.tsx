@@ -16,6 +16,7 @@ import { Madness } from "./Madness";
 import { ModuleReview } from "./ModuleReview";
 import { Nocore } from "./Nocore";
 import { OperatorPreview } from "./OperatorPreview";
+import { RetroFuture } from "./RetroFuture";
 import { Rogue } from "./Rogue";
 import { Solo } from "./Solo";
 import { Specialist } from "./Specialist";
@@ -43,6 +44,7 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   "blue-cut": BlueCut,
   "all-out": AllOut,
   "module-review": ModuleReview,
+  "retro-future": RetroFuture,
 };
 
 export function CoverView(props: CoverRenderProps) {
