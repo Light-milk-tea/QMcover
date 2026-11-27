@@ -6,6 +6,10 @@ import { highspecNocoreLayers } from "./highspecNocore";
 import { emergencyLessonLayers } from "./emergencyLesson";
 import { firstkillLayers } from "./firstkill";
 import { fourstarNocoreLayers } from "./fourstarNocore";
+import { garrisonRecordLayers } from "./garrisonRecord";
+import { garrisonTerminalLayers } from "./garrisonTerminal";
+import { unveilBrushLayers } from "./unveilBrush";
+import { unveilStageLayers } from "./unveilStage";
 import { lowspecLayers } from "./lowspec";
 import { madnessLayers } from "./madness";
 import { moduleReviewLayers } from "./moduleReview";
@@ -40,6 +44,10 @@ const SEEDS: Record<BuiltinTemplateId, Layer[]> = {
   "all-out": allOutLayers,
   "module-review": moduleReviewLayers,
   "retro-future": retroFutureLayers,
+  "garrison-terminal": garrisonTerminalLayers,
+  "garrison-record": garrisonRecordLayers,
+  "unveil-stage": unveilStageLayers,
+  "unveil-brush": unveilBrushLayers,
 };
 
 export function getBuiltinLayers(id: BuiltinTemplateId): Layer[] {

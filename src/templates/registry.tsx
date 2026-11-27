@@ -11,6 +11,10 @@ import { HighspecNocore } from "./HighspecNocore";
 import { EmergencyLesson } from "./EmergencyLesson";
 import { FirstKill } from "./FirstKill";
 import { FourstarNocore } from "./FourstarNocore";
+import { GarrisonRecord } from "./GarrisonRecord";
+import { GarrisonTerminal } from "./GarrisonTerminal";
+import { UnveilBrush } from "./UnveilBrush";
+import { UnveilStage } from "./UnveilStage";
 import { LowSpec } from "./LowSpec";
 import { Madness } from "./Madness";
 import { ModuleReview } from "./ModuleReview";
@@ -45,6 +49,10 @@ export const TEMPLATE_VIEWS: Record<BuiltinTemplateId, ComponentType<CoverRender
   "all-out": AllOut,
   "module-review": ModuleReview,
   "retro-future": RetroFuture,
+  "garrison-terminal": GarrisonTerminal,
+  "garrison-record": GarrisonRecord,
+  "unveil-stage": UnveilStage,
+  "unveil-brush": UnveilBrush,
 };
 
 export function CoverView(props: CoverRenderProps) {

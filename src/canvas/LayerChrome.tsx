@@ -8,13 +8,18 @@ import { blueCutPalette } from "../lib/blueCutPalette";
 import { matrixPalette } from "../lib/matrixPalette";
 import { RETRO_TITLE_INDENT, RETRO_TITLE_LEADING, retroTitleMetrics } from "../lib/retroFutureLayout";
 import { retroPalette } from "../lib/retroPalette";
+import { HUD_DIAL_CENTERED, hudToneFromColor } from "../lib/garrisonHud";
+import { BRUSH_TONE, STAGE_TONE } from "../lib/unveilTone";
 import { FilmGrain, MineralSurface, VioletBloom } from "../templates/TacticalMatrixAtmosphere";
 import {
   AnalysisBadge,
   ArtEcho,
   ArtVeil,
   BottomFade,
+  BrushStrokes,
   CheckerFloor,
+  ComicBurst,
+  ComicStickers,
   Compass,
   CoolWash,
   CornerGlow,
@@ -25,8 +30,13 @@ import {
   GlossySlash,
   GoldFrame,
   GoldRules,
+  HudDial,
+  HudGrid,
+  HudRings,
+  HudScan,
   InsetFrame,
   LightWash,
+  NeonCard,
   PaperFlecks,
   PrintDots,
   PrintGeometry,
@@ -40,12 +50,14 @@ import {
   RetroPennant,
   RetroSky,
   RetroSparkles,
+  SawDisc,
   SideShade,
   SkewTag,
   SkillRow,
   StageArrow,
   StageBar,
   TacticalOrbits,
+  TargetDisc,
   TealHud,
   TechnicalFrame,
   ThinBracket,
@@ -60,7 +72,9 @@ import {
 import {
   BlockWord,
   ChromaticTitle,
+  ComicShadowText,
   DefocusWord,
+  ExtrudeText,
   FadeDownWord,
   GlowWord,
   GrainGoldType,
@@ -73,6 +87,7 @@ import {
   RaisedType,
   RetroBlockTitle,
   RetroSerifTag,
+  ScanText,
   SpeedType,
   StreakWord,
 } from "./TextFaces";
@@ -313,6 +328,32 @@ export function renderTextContent(layer: TextLayer, draft: Draft, glassUrl: stri
       </span>
     );
   }
+  if (effect === "hud-scan") {
+    return (
+      <span className="font-black" style={{ fontSize: size, letterSpacing: layer.letterSpacing }}>
+        {raw.split("\n").map((line, i) => (
+          <span key={i} className="block">
+            <ScanText text={line} color="currentColor" />
+          </span>
+        ))}
+      </span>
+    );
+  }
+  if (effect === "comic-shadow" || effect === "extrude") {
+    return (
+      <span className="font-black" style={{ fontSize: size, letterSpacing: layer.letterSpacing }}>
+        {raw.split("\n").map((line, i) => (
+          <span key={i} className="block whitespace-pre">
+            {effect === "comic-shadow" ? (
+              <ComicShadowText text={line} shadow={STAGE_TONE.redDeep} />
+            ) : (
+              <ExtrudeText text={line} side={BRUSH_TONE.redDeep} dot="rgba(122, 13, 39, 0.18)" depth={0.06} steps={7} pitch={0.05} />
+            )}
+          </span>
+        ))}
+      </span>
+    );
+  }
   if (effect === "outline") return <span className="font-black" style={{ fontSize: size }}><OutlineWord text={raw} /></span>;
   if (effect === "raised") return <span className="font-black" style={{ fontSize: size }}><RaisedType>{raw}</RaisedType></span>;
   if (effect === "pink") return <span style={{ fontSize: size }}><PinkCondition text={raw} color="currentColor" /></span>;
@@ -428,6 +469,26 @@ export function renderBoxChrome(layer: BoxLayer, art?: ChromeArt) {
   if (chrome === "retro-pennant") return <RetroPennant palette={retroPalette(layer.color)} />;
   if (chrome === "retro-sparkles") return <RetroSparkles palette={retroPalette(layer.color)} />;
   if (chrome === "retro-grain") return <RetroGrain palette={retroPalette(layer.color)} />;
+  if (chrome === "hud-dial") return <HudDial tone={hudToneFromColor(layer.color)} spec={HUD_DIAL_CENTERED} />;
+  if (chrome === "hud-rings")
+    return (
+      <HudRings
+        tone={hudToneFromColor(layer.color)}
+        grain
+        rings={[
+          { cx: 260, cy: 260, r: 150, width: 60 },
+          { cx: 1640, cy: 820, r: 210, width: 66 },
+        ]}
+      />
+    );
+  if (chrome === "hud-grid") return <HudGrid tone={hudToneFromColor(layer.color)} pitch={60} areas={[[0, 0, 1920, 1080]]} />;
+  if (chrome === "hud-scan") return <HudScan tone={hudToneFromColor(layer.color)} axis="x" pitch={4} line={1.5} />;
+  if (chrome === "comic-burst") return <ComicBurst tone={{ ...STAGE_TONE, edge: layer.color || STAGE_TONE.edge }} spec={{ cx: 960, cy: 540, outer: 500, inner: 300, spikes: 17, seed: 11 }} />;
+  if (chrome === "target-disc") return <TargetDisc tone={{ ...STAGE_TONE, red: layer.color || STAGE_TONE.red }} spec={{ cx: 960, cy: 540, r: 420 }} />;
+  if (chrome === "comic-stickers") return <ComicStickers tone={STAGE_TONE} />;
+  if (chrome === "brush-strokes") return <BrushStrokes tone={{ ...BRUSH_TONE, red: layer.color || BRUSH_TONE.red }} />;
+  if (chrome === "saw-disc") return <SawDisc tone={{ ...BRUSH_TONE, red: layer.color || BRUSH_TONE.red }} spec={{ cx: 820, cy: 540, r: 380 }} />;
+  if (chrome === "neon-card") return <NeonCard tone={{ ...BRUSH_TONE, neon: layer.color || BRUSH_TONE.neon }} spec={{ x: 660, y: 240, w: 600, h: 600, rotate: -5, offset: 18 }} />;
   if (chrome === "thin-bracket-l" || chrome === "thin-bracket-r") {
     return <ThinBracket side={chrome === "thin-bracket-l" ? "l" : "r"} thickness={Math.max(4, Math.round(layer.h * 0.05))} />;
   }

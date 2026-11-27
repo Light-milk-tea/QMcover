@@ -1,4 +1,5 @@
 import { findOperatorByName } from "./arts";
+import { garrisonOnlyText } from "../lib/garrisonHud";
 import type { BuiltinTemplateId, CoverFontId, Draft, ElementKind, ElementOverride, TextBind } from "../types";
 
 export type CoverElMeta = {
@@ -48,6 +49,9 @@ export function nativeTextValue(
   if (templateId === "madness" && meta.id === "episode") {
     return `第${draft.episode || 1}期`;
   }
+  if (templateId === "garrison-record" && meta.id === "only") {
+    return garrisonOnlyText(draft.signature);
+  }
   if (templateId === "rogue" && meta.id === "node") {
     return `N${draft.episode || 15}`;
   }
@@ -80,6 +84,8 @@ export const COVER_FONTS: { id: CoverFontId; label: string; className: string }[
   { id: "times", label: "Times 西文衬线", className: "cover-font-preset cover-font-times" },
   { id: "qingke", label: "站酷庆科黄油体", className: "font-qingke" },
   { id: "fraunces", label: "Fraunces 复古衬线", className: "font-fraunces" },
+  { id: "pixel", label: "Press Start 2P 像素", className: "font-pixel" },
+  { id: "unbounded", label: "Unbounded 宽粗体", className: "font-unbounded" },
 ];
 
 export function fontClass(id?: CoverFontId): string {
@@ -357,5 +363,75 @@ export const TEMPLATE_ELEMENTS: Record<BuiltinTemplateId, CoverElMeta[]> = {
     { id: "episode", label: "期号", kind: "text", defaultFont: "fraunces", textBind: "episode" },
     { id: "sparkles", label: "闪星与圆点", kind: "box", hasOpacity: true, defaultOpacity: 100 },
     { id: "grain", label: "印刷颗粒", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+  ],
+  "garrison-terminal": [
+    { id: "grid", label: "方格底", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "rings", label: "粗圆环", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "dial", label: "刻度盘", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "lines", label: "细框线与箭头", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "frame", label: "绿色底框", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "card", label: "卡片白边与细网格", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "island", label: "RHODES 条", kind: "text", defaultFont: "outfit", textDefault: "RHODES ISLAND" },
+    { id: "en-name", label: "英文名", kind: "text", defaultFont: "anton", textBind: "signature", hasColor: true },
+    { id: "hatch", label: "斜纹条", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "tagline", label: "绿色标语", kind: "text", defaultFont: "outfit", textBind: "subtitle", hasColor: true },
+    { id: "mode", label: "描边小字", kind: "text", defaultFont: "pixel", textBind: "mark" },
+    { id: "file", label: "左下档案字", kind: "text", defaultFont: "pixel", textDefault: "FILE\nA B 7.2-12\n3.2217" },
+    { id: "title", label: "标题", kind: "text", defaultFont: "cn", textBind: "title" },
+    { id: "tag", label: "顶部小标签", kind: "text", defaultFont: "outfit", textDefault: "WHY FOR THIS" },
+    { id: "record", label: "右上档案字", kind: "text", defaultFont: "pixel", textDefault: "PRTS RECORD\nWELCOME DOCTOR" },
+    { id: "pixels", label: "像素块", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "scan", label: "竖扫描线", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+  ],
+  "garrison-record": [
+    { id: "grid", label: "白纸方格", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "rings", label: "灰色粗环", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "dial", label: "刻度盘", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "backdrop", label: "背景大字", kind: "text", defaultFont: "unbounded", textBind: "signature", hasColor: true, hasOpacity: true, defaultOpacity: 100 },
+    { id: "lines", label: "细框线", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "card", label: "卡片外框", kind: "box" },
+    { id: "pop", label: "立绘出框", kind: "box" },
+    { id: "panel", label: "标题白板", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "title", label: "黑色主标题", kind: "text", defaultFont: "cn", textBind: "title" },
+    { id: "subtitle", label: "红色大字", kind: "text", defaultFont: "unbounded", textBind: "subtitle", hasColor: true },
+    { id: "rail", label: "竖条与 S 标", kind: "box" },
+    { id: "mark", label: "红底小字", kind: "text", defaultFont: "cn", textBind: "mark" },
+    { id: "island", label: "RHODES 条", kind: "text", defaultFont: "outfit", textDefault: "RHODES ISLAND" },
+    { id: "hatch", label: "斜纹条", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "only", label: "红色小标", kind: "text", defaultFont: "outfit" },
+    { id: "tag-top", label: "右上标签", kind: "text", defaultFont: "outfit", textDefault: "HARD MODE" },
+    { id: "tag-bottom", label: "右下标签", kind: "text", defaultFont: "outfit", textDefault: "HARD MODE" },
+    { id: "record", label: "档案小字", kind: "text", defaultFont: "pixel", textDefault: "PRTS RECORD\nWELCOME DOCTOR" },
+    { id: "pixels", label: "像素块", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+  ],
+  "unveil-stage": [
+    { id: "stage", label: "紫色舞台底", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "band", label: "顶部斜条与汽车剪影", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "crowd", label: "观众席剪影", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "ring", label: "靶心圆盘", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "burst", label: "黑色爆炸框", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "stickers", label: "闪电与贴纸", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "plates", label: "棋盘格衬底", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "title", label: "标题", kind: "text", defaultFont: "cn", textBind: "title", hasColor: true },
+    { id: "en", label: "黄色英文", kind: "text", defaultFont: "anton", textBind: "signature", hasColor: true },
+  ],
+  "unveil-brush": [
+    { id: "backdrop", label: "暗色舞台底", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "ghost", label: "立绘残影", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "brush", label: "红蓝笔刷", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "disc", label: "红色圆盘与刻度尺", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "operator", label: "立绘", kind: "image" },
+    { id: "card", label: "黑卡与霓虹边", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "badges", label: "星星与小图标", kind: "box", hasOpacity: true, defaultOpacity: 100 },
+    { id: "name", label: "英文名牌", kind: "text", defaultFont: "fraunces", textBind: "signature", hasColor: true },
+    { id: "title", label: "中文标题", kind: "text", defaultFont: "serif", textBind: "title", hasColor: true },
+    { id: "code", label: "关卡码大字", kind: "text", defaultFont: "fraunces", textBind: "subtitle", hasColor: true },
+    { id: "caption", label: "英文注", kind: "text", defaultFont: "fraunces", textBind: "mark", hasColor: true },
+    { id: "record", label: "档案小字", kind: "text", defaultFont: "outfit", textDefault: ":: ARKNIGHTS RECORD" },
+    { id: "tag", label: "斜贴小标", kind: "text", defaultFont: "fraunces", textDefault: "FOR\nARKNIGHTS TACTIC GROUP" },
+    { id: "countdown", label: "倒数小字", kind: "text", defaultFont: "outfit", textDefault: "...3   ...2   ...1   |   1...   2...   3..." },
   ],
 };

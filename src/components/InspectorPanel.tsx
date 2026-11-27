@@ -168,6 +168,9 @@ const EFFECT_GROUPS: { label: string; items: { id: LayerEffect | ""; label: stri
       { id: "streak", label: "光痕暗边（模组测评）" },
       { id: "retro-block", label: "立体奶油字（让大地变成一片酸橙）" },
       { id: "retro-serif", label: "复古衬线贴纸（让大地变成一片酸橙，颜色即字面）" },
+      { id: "hud-scan", label: "横扫描缝（墨绿终端，颜色即字面）" },
+      { id: "comic-shadow", label: "漫画错位投影（紫幕爆炸框，颜色即字面）" },
+      { id: "extrude", label: "挤出网点（红蓝黑卡，颜色即字面）" },
     ],
   },
   {

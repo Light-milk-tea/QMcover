@@ -7,6 +7,10 @@ import endfieldThumb from "../assets/thumbs/endfield-shot.webp";
 import emergencyLessonThumb from "../assets/thumbs/emergency-lesson-shot.webp";
 import firstkillThumb from "../assets/thumbs/firstkill-shot.webp";
 import fourstarNocoreThumb from "../assets/thumbs/fourstar-nocore-shot.webp";
+import garrisonRecordThumb from "../assets/thumbs/garrison-record-shot.webp";
+import garrisonTerminalThumb from "../assets/thumbs/garrison-terminal-shot.webp";
+import unveilBrushThumb from "../assets/thumbs/unveil-brush-shot.webp";
+import unveilStageThumb from "../assets/thumbs/unveil-stage-shot.webp";
 import madnessThumb from "../assets/thumbs/madness-shot.webp";
 import moduleReviewThumb from "../assets/thumbs/module-review-shot.webp";
 import soloThumb from "../assets/thumbs/solo-shot.webp";
@@ -41,6 +45,10 @@ const THUMB_ASSET: Partial<Record<TemplateId, string>> = {
   "all-out": allOutThumb,
   "module-review": moduleReviewThumb,
   "retro-future": retroFutureThumb,
+  "garrison-terminal": garrisonTerminalThumb,
+  "garrison-record": garrisonRecordThumb,
+  "unveil-stage": unveilStageThumb,
+  "unveil-brush": unveilBrushThumb,
 };
 
 export function templateThumbSrc(id: TemplateId): string {

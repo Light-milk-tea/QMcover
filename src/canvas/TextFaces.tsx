@@ -539,3 +539,199 @@ export function RetroSerifTag({ text, fill = "#ea5a4b", rim = "#fbedc9", edge = 
     </span>
   );
 }
+
+/* ───────── 卫戍协议式 HUD 文字件 ───────── */
+
+/** 3×3 像素叉号。 */
+export function HudPixelX({ size, color = "currentColor" }: { size: number | string; color?: string }) {
+  return (
+    <svg data-hud-pixel-x="" width={size} height={size} viewBox="0 0 3 3" className="shrink-0" aria-hidden>
+      {[
+        [0, 0],
+        [2, 0],
+        [1, 1],
+        [0, 2],
+        [2, 2],
+      ].map(([x, y]) => (
+        <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={color} />
+      ))}
+    </svg>
+  );
+}
+
+/** 实心色块小标签，可带像素叉号；字号跟随外层 font-size。 */
+export function HudTag({ text, bg, ink, icon, iconColor }: { text: string; bg: string; ink: string; icon?: boolean; iconColor?: string }) {
+  return (
+    <span data-hud-tag="" className="inline-flex items-center gap-[0.45em] whitespace-nowrap leading-none">
+      {icon ? <HudPixelX size="1.05em" color={iconColor ?? bg} /> : null}
+      <span className="inline-block px-[0.55em] py-[0.22em] font-bold uppercase tracking-[0.04em]" style={{ background: bg, color: ink }}>
+        {text}
+      </span>
+    </span>
+  );
+}
+
+/** RHODES ISLAND 色条：左侧圆点、两行字、右侧箭头框。宽高由外层给定。 */
+export function HudIslandBar({ title, sub, bg, ink, dots = 6 }: { title: string; sub: string; bg: string; ink: string; dots?: number }) {
+  return (
+    <span data-hud-island="" className="flex h-full w-full items-center leading-none" style={{ background: bg, color: ink }}>
+      <span className="flex min-w-0 flex-1 items-center gap-[0.9em] overflow-hidden pl-[0.9em]">
+        {Array.from({ length: dots }, (_, i) => (
+          <span key={i} className="inline-block rounded-full" style={{ width: "0.32em", height: "0.32em", background: ink }} />
+        ))}
+      </span>
+      <span className="flex shrink-0 flex-col items-start justify-center whitespace-nowrap pr-[0.6em]">
+        <span className="font-black tracking-[0.02em]" style={{ fontSize: "1em" }}>
+          {title}
+        </span>
+        <span className="mt-[0.18em] tracking-[0.12em] opacity-90" style={{ fontSize: "0.34em" }}>
+          {sub}
+        </span>
+      </span>
+      <span className="mr-[0.5em] grid place-items-center" style={{ width: "1.05em", height: "1.05em", border: `0.09em solid ${ink}` }}>
+        <svg viewBox="0 0 10 10" style={{ width: "0.6em", height: "0.6em" }} aria-hidden>
+          <path d="M8 2 L2 8 M2 3.5 V8 H6.5" fill="none" stroke={ink} strokeWidth="1.6" />
+        </svg>
+      </span>
+    </span>
+  );
+}
+
+/** 横向扫描缝：字面按固定周期挖掉细横条，周期和缝宽以 em 计，随字号缩放。 */
+export function ScanText({ text, color, period = 0.034, gap = 0.012, style }: { text: string; color: string; period?: number; gap?: number; style?: CSSProperties }) {
+  const mask = `repeating-linear-gradient(180deg, #000 0 ${period - gap}em, transparent ${period - gap}em ${period}em)`;
+  return (
+    <span data-scan-text="" className="inline-block whitespace-nowrap" style={{ color, WebkitMaskImage: mask, maskImage: mask, ...style }}>
+      {text}
+    </span>
+  );
+}
+
+/** 黑字从腰部往下渐变成红：底层黑字，上层红字用竖向渐变蒙版，再压一层横扫描缝。 */
+export function FadeInkText({ text, ink, fade, from = 45, period = 0.05, gap = 0.014 }: { text: string; ink: string; fade: string; from?: number; period?: number; gap?: number }) {
+  const scan = `repeating-linear-gradient(180deg, #000 0 ${period - gap}em, transparent ${period - gap}em ${period}em)`;
+  const lower = `linear-gradient(180deg, transparent ${from}%, #000 92%)`;
+  return (
+    <span data-fade-ink="" className="relative inline-block whitespace-nowrap" style={{ WebkitMaskImage: scan, maskImage: scan }}>
+      <span style={{ color: ink }}>{text}</span>
+      <span aria-hidden className="pointer-events-none absolute left-0 top-0" style={{ color: fade, WebkitMaskImage: lower, maskImage: lower }}>
+        {text}
+      </span>
+    </span>
+  );
+}
+
+/** 每个字的上下错位（em）和倾角（度），循环套用。 */
+const COMIC_JITTER: [number, number][] = [
+  [0.02, -1.6],
+  [-0.016, 1.3],
+  [0.01, -0.7],
+  [-0.012, 1.8],
+  [0.016, -1.2],
+  [-0.006, 0.9],
+  [0.012, -1.9],
+];
+
+/** 漫画大字：逐字错落、微倾，字后压一层深红错位影子（两层真实 DOM）。 */
+export function ComicShadowText({
+  text,
+  face = "currentColor",
+  shadow,
+  dx = 0.03,
+  dy = 0.034,
+  jitter = 1,
+  squash = 1,
+  style,
+}: {
+  text: string;
+  face?: string;
+  shadow: string;
+  dx?: number;
+  dy?: number;
+  jitter?: number;
+  squash?: number;
+  style?: CSSProperties;
+}) {
+  const chars = [...text];
+  const glyphs = (color: string) =>
+    chars.map((ch, i) => {
+      const [y, r] = COMIC_JITTER[i % COMIC_JITTER.length];
+      return (
+        <span key={i} className="inline-block" style={{ color, transform: jitter ? `translateY(${y * jitter}em) rotate(${r * jitter}deg)` : undefined }}>
+          {ch === " " ? "\u00a0" : ch}
+        </span>
+      );
+    });
+  return (
+    <span
+      data-comic-text=""
+      className="relative inline-block whitespace-nowrap"
+      style={{ transform: squash !== 1 ? `scaleX(${squash})` : undefined, transformOrigin: "left top", ...style }}
+    >
+      <span aria-hidden className="pointer-events-none absolute left-0 top-0 whitespace-nowrap" style={{ transform: `translate(${dx}em, ${dy}em)` }}>
+        {glyphs(shadow)}
+      </span>
+      <span className="relative">{glyphs(face)}</span>
+    </span>
+  );
+}
+
+/** 立体网点字：字面压一层细网点，向右下挤出几层深色厚度（真实 DOM 叠层，不用阴影）。 */
+export function ExtrudeText({
+  text,
+  side,
+  dot,
+  depth = 0.045,
+  steps = 6,
+  pitch = 0.055,
+  style,
+}: {
+  text: string;
+  side: string;
+  dot: string;
+  depth?: number;
+  steps?: number;
+  pitch?: number;
+  style?: CSSProperties;
+}) {
+  const face: CSSProperties = {
+    backgroundImage: `radial-gradient(circle, ${dot} 32%, transparent 36%), linear-gradient(currentColor, currentColor)`,
+    backgroundSize: `${pitch}em ${pitch}em, 100% 100%`,
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+  };
+  return (
+    <span data-extrude-text="" className="relative inline-block whitespace-nowrap" style={style}>
+      {Array.from({ length: steps }, (_, i) => {
+        const d = (depth * (steps - i)) / steps;
+        return (
+          <span key={i} aria-hidden className="pointer-events-none absolute left-0 top-0 whitespace-nowrap" style={{ color: side, transform: `translate(${d}em, ${d}em)` }}>
+            {text}
+          </span>
+        );
+      })}
+      <span className="relative" style={face}>
+        {text}
+      </span>
+    </span>
+  );
+}
+
+/** 像素引号：两枚三格小逗号，`open` 尾巴朝上，`close` 倒过来。 */
+export function PixelQuote({ side, color, shade }: { side: "open" | "close"; color: string; shade?: string }) {
+  const cells: [number, number][] = [
+    [1, 0],
+    [0, 1],
+    [0, 2],
+    [1, 2],
+    [1, 1],
+  ];
+  return (
+    <svg data-pixel-quote={side} viewBox="0 0 5 3" style={{ width: "0.5em", height: "0.3em", transform: side === "close" ? "rotate(180deg)" : undefined }} aria-hidden>
+      {[0, 3].flatMap((ox) =>
+        cells.map(([x, y], i) => <rect key={`${ox}-${i}`} x={ox + x} y={y} width="1.02" height="1.02" fill={shade && i === 4 ? shade : color} />),
+      )}
+    </svg>
+  );
+}

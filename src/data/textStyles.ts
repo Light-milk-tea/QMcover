@@ -201,6 +201,24 @@ export const TEXT_STYLES: TextStylePreset[] = [
     layer: { label: "衬线贴纸", text: "New Series", font: "fraunces", fontSize: 84, color: "#ea5a4b", effect: "retro-serif", w: 480, h: 110 },
   },
   {
+    id: "hud-scan",
+    name: "扫描缝大字",
+    source: "墨绿终端",
+    layer: { label: "扫描缝大字", text: "麦哲伦", font: "cn", fontSize: 220, color: "#f6fffb", effect: "hud-scan", w: 760, h: 280 },
+  },
+  {
+    id: "comic-shadow",
+    name: "漫画错位大字",
+    source: "紫幕爆炸框",
+    layer: { label: "漫画大字", text: "PV-EX-8", font: "anton", fontSize: 260, color: "#f8e7ba", effect: "comic-shadow", w: 900, h: 300 },
+  },
+  {
+    id: "extrude",
+    name: "挤出网点字",
+    source: "红蓝黑卡",
+    layer: { label: "挤出大字", text: "H9-6", font: "fraunces", fontSize: 300, color: "#f6e6d2", effect: "extrude", w: 760, h: 340 },
+  },
+  {
     id: "kicker",
     name: "英文小标",
     layer: { label: "英文小标", text: "OPERATION RECORD", font: "display", fontSize: 28, color: "#e8e8e8", effect: "plain", letterSpacing: 8, w: 700, h: 40 },

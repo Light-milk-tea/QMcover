@@ -21,6 +21,9 @@
 @import "@fontsource/zcool-qingke-huangyou/400.css";
 @import "@fontsource-variable/fraunces/full.css";
 @import "@fontsource-variable/fraunces/full-italic.css";
+@import "@fontsource/press-start-2p/400.css";
+@import "@fontsource/unbounded/700.css";
+@import "@fontsource/unbounded/900.css";
 @import "./fonts.css";
 
 @theme {
@@ -34,6 +37,8 @@
   --font-caps: "Six Caps", "Anton", "Noto Sans SC", sans-serif;
   --font-qingke: "ZCOOL QingKe HuangYou", "Noto Sans SC", sans-serif;
   --font-fraunces: "Fraunces Variable", "Noto Serif SC", serif;
+  --font-pixel: "Press Start 2P", "Noto Sans SC", monospace;
+  --font-unbounded: "Unbounded", "Noto Sans SC", sans-serif;
   --color-ink: #f1f2f3;
   --color-panel: #ffffff;
   --color-raised: #f6f7f8;

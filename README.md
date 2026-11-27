@@ -24,7 +24,7 @@
 - [按参考图做新模板](doc/模仿参考图生成模板.md)
 - [封面视觉迭代与验收（紧急授课经验）](doc/封面视觉迭代与验收.md)
 - [模组测评四列封面做法](doc/模组测评四列封面做法.md)
-- 构图参考：[危机合约](references/crisis-contract/INDEX.md) · [肉鸽](references/rogue/INDEX.md) · [紧急授课](references/black-cloak/INDEX.md) · [无核论文](references/kirby/INDEX.md) · [终末地测评](references/endfield-review/INDEX.md) · [莱茵实验组特种队](references/secret-plan/INDEX.md) · [干员前瞻](references/operator-preview/INDEX.md) · [四星无核首杀](references/fourstar-nocore/INDEX.md) · [仅需一人](references/solo-clear/INDEX.md) · [V我50](references/highspec-nocore/INDEX.md) · [特种三人](references/six-vanguard/INDEX.md) · [全息作战矩阵](references/tactical-matrix/INDEX.md) · [强度测评](references/fangzhou-review/INDEX.md) · [总攻击](references/p3r-allout/INDEX.md) · [模组测评](references/keluojia-42/INDEX.md) · [让大地变成一片酸橙](references/weixu-design-vol12/INDEX.md)
+- 构图参考：[危机合约](references/crisis-contract/INDEX.md) · [肉鸽](references/rogue/INDEX.md) · [紧急授课](references/black-cloak/INDEX.md) · [无核论文](references/kirby/INDEX.md) · [终末地测评](references/endfield-review/INDEX.md) · [莱茵实验组特种队](references/secret-plan/INDEX.md) · [干员前瞻](references/operator-preview/INDEX.md) · [四星无核首杀](references/fourstar-nocore/INDEX.md) · [仅需一人](references/solo-clear/INDEX.md) · [V我50](references/highspec-nocore/INDEX.md) · [特种三人](references/six-vanguard/INDEX.md) · [全息作战矩阵](references/tactical-matrix/INDEX.md) · [强度测评](references/fangzhou-review/INDEX.md) · [总攻击](references/p3r-allout/INDEX.md) · [模组测评](references/keluojia-42/INDEX.md) · [让大地变成一片酸橙](references/weixu-design-vol12/INDEX.md) · [墨绿终端 / 红白档案](references/weishu-design-vol2/INDEX.md) · [紫幕爆炸框 / 红蓝黑卡](references/jiemu-design-vol1/INDEX.md)
 - 还没做成模板的构图参考：[三特种突袭](references/three-specialist/INDEX.md) · [倾风三特种](references/qingfeng-specialist/INDEX.md) · [ZC 活动关](references/zc-event/INDEX.md) · [无核五人装饰](references/beacon-sn-ex8/INDEX.md)
 
 ## 本地运行
@@ -59,7 +59,7 @@ npm run dev
    - **文字**：从约 30 种模板招牌字效里选（宋体大标题、描边金字、色散标题、金属字、全息字、空心水印等）。
    - **装饰**：按氛围光效、纹理材质、几何线框、条带色块、小标记、方舟饰件、职业图标分类挑。
    - **立绘**、**小人**（基建站姿）、**上传图**。
-5. 字体菜单共 20 种：思源黑体 / 宋体（含常规、中等）、霞鹜文楷、站酷小薇体、站酷庆科黄油体、马善政楷书、Oswald、Outfit、Anton、Six Caps、Fraunces、WindSong、Alex Brush、Great Vibes、Times 等。细笔画封面推荐中等宋体或常规宋体。
+5. 字体菜单共 22 种：思源黑体 / 宋体（含常规、中等）、霞鹜文楷、站酷小薇体、站酷庆科黄油体、马善政楷书、Oswald、Outfit、Anton、Six Caps、Fraunces、Press Start 2P 像素、Unbounded 宽粗体、WindSong、Alex Brush、Great Vibes、Times 等。细笔画封面推荐中等宋体或常规宋体。
 6. 立绘库按星级、职业筛选，也能搜中文名、英文名或 ID，点干员再点立绘。库里没有的皮肤可上传。选中小人图层后右侧是小人库；没有静帧的皮肤会灰掉，可上传。
 7. 背景库可以按地区筛选或搜名字，大部分模板都能换 AVG 场景底，并可蒙一层暗纱。
 8. 顶部「特效」栏可叠扫描线、颗粒、色散、故障条、斜光条、暗角和打光，导出时一起烧进 PNG。
@@ -81,6 +81,10 @@ npm run dev
 | `blue-cut` | 斜切关卡 | 白底斜切：左立绘，右阵容名 + 超大关卡码 + 英文标，主色可改。 |
 | `highspec-nocore` | V我50 | 浅底：左上宋体活动名，通栏黑箭头关卡码，棕色块短词加大字，右侧立绘。 |
 | `retro-future` | 让大地变成一片酸橙 | 天蓝复古底：左侧斜向动势立绘，右侧两行错位奶油立体字，背后橄榄三角、红星和星球轨道，全画面颗粒；主题色可换。 |
+| `garrison-terminal` | 墨绿终端 | 暗色 HUD：左侧倾斜卡片装麦哲伦，绿色底框和粗圆环；右侧三行标题，中间白色扫描缝大字加直角括号，上下两行绿色斜体；罗盘刻度、竖扫描线。 |
+| `garrison-record` | 红白档案 | 白纸 HUD：灰色斑驳粗环、像素罗盘和红色竖纹背景大字；倾斜红框卡片里的史尔特尔头角和左袖出框；黑转红主标题、红色宽体关卡码、红底小字。 |
+| `unveil-stage` | 紫幕爆炸框 | 紫色漫画舞台：黑色爆炸框、红靶圆盘和贴纸；三行标题，中间奶油压窄大字带深红错位投影，上下两行黄字衬棋盘格、配像素引号；左下黄色英文。默认玛恩纳。 |
+| `unveil-brush` | 红蓝黑卡 | 红蓝斜向干笔刷、毛边红盘和锯齿刻度条；斜放霓虹黑卡上是挤出网点的「四术师」和压窄关卡码大字，连字符换红星。默认荒芜拉普兰德，碎片按手描轮廓去掉。 |
 | `endfield` | 明日方舟角色测评 | 参考血狼破军「终末地测评」洁尔佩塔封面：左立绘，右柠黄括号角色名，黑条「数据与实战测评」，浅底黄三角。 |
 | `tactical-matrix` | 全息作战矩阵 | 左侧人物近景、右侧战术圆环与超大窄体关卡码；主题色用调色盘自选，人数、上下栏目和独立纹理图层可编辑。 |
 | `strength-review` | 强度测评 | 左主立绘（默认皮肤近景）、中间叠精0基建小人、右侧三技能金框、底部两行叠金标题；换干员时小人跟着走，也可在小人库另选或上传。 |
@@ -294,6 +298,40 @@ npm run dev
 
 构图来自 ignoredone《怎样学明日方舟做设计？Vol.12 未许之地》的成品封面，见 `references/weixu-design-vol12/INDEX.md`。不搬原封面的栏目名和署名。
 
+### 墨绿终端
+
+- 标题（三行，默认「卫戍协议对我家 / 麦哲伦 / 是有意见吗？」）：第二行是白色扫描缝大字，两侧直角括号；首尾两行绿色斜体。只填一行时只出大字，长名字自动缩字号
+- 绿色标语（默认 NOT FOR）、英文名（默认 MAGALLAN，Anton 斜体）、描边小字（默认 NEW MODE）
+- RHODES 条、左下档案字、顶部小标签、右上档案字都在图层里改字
+- 方格底、粗圆环、刻度盘、细框线与箭头、绿色底框、卡片白边与细网格、斜纹条、像素块、竖扫描线都是独立图层
+- 默认立绘：麦哲伦「回味冰霜雪」，装在左侧倾斜卡片里
+
+### 红白档案
+
+- 黑色主标题（默认「史尔特尔」）：黑字从腰部往下渐变成红，压横扫描缝
+- 红色大字（默认 PV-S-3，Unbounded 宽粗体加竖纹和偏移影子）、红底小字（默认「突袭」）
+- 英文名（默认 SURTR）同时驱动背景两行大字、卡片底条「SURTR ARKNIGHTS RECORD」、右侧竖条和「SURTR ONLY」小标
+- 默认立绘：史尔特尔「缤纷奇境」，在卡片照片窗里裁切；头顶、角、右侧发尾和左袖按 `src/lib/artCutouts.ts` 的手描轮廓出框（「立绘出框」图层可隐藏，换别的立绘不出框）
+- 白纸方格、灰色粗环、刻度盘、细框线、标题白板、竖条、斜纹条、标签、像素块都是独立图层
+
+两套构图来自 ignoredone《怎样学明日方舟做设计？Vol.2 卫戍协议》的两个案例，见 `references/weishu-design-vol2/INDEX.md`。不搬视频栏目名、水印和原封面的「怎样学明日方舟平面设计」标题。HUD 刻度盘、粗圆环、方格、竖扫描线在「添加 → 装饰」，扫描缝大字在「添加 → 文字」。
+
+### 紫幕爆炸框
+
+- 标题（三行，默认「卡西米尔队 / PV-EX-8 / 三人」）：中间一行是奶油色压窄大字，每个字微微跳动，带深红错位投影；首尾两行是黄字，衬紫黑棋盘格，配像素引号。只填一行时只出大字；长大字自动缩字号，中文大字不压窄
+- 条带小字（默认 THREE KAZIMIERZ OPERATOR）印在左上深紫斜带里；黄色英文（默认 THREE / KAZIMIERZ / OPERATOR 三行，不换行时按空格拆）
+- 紫色舞台、斜带、观众席、红靶圆盘、爆炸框、贴纸、棋盘格衬底都是独立图层
+- 默认立绘：玛恩纳精英 0
+
+### 红蓝黑卡
+
+- 中文标题（默认「四术师」，思源宋体 Heavy 挤出网点字）、关卡码大字（默认 H9-6，自动转大写，连字符换成红星，Fraunces 软衬线压窄）、英文名牌（默认 LAPPLAND）、英文注（默认 FOUR / CASTER OPERATOR）
+- 档案小字、斜贴小标、倒数小字都在图层里改字
+- 暗色底、立绘残影、红蓝笔刷、锯齿红盘、霓虹黑卡、星星与小图标都是独立图层
+- 默认立绘：荒芜拉普兰德精英 0，按 `src/lib/artCutouts.ts` 的手描轮廓去掉原画的碎片、鞭梢和火花，残影同样处理；换别的立绘不挖
+
+两套构图来自 ignoredone《怎样学明日方舟做设计？Vol.1 揭幕者们》的两个案例，见 `references/jiemu-design-vol1/INDEX.md`。不搬视频栏目名、水印和字幕条。漫画爆炸框、红靶圆盘、漫画贴纸、斜向干笔刷、锯齿红盘、霓虹黑卡在「添加 → 装饰」，漫画错位大字和挤出网点字在「添加 → 文字」。
+
 编辑器不展示日期；`draft.date` 只用于导出文件名。
 
 ## 目录
@@ -324,6 +362,10 @@ src/
     BlueCut.tsx           斜切关卡
     HighspecNocore.tsx    V我50
     RetroFuture.tsx       让大地变成一片酸橙
+    GarrisonTerminal.tsx  墨绿终端
+    GarrisonRecord.tsx    红白档案
+    UnveilStage.tsx       紫幕爆炸框
+    UnveilBrush.tsx       红蓝黑卡
     Endfield.tsx          明日方舟角色测评
     TacticalMatrix.tsx    全息作战矩阵
     StrengthReview.tsx    强度测评
@@ -348,6 +390,8 @@ src/
     thumbs.ts             首页预览图路径
     artCutouts.ts         自带场景立绘的手描抠图轮廓
     retroPalette.ts       让大地变成一片酸橙：主题色派生整套配色
+    garrisonHud.ts        墨绿终端 / 红白档案：两套 HUD 配色
+    unveilTone.ts         紫幕爆炸框 / 红蓝黑卡：两套固定配色
     exportCover.ts        html-to-image 导出
     interpolate.ts        展示用标题
 scripts/
@@ -436,6 +480,10 @@ npm run chibis
 | 斜切关卡 | `src/templates/BlueCut.tsx` | 配色由 `src/lib/blueCutPalette.ts` 从主色派生。 |
 | V我50 | `src/templates/HighspecNocore.tsx` | 复刻浅底、通栏黑箭头、色块短词和大字，不要搬官方活动标和封面署名。 |
 | 让大地变成一片酸橙 | `src/templates/RetroFuture.tsx` | 默认精二自带场景，靠 `src/lib/artCutouts.ts` 的手描轮廓挖掉；换立绘后轮廓不再套用。标题字宽按思源黑体 Heavy 量过；换成庆科黄油体会自动拉宽，其他字体按每字一个字号排。配色由 `src/lib/retroPalette.ts` 从主题色派生。 |
+| 墨绿终端 | `src/templates/GarrisonTerminal.tsx` | 卡片位置、倾角和立绘缩放原点按参考图量过；默认立绘的取景用 SIFT 配准算出。中间大字按 3 字 256px 排，超宽自动缩。刻度盘跳过 284°–316°，不压英文名。 |
+| 红白档案 | `src/templates/GarrisonRecord.tsx` | 立绘比卡片多转 1.6°；出框靠 `src/lib/artCutouts.ts` 里缤纷奇境的手描轮廓，换立绘自动不出框。背景字和红色大字的竖纹用 `background-clip: text`，导出已核对。 |
+| 紫幕爆炸框 | `src/templates/UnveilStage.tsx` | 大字按 Anton 大写高 0.88em 量过：拉丁字压到 0.74、上限 341px，中文不压、上限 200px；上下两行字号跟着大字缩。棋盘格用 `repeating-conic-gradient`，导出已核对。 |
+| 红蓝黑卡 | `src/templates/UnveilBrush.tsx` | 关卡码的斑驳是 SVG 噪点做的 `mask-image`。蒙版只盖自身边框盒，所以内层 span 向外撑开再用负边距收回，右引号放在蒙版外。荒芜拉普兰德的抠图轮廓在 `src/lib/artCutouts.ts`。 |
 | 明日方舟角色测评 | `src/templates/Endfield.tsx` | 复刻左立绘 + 黄括号名 + 黑条栏目，不要搬官方标和参考 UP logo。 |
 | 全息作战矩阵 | `src/templates/TacticalMatrix.tsx` | 配色由 `src/lib/matrixPalette.ts` 从主题色派生。 |
 | 强度测评 | `src/templates/StrengthReview.tsx` | 复刻单立绘 + 三技能框 + 叠金标题，不要搬罗德岛底纹、官方标和技能外框贴图。 |

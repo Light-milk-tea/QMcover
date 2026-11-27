@@ -262,6 +262,10 @@ const VIGNETTE_AT: Record<CanvasSkin, string> = {
   "all-out": "68% 46%",
   "module-review": "50% 30%",
   "retro-future": "26% 40%",
+  "garrison-terminal": "30% 46%",
+  "garrison-record": "30% 48%",
+  "unveil-stage": "32% 50%",
+  "unveil-brush": "30% 48%",
 };
 
 function VignetteOverlay({ skin, amount }: { skin: CanvasSkin; amount: number }) {

@@ -2,7 +2,7 @@ export type TitleKind = "operator" | "stage" | "operation" | "theme";
 
 export type CoverFontId = "cn" | "display" | "sans" | "serif" | "script"
   | "serif-regular" | "serif-medium" | "cn-regular" | "wenkai" | "xiaowei" | "mashan"
-  | "outfit" | "anton" | "caps" | "hand" | "alex" | "vibes" | "times" | "qingke" | "fraunces";
+  | "outfit" | "anton" | "caps" | "hand" | "alex" | "vibes" | "times" | "qingke" | "fraunces" | "pixel" | "unbounded";
 
 export type ElementKind = "text" | "box" | "image";
 
@@ -52,7 +52,10 @@ export type LayerEffect =
   | "fade-down"
   | "streak"
   | "retro-block"
-  | "retro-serif";
+  | "retro-serif"
+  | "hud-scan"
+  | "comic-shadow"
+  | "extrude";
 
 export type LayerChrome =
   | "cc-triangle"
@@ -140,7 +143,17 @@ export type LayerChrome =
   | "retro-orbits"
   | "retro-pennant"
   | "retro-sparkles"
-  | "retro-grain";
+  | "retro-grain"
+  | "hud-dial"
+  | "hud-rings"
+  | "hud-grid"
+  | "hud-scan"
+  | "comic-burst"
+  | "target-disc"
+  | "comic-stickers"
+  | "brush-strokes"
+  | "saw-disc"
+  | "neon-card";
 
 export type CanvasSkin =
   | "plain"
@@ -162,7 +175,11 @@ export type CanvasSkin =
   | "blue-cut"
   | "all-out"
   | "module-review"
-  | "retro-future";
+  | "retro-future"
+  | "garrison-terminal"
+  | "garrison-record"
+  | "unveil-stage"
+  | "unveil-brush";
 
 export type ShaftLightKind = "bloom" | "beam";
 export type LightDepth = "behind" | "front";
@@ -391,7 +408,11 @@ export type BuiltinTemplateId =
   | "blue-cut"
   | "all-out"
   | "module-review"
-  | "retro-future";
+  | "retro-future"
+  | "garrison-terminal"
+  | "garrison-record"
+  | "unveil-stage"
+  | "unveil-brush";
 
 export type TemplateId = string;
 
