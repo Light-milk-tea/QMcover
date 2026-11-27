@@ -5,18 +5,34 @@ export const COVER_EXPORT_TIMEOUT_MS = 30_000;
 const ASSET_WAIT_MS = 5_000;
 const FETCH_ABORT_MS = 20_000;
 
-let fontEmbedCSS: Promise<string> | null = null;
+const fontEmbedCSS = new Map<string, Promise<string>>();
+
+/** getFontEmbedCSS only inlines the families the node uses, so the cache must follow them. */
+function usedFontsKey(node: HTMLElement): string {
+  const families = new Set<string>();
+  for (const el of [node, ...node.querySelectorAll("*")]) families.add(getComputedStyle(el).fontFamily);
+  return [...families].sort().join("|");
+}
+
+function fontEmbedCSSFor(node: HTMLElement): Promise<string> {
+  const key = usedFontsKey(node);
+  let css = fontEmbedCSS.get(key);
+  if (!css) {
+    css = document.fonts.ready
+      // html-to-image 1.11.x keeps a global regex cursor when filtering formats;
+      // adjacent subset rules can lose their src and fall back to another weight.
+      .then(() => getFontEmbedCSS(node))
+      .catch(() => {
+        fontEmbedCSS.delete(key);
+        return "";
+      });
+    fontEmbedCSS.set(key, css);
+  }
+  return css;
+}
 
 export function warmupCoverExport(node: HTMLElement | null): void {
-  if (!node || fontEmbedCSS) return;
-  fontEmbedCSS = document.fonts.ready
-    // html-to-image 1.11.x keeps a global regex cursor when filtering formats;
-    // adjacent subset rules can lose their src and fall back to another weight.
-    .then(() => getFontEmbedCSS(node))
-    .catch(() => {
-      fontEmbedCSS = null;
-      return "";
-    });
+  if (node) void fontEmbedCSSFor(node);
 }
 
 export function shouldIncludeExportNode(el: Node): boolean {
@@ -56,8 +72,7 @@ async function settleExportAssets(node: HTMLElement): Promise<void> {
 
 export async function rasterizeCoverPng(node: HTMLElement): Promise<string> {
   await settleExportAssets(node);
-  warmupCoverExport(node);
-  const css = (await fontEmbedCSS) || undefined;
+  const css = (await fontEmbedCSSFor(node)) || undefined;
   return withTimeout(
     toPng(node, {
       width: BILI_COVER.width,

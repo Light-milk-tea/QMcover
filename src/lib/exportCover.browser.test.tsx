@@ -42,6 +42,44 @@ test("坏图不会卡住 PNG 导出", { timeout: 45_000 }, async () => {
   }
 });
 
+test("换了字体的画布导出时内嵌新字体，不沿用上一张画布的字体", { timeout: 45_000 }, async () => {
+  const text = "Vanguard";
+  await document.fonts.load('600 120px "Oswald"', text);
+  await document.fonts.load('400 160px "Great Vibes"', text);
+  const makeNode = (font: string) => {
+    const node = document.createElement("div");
+    node.style.cssText = `width:1920px;height:1080px;background:black;color:white;font:${font}`;
+    node.textContent = text;
+    document.body.appendChild(node);
+    return node;
+  };
+  const canvas = document.createElement("canvas"); canvas.width = 1920; canvas.height = 1080;
+  const ctx = canvas.getContext("2d")!;
+  const ink = () => {
+    const pixels = ctx.getImageData(0, 0, 1920, 1080).data;
+    let coverage = 0;
+    for (let i = 0; i < pixels.length; i += 4) coverage += pixels[i] / 255;
+    return coverage;
+  };
+
+  const earlier = makeNode('600 120px/1 "Oswald"');
+  const script = makeNode('400 160px/1 "Great Vibes"');
+  try {
+    await rasterizeCoverPng(earlier);
+    const image = new Image(); image.src = await rasterizeCoverPng(script); await image.decode();
+    ctx.drawImage(image, 0, 0);
+    const exportedInk = ink();
+    ctx.fillStyle = "black"; ctx.fillRect(0, 0, 1920, 1080);
+    ctx.fillStyle = "white"; ctx.font = '400 160px "Great Vibes"';
+    ctx.fillText(text, 0, 300);
+    expect(exportedInk / ink()).toBeGreaterThan(.95);
+    expect(exportedInk / ink()).toBeLessThan(1.05);
+  } finally {
+    earlier.remove();
+    script.remove();
+  }
+});
+
 test("PNG 中的中文分片字体保留粗字重，不逐字回退到细体", { timeout: 45_000 }, async () => {
   vi.resetModules();
   const { rasterizeCoverPng: exportPng } = await import("./exportCover");
