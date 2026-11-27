@@ -14,7 +14,8 @@
     "preview": "vite preview",
     "operators": "node scripts/build-operators.mjs",
     "chibis": "node scripts/build-chibis.mjs",
-    "backgrounds": "node scripts/build-backgrounds.mjs"
+    "backgrounds": "node scripts/build-backgrounds.mjs",
+    "thumb": "node scripts/qa/thumb.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -27,8 +28,10 @@
     "@fontsource/noto-sans-sc": "^5.3.0",
     "@fontsource/noto-serif-sc": "^5.2.8",
     "@fontsource/oswald": "^5.3.0",
+    "@fontsource/press-start-2p": "^5.3.0",
     "@fontsource/six-caps": "^5.3.0",
     "@fontsource/the-nautigal": "^5.3.0",
+    "@fontsource/unbounded": "^5.3.0",
     "@fontsource/zcool-qingke-huangyou": "^5.3.0",
     "@fontsource/zcool-xiaowei": "^5.3.0",
     "@phosphor-icons/react": "^2.1.10",

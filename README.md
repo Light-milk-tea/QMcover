@@ -400,7 +400,12 @@ scripts/
   chibi-render.html       小人渲帧页（Playwright + Pixi）
   build-backgrounds.mjs   写 avg-backgrounds.json
   download-avg-backgrounds.mjs  拉 AVG 背景到 tmp-backgrounds（不进 git）
-  export-thumb.mjs        导出单个模板的首页预览图到 public/thumbs
+  qa/                     模板对照与验收（Playwright Chromium，先 npm run dev）
+    shot.mjs              默认稿截图 + html-to-image 导出，并算两者差值
+    compare.mjs           参考图与当前画布：裁 16:9、上下对照、50% 叠图、坐标网格
+    probe.mjs             读画布元素坐标；--font 量字体实际墨迹宽高
+    editor-export.mjs     整页编辑器截图，点「导出封面」拿真实 PNG 比对
+    thumb.mjs             生成首页两份预览图（npm run thumb -- <id>）
   build-vanguard-texture.py     特种三人的金色粉尘纹理
   collect-*.py            重新收集构图参考图（不进 git）
 references/<主题>/        构图参考，只提交 INDEX.md，jpg / mp4 不提交

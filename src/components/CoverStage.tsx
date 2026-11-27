@@ -94,6 +94,7 @@ export function CoverStage({ stageRef }: Props) {
           <>
             <div
               ref={stageRef}
+              data-cover-stage=""
               className="relative overflow-hidden"
               style={{ width: BILI_COVER.width, height: BILI_COVER.height }}
             >
