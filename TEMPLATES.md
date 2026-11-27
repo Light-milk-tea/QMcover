@@ -12,8 +12,8 @@
 2. 新建 `src/templates/Xxx.tsx`，接收 `CoverRenderProps`，并在 `src/templates/registry.tsx` 注册。
 3. 在 `src/data/templates.ts` 加 name / blurb / 默认文案、立绘、背景。
 4. 新建 `src/data/seeds/<id>.ts` 并接入 `src/data/seeds/index.ts`，再在 `src/data/elements.ts` 登记原生图层。
-5. 对照主参考逐轮调整并检查实际导出。涉及 UI 时新增或更新 `*.browser.test.tsx`，用 Vitest Browser 的 Playwright Chromium 跑绿。
-6. 构图定了之后，打开 `#/__thumb/<id>` 导出 960×540 WebP，同时更新 `public/thumbs/`、`src/assets/thumbs/` 和 `src/lib/thumbs.ts`。
+5. 对照主参考逐轮调整：`node scripts/qa/shot.mjs <id> r1` 截图，`compare.mjs pair / blend` 和参考对照（命令见 [对照工具](doc/模仿参考图生成模板.md#对照工具)）。涉及 UI 时新增或更新 `*.browser.test.tsx`，用 Vitest Browser 的 Playwright Chromium 跑绿。
+6. 构图定了之后，`node scripts/qa/editor-export.mjs <id>` 检查整页编辑器和真实 PNG 导出，`npm run thumb -- <id>` 同时写 `public/thumbs/` 和 `src/assets/thumbs/`；新模板再在 `src/lib/thumbs.ts` import。
 
 复刻的是构图（字在哪、条在哪），不是别人的整张封面。编辑器里的立绘和基建小人运行时加载，不进仓库。小人图层 `source: "chibi"`，地址走 `chibiUrl`，不要 fallback 成全身立绘。
 
